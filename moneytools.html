@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIN333: Money Management Tools and Techniques</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        .dark {
+            --bg-primary: #181818;
+            --text-primary: #f3f4f6;
+            --card-bg: #262626;
+        }
+        
+        :root {
+            --primary-color: #5D5CDE;
+            --primary-dark: #4b4ab2;
+            --bg-primary: #ffffff;
+            --text-primary: #333333;
+            --card-bg: #f9fafb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .section-header {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            z-index: 1;
+        }
+
+        .timeline-item:after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 8px;
+            bottom: -24px;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+
+        .timeline-item:last-child:after {
+            display: none;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="py-4 px-6 md:px-10 flex items-center justify-between shadow-sm">
+            <div class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 w-8 h-8 rounded-full flex items-center justify-center">
+                    <i data-feather="dollar-sign" class="text-white h-4 w-4"></i>
+                </div>
+                <h1 class="text-xl font-bold">FIN333: Fundamentals of Personal Financial Planning</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <i data-feather="moon" id="moon-icon" class="h-5 w-5"></i>
+                    <i data-feather="sun" id="sun-icon" class="h-5 w-5 hidden"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 py-8 px-6 md:px-10 lg:px-16 max-w-7xl mx-auto w-full">
+            <!-- Chapter Intro -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6">Chapter 2: Money Management Tools and Techniques</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="card p-5 shadow-sm flex flex-col items-center text-center">
+                        <div class="rounded-full bg-indigo-100 p-3 mb-3">
+                            <i data-feather="book-open" class="h-6 w-6 text-indigo-600"></i>
+                        </div>
+                        <h3 class="font-semibold">Learning Objectives</h3>
+                        <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">Master essential money management tools and financial statement creation for effective planning</p>
+                    </div>
+                    <div class="card p-5 shadow-sm flex flex-col items-center text-center">
+                        <div class="rounded-full bg-indigo-100 p-3 mb-3">
+                            <i data-feather="clock" class="h-6 w-6 text-indigo-600"></i>
+                        </div>
+                        <h3 class="font-semibold">Estimated Time</h3>
+                        <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">35 minutes to complete this microlearning module</p>
+                    </div>
+                    <div class="card p-5 shadow-sm flex flex-col items-center text-center">
+                        <div class="rounded-full bg-indigo-100 p-3 mb-3">
+                            <i data-feather="target" class="h-6 w-6 text-indigo-600"></i>
+                        </div>
+                        <h3 class="font-semibold">Key Topics</h3>
+                        <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">Financial record systems, document storage, and creating personal financial statements</p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="font-semibold mb-2">Your Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2.1 -->
+            <section id="section-2-1" class="mb-16">
+                <h3 class="text-2xl font-bold mb-6 section-header">2.1 Personal Finance Records System and Storage</h3>
+                
+                <!-- Video Placeholder -->
+                <div class="aspect-w-16 aspect-h-9 mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="text-center">
+                            <i data-feather="youtube" class="h-12 w-12 mx-auto mb-4 text-gray-400"></i>
+                            <p class="text-gray-500 dark:text-gray-400">YouTube video placeholder for Personal Finance Records System and Storage</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Introduction Text -->
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Why are Financial Records Important?</h4>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <p class="mb-4">Maintaining proper financial records is essential for effective money management. Good record-keeping helps you:</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Monitor your spending habits and identify areas to save</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Track progress toward financial goals</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Prepare accurate tax returns and support tax deductions</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Apply for loans with complete documentation</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Make informed financial decisions based on your current situation</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_tutvdkg0.json" background="transparent" speed="1" style="height: 220px;" loop autoplay></lottie-player>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Record Systems -->
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold mb-4">2.1.1 Types of Personal Finance Records Systems</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="feature-card card p-5 shadow-sm">
+                            <div class="rounded-full bg-blue-100 p-3 inline-flex mb-3">
+                                <i data-feather="file-text" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <h5 class="font-semibold mb-2">Paper-Based System</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Traditional approach using physical files and folders.</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Simple to use with no tech knowledge required</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Tangible records that are easy to access</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-red-500 mr-2">✗</span>
+                                    <span>Risk of damage from fire, water, or pests</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-red-500 mr-2">✗</span>
+                                    <span>Time-consuming to organize and search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-card card p-5 shadow-sm">
+                            <div class="rounded-full bg-green-100 p-3 inline-flex mb-3">
+                                <i data-feather="grid" class="h-5 w-5 text-green-600"></i>
+                            </div>
+                            <h5 class="font-semibold mb-2">Spreadsheet Software</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Digital tracking using Excel, Google Sheets, or similar tools.</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Automatic calculations and formulas</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Easy to create reports and visualizations</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Free or low-cost options available</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-red-500 mr-2">✗</span>
+                                    <span>Requires basic computer skills</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-card card p-5 shadow-sm">
+                            <div class="rounded-full bg-purple-100 p-3 inline-flex mb-3">
+                                <i data-feather="smartphone" class="h-5 w-5 text-purple-600"></i>
+                            </div>
+                            <h5 class="font-semibold mb-2">Personal Finance Software</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Specialized apps like Money Manager, Mint, or YNAB.</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Automatic synchronization with bank accounts</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Advanced features like budgeting and goal tracking</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-green-500 mr-2">✓</span>
+                                    <span>Mobile apps for on-the-go management</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-red-500 mr-2">✗</span>
+                                    <span>Some options have subscription fees</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents to Keep -->
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Essential Financial Documents to Keep</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="trending-up" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Income Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Payslips, bank statements, dividend statements, rental receipts. <span class="text-indigo-600 font-medium">Keep for 7 years.</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="shopping-cart" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Expense Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Bills, receipts, invoices, credit card statements. <span class="text-indigo-600 font-medium">Keep for 1-3 years.</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="home" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Asset Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Property deeds, vehicle titles, investment certificates. <span class="text-indigo-600 font-medium">Keep permanently.</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="credit-card" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Liability Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Loan agreements, mortgage contracts, student loan statements. <span class="text-indigo-600 font-medium">Keep until paid off + 7 years.</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="file" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Tax Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Tax returns, forms (EA/EC/CP58), tax receipts. <span class="text-indigo-600 font-medium">Keep for 7 years.</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
+                                <i data-feather="shield" class="h-4 w-4 text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold mb-1">Insurance Documents</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Insurance/takaful policies, premium notices, claim forms. <span class="text-indigo-600 font-medium">Keep as long as policy is active + 2 years.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Options -->
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold mb-4">2.1.2 Places to Store Financial Documents</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="feature-card card p-5 shadow-sm hover:shadow-md">
+                            <img src="https://images.unsplash.com/photo-1586892477838-2b96e85e0f96?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg h-40 w-full object-cover mb-4" alt="Digital Storage">
+                            <h5 class="font-semibold mb-2">Digital Storage</h5>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Cloud Storage:</span> Google Drive, Dropbox, OneDrive</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Password-Protected Devices:</span> Computer, smartphone</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Password Managers:</span> Store login information securely</span>
+                                </li>
+                            </ul>
+                            <p class="text-xs text-gray-500 mt-3">Tip: Use strong passwords and enable two-factor authentication for digital storage.</p>
+                        </div>
+                        <div class="feature-card card p-5 shadow-sm hover:shadow-md">
+                            <img src="https://images.unsplash.com/photo-1608446781774-bdd5e7e963ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg h-40 w-full object-cover mb-4" alt="Physical Storage">
+                            <h5 class="font-semibold mb-2">Physical Storage</h5>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Fireproof Safe:</span> Protect against fire, water, and theft</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Lockable Filing Cabinet:</span> Organize documents securely</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Safety Deposit Box:</span> At banks for valuable documents</span>
+                                </li>
+                            </ul>
+                            <p class="text-xs text-gray-500 mt-3">Tip: Keep original documents of high importance (like property deeds) in a bank safety deposit box.</p>
+                        </div>
+                        <div class="feature-card card p-5 shadow-sm hover:shadow-md">
+                            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg h-40 w-full object-cover mb-4" alt="Online Storage">
+                            <h5 class="font-semibold mb-2">Online Storage</h5>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Banking Portals:</span> Access statements and transactions</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Government Portals:</span> LHDN, EPF, SOCSO accounts</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                    <span><span class="font-medium">Insurance/Takaful Portals:</span> Policy documents online</span>
+                                </li>
+                            </ul>
+                            <p class="text-xs text-gray-500 mt-3">Tip: Use a secure internet connection when accessing financial information online.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Malaysian Context -->
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Malaysian Financial Documents</h4>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <p class="mb-4">In Malaysia, there are several important financial documents you should keep:</p>
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex items-start">
+                                    <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5">
+                                        <i data-feather="file-text" class="h-3 w-3 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">EA/EC Form:</span> Annual statement from employer showing total income, EPF, SOCSO, and tax deductions
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5">
+                                        <i data-feather="file-text" class="h-3 w-3 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">Borang BE/B/BT:</span> Income tax return forms
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5">
+                                        <i data-feather="file-text" class="h-3 w-3 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">EPF Statement:</span> Shows your contributions and current balance
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5">
+                                        <i data-feather="file-text" class="h-3 w-3 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">ASB/ASN Statement:</span> National investment scheme statements
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5">
+                                        <i data-feather="file-text" class="h-3 w-3 text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-medium">CCRIS/CTOS Report:</span> Credit reports showing your credit history
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg">
+                                <h5 class="font-semibold mb-2 text-indigo-700 dark:text-indigo-300">Did You Know?</h5>
+                                <p class="text-sm mb-3">In Malaysia, the Inland Revenue Board (LHDN) requires you to keep financial records for tax purposes for at least 7 years.</p>
+                                <p class="text-sm">According to a 2021 survey by the Financial Education Network (FEN), only 34% of Malaysians maintain proper financial records, which affects their ability to make sound financial decisions.</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold mb-2">Malaysian Financial Resources</h5>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-start">
+                                        <i data-feather="external-link" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <a href="https://www.hasil.gov.my" target="_blank" class="text-indigo-600 hover:underline">Lembaga Hasil Dalam Negeri (LHDN)</a>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-feather="external-link" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <a href="https://www.kwsp.gov.my" target="_blank" class="text-indigo-600 hover:underline">Employees Provident Fund (EPF/KWSP)</a>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-feather="external-link" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <a href="https://www.akpk.org.my" target="_blank" class="text-indigo-600 hover:underline">Credit Counselling and Debt Management (AKPK)</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Activity -->
+                <div class="card p-6 shadow-sm">
+                    <h4 class="text-xl font-semibold mb-4">Document Organization Exercise</h4>
+                    <p class="mb-6">Drag each document to the appropriate storage location:</p>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-4">
+                        <p class="text-center text-gray-500 italic mb-2">Interactive drag and drop activity would appear here</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="border-2 border-dashed border-indigo-300 dark:border-indigo-700 rounded-lg p-4">
+                                <h6 class="font-semibold mb-2">Digital Storage</h6>
+                                <p class="text-xs italic">Drag suitable documents here</p>
+                            </div>
+                            <div class="border-2 border-dashed border-indigo-300 dark:border-indigo-700 rounded-lg p-4">
+                                <h6 class="font-semibold mb-2">Physical Storage</h6>
+                                <p class="text-xs italic">Drag suitable documents here</p>
+                            </div>
+                            <div class="border-2 border-dashed border-indigo-300 dark:border-indigo-700 rounded-lg p-4">
+                                <h6 class="font-semibold mb-2">Safety Deposit Box</h6>
+                                <p class="text-xs italic">Drag suitable documents here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-sm">
+                        <p class="font-medium mb-2">Example Solution:</p>
+                        <ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <li>
+                                <span class="font-medium text-indigo-600">Digital Storage:</span>
+                                <ul class="list-disc list-inside ml-2">
+                                    <li>Monthly bank statements</li>
+                                    <li>Credit card statements</li>
+                                    <li>Digital receipts</li>
+                                    <li>Tax return copies</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="font-medium text-indigo-600">Physical Storage:</span>
+                                <ul class="list-disc list-inside ml-2">
+                                    <li>Insurance policies</li>
+                                    <li>Tax documents</li>
+                                    <li>Employment contracts</li>
+                                    <li>Medical records</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="font-medium text-indigo-600">Safety Deposit Box:</span>
+                                <ul class="list-disc list-inside ml-2">
+                                    <li>Property deeds</li>
+                                    <li>Vehicle grants/titles</li>
+                                    <li>Birth certificates</li>
+                                    <li>Marriage certificates</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Quiz -->
+                <div class="mt-8">
+                    <button class="btn-primary px-6 py-2 rounded-lg check-section" data-section="1">
+                        Mark Section Complete
+                    </button>
+                </div>
+            </section>
+
+            <!-- Section 2.2 -->
+            <section id="section-2-2" class="mb-16">
+                <h3 class="text-2xl font-bold mb-6 section-header">2.2 Essentials of Personal Financial Statements</h3>
+                
+                <!-- Video Placeholder -->
+                <div class="aspect-w-16 aspect-h-9 mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-center h-full p-6">
+                        <div class="text-center">
+                            <i data-feather="youtube" class="h-12 w-12 mx-auto mb-4 text-gray-400"></i>
+                            <p class="text-gray-500 dark:text-gray-400">YouTube video placeholder for Essentials of Personal Financial Statements</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Introduction Text -->
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Understanding Personal Financial Statements</h4>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <p class="mb-4">Personal financial statements are documents that show your financial position and progress over time. They can help you to:</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Measure your net worth (assets minus liabilities)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Monitor your cash flow (income versus expenses)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Evaluate your financial health and progress toward goals</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Make informed financial decisions about spending, saving, and investing</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_q77jpyws.json" background="transparent" speed="1" style="height: 220px;" loop autoplay></lottie-player>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Types of Statements - Tabs -->
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Three Key Financial Statements</h4>
+                    
+                    <!-- Tabs -->
+                    <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+                        <ul class="flex flex-wrap -mb-px">
+                            <li class="mr-2">
+                                <a class="tab active inline-block py-4 px-4 text-center font-medium text-sm" data-tab="tab1">
+                                    Personal Cash Budget
+                                </a>
+                            </li>
+                            <li class="mr-2">
+                                <a class="tab inline-block py-4 px-4 text-center font-medium text-sm" data-tab="tab2">
+                                    Personal Balance Sheet
+                                </a>
+                            </li>
+                            <li class="mr-2">
+                                <a class="tab inline-block py-4 px-4 text-center font-medium text-sm" data-tab="tab3">
+                                    Personal Cash Flow Statement
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Tab Content -->
+                    <div class="tab-content active" id="tab1">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1">
+                                <h5 class="font-semibold mb-3">2.2.1 Personal Cash Budget</h5>
+                                <p class="mb-3 text-sm">A personal cash budget is a financial plan that helps you manage your income and expenses over a specific period, usually a month or a year. It allows you to:</p>
+                                <ul class="space-y-2 text-sm mb-4">
+                                    <li class="flex items-start">
+                                        <i data-feather="arrow-right" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <span>Track where your money comes from and goes to</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-feather="arrow-right" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <span>Plan your spending and savings</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-feather="arrow-right" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <span>Control your cash flow and avoid overspending</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-feather="arrow-right" class="h-4 w-4 text-indigo-600 mr-2 mt-0.5"></i>
+                                        <span>Improve your financial habits</span>
+                                    </li>
+                                </ul>
+                                <h6 class="font-medium text-sm mb-2">Factors to consider when developing a budget:</h6>
+                                <ul class="list-disc list-inside text-sm ml-2 space-y-1 mb-4">
+                                    <li>Income stability and frequency</li>
+                                    <li>Fixed vs. variable expenses</li>
+                                    <li>Seasonal variations in spending</li>
+                                    <li>Debt obligations</li>
+                                    <li>Savings goals</li>
+                                </ul>
+                                <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg mb-4">
+                                    <h6 class="font-medium text-sm mb-1 text-green-700 dark:text-green-300">Malaysian Perspective:</h6>
+                                    <p class="text-xs">In Malaysia, financial experts recommend using the 50/30/20 rule for budgeting: 50% of income for needs, 30% for wants, and 20% for savings and debt repayment.</p>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                    <h6 class="font-medium text-sm mb-3">Sample Monthly Budget Template</h6>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                                    <th class="py-2 px-3 text-left">Category</th>
+                                                    <th class="py-2 px-3 text-right">Budgeted (RM)</th>
+                                                    <th class="py-2 px-3 text-right">Actual (RM)</th>
+                                                    <th class="py-2 px-3 text-right">Difference</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="4">Income</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Salary</td>
+                                                    <td class="py-2 px-3 text-right">5,000</td>
+                                                    <td class="py-2 px-3 text-right">5,000</td>
+                                                    <td class="py-2 px-3 text-right">0</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Side Income</td>
+                                                    <td class="py-2 px-3 text-right">500</td>
+                                                    <td class="py-2 px-3 text-right">700</td>
+                                                    <td class="py-2 px-3 text-right text-green-600">+200</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-700">
+                                                    <td class="py-2 px-3 font-medium">Total Income</td>
+                                                    <td class="py-2 px-3 text-right font-medium">5,500</td>
+                                                    <td class="py-2 px-3 text-right font-medium">5,700</td>
+                                                    <td class="py-2 px-3 text-right font-medium text-green-600">+200</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="4">Expenses</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Housing</td>
+                                                    <td class="py-2 px-3 text-right">1,500</td>
+                                                    <td class="py-2 px-3 text-right">1,500</td>
+                                                    <td class="py-2 px-3 text-right">0</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Transportation</td>
+                                                    <td class="py-2 px-3 text-right">600</td>
+                                                    <td class="py-2 px-3 text-right">650</td>
+                                                    <td class="py-2 px-3 text-right text-red-600">-50</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Food</td>
+                                                    <td class="py-2 px-3 text-right">800</td>
+                                                    <td class="py-2 px-3 text-right">900</td>
+                                                    <td class="py-2 px-3 text-right text-red-600">-100</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Utilities</td>
+                                                    <td class="py-2 px-3 text-right">300</td>
+                                                    <td class="py-2 px-3 text-right">320</td>
+                                                    <td class="py-2 px-3 text-right text-red-600">-20</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3">Entertainment</td>
+                                                    <td class="py-2 px-3 text-right">400</td>
+                                                    <td class="py-2 px-3 text-right">350</td>
+                                                    <td class="py-2 px-3 text-right text-green-600">+50</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-700">
+                                                    <td class="py-2 px-3 font-medium">Total Expenses</td>
+                                                    <td class="py-2 px-3 text-right font-medium">3,600</td>
+                                                    <td class="py-2 px-3 text-right font-medium">3,720</td>
+                                                    <td class="py-2 px-3 text-right font-medium text-red-600">-120</td>
+                                                </tr>
+                                                <tr class="bg-indigo-50 dark:bg-indigo-900/20">
+                                                    <td class="py-2 px-3 font-medium">Net Cash Flow</td>
+                                                    <td class="py-2 px-3 text-right font-medium">1,900</td>
+                                                    <td class="py-2 px-3 text-right font-medium">1,980</td>
+                                                    <td class="py-2 px-3 text-right font-medium text-green-600">+80</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="font-medium text-sm mb-2">Needs vs. Wants:</h6>
+                                    <p class="text-sm mb-2">Understanding the difference between needs and wants is crucial for effective budgeting:</p>
+                                    <div class="grid grid-cols-2 gap-3 text-sm">
+                                        <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                                            <h6 class="font-medium mb-1 text-blue-700 dark:text-blue-300">Needs</h6>
+                                            <ul class="list-disc list-inside text-xs ml-1 space-y-1">
+                                                <li>Housing/rent</li>
+                                                <li>Basic food</li>
+                                                <li>Utilities</li>
+                                                <li>Healthcare</li>
+                                                <li>Basic transportation</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
+                                            <h6 class="font-medium mb-1 text-purple-700 dark:text-purple-300">Wants</h6>
+                                            <ul class="list-disc list-inside text-xs ml-1 space-y-1">
+                                                <li>Dining out</li>
+                                                <li>Entertainment</li>
+                                                <li>Travel/vacations</li>
+                                                <li>Luxury items</li>
+                                                <li>Subscription services</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab2">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1">
+                                <h5 class="font-semibold mb-3">2.2.2 Personal Balance Sheet Statement</h5>
+                                <p class="mb-3 text-sm">A personal balance sheet is a financial snapshot of your net worth at a specific point in time. It lists what you own (assets) and what you owe (liabilities), and calculates the difference between them (net worth).</p>
+                                <div class="mb-4">
+                                    <h6 class="font-medium text-sm mb-2">What you own (assets):</h6>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5 flex-shrink-0">
+                                                <span class="font-bold text-blue-600 text-xs">L</span>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Liquid assets</span>: Cash, checking accounts, savings accounts, money market accounts, fixed deposits
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div class="rounded-full bg-blue-100 p-1 mr-2 mt-0.5 flex-shrink-0">
+                                                <span class="font-bold text-blue-600 text-xs">N</span>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Non-liquid assets</span>: Real estate, vehicles, personal property, investments (stocks, bonds, mutual funds, retirement accounts)
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mb-4">
+                                    <h6 class="font-medium text-sm mb-2">What you owe (liabilities):</h6>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <div class="rounded-full bg-red-100 p-1 mr-2 mt-0.5 flex-shrink-0">
+                                                <span class="font-bold text-red-600 text-xs">S</span>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Short-term liabilities</span>: Credit card balances, utility bills, personal loans with terms under 1 year
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div class="rounded-full bg-red-100 p-1 mr-2 mt-0.5 flex-shrink-0">
+                                                <span class="font-bold text-red-600 text-xs">L</span>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Long-term liabilities</span>: Mortgage loans, car loans, student loans, personal loans with terms over 1 year
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h6 class="font-medium text-sm mb-2">Calculate your net worth:</h6>
+                                    <div class="flex items-center justify-center">
+                                        <div class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-l-lg">
+                                            <span class="font-medium">Total Assets</span>
+                                        </div>
+                                        <div class="px-4 py-2">
+                                            <span class="font-medium">-</span>
+                                        </div>
+                                        <div class="px-4 py-2 bg-red-100 dark:bg-red-900/30 rounded-none">
+                                            <span class="font-medium">Total Liabilities</span>
+                                        </div>
+                                        <div class="px-4 py-2">
+                                            <span class="font-medium">=</span>
+                                        </div>
+                                        <div class="px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-r-lg">
+                                            <span class="font-medium">Net Worth</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg">
+                                    <h6 class="font-medium text-sm mb-1 text-yellow-700 dark:text-yellow-300">Malaysian Context:</h6>
+                                    <p class="text-xs">According to Bank Negara Malaysia, the average Malaysian household had assets worth RM1.2 million in 2019, with net worth increasing by an average of 5.5% annually over the past decade.</p>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                    <h6 class="font-medium text-sm mb-3">Sample Personal Balance Sheet</h6>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                                    <th class="py-2 px-3 text-left" colspan="2">Personal Balance Sheet as of December 31, 2023</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="2">Assets</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Cash and Bank Accounts</td>
+                                                    <td class="py-2 px-3 text-right">RM 15,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Fixed Deposits</td>
+                                                    <td class="py-2 px-3 text-right">RM 30,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Investments (Stocks, Bonds, Unit Trusts)</td>
+                                                    <td class="py-2 px-3 text-right">RM 50,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">EPF/Retirement Accounts</td>
+                                                    <td class="py-2 px-3 text-right">RM 120,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Property (Primary Residence)</td>
+                                                    <td class="py-2 px-3 text-right">RM 450,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Vehicles</td>
+                                                    <td class="py-2 px-3 text-right">RM 80,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Personal Property (Furniture, Electronics, etc.)</td>
+                                                    <td class="py-2 px-3 text-right">RM 25,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                                                    <td class="py-2 px-3 font-medium">Total Assets</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 770,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="2">Liabilities</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Credit Card Balances</td>
+                                                    <td class="py-2 px-3 text-right">RM 5,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Mortgage Loan</td>
+                                                    <td class="py-2 px-3 text-right">RM 320,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Car Loan</td>
+                                                    <td class="py-2 px-3 text-right">RM 40,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Personal Loan</td>
+                                                    <td class="py-2 px-3 text-right">RM 15,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+                                                    <td class="py-2 px-3 font-medium">Total Liabilities</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 380,000</td>
+                                                </tr>
+                                                <tr class="bg-green-50 dark:bg-green-900/20">
+                                                    <td class="py-2 px-3 font-medium">Net Worth (Assets - Liabilities)</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 390,000</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <p class="text-sm mb-2">Tips for creating your personal balance sheet:</p>
+                                <ul class="list-disc list-inside text-sm ml-2 space-y-1">
+                                    <li>Update your balance sheet at least quarterly</li>
+                                    <li>Use current market values for assets when possible</li>
+                                    <li>Include all liabilities, even small ones</li>
+                                    <li>Track changes in your net worth over time</li>
+                                    <li>Use a spreadsheet or financial app to automate calculations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab3">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1">
+                                <h5 class="font-semibold mb-3">2.2.3 Personal Cash Flow Statement</h5>
+                                <p class="mb-3 text-sm">A personal cash flow statement tracks the flow of money in and out of your accounts over a specific period (typically monthly). It helps you understand your spending patterns and identify areas for improvement.</p>
+                                <div class="mb-4">
+                                    <h6 class="font-medium text-sm mb-2">Sources of income:</h6>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Employment income:</span> Salary, wages, bonuses, commissions, tips, allowances</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Self-employment income:</span> Business profits, freelance fees, professional services</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Investment income:</span> Dividends, interest, rental income, capital gains</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Other income:</span> Gifts, inheritances, lottery winnings, insurance claims</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mb-4">
+                                    <h6 class="font-medium text-sm mb-2">Types of expenses:</h6>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-red-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Fixed expenses:</span> Rent/mortgage, loan payments, insurance premiums, subscriptions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-red-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Variable expenses:</span> Food, utilities, transportation, entertainment, personal care</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-red-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Periodic expenses:</span> Vacations, gifts, car maintenance, home repairs</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i data-feather="arrow-right" class="h-4 w-4 text-red-500 mr-2 mt-0.5"></i>
+                                            <span><span class="font-medium">Unexpected expenses:</span> Medical emergencies, car repairs, home damage</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                    <h6 class="font-medium text-sm mb-2">Difference between budget and cash flow statement:</h6>
+                                    <div class="grid grid-cols-2 gap-3 text-xs">
+                                        <div>
+                                            <span class="font-medium">Budget:</span>
+                                            <ul class="list-disc list-inside ml-1 mt-1 space-y-1">
+                                                <li>Forward-looking plan</li>
+                                                <li>Based on estimates</li>
+                                                <li>Helps with planning</li>
+                                                <li>Shows intentions</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <span class="font-medium">Cash Flow Statement:</span>
+                                            <ul class="list-disc list-inside ml-1 mt-1 space-y-1">
+                                                <li>Backward-looking record</li>
+                                                <li>Based on actual figures</li>
+                                                <li>Helps with analysis</li>
+                                                <li>Shows reality</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg">
+                                    <h6 class="font-medium text-sm mb-1 text-indigo-700 dark:text-indigo-300">Malaysian Context:</h6>
+                                    <p class="text-xs">According to a 2022 study by AKPK (Credit Counselling and Debt Management Agency), 47% of Malaysians spend exactly what they earn or more each month, highlighting the importance of tracking cash flow to avoid debt.</p>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                    <h6 class="font-medium text-sm mb-3">Sample Personal Cash Flow Statement</h6>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                                    <th class="py-2 px-3 text-left" colspan="2">Monthly Cash Flow Statement - November 2023</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="2">Cash Inflows</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Salary (Net)</td>
+                                                    <td class="py-2 px-3 text-right">RM 5,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Freelance Income</td>
+                                                    <td class="py-2 px-3 text-right">RM 800</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Dividend Income</td>
+                                                    <td class="py-2 px-3 text-right">RM 200</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-green-50 dark:bg-green-900/20">
+                                                    <td class="py-2 px-3 font-medium">Total Cash Inflows</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 6,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 font-medium" colspan="2">Cash Outflows</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Housing (Rent/Mortgage)</td>
+                                                    <td class="py-2 px-3 text-right">RM 1,500</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Utilities (Electricity, Water, Internet)</td>
+                                                    <td class="py-2 px-3 text-right">RM 300</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Transportation (Fuel, Tolls, Public Transit)</td>
+                                                    <td class="py-2 px-3 text-right">RM 400</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Food (Groceries and Dining Out)</td>
+                                                    <td class="py-2 px-3 text-right">RM 1,000</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Loan Payments (Car, Personal)</td>
+                                                    <td class="py-2 px-3 text-right">RM 800</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Insurance Premiums</td>
+                                                    <td class="py-2 px-3 text-right">RM 300</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Entertainment and Recreation</td>
+                                                    <td class="py-2 px-3 text-right">RM 400</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700">
+                                                    <td class="py-2 px-3 pl-6">Personal Care</td>
+                                                    <td class="py-2 px-3 text-right">RM 200</td>
+                                                </tr>
+                                                <tr class="border-b dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+                                                    <td class="py-2 px-3 font-medium">Total Cash Outflows</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 4,900</td>
+                                                </tr>
+                                                <tr class="bg-indigo-50 dark:bg-indigo-900/20">
+                                                    <td class="py-2 px-3 font-medium">Net Cash Flow (Inflows - Outflows)</td>
+                                                    <td class="py-2 px-3 text-right font-medium">RM 1,100</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <p class="text-sm mb-2">Tips for creating your cash flow statement:</p>
+                                <ul class="list-disc list-inside text-sm ml-2 space-y-1">
+                                    <li>Track all income and expenses consistently</li>
+                                    <li>Categorize expenses to identify spending patterns</li>
+                                    <li>Compare your actual cash flow to your budget</li>
+                                    <li>Look for trends over multiple months</li>
+                                    <li>Use digital tools like banking apps or expense trackers</li>
+                                </ul>
+                                <div class="mt-4">
+                                    <h6 class="font-medium text-sm mb-2">Popular Malaysian Financial Apps:</h6>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="p-2 border border-gray-200 dark:border-gray-700 rounded">
+                                            <span class="font-medium">Money Manager</span> - Expense tracking with multiple currency support
+                                        </div>
+                                        <div class="p-2 border border-gray-200 dark:border-gray-700 rounded">
+                                            <span class="font-medium">BigPay</span> - E-wallet with expense categorization
+                                        </div>
+                                        <div class="p-2 border border-gray-200 dark:border-gray-700 rounded">
+                                            <span class="font-medium">Boost</span> - Payment app with transaction history
+                                        </div>
+                                        <div class="p-2 border border-gray-200 dark:border-gray-700 rounded">
+                                            <span class="font-medium">MAE by Maybank</span> - Banking app with budget tracking
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Excel Templates -->
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Using Spreadsheets for Financial Statements</h4>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <p class="mb-4 text-sm">Creating financial statements with spreadsheets like Microsoft Excel or Google Sheets offers several advantages:</p>
+                            <ul class="space-y-2 text-sm mb-4">
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Automatic calculations with formulas</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Easy updates and modifications</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Visual representations with charts and graphs</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Historical tracking and comparison</span>
+                                </li>
+                            </ul>
+                            <p class="text-sm mb-4">Basic formulas to know:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
+                                <div class="p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                    <code class="font-mono text-indigo-600 dark:text-indigo-400">=SUM(B2:B10)</code>
+                                    <p class="text-xs mt-1">Adds all values in cells B2 through B10</p>
+                                </div>
+                                <div class="p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                    <code class="font-mono text-indigo-600 dark:text-indigo-400">=AVERAGE(C2:C10)</code>
+                                    <p class="text-xs mt-1">Calculates the average of values in range C2:C10</p>
+                                </div>
+                                <div class="p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                    <code class="font-mono text-indigo-600 dark:text-indigo-400">=B15-C15</code>
+                                    <p class="text-xs mt-1">Subtracts value in cell C15 from B15</p>
+                                </div>
+                                <div class="p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                    <code class="font-mono text-indigo-600 dark:text-indigo-400">=IF(D5>0,"Surplus","Deficit")</code>
+                                    <p class="text-xs mt-1">Displays "Surplus" if D5 is positive, otherwise "Deficit"</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <img src="https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg mb-4 w-full object-cover h-48" alt="Spreadsheet example">
+                            <p class="text-sm mb-3">Steps to create a financial statement in a spreadsheet:</p>
+                            <ol class="list-decimal list-inside text-sm space-y-2 mb-4">
+                                <li>Create a new spreadsheet</li>
+                                <li>Set up categories for income and expenses (or assets and liabilities)</li>
+                                <li>Enter data for each category</li>
+                                <li>Use formulas to calculate totals and subtotals</li>
+                                <li>Format cells for currency and percentages</li>
+                                <li>Create charts or graphs to visualize the data</li>
+                                <li>Save and update regularly</li>
+                            </ol>
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                                <h6 class="font-medium text-sm mb-1 text-blue-700 dark:text-blue-300">Free Templates:</h6>
+                                <p class="text-xs mb-2">Many organizations offer free financial statement templates tailored for Malaysians:</p>
+                                <ul class="list-disc list-inside text-xs">
+                                    <li>AKPK (Credit Counselling and Debt Management Agency)</li>
+                                    <li>Bank Negara Malaysia's financial education portal</li>
+                                    <li>Securities Commission Malaysia's InvestSmart</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Exercise -->
+                <div class="card p-6 shadow-sm">
+                    <h4 class="text-xl font-semibold mb-4">Building Your Financial Statement</h4>
+                    <p class="mb-4">Select which financial statement you would like to practice with:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <button class="statement-btn p-4 border-2 border-indigo-300 dark:border-indigo-700 rounded-lg text-center hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors" data-statement="budget">
+                            <i data-feather="pie-chart" class="h-8 w-8 mx-auto mb-2 text-indigo-500"></i>
+                            <h5 class="font-medium">Personal Budget</h5>
+                        </button>
+                        <button class="statement-btn p-4 border-2 border-indigo-300 dark:border-indigo-700 rounded-lg text-center hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors" data-statement="balance">
+                            <i data-feather="layers" class="h-8 w-8 mx-auto mb-2 text-indigo-500"></i>
+                            <h5 class="font-medium">Balance Sheet</h5>
+                        </button>
+                        <button class="statement-btn p-4 border-2 border-indigo-300 dark:border-indigo-700 rounded-lg text-center hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors" data-statement="cashflow">
+                            <i data-feather="trending-up" class="h-8 w-8 mx-auto mb-2 text-indigo-500"></i>
+                            <h5 class="font-medium">Cash Flow Statement</h5>
+                        </button>
+                    </div>
+                    
+                    <div id="interactive-exercise" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <p class="text-center text-gray-500 dark:text-gray-400">Select a financial statement type above to begin the exercise</p>
+                    </div>
+                </div>
+
+                <!-- Quiz -->
+                <div class="mt-8">
+                    <button class="btn-primary px-6 py-2 rounded-lg check-section" data-section="2">
+                        Mark Section Complete
+                    </button>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <section id="summary">
+                <h3 class="text-2xl font-bold mb-6 section-header">Chapter Summary</h3>
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Key Takeaways</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-medium text-lg mb-3">Personal Finance Records</h5>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Good record-keeping is essential for tracking progress, preparing taxes, and making informed decisions.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Choose a record system that works for you: paper-based, spreadsheets, or specialized software.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Keep essential documents like income records, expense receipts, asset documents, and tax returns.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Store documents securely using digital storage, physical storage, or online platforms.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-lg mb-3">Personal Financial Statements</h5>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Personal cash budgets help track income and expenses to control spending and plan for the future.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Balance sheets provide a snapshot of your financial position by comparing assets to liabilities.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Cash flow statements track money movement to identify spending patterns and improve financial habits.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
+                                    <span>Spreadsheets and financial apps are valuable tools for creating and maintaining financial statements.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 shadow-sm mb-8">
+                    <h4 class="text-xl font-semibold mb-4">Practical Applications</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div class="rounded-full bg-blue-100 p-3 inline-flex mb-3">
+                                <i data-feather="trending-up" class="h-5 w-5 text-blue-600"></i>
+                            </div>
+                            <h5 class="font-medium mb-2">Monthly Financial Review</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Set aside time each month to update your financial statements, review your progress, and make adjustments to stay on track.</p>
+                        </div>
+                        <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div class="rounded-full bg-green-100 p-3 inline-flex mb-3">
+                                <i data-feather="target" class="h-5 w-5 text-green-600"></i>
+                            </div>
+                            <h5 class="font-medium mb-2">Goal-Based Budgeting</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Align your budget with specific financial goals like saving for a house, paying off debt, or building an emergency fund.</p>
+                        </div>
+                        <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div class="rounded-full bg-purple-100 p-3 inline-flex mb-3">
+                                <i data-feather="smartphone" class="h-5 w-5 text-purple-600"></i>
+                            </div>
+                            <h5 class="font-medium mb-2">Digital Management</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Use Malaysian banking apps and financial tools to automate record-keeping and generate financial statements effortlessly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Assessment -->
+                <div class="card p-6 shadow-sm">
+                    <h4 class="text-xl font-semibold mb-4">Quick Review Quiz</h4>
+                    <div id="quiz-container" class="space-y-6">
+                        <div class="quiz-question">
+                            <p class="font-medium mb-3">1. Which of these is NOT a type of personal financial record system?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="q1-a" name="q1" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q1-a" class="text-sm">Paper-based system</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q1-b" name="q1" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q1-b" class="text-sm">Spreadsheet software</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q1-c" name="q1" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q1-c" class="text-sm">Personal finance software</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q1-d" name="q1" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q1-d" class="text-sm">Telepathic record system</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <p class="font-medium mb-3">2. How long should you keep tax documents in Malaysia?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="q2-a" name="q2" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q2-a" class="text-sm">1 year</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q2-b" name="q2" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q2-b" class="text-sm">3 years</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q2-c" name="q2" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q2-c" class="text-sm">7 years</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q2-d" name="q2" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q2-d" class="text-sm">Forever</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <p class="font-medium mb-3">3. Which financial statement shows what you own versus what you owe?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="q3-a" name="q3" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q3-a" class="text-sm">Cash flow statement</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q3-b" name="q3" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q3-b" class="text-sm">Balance sheet</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q3-c" name="q3" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q3-c" class="text-sm">Personal budget</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q3-d" name="q3" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q3-d" class="text-sm">Income statement</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <p class="font-medium mb-3">4. What is the recommended budget allocation according to the 50/30/20 rule?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="q4-a" name="q4" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q4-a" class="text-sm">50% needs, 30% wants, 20% savings</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q4-b" name="q4" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q4-b" class="text-sm">20% needs, 50% wants, 30% savings</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q4-c" name="q4" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q4-c" class="text-sm">30% needs, 20% wants, 50% savings</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q4-d" name="q4" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q4-d" class="text-sm">50% savings, 30% needs, 20% wants</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <p class="font-medium mb-3">5. How is net worth calculated?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="q5-a" name="q5" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q5-a" class="text-sm">Income minus expenses</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q5-b" name="q5" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q5-b" class="text-sm">Assets minus liabilities</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q5-c" name="q5" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q5-c" class="text-sm">Savings minus debt</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="q5-d" name="q5" class="h-4 w-4 text-indigo-600 mr-2">
+                                    <label for="q5-d" class="text-sm">Cash inflows minus cash outflows</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="check-quiz" class="btn-primary px-6 py-2 rounded-lg">Check Answers</button>
+                        <div id="quiz-results" class="p-4 rounded-lg mt-4 hidden"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-6 px-6 md:px-10 border-t border-gray-200 dark:border-gray-800 mt-12">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">SirPoji 2025 © Fundamentals of Personal Financial Planning | FIN333</p>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                        <i data-feather="" class="h-5 w-5"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                        <i data-feather="" class="h-5 w-5"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                        <i data-feather="" class="h-5 w-5"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Dark mode toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            // Check for dark mode preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+            
+            // Listen for changes in dark mode preference
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                    moonIcon.classList.add('hidden');
+                    sunIcon.classList.remove('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    moonIcon.classList.remove('hidden');
+                    sunIcon.classList.add('hidden');
+                }
+            });
+            
+            // Toggle dark mode
+            themeToggle.addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark');
+                moonIcon.classList.toggle('hidden');
+                sunIcon.classList.toggle('hidden');
+            });
+
+            // Tabs functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab content
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show the selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Interactive statement exercise
+            const statementBtns = document.querySelectorAll('.statement-btn');
+            const interactiveExercise = document.getElementById('interactive-exercise');
+            
+            statementBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const statementType = this.getAttribute('data-statement');
+                    
+                    // Sample exercise content based on statement type
+                    let exerciseContent = '';
+                    
+                    if (statementType === 'budget') {
+                        exerciseContent = `
+                            <h5 class="font-medium mb-3">Personal Budget Exercise</h5>
+                            <p class="mb-3 text-sm">Fill in the missing values in this budget table:</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <th class="py-2 px-3 text-left">Category</th>
+                                            <th class="py-2 px-3 text-right">Amount (RM)</th>
+                                            <th class="py-2 px-3 text-right">% of Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 font-medium" colspan="3">Monthly Income: RM 6,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3">Housing</td>
+                                            <td class="py-2 px-3 text-right">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                            <td class="py-2 px-3 text-right">30%</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3">Transportation</td>
+                                            <td class="py-2 px-3 text-right">RM 600</td>
+                                            <td class="py-2 px-3 text-right">
+                                                <input type="text" class="w-16 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="%">
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3">Food</td>
+                                            <td class="py-2 px-3 text-right">RM 900</td>
+                                            <td class="py-2 px-3 text-right">15%</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3">Savings</td>
+                                            <td class="py-2 px-3 text-right">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                            <td class="py-2 px-3 text-right">20%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button class="btn-primary px-4 py-1 text-sm rounded-lg">Check Answers</button>
+                            </div>
+                        `;
+                    } else if (statementType === 'balance') {
+                        exerciseContent = `
+                            <h5 class="font-medium mb-3">Balance Sheet Exercise</h5>
+                            <p class="mb-3 text-sm">Calculate the missing values in this balance sheet:</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <tbody>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 font-medium" colspan="2">Assets</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Cash and Bank Accounts</td>
+                                            <td class="py-2 px-3 text-right">RM 25,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Property</td>
+                                            <td class="py-2 px-3 text-right">RM 450,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Investments</td>
+                                            <td class="py-2 px-3 text-right">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20">
+                                            <td class="py-2 px-3 font-medium">Total Assets</td>
+                                            <td class="py-2 px-3 text-right font-medium">RM 575,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 font-medium" colspan="2">Liabilities</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Mortgage Loan</td>
+                                            <td class="py-2 px-3 text-right">RM 320,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Car Loan</td>
+                                            <td class="py-2 px-3 text-right">RM 35,000</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+                                            <td class="py-2 px-3 font-medium">Total Liabilities</td>
+                                            <td class="py-2 px-3 text-right font-medium">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-green-50 dark:bg-green-900/20">
+                                            <td class="py-2 px-3 font-medium">Net Worth (Assets - Liabilities)</td>
+                                            <td class="py-2 px-3 text-right font-medium">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button class="btn-primary px-4 py-1 text-sm rounded-lg">Check Answers</button>
+                            </div>
+                        `;
+                    } else if (statementType === 'cashflow') {
+                        exerciseContent = `
+                            <h5 class="font-medium mb-3">Cash Flow Statement Exercise</h5>
+                            <p class="mb-3 text-sm">Calculate the monthly cash flow:</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <tbody>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 font-medium" colspan="2">Cash Inflows</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Salary</td>
+                                            <td class="py-2 px-3 text-right">RM 5,500</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Rental Income</td>
+                                            <td class="py-2 px-3 text-right">RM 1,200</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700 bg-green-50 dark:bg-green-900/20">
+                                            <td class="py-2 px-3 font-medium">Total Cash Inflows</td>
+                                            <td class="py-2 px-3 text-right font-medium">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 font-medium" colspan="2">Cash Outflows</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Housing</td>
+                                            <td class="py-2 px-3 text-right">RM 1,800</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Food</td>
+                                            <td class="py-2 px-3 text-right">RM 900</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Transportation</td>
+                                            <td class="py-2 px-3 text-right">RM 600</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700">
+                                            <td class="py-2 px-3 pl-6">Utilities</td>
+                                            <td class="py-2 px-3 text-right">RM 400</td>
+                                        </tr>
+                                        <tr class="border-b dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+                                            <td class="py-2 px-3 font-medium">Total Cash Outflows</td>
+                                            <td class="py-2 px-3 text-right font-medium">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-indigo-50 dark:bg-indigo-900/20">
+                                            <td class="py-2 px-3 font-medium">Net Cash Flow</td>
+                                            <td class="py-2 px-3 text-right font-medium">
+                                                <input type="text" class="w-24 px-2 py-1 border border-gray-300 dark:border-gray-700 rounded text-right" placeholder="Amount">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button class="btn-primary px-4 py-1 text-sm rounded-lg">Check Answers</button>
+                            </div>
+                        `;
+                    }
+                    
+                    interactiveExercise.innerHTML = exerciseContent;
+                    
+                    // Remove active class from all buttons
+                    statementBtns.forEach(b => b.classList.remove('border-indigo-600'));
+                    // Add active class to clicked button
+                    this.classList.add('border-indigo-600');
+                });
+            });
+
+            // Section completion tracking
+            const checkButtons = document.querySelectorAll('.check-section');
+            const progressBar = document.querySelector('.progress-bar-inner');
+            let completedSections = 0;
+            
+            checkButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = 'Section Completed <i data-feather="check" class="inline h-4 w-4 ml-1"></i>';
+                    feather.replace();
+                    this.disabled = true;
+                    
+                    completedSections++;
+                    const progress = (completedSections / checkButtons.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                });
+            });
+
+            // Quiz functionality
+            const checkQuizBtn = document.getElementById('check-quiz');
+            const quizResults = document.getElementById('quiz-results');
+            
+            checkQuizBtn.addEventListener('click', function() {
+                const answers = {
+                    q1: 'd', // Telepathic record system
+                    q2: 'c', // 7 years
+                    q3: 'b', // Balance sheet
+                    q4: 'a', // 50% needs, 30% wants, 20% savings
+                    q5: 'b'  // Assets minus liabilities
+                };
+                
+                let score = 0;
+                let feedback = '';
+                
+                for (const question in answers) {
+                    const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                    
+                    if (selectedAnswer) {
+                        const answerValue = selectedAnswer.id.split('-')[1];
+                        if (answerValue === answers[question]) {
+                            score++;
+                            feedback += `<p>Question ${question.substring(1)}: <span class="text-green-500">Correct!</span></p>`;
+                        } else {
+                            feedback += `<p>Question ${question.substring(1)}: <span class="text-red-500">Incorrect.</span></p>`;
+                        }
+                    } else {
+                        feedback += `<p>Question ${question.substring(1)}: <span class="text-yellow-500">Not answered.</span></p>`;
+                    }
+                }
+                
+                const percentage = (score / 5) * 100;
+                let resultClass = '';
+                let resultMessage = '';
+                
+                if (percentage >= 80) {
+                    resultClass = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+                    resultMessage = 'Excellent! You have a good understanding of money management tools and techniques.';
+                } else if (percentage >= 60) {
+                    resultClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+                    resultMessage = 'Good job! You have a decent understanding, but there\'s room for improvement.';
+                } else {
+                    resultClass = 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+                    resultMessage = 'You might want to review the chapter again to strengthen your understanding.';
+                }
+                
+                quizResults.className = `p-4 rounded-lg mt-4 ${resultClass}`;
+                quizResults.innerHTML = `
+                    <h5 class="font-semibold">Your Score: ${score}/5 (${percentage}%)</h5>
+                    <p class="mb-2">${resultMessage}</p>
+                    <div class="mt-3">
+                        ${feedback}
+                    </div>
+                `;
+                quizResults.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
