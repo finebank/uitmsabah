@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estate Planning and Wealth Distribution in Malaysia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .quiz-option.selected {
+            border-color: #5D5CDE;
+            background-color: rgba(93, 92, 222, 0.1);
+        }
+        .quiz-option.correct {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        .quiz-option.incorrect {
+            border-color: #EF4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+        @media (max-width: 640px) {
+            .tab-buttons {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Course Header -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3 text-primary">Estate Planning and Wealth Distribution in Malaysia</h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400">Master the essentials of securing your financial legacy</p>
+        </div>
+
+        <!-- Course Progress -->
+        <div class="mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-3">
+                <h2 class="text-xl font-semibold mb-2 md:mb-0">Your Progress</h2>
+                <div class="flex items-center">
+                    <div class="mr-2">
+                        <span id="progress-percentage">0%</span> Complete
+                    </div>
+                    <div class="w-32 bg-gray-300 dark:bg-gray-700 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+                Continue your journey through estate planning in Malaysia.
+            </div>
+        </div>
+
+        <!-- Main Course Content Area -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Sidebar: Module List -->
+            <div class="md:col-span-1">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sticky top-4">
+                    <h2 class="text-xl font-semibold mb-4">Course Modules</h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#overview" class="module-link flex items-center p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <i class="fas fa-info-circle mr-2 text-primary"></i>
+                                Course Overview
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#video" class="module-link flex items-center p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <i class="fas fa-video mr-2 text-primary"></i>
+                                Introduction Video
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#lessons" class="module-link flex items-center p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <i class="fas fa-book-open mr-2 text-primary"></i>
+                                Interactive Lessons
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#quiz" class="module-link flex items-center p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <i class="fas fa-question-circle mr-2 text-primary"></i>
+                                Knowledge Quiz
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#resources" class="module-link flex items-center p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <i class="fas fa-file-alt mr-2 text-primary"></i>
+                                Additional Resources
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="md:col-span-2">
+                <!-- Course Overview Section -->
+                <section id="overview" class="mb-10 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Course Overview</h2>
+                    <p class="mb-4">Welcome to "Estate Planning and Wealth Distribution in Malaysia" - a comprehensive course designed to help you understand the fundamentals of estate planning in the Malaysian context.</p>
+                    
+                    <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2">What You Will Learn:</h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Understanding the Malaysian estate planning landscape</li>
+                            <li>Wills and trusts - legal frameworks and preparation</li>
+                            <li>Effective wealth distribution strategies</li>
+                            <li>Tax implications in estate planning</li>
+                            <li>Planning for different life scenarios</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 dark:text-gray-400">This course is based on the curriculum content of FIN333 Fundamentals of Personal Financial Planning, Chapter 7: Securing Financial Future and Legacy.</p>
+                </section>
+
+                <!-- Video Section -->
+                <section id="video" class="mb-10 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Introduction to Estate Planning</h2>
+                    <p class="mb-4">Watch this introductory video to understand the basics of estate planning in Malaysia.</p>
+                    
+                    <div class="aspect-w-16 aspect-h-9 mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                        <!-- YouTube video embed placeholder - needs to be replaced with actual video -->
+                        <div id="youtube-embed" class="w-full h-0 pb-[56.25%] relative">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <button id="load-video-btn" class="bg-primary text-white py-3 px-6 rounded-lg flex items-center">
+                                    <i class="fas fa-play mr-2"></i> Load Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <button id="mark-video-complete" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i> Mark as Completed
+                        </button>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Duration: ~15 minutes</div>
+                    </div>
+                </section>
+
+                <!-- Interactive Lessons Section -->
+                <section id="lessons" class="mb-10 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Interactive Lessons</h2>
+                    <p class="mb-6">Explore the key concepts of estate planning through these interactive lessons.</p>
+                    
+                    <div class="tab-buttons mb-4 grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <button class="tab-btn bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 py-2 px-4 rounded-lg font-medium" data-tab="basics">Basics of Estate Planning</button>
+                        <button class="tab-btn bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 py-2 px-4 rounded-lg font-medium" data-tab="tools">Wills and Trusts</button>
+                        <button class="tab-btn bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 py-2 px-4 rounded-lg font-medium" data-tab="strategies">Distribution Strategies</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="basics-content">
+                        <h3 class="text-xl font-semibold mb-3">The Basics of Estate Planning</h3>
+                        <p class="mb-3">Estate planning is the process of anticipating and arranging for the management and disposal of a person's estate during the person's life in preparation for a person's future incapacity or death.</p>
+                        <p class="mb-3">An estate is the total of all the assets and liabilities that a person owns or controls, such as:</p>
+                        <ul class="list-disc pl-5 mb-4 space-y-1">
+                            <li>Real estate properties</li>
+                            <li>Bank accounts and investments</li>
+                            <li>Insurance policies</li>
+                            <li>Personal belongings</li>
+                            <li>Debts and obligations</li>
+                        </ul>
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg mb-4">
+                            <h4 class="font-semibold mb-2">Why Estate Planning Matters:</h4>
+                            <p>Without proper estate planning, your assets may not go to the people you want them to. Instead, they will be distributed according to the law under the Distribution Act 1958 (DA 1958), which may not reflect your preferences or needs.</p>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="mark-basics-complete" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                                <i class="fas fa-check-circle mr-2"></i> Mark as Completed
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tools-content">
+                        <h3 class="text-xl font-semibold mb-3">Wills and Trusts</h3>
+                        <p class="mb-3">Wills and trusts are two of the most important tools in estate planning in Malaysia.</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-semibold mb-2">Wills:</h4>
+                            <p class="mb-2">A will is a legal document that specifies how you want your property to be distributed among your beneficiaries. It can also:</p>
+                            <ul class="list-disc pl-5 mb-3 space-y-1">
+                                <li>Appoint an executor to carry out your instructions</li>
+                                <li>Name a guardian for your minor children</li>
+                                <li>Specify funeral arrangements</li>
+                            </ul>
+                            <p>In Malaysia, wills must be in writing, signed by the testator (the person making the will), and witnessed by at least two witnesses who are not beneficiaries.</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-semibold mb-2">Trusts:</h4>
+                            <p class="mb-2">A trust is a legal arrangement that allows you to transfer property to a trustee, who holds and manages it for the benefit of your beneficiaries. Trusts offer:</p>
+                            <ul class="list-disc pl-5 mb-3 space-y-1">
+                                <li>More flexibility and control over assets</li>
+                                <li>Potential tax advantages</li>
+                                <li>Protection from creditors</li>
+                                <li>Avoidance of probate process</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mb-4">
+                            <h4 class="font-semibold mb-2">Types of Trusts in Malaysia:</h4>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>Living Trust:</strong> Created during your lifetime</li>
+                                <li><strong>Testamentary Trust:</strong> Created by your will and takes effect after death</li>
+                                <li><strong>Revocable Trust:</strong> Can be changed or cancelled</li>
+                                <li><strong>Irrevocable Trust:</strong> Cannot be changed once established</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button id="mark-tools-complete" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                                <i class="fas fa-check-circle mr-2"></i> Mark as Completed
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="strategies-content">
+                        <h3 class="text-xl font-semibold mb-3">Distribution Strategies</h3>
+                        <p class="mb-4">Effective wealth distribution strategies can help you achieve your estate planning goals while minimizing taxes and avoiding potential conflicts.</p>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-semibold mb-2">Common Distribution Strategies in Malaysia:</h4>
+                            <ol class="list-decimal pl-5 space-y-3 mb-4">
+                                <li>
+                                    <strong>Making a Will</strong>
+                                    <p class="text-sm mt-1">The simplest form of estate planning, allowing you to express your wishes regarding asset distribution.</p>
+                                </li>
+                                <li>
+                                    <strong>Setting up a Trust</strong>
+                                    <p class="text-sm mt-1">A more advanced form that offers benefits like avoiding probate, reducing taxes, and protecting assets.</p>
+                                </li>
+                                <li>
+                                    <strong>Giving Gifts or Donations</strong>
+                                    <p class="text-sm mt-1">Giving away assets during your lifetime to reduce the size of your taxable estate.</p>
+                                </li>
+                                <li>
+                                    <strong>Buying Insurance Policies or Annuities</strong>
+                                    <p class="text-sm mt-1">Provides payments or benefits upon certain events like death or retirement.</p>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mb-4">
+                            <h4 class="font-semibold mb-2">Strategic Considerations:</h4>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Tax implications of different distribution methods</li>
+                                <li>Special needs of certain beneficiaries</li>
+                                <li>Business succession planning</li>
+                                <li>Charitable giving opportunities</li>
+                                <li>Regular review and updates to your estate plan</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button id="mark-strategies-complete" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                                <i class="fas fa-check-circle mr-2"></i> Mark as Completed
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quiz Section -->
+                <section id="quiz" class="mb-10 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Knowledge Quiz</h2>
+                    <p class="mb-6">Test your understanding of estate planning concepts with this quiz.</p>
+                    
+                    <div id="quiz-container">
+                        <div id="quiz-progress" class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+                                <span>Score: <span id="quiz-score">0</span></span>
+                            </div>
+                            <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2.5">
+                                <div id="quiz-progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="question-container" class="mb-6">
+                            <h3 id="question-text" class="text-lg font-medium mb-4">What is the fundamental support of the Malaysian pension system?</h3>
+                            <div class="space-y-3" id="options-container">
+                                <div class="quiz-option border border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" data-index="0">
+                                    <span class="option-text">The Malaysian Pension Fund (MPF)</span>
+                                </div>
+                                <div class="quiz-option border border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" data-index="1">
+                                    <span class="option-text">The Employee Provident Fund (EPF)</span>
+                                </div>
+                                <div class="quiz-option border border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" data-index="2">
+                                    <span class="option-text">The National Retirement Scheme (NRS)</span>
+                                </div>
+                                <div class="quiz-option border border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" data-index="3">
+                                    <span class="option-text">The Public Service Pension Fund (PSPF)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="feedback-container" class="mb-4 hidden">
+                            <div id="feedback-content" class="p-4 rounded-lg"></div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button id="prev-question" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg flex items-center disabled:opacity-50">
+                                <i class="fas fa-arrow-left mr-2"></i> Previous
+                            </button>
+                            <button id="next-question" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                                Next <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="quiz-result" class="hidden">
+                        <h3 class="text-xl font-semibold mb-3">Quiz Results</h3>
+                        <div class="text-center p-6 mb-4">
+                            <div class="text-5xl font-bold mb-2"><span id="final-score">0</span>/<span id="max-score">5</span></div>
+                            <p id="result-message" class="text-lg"></p>
+                        </div>
+                        <div class="space-y-4 mb-6">
+                            <h4 class="font-semibold">Your Performance:</h4>
+                            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                                <div id="performance-breakdown"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button id="retry-quiz" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                                <i class="fas fa-redo mr-2"></i> Retry Quiz
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Additional Resources Section -->
+                <section id="resources" class="mb-10 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Additional Resources</h2>
+                    <p class="mb-4">Explore these additional resources to deepen your understanding of estate planning in Malaysia.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                            <h3 class="font-semibold mb-2">Legal Resources</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-primary hover:underline">Distribution Act 1958 (DA 1958)</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Wills Act 1959</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Trustee Act 1949</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Power of Attorney Act 1949</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                            <h3 class="font-semibold mb-2">Related Reading</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-primary hover:underline">Malaysian Estate Planning Guide</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Tax Implications of Inheritance in Malaysia</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Islamic Estate Planning (Faraid)</a></li>
+                                <li><a href="#" class="text-primary hover:underline">Business Succession Planning Strategies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold mb-2">Useful Organizations:</h3>
+                        <ul class="space-y-2">
+                            <li>Malaysian Financial Planning Council (MFPC)</li>
+                            <li>Securities Commission Malaysia</li>
+                            <li>Private Pension Administrator Malaysia (PPA)</li>
+                            <li>Employees Provident Fund (EPF)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button id="mark-resources-complete" class="bg-primary text-white py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i> Mark as Completed
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if dark mode is preferred
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Course Progress Tracking
+            let completedModules = 0;
+            const totalModules = 5; // Overview, Video, Basics, Tools, Strategies
+            
+            function updateProgress() {
+                const percentage = Math.round((completedModules / totalModules) * 100);
+                document.getElementById('progress-percentage').textContent = `${percentage}%`;
+                document.getElementById('progress-bar').style.width = `${percentage}%`;
+            }
+            
+            // Video Section
+            const loadVideoBtn = document.getElementById('load-video-btn');
+            const youtubeEmbed = document.getElementById('youtube-embed');
+            
+            loadVideoBtn.addEventListener('click', function() {
+                // Replace with an actual YouTube video about estate planning in Malaysia
+                youtubeEmbed.innerHTML = `
+                    <iframe class="absolute inset-0 w-full h-full" 
+                            src="https://www.youtube.com/embed/RRAKe34trjw?si=tlnRO8LwBmgnD1MR&amp;controls=0" 
+                            title="Estate Planning in Malaysia" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                `;
+            });
+            
+            document.getElementById('mark-video-complete').addEventListener('click', function() {
+                if (!this.classList.contains('bg-green-500')) {
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Completed';
+                    completedModules++;
+                    updateProgress();
+                }
+            });
+            
+            // Tab Navigation
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the selected tab content
+                    document.getElementById(`${tabId}-content`).classList.add('active');
+                    
+                    // Update active button
+                    tabBtns.forEach(btn => {
+                        btn.classList.remove('bg-primary', 'text-white');
+                        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+                    });
+                    
+                    this.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'hover:bg-gray-200', 'dark:hover:bg-gray-600');
+                    this.classList.add('bg-primary', 'text-white');
+                });
+            });
+            
+            // Lesson completion
+            document.getElementById('mark-basics-complete').addEventListener('click', function() {
+                if (!this.classList.contains('bg-green-500')) {
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Completed';
+                    completedModules++;
+                    updateProgress();
+                }
+            });
+            
+            document.getElementById('mark-tools-complete').addEventListener('click', function() {
+                if (!this.classList.contains('bg-green-500')) {
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Completed';
+                    completedModules++;
+                    updateProgress();
+                }
+            });
+            
+            document.getElementById('mark-strategies-complete').addEventListener('click', function() {
+                if (!this.classList.contains('bg-green-500')) {
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Completed';
+                    completedModules++;
+                    updateProgress();
+                }
+            });
+            
+            document.getElementById('mark-resources-complete').addEventListener('click', function() {
+                if (!this.classList.contains('bg-green-500')) {
+                    this.classList.remove('bg-primary');
+                    this.classList.add('bg-green-500');
+                    this.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Completed';
+                    completedModules++;
+                    updateProgress();
+                }
+            });
+            
+            // Quiz Implementation
+            const questions = [
+                {
+                    question: "What is the fundamental support of the Malaysian pension system?",
+                    options: [
+                        "The Malaysian Pension Fund (MPF)",
+                        "The Employee Provident Fund (EPF)",
+                        "The National Retirement Scheme (NRS)",
+                        "The Public Service Pension Fund (PSPF)"
+                    ],
+                    correctIndex: 1,
+                    explanation: "The Employee Provident Fund (EPF) is the fundamental support of the Malaysian pension system. It is a national compulsory saving scheme for individuals employed in the Malaysian private sector."
+                },
+                {
+                    question: "In Malaysia, what is the employer's contribution percentage to the EPF?",
+                    options: [
+                        "8%",
+                        "10%",
+                        "12%",
+                        "15%"
+                    ],
+                    correctIndex: 2,
+                    explanation: "In Malaysia, the employer contributes 12% to the EPF. The employee contributes 11%, for a total of 23% of the employee's payroll."
+                },
+                {
+                    question: "Which of the following is NOT a tool used in estate planning?",
+                    options: [
+                        "Will",
+                        "Trust",
+                        "Power of Attorney",
+                        "Pension Plan"
+                    ],
+                    correctIndex: 3,
+                    explanation: "A pension plan is a retirement planning tool, not specifically an estate planning tool. Wills, trusts, and powers of attorney are all instruments used in estate planning."
+                },
+                {
+                    question: "What happens to your assets if you die without a will in Malaysia?",
+                    options: [
+                        "They go to your spouse automatically",
+                        "The government confiscates them",
+                        "They are distributed according to the Distribution Act 1958",
+                        "They are frozen indefinitely"
+                    ],
+                    correctIndex: 2,
+                    explanation: "If you die without a will (intestate) in Malaysia, your assets will be distributed according to the Distribution Act 1958 (DA 1958), which may not align with your personal wishes."
+                },
+                {
+                    question: "Which type of trust is created by a will and takes effect after death?",
+                    options: [
+                        "Living Trust",
+                        "Testamentary Trust",
+                        "Revocable Trust",
+                        "Irrevocable Trust"
+                    ],
+                    correctIndex: 1,
+                    explanation: "A testamentary trust is created by a will and takes effect after death. A living trust is created during your lifetime."
+                }
+            ];
+            
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let userAnswers = [];
+            
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const currentQuestionElem = document.getElementById('current-question');
+            const totalQuestionsElem = document.getElementById('total-questions');
+            const quizScoreElem = document.getElementById('quiz-score');
+            const quizProgressBar = document.getElementById('quiz-progress-bar');
+            const prevQuestionBtn = document.getElementById('prev-question');
+            const nextQuestionBtn = document.getElementById('next-question');
+            const feedbackContainer = document.getElementById('feedback-container');
+            const feedbackContent = document.getElementById('feedback-content');
+            const quizResultElem = document.getElementById('quiz-result');
+            const quizContainer = document.getElementById('quiz-container');
+            const finalScoreElem = document.getElementById('final-score');
+            const maxScoreElem = document.getElementById('max-score');
+            const resultMessageElem = document.getElementById('result-message');
+            const performanceBreakdownElem = document.getElementById('performance-breakdown');
+            const retryQuizBtn = document.getElementById('retry-quiz');
+            
+            totalQuestionsElem.textContent = questions.length;
+            maxScoreElem.textContent = questions.length;
+            
+            function displayQuestion(index) {
+                const question = questions[index];
+                questionText.textContent = question.question;
+                
+                optionsContainer.innerHTML = '';
+                question.options.forEach((option, i) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'quiz-option border border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer';
+                    optionDiv.dataset.index = i;
+                    
+                    // If user already answered this question
+                    if (userAnswers[index] !== undefined) {
+                        if (userAnswers[index] === i) {
+                            optionDiv.classList.add('selected');
+                            if (i === question.correctIndex) {
+                                optionDiv.classList.add('correct');
+                            } else {
+                                optionDiv.classList.add('incorrect');
+                            }
+                        } else if (i === question.correctIndex) {
+                            optionDiv.classList.add('correct');
+                        }
+                    }
+                    
+                    optionDiv.innerHTML = `<span class="option-text">${option}</span>`;
+                    optionsContainer.appendChild(optionDiv);
+                    
+                    optionDiv.addEventListener('click', function() {
+                        if (userAnswers[index] !== undefined) return; // Already answered
+                        
+                        const selectedIndex = parseInt(this.dataset.index);
+                        userAnswers[index] = selectedIndex;
+                        
+                        // Mark as selected
+                        document.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('selected', 'correct', 'incorrect');
+                        });
+                        
+                        this.classList.add('selected');
+                        
+                        // Check if correct
+                        if (selectedIndex === question.correctIndex) {
+                            this.classList.add('correct');
+                            score++;
+                            quizScoreElem.textContent = score;
+                        } else {
+                            this.classList.add('incorrect');
+                            document.querySelector(`.quiz-option[data-index="${question.correctIndex}"]`).classList.add('correct');
+                        }
+                        
+                        // Show feedback
+                        feedbackContainer.classList.remove('hidden');
+                        if (selectedIndex === question.correctIndex) {
+                            feedbackContent.className = 'p-4 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200';
+                            feedbackContent.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+                        } else {
+                            feedbackContent.className = 'p-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200';
+                            feedbackContent.innerHTML = `<strong>Incorrect.</strong> ${question.explanation}`;
+                        }
+                    });
+                });
+                
+                // Update question number and progress bar
+                currentQuestionElem.textContent = index + 1;
+                const progress = ((index + 1) / questions.length) * 100;
+                quizProgressBar.style.width = `${progress}%`;
+                
+                // Show/hide feedback if already answered
+                if (userAnswers[index] !== undefined) {
+                    feedbackContainer.classList.remove('hidden');
+                    const isCorrect = userAnswers[index] === question.correctIndex;
+                    if (isCorrect) {
+                        feedbackContent.className = 'p-4 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200';
+                        feedbackContent.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+                    } else {
+                        feedbackContent.className = 'p-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200';
+                        feedbackContent.innerHTML = `<strong>Incorrect.</strong> ${question.explanation}`;
+                    }
+                } else {
+                    feedbackContainer.classList.add('hidden');
+                }
+                
+                // Update button states
+                prevQuestionBtn.disabled = index === 0;
+                if (index === questions.length - 1) {
+                    nextQuestionBtn.textContent = 'Finish Quiz';
+                } else {
+                    nextQuestionBtn.innerHTML = 'Next <i class="fas fa-arrow-right ml-2"></i>';
+                }
+            }
+            
+            function showQuizResults() {
+                quizContainer.classList.add('hidden');
+                quizResultElem.classList.remove('hidden');
+                
+                finalScoreElem.textContent = score;
+                
+                // Performance message based on score
+                const percentage = (score / questions.length) * 100;
+                if (percentage >= 80) {
+                    resultMessageElem.textContent = 'Excellent! You have a strong understanding of estate planning concepts.';
+                    resultMessageElem.className = 'text-lg text-green-600 dark:text-green-400';
+                } else if (percentage >= 60) {
+                    resultMessageElem.textContent = 'Good job! You understand most estate planning concepts.';
+                    resultMessageElem.className = 'text-lg text-blue-600 dark:text-blue-400';
+                } else {
+                    resultMessageElem.textContent = 'You may want to review the material to strengthen your understanding.';
+                    resultMessageElem.className = 'text-lg text-orange-600 dark:text-orange-400';
+                }
+                
+                // Performance breakdown
+                let breakdownHTML = '<ul class="space-y-2">';
+                questions.forEach((question, index) => {
+                    const userAnswer = userAnswers[index];
+                    const isCorrect = userAnswer === question.correctIndex;
+                    breakdownHTML += `
+                        <li class="flex items-start">
+                            <span class="${isCorrect ? 'text-green-500' : 'text-red-500'} mr-2">
+                                <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                            </span>
+                            <div>
+                                <p class="font-medium">${question.question}</p>
+                                <p class="text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                    ${isCorrect ? 'Correct' : 'Incorrect'}: You chose "${question.options[userAnswer]}"
+                                </p>
+                            </div>
+                        </li>
+                    `;
+                });
+                breakdownHTML += '</ul>';
+                performanceBreakdownElem.innerHTML = breakdownHTML;
+            }
+            
+            // Initialize first question
+            displayQuestion(0);
+            
+            // Quiz navigation
+            prevQuestionBtn.addEventListener('click', function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                }
+            });
+            
+            nextQuestionBtn.addEventListener('click', function() {
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                } else {
+                    // Finish quiz
+                    showQuizResults();
+                }
+            });
+            
+            // Retry quiz
+            retryQuizBtn.addEventListener('click', function() {
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                quizScoreElem.textContent = '0';
+                quizContainer.classList.remove('hidden');
+                quizResultElem.classList.add('hidden');
+                feedbackContainer.classList.add('hidden');
+                displayQuestion(0);
+            });
+            
+            // Smooth scrolling for nav links
+            document.querySelectorAll('.module-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    const headerOffset = 20;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
