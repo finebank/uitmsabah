@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Tax Planning Strategy | Financial Planning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/marked@4.0.16/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#6366F1',
+                        dark: {
+                            bg: '#181818',
+                            card: '#262626',
+                            text: '#E5E7EB'
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Check for dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Listen for changes in dark mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+    <style>
+        .section-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 9999px;
+            position: relative;
+            height: 8px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 9999px;
+            background-color: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+        
+        .dark .progress-container {
+            background-color: #4B5563;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .quiz-option {
+            transition: background-color 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            background-color: #EEF2FF;
+        }
+        
+        .dark .quiz-option:hover {
+            background-color: #374151;
+        }
+        
+        .quiz-option.selected {
+            background-color: #C7D2FE;
+            border-color: #5D5CDE;
+        }
+        
+        .dark .quiz-option.selected {
+            background-color: #4B5563;
+            border-color: #6366F1;
+        }
+        
+        .quiz-option.correct {
+            background-color: #D1FAE5;
+            border-color: #10B981;
+        }
+        
+        .dark .quiz-option.correct {
+            background-color: #065F46;
+            border-color: #10B981;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #FEE2E2;
+            border-color: #EF4444;
+        }
+        
+        .dark .quiz-option.incorrect {
+            background-color: #7F1D1D;
+            border-color: #EF4444;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-dark-bg text-gray-800 dark:text-gray-200 transition-colors duration-200">
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-dark-bg shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-file-invoice-dollar text-primary text-2xl mr-3"></i>
+                <h1 class="text-xl font-bold">Personal Tax Planning</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="progress-btn" class="text-sm font-medium flex items-center">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    <span>Progress</span>
+                </button>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Progress bar -->
+        <div id="progress-container" class="progress-container mx-auto hidden">
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 py-12 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4">Chapter 3: Personal Tax Planning Strategy</h1>
+                    <p class="text-lg mb-6">Enhance your financial literacy by understanding how taxes impact your personal finance and learn effective strategies for tax planning.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#understanding-taxes" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                            Get Started
+                        </a>
+                        <button id="show-outline" class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white font-medium py-2 px-4 rounded-md border border-gray-300 dark:border-gray-600 transition-colors">
+                            <i class="fas fa-list-ul mr-2"></i> View Outline
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax Planning Illustration" class="w-full max-w-md rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Outline Modal -->
+    <div id="outline-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-dark-card rounded-lg shadow-xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Course Outline</h3>
+                <button id="close-outline" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="space-y-3">
+                <li>
+                    <a href="#understanding-taxes" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-primary text-white rounded-full mr-3 text-xs">1</span>
+                        <span>Understanding Taxes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#importance-of-tax-planning" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">2</span>
+                        <span>Importance of Tax Planning</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#understanding-taxable-income" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">3</span>
+                        <span>Understanding Taxable Income</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tax-exemptions" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">4</span>
+                        <span>Tax Exemptions</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tax-reliefs" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">5</span>
+                        <span>Tax Reliefs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tax-rebates" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">6</span>
+                        <span>Tax Rebates</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tax-donations" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">7</span>
+                        <span>Tax Donations / Gifts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tax-offenses" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md outline-section">
+                        <span class="w-6 h-6 flex items-center justify-center bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full mr-3 text-xs">8</span>
+                        <span>Tax Offenses and Penalties</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Section 1: Understanding Taxes -->
+        <section id="understanding-taxes" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-hand-holding-usd text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Understanding Taxes</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="mb-4">Taxes are mandatory payments that individuals and businesses make to the government. They fund public services and goods such as education, healthcare, infrastructure, and defense. These are benefits that we, as a society, cannot individually provide.</p>
+                            <p class="mb-4">Taxes also aid the government in achieving social and economic objectives like reducing inequality, promoting growth, and protecting the environment. However, taxes are not only crucial for society as a whole but also for your personal financial planning.</p>
+                            <p>They influence your income, expenses, savings, investments, and debt. Therefore, understanding the basic concepts of personal taxation and planning your tax strategy is essential.</p>
+                        </div>
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-1" title="Understanding Taxes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                                <h4 class="font-semibold mb-2 flex items-center">
+                                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                    Key Takeaway
+                                </h4>
+                                <p>Understand how taxes impact every aspect of your financial life to make informed decisions about your money.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Quiz -->
+                    <div class="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <h4 class="font-semibold mb-3">Quick Check: Understanding Taxes</h4>
+                        <div class="space-y-3 quiz-container" data-quiz="quiz1">
+                            <p class="question">What do taxes primarily fund?</p>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                Public services like education, healthcare, and infrastructure
+                            </div>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                Only government administrative costs
+                            </div>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                Private businesses and corporations
+                            </div>
+                            <div class="mt-3 hidden feedback-container">
+                                <p class="feedback-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Importance of Tax Planning -->
+        <section id="importance-of-tax-planning" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-chart-line text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Importance of Tax Planning</h2>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">How Taxes Affect Your Personal Finances</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="mb-4">Let's explore some of the ways taxes impact your personal finances:</p>
+                            
+                            <div class="space-y-4 mt-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-3">
+                                        <span class="text-primary font-semibold">1</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Disposable Income</h4>
+                                        <p class="text-gray-600 dark:text-gray-400">Taxes reduce your disposable income, which is the amount of money left after paying taxes. This reduction means you have less money to spend or save for your future goals.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-3">
+                                        <span class="text-primary font-semibold">2</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Cash Flow</h4>
+                                        <p class="text-gray-600 dark:text-gray-400">Taxes affect your cash flow, the difference between your income and expenses. They increase your expenses and reduce your income, leaving you with less money to manage your budget, pay off debts, or invest in assets.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-3">
+                                        <span class="text-primary font-semibold">3</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Investment Returns</h4>
+                                        <p class="text-gray-600 dark:text-gray-400">Taxes influence your investment returns, the profits or losses from your investments. They reduce your profits or increase your losses, leaving you with less money to grow your wealth or achieve your financial objectives.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-3">
+                                        <span class="text-primary font-semibold">4</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Tax Liability</h4>
+                                        <p class="text-gray-600 dark:text-gray-400">Taxes can reduce or increase your tax liability depending on your financial decisions. They can vary depending on the type, amount, and timing of your income and expenses.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-2" title="Importance of Tax Planning" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax Planning Importance" class="rounded-lg w-full">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">Understanding tax implications helps maximize your savings</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Element -->
+                    <div class="mt-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:from-opacity-30 dark:to-purple-900 dark:to-opacity-30 rounded-lg">
+                        <h4 class="font-semibold mb-3">Tax Impact Calculator</h4>
+                        <p class="mb-4">See how taxes impact your disposable income:</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Annual Income</label>
+                                <input type="number" id="income-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 60000">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Estimated Tax Rate (%)</label>
+                                <input type="number" id="tax-rate-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 25">
+                            </div>
+                        </div>
+                        <button id="calculate-btn" class="mt-4 bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                            Calculate
+                        </button>
+                        <div id="calculation-result" class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg hidden">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Tax Amount:</p>
+                                    <p id="tax-amount" class="text-lg font-semibold"></p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Disposable Income:</p>
+                                    <p id="disposable-income" class="text-lg font-semibold"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Understanding Taxable Income -->
+        <section id="understanding-taxable-income" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-money-bill-wave text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Understanding Taxable Income</h2>
+                    </div>
+                    <p class="mb-6">Taxable income is the amount of income subject to tax by the government. It can come from various sources such as employment, self-employment, investment, or other income. Taxable income is significant because it determines your tax liability and what deductions or exemptions you can claim.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Sources of Taxable Income</h3>
+                            
+                            <!-- Expandable Sections -->
+                            <div class="space-y-4">
+                                <div class="border dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <button class="expandable-header w-full flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                        <span class="font-medium">Employment Income</span>
+                                        <i class="fas fa-chevron-down transform transition-transform"></i>
+                                    </button>
+                                    <div class="expandable-content hidden p-4">
+                                        <p>This includes salary, wages, bonuses, commissions, tips, allowances, or benefits. Employment income is taxed at progressive rates, meaning the higher your income, the higher the tax rate. You can claim deductions for certain employment-related expenses.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="border dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <button class="expandable-header w-full flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                        <span class="font-medium">Self-Employment Income</span>
+                                        <i class="fas fa-chevron-down transform transition-transform"></i>
+                                    </button>
+                                    <div class="expandable-content hidden p-4">
+                                        <p>This includes profits, fees, charges, or royalties from running your own business or freelancing. Self-employment income is taxed at a flat rate of 15% for resident individuals and 30% for non-resident individuals. You can claim deductions for certain business or freelance work-related expenses.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="border dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <button class="expandable-header w-full flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                        <span class="font-medium">Investment Income</span>
+                                        <i class="fas fa-chevron-down transform transition-transform"></i>
+                                    </button>
+                                    <div class="expandable-content hidden p-4">
+                                        <p>This includes dividends, interest, rent, or capital gains from investing in assets such as stocks, bonds, real estate, properties, or businesses. Investment income is taxed at different rates depending on the type of investment and the holding period. You can claim exemptions for certain investment-related incomes.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="border dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <button class="expandable-header w-full flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                        <span class="font-medium">Other Income</span>
+                                        <i class="fas fa-chevron-down transform transition-transform"></i>
+                                    </button>
+                                    <div class="expandable-content hidden p-4">
+                                        <p>This includes pensions, annuities, alimony, prizes, winnings, or inheritance. Other income is taxed at different rates depending on the source and the amount of income. You can claim exemptions for certain incomes related to other sources.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-3" title="Understanding Taxable Income" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-exclamation-circle text-yellow-500 mr-2"></i>
+                                    Important Note
+                                </h4>
+                                <p>Not all income is taxable. Understanding what counts as taxable income can help you properly report your income and avoid penalties. When in doubt, consult with a tax professional.</p>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1563237023-b1e970526dcb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Income sources" class="rounded-lg w-full">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Tax Exemptions -->
+        <section id="tax-exemptions" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-shield-alt text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Tax Exemptions</h2>
+                    </div>
+                    <p class="mb-6">Tax exemptions are certain types of income that are not subject to tax by the government. These exemptions are granted for incomes that are considered beneficial for society or the economy. By strategically planning and claiming these exemptions, individuals can significantly enhance their financial wellbeing.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Key Personal Tax Exemptions in Malaysia</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-green-100 dark:bg-green-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-money-bill-wave text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Dividends</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Dividends from Malaysian companies or cooperatives are exempt from tax.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-green-100 dark:bg-green-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-percentage text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Interest</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Interest from Malaysian government securities or approved banks is exempt from tax.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-green-100 dark:bg-green-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-wallet text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Pensions</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Pensions from approved funds or schemes are exempt from tax.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-green-100 dark:bg-green-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-gift text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Gifts</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Gifts from relatives or employers are exempt from tax.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <button id="view-more-exemptions" class="flex items-center text-primary hover:text-indigo-700 font-medium">
+                                    <span>View More Exemptions</span>
+                                    <i class="fas fa-chevron-right ml-2"></i>
+                                </button>
+                                
+                                <div id="more-exemptions" class="mt-4 space-y-4 hidden">
+                                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <h4 class="font-medium mb-2">Scholarships</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Scholarships for education or research are exempt from tax.</p>
+                                    </div>
+                                    
+                                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <h4 class="font-medium mb-2">Leave Passage</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Tax exemption for 3 local leave passages yearly and 1 overseas leave passage (max RM38,000) annually.</p>
+                                    </div>
+                                    
+                                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <h4 class="font-medium mb-2">Medical and Dental Benefits</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Medical benefits provided by employers including maternity expenses and traditional medicine are exempt.</p>
+                                    </div>
+                                    
+                                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                        <h4 class="font-medium mb-2">Retirement Gratuity</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Full gratuity amount is exempt based on specific conditions regarding retirement age and service duration.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-4" title="Tax Exemptions" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1434626881859-194d67b2b86f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax exemptions concept" class="rounded-lg w-full">
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-purple-50 dark:bg-purple-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-lightbulb text-purple-500 mr-2"></i>
+                                    Pro Tip
+                                </h4>
+                                <p>Keep necessary documentation for all potential tax exemptions. Evidence of eligibility can save you significant amounts during tax filing season.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz -->
+                    <div class="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <h4 class="font-semibold mb-3">Quick Check: Tax Exemptions</h4>
+                        <div class="space-y-3 quiz-container" data-quiz="quiz2">
+                            <p class="question">Which of the following incomes is NOT typically exempt from tax in Malaysia?</p>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                Dividends from Malaysian companies
+                            </div>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                Scholarships for education
+                            </div>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                Rental income from property investments
+                            </div>
+                            <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                Pensions from approved funds
+                            </div>
+                            <div class="mt-3 hidden feedback-container">
+                                <p class="feedback-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Tax Reliefs -->
+        <section id="tax-reliefs" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-hand-holding-heart text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Tax Reliefs</h2>
+                    </div>
+                    <p class="mb-6">Tax reliefs are designed to reduce the taxable income of individuals, thereby lowering the amount of tax owed. These reliefs can be claimed for a wide array of expenditures and contributions, ranging from education and medical expenses to lifestyle purchases and retirement savings. By strategically planning and claiming these reliefs, individuals can significantly enhance their financial wellbeing.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Key Personal Tax Relief Measures in Malaysia</h3>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead class="bg-gray-50 dark:bg-gray-800">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Relief Type</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Maximum Amount (RM)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap">Individual and Dependent Relatives</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">9,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap">Medical Treatment/Special Needs for Parents</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">8,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap">Education Expenses</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">7,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap">Travel Expenses</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">6,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap">Medical Expenses</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">9,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                    Important Note
+                                </h4>
+                                <p>To claim tax reliefs, you must fulfill the eligibility criteria and maintain proper documentation (receipts, invoices, etc.) to substantiate your claims during a tax audit.</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-5" title="Tax Reliefs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax relief concept" class="rounded-lg w-full">
+                            </div>
+                            
+                            <!-- Interactive Calculator -->
+                            <div class="mt-6 p-5 bg-green-50 dark:bg-green-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="font-semibold mb-3">Tax Relief Calculator</h4>
+                                <p class="mb-4">Enter your eligible relief amounts to see potential tax savings:</p>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <label class="w-40 text-sm">Individual Relief:</label>
+                                        <input type="number" id="relief-individual" value="9000" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" readonly>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label class="w-40 text-sm">Medical Expenses:</label>
+                                        <input type="number" id="relief-medical" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="0">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label class="w-40 text-sm">Education:</label>
+                                        <input type="number" id="relief-education" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="0">
+                                    </div>
+                                </div>
+                                
+                                <button id="calculate-relief-btn" class="mt-4 bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                    Calculate
+                                </button>
+                                
+                                <div id="relief-result" class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg hidden">
+                                    <div>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Total Tax Relief:</p>
+                                        <p id="total-relief" class="text-lg font-semibold"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Tax Rebates -->
+        <section id="tax-rebates" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-undo-alt text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Tax Rebates</h2>
+                    </div>
+                    <p class="mb-6">Tax rebates are amounts that are subtracted from your tax payable to reduce your tax liability. Tax rebates can help you save money on taxes and increase your disposable income.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="space-y-6">
+                                <div class="bg-gradient-to-r from-pink-50 to-red-50 dark:from-pink-900 dark:from-opacity-20 dark:to-red-900 dark:to-opacity-20 p-5 rounded-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-user text-red-600 dark:text-red-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Individual Rebate</h4>
+                                    </div>
+                                    <p class="mb-2">RM400 for resident individuals whose chargeable income does not exceed RM35,000.</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Apply if you're a resident individual with chargeable income of RM35,000 or less.</p>
+                                </div>
+                                
+                                <div class="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900 dark:from-opacity-20 dark:to-blue-900 dark:to-opacity-20 p-5 rounded-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-purple-100 dark:bg-purple-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-heart text-purple-600 dark:text-purple-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Spouse Rebate</h4>
+                                    </div>
+                                    <p class="mb-2">RM400 for resident individuals whose spouse has no income or elects for joint assessment.</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Claim if your spouse has no income or agrees to combine incomes for tax purposes.</p>
+                                </div>
+                                
+                                <div class="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900 dark:from-opacity-20 dark:to-teal-900 dark:to-opacity-20 p-5 rounded-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div class="p-2 bg-green-100 dark:bg-green-900 dark:bg-opacity-50 rounded-full mr-3">
+                                            <i class="fas fa-child text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <h4 class="font-medium">Child Rebate</h4>
+                                    </div>
+                                    <p class="mb-2">RM200 for each unmarried child under 18 years old who is receiving full-time education.</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Available for each eligible child in full-time education at a recognized institution.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                    Important Reminder
+                                </h4>
+                                <p>To claim tax rebates, you need to meet the eligibility criteria and provide the necessary information and documents. Make sure to fill in the appropriate forms and submit them to the IRBM.</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-6" title="Tax Rebates" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax rebate calendar" class="rounded-lg w-full">
+                            </div>
+                            
+                            <!-- Interactive Rebate Calculator -->
+                            <div class="mt-6 p-5 bg-indigo-50 dark:bg-indigo-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="font-semibold mb-3">Rebate Eligibility Checker</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Chargeable Income (RM)</label>
+                                        <input type="number" id="rebate-income" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 30000">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Spouse Status</label>
+                                        <select id="rebate-spouse" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800">
+                                            <option value="none">No spouse</option>
+                                            <option value="no-income">Spouse with no income</option>
+                                            <option value="joint">Spouse with joint assessment</option>
+                                            <option value="separate">Spouse with separate assessment</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Number of eligible children</label>
+                                        <input type="number" id="rebate-children" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="0" min="0">
+                                    </div>
+                                </div>
+                                
+                                <button id="check-rebate-btn" class="mt-4 bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                    Check Eligibility
+                                </button>
+                                
+                                <div id="rebate-result" class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg hidden">
+                                    <div>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Eligible Rebates:</p>
+                                        <ul id="eligible-rebates" class="list-disc pl-5 mt-2"></ul>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-3">Total Potential Rebate:</p>
+                                        <p id="total-rebate" class="text-lg font-semibold"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Tax Donations -->
+        <section id="tax-donations" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-donate text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Tax Donations / Gifts</h2>
+                    </div>
+                    <p class="mb-6">Tax donations are charitable contributions that you make to approved organizations or causes. Tax donations can reduce your taxable income and your tax liability. They can also support social welfare and development.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Types of Tax-Deductible Donations</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="p-4 border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Cash Donations to Approved Institutions</h4>
+                                    <p>Monetary contributions to approved institutions such as schools, universities, hospitals, mosques, temples, churches, or foundations.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Deduction: Up to 10% of aggregate income</p>
+                                </div>
+                                
+                                <div class="p-4 border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Gifts to Government for Public Purposes</h4>
+                                    <p>Gifts of money or assets to government, state government, or local authorities for public purposes such as education, healthcare, infrastructure, or defense.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Deduction: Up to 10% of aggregate income</p>
+                                </div>
+                                
+                                <div class="p-4 border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Gifts of Artifacts or Cultural Items</h4>
+                                    <p>Gifts of artifacts, paintings, manuscripts, or antiques to the government or approved institutions for public display.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Deduction: Up to 10% of aggregate income</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-orange-50 dark:bg-orange-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-lightbulb text-orange-500 mr-2"></i>
+                                    Tip for Donors
+                                </h4>
+                                <p>Always request and keep official receipts for your donations. These serve as proof during tax filing and potential audits. Additionally, verify that the organization is approved for tax-deductible donations before contributing.</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-7" title="Tax Donations" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Charitable giving" class="rounded-lg w-full h-48 object-cover">
+                            </div>
+                            
+                            <!-- Interactive Donation Calculator -->
+                            <div class="mt-6 p-5 bg-teal-50 dark:bg-teal-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="font-semibold mb-3">Donation Tax Benefit Calculator</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Annual Income (RM)</label>
+                                        <input type="number" id="donation-income" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 60000">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Donation Amount (RM)</label>
+                                        <input type="number" id="donation-amount" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 1000">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Tax Rate (%)</label>
+                                        <input type="number" id="donation-tax-rate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-base dark:bg-gray-800" placeholder="e.g., 24">
+                                    </div>
+                                </div>
+                                
+                                <button id="calculate-donation-btn" class="mt-4 bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                    Calculate Tax Savings
+                                </button>
+                                
+                                <div id="donation-result" class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg hidden">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Maximum Deductible:</p>
+                                            <p id="max-deductible" class="text-lg font-semibold"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Actual Deductible:</p>
+                                            <p id="actual-deductible" class="text-lg font-semibold"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Tax Savings:</p>
+                                            <p id="tax-savings" class="text-lg font-semibold"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">Effective Cost:</p>
+                                            <p id="effective-cost" class="text-lg font-semibold"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Tax Offenses -->
+        <section id="tax-offenses" class="mb-16 scroll-mt-20">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-exclamation-triangle text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Tax Offenses and Penalties</h2>
+                    </div>
+                    <p class="mb-6">In Malaysia, tax offenses are taken seriously and can result in significant penalties. Understanding these offenses and their consequences can help you avoid legal troubles and financial losses.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Common Tax Offenses</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2 flex items-center">
+                                        <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                        Failure to File Taxes
+                                    </h4>
+                                    <p>If your annual income exceeds the taxable threshold, it is mandatory to report your entire income to the Inland Revenue Board of Malaysia (IRBM).</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Fine of RM200 to RM20,000, imprisonment (up to six months), or both.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2 flex items-center">
+                                        <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                        Underreporting Income
+                                    </h4>
+                                    <p>Claiming that you earn a lower income than you actually do is a serious offense.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Fine of RM1,000 to RM10,000, plus 200% of the tax amount that was undercharged.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2 flex items-center">
+                                        <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                        Claiming Tax Reliefs Excessively
+                                    </h4>
+                                    <p>Overstating your tax reliefs just to get reduced tax charges.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Fine of RM300 to RM10,000, imprisonment, or both.</p>
+                                </div>
+                            </div>
+                            
+                            <button id="view-more-offenses" class="mt-4 flex items-center text-primary hover:text-indigo-700 font-medium">
+                                <span>View More Offenses</span>
+                                <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                            
+                            <div id="more-offenses" class="mt-4 space-y-4 hidden">
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Failure to Maintain Proper Records</h4>
+                                    <p>Not keeping proper records of your income and expenses.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Various penalties depending on severity.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Tax Evasion</h4>
+                                    <p>Wilfully and intentionally evading tax or assisting any other person to evade tax.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Fine of RM1,000 to RM20,000, imprisonment (up to three years), or both, and 300% of the tax undercharged.</p>
+                                </div>
+                                
+                                <div class="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                    <h4 class="font-medium mb-2">Assisting Others in Tax Evasion</h4>
+                                    <p>If you assist or advise others to under declare their income without reasonable care.</p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Penalty: Fine of RM1,000 to RM20,000, imprisonment for a term not exceeding 3 years, or both, and 300% of the tax undercharged.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+                                <iframe class="w-full h-full" src="https://www.youtube.com/embed/placeholder-8" title="Tax Offenses" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <img src="https://images.unsplash.com/photo-1589578228447-e1a4e481c6c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tax compliance concept" class="rounded-lg w-full">
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-red-50 dark:bg-red-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                                    Warning
+                                </h4>
+                                <p>Tax evasion is not only financially costly due to penalties but can also damage your reputation and potentially result in criminal charges. Always consult with a tax professional if you're unsure about how to properly report your income or claim deductions.</p>
+                            </div>
+                            
+                            <!-- Quiz -->
+                            <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                <h4 class="font-semibold mb-3">Quick Check: Tax Offenses</h4>
+                                <div class="space-y-3 quiz-container" data-quiz="quiz3">
+                                    <p class="question">What is the penalty for willful tax evasion in Malaysia?</p>
+                                    <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                        Only a warning letter
+                                    </div>
+                                    <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                        Fine up to RM500
+                                    </div>
+                                    <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                        Fine of RM1,000 to RM20,000, imprisonment up to three years, or both, plus 300% of undercharged tax
+                                    </div>
+                                    <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                        Only repayment of owed taxes
+                                    </div>
+                                    <div class="mt-3 hidden feedback-container">
+                                        <p class="feedback-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section id="summary" class="mb-16">
+            <div class="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-full mr-4">
+                            <i class="fas fa-check-circle text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Chapter Summary</h2>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="mb-4">In this chapter, we've covered the essential aspects of personal tax planning strategy:</p>
+                            
+                            <ul class="space-y-2 list-inside list-disc text-gray-800 dark:text-gray-200">
+                                <li>Understanding the fundamental concept of taxes and their impact on personal finances</li>
+                                <li>The importance of tax planning for optimizing your financial situation</li>
+                                <li>Different sources of taxable income and how they're treated</li>
+                                <li>Tax exemptions that can reduce your taxable income</li>
+                                <li>Tax reliefs that can be claimed to lower your tax liability</li>
+                                <li>Tax rebates that directly reduce your payable tax</li>
+                                <li>The benefits of tax-deductible donations</li>
+                                <li>Tax offenses and their serious consequences</li>
+                            </ul>
+                            
+                            <div class="mt-6">
+                                <a href="#understanding-taxes" class="text-primary hover:text-indigo-700 font-medium flex items-center">
+                                    <i class="fas fa-arrow-up mr-2"></i>
+                                    <span>Back to Top</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="bg-white dark:bg-gray-800 p-5 rounded-lg">
+                                <h4 class="font-semibold mb-3">Key Takeaways</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Effective tax planning can significantly increase your disposable income</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Understanding the various tax exemptions, reliefs, and rebates is crucial for minimizing tax liability</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Always maintain proper documentation for all income sources and potential deductions</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>Tax avoidance (legal) is different from tax evasion (illegal) - stay on the right side of the law</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                        <span>When in doubt, consult with a qualified tax professional</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-6 p-5 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20 rounded-lg">
+                                <h4 class="flex items-center font-semibold mb-3">
+                                    <i class="fas fa-book text-blue-500 mr-2"></i>
+                                    Additional Resources
+                                </h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-external-link-alt text-primary mt-1 mr-2"></i>
+                                        <a href="#" target="_blank" class="text-primary hover:underline">Official IRBM Tax Guidelines</a>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-external-link-alt text-primary mt-1 mr-2"></i>
+                                        <a href="#" target="_blank" class="text-primary hover:underline">Tax Filing Calendar</a>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-external-link-alt text-primary mt-1 mr-2"></i>
+                                        <a href="#" target="_blank" class="text-primary hover:underline">Latest Tax Policy Updates</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Check -->
+        <section class="mb-16">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-primary bg-opacity-20 p-3 rounded-full mr-4">
+                            <i class="fas fa-tasks text-primary text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Chapter Progress Check</h2>
+                    </div>
+                    
+                    <div id="final-quiz" class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Test Your Knowledge</h3>
+                            <p class="mb-4">Complete this quiz to check your understanding of Personal Tax Planning Strategy:</p>
+                            
+                            <div class="space-y-6 quiz-container" data-quiz="final-quiz">
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <p class="font-medium mb-3 question">1. What are tax exemptions?</p>
+                                    <div class="space-y-2">
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Penalties for not paying taxes
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                            Types of income that are not subject to tax
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Mandatory payments to the government
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Additional taxes for high-income earners
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <p class="font-medium mb-3 question">2. What is the main difference between tax reliefs and tax rebates?</p>
+                                    <div class="space-y-2">
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            There is no difference
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Tax reliefs are for businesses, while tax rebates are for individuals
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                            Tax reliefs reduce taxable income, while tax rebates directly reduce tax payable
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Tax rebates can only be claimed once, while tax reliefs can be claimed annually
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <p class="font-medium mb-3 question">3. What is the maximum percentage of aggregate income that can be claimed for approved donations?</p>
+                                    <div class="space-y-2">
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            5%
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                            10%
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            15%
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            20%
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <p class="font-medium mb-3 question">4. Which of the following is NOT a consequence of underreporting income?</p>
+                                    <div class="space-y-2">
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Financial penalties
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Possible imprisonment
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            Additional penalty percentage of tax undercharged
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                            Automatic tax exemption for the following year
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <p class="font-medium mb-3 question">5. What is the individual tax rebate amount for resident individuals with chargeable income not exceeding RM35,000?</p>
+                                    <div class="space-y-2">
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            RM200
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer" data-correct="true">
+                                            RM400
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            RM600
+                                        </div>
+                                        <div class="quiz-option border rounded-md p-3 cursor-pointer">
+                                            RM800
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button id="submit-quiz" class="mt-6 bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                                Submit Quiz
+                            </button>
+                            
+                            <div id="quiz-results" class="mt-6 p-5 bg-green-50 dark:bg-green-900 dark:bg-opacity-20 rounded-lg hidden">
+                                <h4 class="font-semibold mb-3">Quiz Results</h4>
+                                <p id="quiz-score" class="text-lg"></p>
+                                <div id="quiz-feedback" class="mt-3"></div>
+                                <button id="retake-quiz" class="mt-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-md transition-colors">
+                                    Retake Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-bold flex items-center">
+                        <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
+                        Personal Tax Planning
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Chapter 3: Fundamentals of Personal Financial Planning</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>&copy; 2023 Fundamentals of Personal Financial Planning. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Toggle dark mode on button click
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+        
+        // Course Outline Modal
+        const outlineModal = document.getElementById('outline-modal');
+        const showOutline = document.getElementById('show-outline');
+        const closeOutline = document.getElementById('close-outline');
+        const outlineSections = document.querySelectorAll('.outline-section');
+        
+        showOutline.addEventListener('click', () => {
+            outlineModal.classList.remove('hidden');
+        });
+        
+        closeOutline.addEventListener('click', () => {
+            outlineModal.classList.add('hidden');
+        });
+        
+        outlineSections.forEach(section => {
+            section.addEventListener('click', () => {
+                outlineModal.classList.add('hidden');
+            });
+        });
+        
+        // Close modal when clicking outside
+        outlineModal.addEventListener('click', (e) => {
+            if (e.target === outlineModal) {
+                outlineModal.classList.add('hidden');
+            }
+        });
+        
+        // Expandable content
+        const expandableHeaders = document.querySelectorAll('.expandable-header');
+        
+        expandableHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('i');
+                
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+        
+        // View More buttons
+        const viewMoreExemptions = document.getElementById('view-more-exemptions');
+        const moreExemptions = document.getElementById('more-exemptions');
+        
+        viewMoreExemptions.addEventListener('click', () => {
+            moreExemptions.classList.toggle('hidden');
+            const text = viewMoreExemptions.querySelector('span');
+            const icon = viewMoreExemptions.querySelector('i');
+            
+            if (moreExemptions.classList.contains('hidden')) {
+                text.textContent = 'View More Exemptions';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                text.textContent = 'View Less';
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+        
+        const viewMoreOffenses = document.getElementById('view-more-offenses');
+        const moreOffenses = document.getElementById('more-offenses');
+        
+        viewMoreOffenses.addEventListener('click', () => {
+            moreOffenses.classList.toggle('hidden');
+            const text = viewMoreOffenses.querySelector('span');
+            const icon = viewMoreOffenses.querySelector('i');
+            
+            if (moreOffenses.classList.contains('hidden')) {
+                text.textContent = 'View More Offenses';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                text.textContent = 'View Less';
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+        
+        // Quiz functionality
+        const quizContainers = document.querySelectorAll('.quiz-container');
+        
+        quizContainers.forEach(container => {
+            const options = container.querySelectorAll('.quiz-option');
+            const feedbackContainer = container.querySelector('.feedback-container');
+            const feedbackText = container.querySelector('.feedback-text');
+            
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove selected class from all options
+                    options.forEach(opt => {
+                        opt.classList.remove('selected', 'correct', 'incorrect');
+                    });
+                    
+                    // Add selected class to clicked option
+                    option.classList.add('selected');
+                    
+                    // Show feedback
+                    feedbackContainer.classList.remove('hidden');
+                    
+                    if (option.hasAttribute('data-correct')) {
+                        option.classList.add('correct');
+                        feedbackText.textContent = 'Correct! Well done.';
+                        feedbackText.className = 'feedback-text text-green-600 dark:text-green-400';
+                    } else {
+                        option.classList.add('incorrect');
+                        const correctOption = Array.from(options).find(opt => opt.hasAttribute('data-correct'));
+                        correctOption.classList.add('correct');
+                        feedbackText.textContent = 'Incorrect. The right answer is highlighted.';
+                        feedbackText.className = 'feedback-text text-red-600 dark:text-red-400';
+                    }
+                });
+            });
+        });
+        
+        // Tax Impact Calculator
+        const calculateBtn = document.getElementById('calculate-btn');
+        const calculationResult = document.getElementById('calculation-result');
+        const taxAmount = document.getElementById('tax-amount');
+        const disposableIncome = document.getElementById('disposable-income');
+        
+        calculateBtn.addEventListener('click', () => {
+            const income = parseFloat(document.getElementById('income-input').value) || 0;
+            const taxRate = parseFloat(document.getElementById('tax-rate-input').value) || 0;
+            
+            if (income > 0 && taxRate > 0) {
+                const tax = (income * taxRate) / 100;
+                const disposable = income - tax;
+                
+                taxAmount.textContent = `RM ${tax.toFixed(2)}`;
+                disposableIncome.textContent = `RM ${disposable.toFixed(2)}`;
+                calculationResult.classList.remove('hidden');
+            } else {
+                alert('Please enter valid income and tax rate values.');
+            }
+        });
+        
+        // Tax Relief Calculator
+        const calculateReliefBtn = document.getElementById('calculate-relief-btn');
+        const reliefResult = document.getElementById('relief-result');
+        const totalRelief = document.getElementById('total-relief');
+        
+        calculateReliefBtn.addEventListener('click', () => {
+            const individualRelief = parseFloat(document.getElementById('relief-individual').value) || 0;
+            const medicalRelief = parseFloat(document.getElementById('relief-medical').value) || 0;
+            const educationRelief = parseFloat(document.getElementById('relief-education').value) || 0;
+            
+            const total = individualRelief + medicalRelief + educationRelief;
+            
+            totalRelief.textContent = `RM ${total.toFixed(2)}`;
+            reliefResult.classList.remove('hidden');
+        });
+        
+        // Rebate Eligibility Checker
+        const checkRebateBtn = document.getElementById('check-rebate-btn');
+        const rebateResult = document.getElementById('rebate-result');
+        const eligibleRebates = document.getElementById('eligible-rebates');
+        const totalRebate = document.getElementById('total-rebate');
+        
+        checkRebateBtn.addEventListener('click', () => {
+            const income = parseFloat(document.getElementById('rebate-income').value) || 0;
+            const spouseStatus = document.getElementById('rebate-spouse').value;
+            const children = parseInt(document.getElementById('rebate-children').value) || 0;
+            
+            let total = 0;
+            let eligible = [];
+            
+            // Individual rebate
+            if (income <= 35000) {
+                total += 400;
+                eligible.push('<li>Individual Rebate: RM400</li>');
+            }
+            
+            // Spouse rebate
+            if (spouseStatus === 'no-income' || spouseStatus === 'joint') {
+                total += 400;
+                eligible.push('<li>Spouse Rebate: RM400</li>');
+            }
+            
+            // Child rebate
+            if (children > 0) {
+                const childAmount = children * 200;
+                total += childAmount;
+                eligible.push(`<li>Child Rebate (${children} children): RM${childAmount}</li>`);
+            }
+            
+            eligibleRebates.innerHTML = eligible.length > 0 ? eligible.join('') : '<li>No eligible rebates</li>';
+            totalRebate.textContent = `RM ${total.toFixed(2)}`;
+            rebateResult.classList.remove('hidden');
+        });
+        
+        // Donation Tax Benefit Calculator
+        const calculateDonationBtn = document.getElementById('calculate-donation-btn');
+        const donationResult = document.getElementById('donation-result');
+        const maxDeductible = document.getElementById('max-deductible');
+        const actualDeductible = document.getElementById('actual-deductible');
+        const taxSavings = document.getElementById('tax-savings');
+        const effectiveCost = document.getElementById('effective-cost');
+        
+        calculateDonationBtn.addEventListener('click', () => {
+            const income = parseFloat(document.getElementById('donation-income').value) || 0;
+            const donation = parseFloat(document.getElementById('donation-amount').value) || 0;
+            const taxRate = parseFloat(document.getElementById('donation-tax-rate').value) || 0;
+            
+            if (income > 0 && donation > 0 && taxRate > 0) {
+                const maxAmount = income * 0.1; // 10% of income
+                const deductible = Math.min(donation, maxAmount);
+                const savings = (deductible * taxRate) / 100;
+                const cost = donation - savings;
+                
+                maxDeductible.textContent = `RM ${maxAmount.toFixed(2)}`;
+                actualDeductible.textContent = `RM ${deductible.toFixed(2)}`;
+                taxSavings.textContent = `RM ${savings.toFixed(2)}`;
+                effectiveCost.textContent = `RM ${cost.toFixed(2)}`;
+                donationResult.classList.remove('hidden');
+            } else {
+                alert('Please enter valid income, donation, and tax rate values.');
+            }
+        });
+        
+        // Final Quiz
+        const submitQuiz = document.getElementById('submit-quiz');
+        const quizResults = document.getElementById('quiz-results');
+        const quizScore = document.getElementById('quiz-score');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const retakeQuiz = document.getElementById('retake-quiz');
+        
+        submitQuiz.addEventListener('click', () => {
+            const finalQuiz = document.querySelector('[data-quiz="final-quiz"]');
+            const questions = finalQuiz.querySelectorAll('.p-4.border');
+            let correct = 0;
+            
+            questions.forEach(question => {
+                const options = question.querySelectorAll('.quiz-option');
+                const selectedOption = Array.from(options).find(opt => opt.classList.contains('selected'));
+                
+                // Reset previous styling
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    if (selectedOption.hasAttribute('data-correct')) {
+                        selectedOption.classList.add('correct');
+                        correct++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        const correctOption = Array.from(options).find(opt => opt.hasAttribute('data-correct'));
+                        correctOption.classList.add('correct');
+                    }
+                } else {
+                    // No option selected, mark correct answer
+                    const correctOption = Array.from(options).find(opt => opt.hasAttribute('data-correct'));
+                    correctOption.classList.add('correct');
+                }
+            });
+            
+            const score = (correct / questions.length) * 100;
+            quizScore.textContent = `You scored ${correct} out of ${questions.length} (${score.toFixed(0)}%)`;
+            
+            let feedback = '';
+            if (score >= 80) {
+                feedback = 'Excellent! You have a strong understanding of personal tax planning.';
+            } else if (score >= 60) {
+                feedback = 'Good job! You have a solid understanding, but there\'s room for improvement.';
+            } else {
+                feedback = 'You might need to review this chapter again to strengthen your understanding.';
+            }
+            
+            quizFeedback.textContent = feedback;
+            quizResults.classList.remove('hidden');
+            submitQuiz.classList.add('hidden');
+            
+            // Update progress
+            updateProgress(score / 100);
+        });
+        
+        retakeQuiz.addEventListener('click', () => {
+            const finalQuiz = document.querySelector('[data-quiz="final-quiz"]');
+            const options = finalQuiz.querySelectorAll('.quiz-option');
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            quizResults.classList.add('hidden');
+            submitQuiz.classList.remove('hidden');
+        });
+        
+        // Progress tracking
+        const progressBtn = document.getElementById('progress-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        
+        let progress = 0;
+        
+        progressBtn.addEventListener('click', () => {
+            progressContainer.classList.toggle('hidden');
+        });
+        
+        function updateProgress(value) {
+            progress = value;
+            progressBar.style.width = `${progress * 100}%`;
+        }
+        
+        // Track section visibility for progress
+        const sections = document.querySelectorAll('main > section');
+        let visitedSections = new Set();
+        
+        // Intersection Observer to track viewed sections
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    visitedSections.add(entry.target.id);
+                    const progress = visitedSections.size / sections.length;
+                    updateProgress(progress);
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+        
+        sections.forEach(section => {
+            if (section.id) {
+                observer.observe(section);
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
