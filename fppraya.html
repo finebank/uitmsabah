@@ -130,6 +130,57 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #4A49B2;
         }
+        
+        /* Audio visualizer animation */
+        @keyframes equalizer-bar1 { 0%, 100% { height: 2px; } 50% { height: 8px; } }
+        @keyframes equalizer-bar2 { 0%, 100% { height: 3px; } 30% { height: 9px; } }
+        @keyframes equalizer-bar3 { 0%, 100% { height: 5px; } 40% { height: 10px; } }
+        @keyframes equalizer-bar4 { 0%, 100% { height: 7px; } 60% { height: 12px; } }
+        @keyframes equalizer-bar5 { 0%, 100% { height: 5px; } 70% { height: 9px; } }
+        @keyframes equalizer-bar6 { 0%, 100% { height: 4px; } 50% { height: 8px; } }
+        @keyframes equalizer-bar7 { 0%, 100% { height: 3px; } 40% { height: 7px; } }
+        
+        #audioVisualizer.active .audio-bar:nth-child(1) { animation: equalizer-bar1 0.9s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(2) { animation: equalizer-bar2 0.8s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(3) { animation: equalizer-bar3 0.7s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(4) { animation: equalizer-bar4 0.9s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(5) { animation: equalizer-bar5 0.8s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(6) { animation: equalizer-bar6 0.7s ease-in-out infinite; }
+        #audioVisualizer.active .audio-bar:nth-child(7) { animation: equalizer-bar7 0.6s ease-in-out infinite; }
+        
+        #audioVisualizer:not(.active) .audio-bar {
+            height: 2px;
+            transition: height 0.3s ease-out;
+        }
+        
+        /* News Ticker / Crawler Animation */
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .ticker-move {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+        }
+        
+        .ticker-item {
+            padding: 0 1.5rem;
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
@@ -221,9 +272,23 @@
                 <h1 class="text-3xl md:text-4xl font-bold text-primary-dark dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
                 <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-6 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
                 
-                <p class="text-gray-600 dark:text-gray-300 mb-8 animate-slide-up" style="animation-delay: 0.3s;">
+                <p class="text-gray-600 dark:text-gray-300 mb-4 animate-slide-up" style="animation-delay: 0.3s;">
                     Maaf Zahir dan Batin
                 </p>
+                
+                <!-- News Ticker / Crawler -->
+                <div class="w-full bg-primary-light dark:bg-primary-dark rounded-lg mb-4 overflow-hidden">
+                    <div class="ticker-wrap py-3 px-4">
+                        <div class="ticker-move">
+                            <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
+                            <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
+                            <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Aminah) 💐</div>
+                            <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Hamzah) 💐</div>
+                            <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Sarah) 💐</div>
+                            <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Decorative Ketupat -->
                 <div class="flex justify-center space-x-4 mb-8">
@@ -238,25 +303,65 @@
                     </div>
                 </div>
                 
-                <!-- Video Button -->
-                <button id="videoBtn" class="bg-secondary hover:bg-secondary-dark dark:bg-secondary-light dark:hover:bg-secondary text-white dark:text-gray-800 font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto mb-6 animate-slide-up" style="animation-delay: 0.4s;">
-                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Play Raya Video
-                </button>
+                <!-- Video Thumbnail -->
+                <div class="mb-6 animate-slide-up" style="animation-delay: 0.4s;">
+                    <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
+                            <svg class="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Apple Music Player -->
+                <!-- Background Music Player -->
                 <div class="mt-6 mb-2">
-                    <h3 class="text-gray-600 dark:text-gray-300 mb-2">Turn the music on!</h3>
-                    <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="175" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/my/album/balik-kampung/1442519240?i=1442519359"></iframe>
+                    <h3 class="text-gray-600 dark:text-gray-300 mb-2">Turn the Raya Song On!</h3>
+                    <div class="relative" style="width:100%;max-width:660px;margin:0 auto;">
+                        <!-- HTML5 Audio element (hidden but plays in background) -->
+                        <audio id="backgroundMusic" autoplay loop style="display:none;">
+                            <source src="https://finebank.github.io/uitmsabah/Dato'%20Sudirman%20-%20Balik%20Kampung%20(Audio%20Video).mp3" type="audio/mpeg">
+                        </audio>
+                        
+                        <!-- Custom audio controls that reflect the playing state -->
+                        <div class="bg-primary-light dark:bg-primary-dark text-white p-3 rounded-lg flex items-center justify-between">
+                            <div class="flex items-center">
+                                <button id="playPauseBtn" class="bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                    <svg id="pauseIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                    </svg>
+                                    <svg id="playIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col">
+                                    <span class="text-sm md:text-base">Ayok Balik Kampung!</span>
+                                    <!-- Audio visualizer (animated bars) -->
+                                    <div id="audioVisualizer" class="flex h-3 items-end space-x-[2px] mt-1">
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs">Vol</span>
+                                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-secondary-light">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <!-- Copyright Footer -->
         <div class="mt-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-            &copy; 2025 FPP UiTM Cawangan Sabah mengucapkan ''Selamat Hari Raya Aidilfitri''
+            &copy; 2025 FPP UiTM Cawangan Sabah | SirPoji
         </div>
         
 
@@ -268,7 +373,7 @@
             <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
             <div class="p-2">
                 <div class="relative" style="padding-top: 56.25%;">
-                    <iframe id="videoFrame" class="absolute inset-0 w-full h-full rounded-lg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
                 </div>
             </div>
         </div>
@@ -278,29 +383,144 @@
         // Element references
         const videoBtn = document.getElementById('videoBtn');
         const videoModal = document.getElementById('videoModal');
-        const videoFrame = document.getElementById('videoFrame');
+        const videoPlayer = document.getElementById('videoPlayer');
         const closeModalBtn = document.getElementById('closeModalBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const volumeSlider = document.getElementById('volumeSlider');
+        
+        const audioVisualizer = document.getElementById('audioVisualizer');
+        
+        // Set initial volume for non-intrusive background music
+        backgroundMusic.volume = 0.3;
+        
+        // Function to update audio visualizer state
+        function updateVisualizerState() {
+            if (backgroundMusic.paused) {
+                audioVisualizer.classList.remove('active');
+            } else {
+                audioVisualizer.classList.add('active');
+            }
+        }
+        
+        // Handle autoplay issues
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to play the audio when page loads
+            backgroundMusic.play().then(() => {
+                // Activate visualizer if autoplay succeeds
+                updateVisualizerState();
+            }).catch(error => {
+                console.log("Autoplay prevented: ", error);
+                // Show play icon if autoplay was prevented
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                updateVisualizerState();
+            });
+        });
+        
+        // Update volume from slider
+        volumeSlider.addEventListener('input', function() {
+            backgroundMusic.volume = this.value;
+        });
+        
+        // Add audio event listeners to update visualizer state
+        backgroundMusic.addEventListener('play', updateVisualizerState);
+        backgroundMusic.addEventListener('pause', updateVisualizerState);
+        backgroundMusic.addEventListener('ended', updateVisualizerState);
+        
+        // Control background music
+        playPauseBtn.addEventListener('click', () => {
+            if (backgroundMusic.paused) {
+                // Play the music
+                backgroundMusic.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                // Pause the music
+                backgroundMusic.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        });
         
         // Video modal functionality
         videoBtn.addEventListener('click', () => {
             videoModal.classList.remove('hidden');
-            videoFrame.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4"; // A Malaysian Hari Raya video
+            videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
             
-            // Note: Apple Music iframe will continue playing since we cannot directly control it
+            // Pause the background music when video is opened
+            backgroundMusic.pause();
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            updateVisualizerState();
+            
+            // Play video automatically
+            videoPlayer.play()
+                .then(() => {
+                    // Video started playing successfully
+                    console.log("Video started playing");
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented: ", error);
+                    // Show a message or visual cue to encourage user to play manually
+                });
+            
+            // Request fullscreen if supported
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err);
+                });
+            } else if (videoPlayer.webkitRequestFullscreen) { /* Safari */
+                videoPlayer.webkitRequestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err);
+                });
+            } else if (videoPlayer.msRequestFullscreen) { /* IE11 */
+                videoPlayer.msRequestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err);
+                });
+            }
         });
         
         closeModalBtn.addEventListener('click', () => {
             videoModal.classList.add('hidden');
-            videoFrame.src = "";
+            videoPlayer.pause();
+            videoPlayer.src = "";
+            
+            // Optionally resume the background music when video is closed
+            /*
+            backgroundMusic.play();
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            updateVisualizerState();
+            */
         });
         
         // Close modal when clicking outside the video
         videoModal.addEventListener('click', (e) => {
             if (e.target === videoModal) {
                 videoModal.classList.add('hidden');
-                videoFrame.src = "";
+                videoPlayer.pause();
+                videoPlayer.src = "";
             }
         });
+        
+        // Listen for fullscreen change events
+        document.addEventListener('fullscreenchange', exitHandler);
+        document.addEventListener('webkitfullscreenchange', exitHandler);
+        document.addEventListener('mozfullscreenchange', exitHandler);
+        document.addEventListener('MSFullscreenChange', exitHandler);
+
+        function exitHandler() {
+            if (!document.fullscreenElement && 
+                !document.webkitIsFullScreen && 
+                !document.mozFullScreen && 
+                !document.msFullscreenElement) {
+                // The user has exited fullscreen mode
+                // You can add additional handling here if needed
+            }
+        }
         
         // Decorative animations for floating elements
         const floatingElements = document.querySelectorAll('.animate-float');
@@ -312,7 +532,8 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
                 videoModal.classList.add('hidden');
-                videoFrame.src = "";
+                videoPlayer.pause();
+                videoPlayer.src = "";
             }
         });
     </script>
