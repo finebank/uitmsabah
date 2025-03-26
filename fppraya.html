@@ -525,7 +525,57 @@
         audioVisualizer.classList.add('active');
       }
     }
-    
+    // Function to load wishes from Firebase
+function loadWishesFromFirebase() {
+  // Clear existing wishes
+  wishes = [];
+  
+  // Show loading state
+  wishesContainer.innerHTML = `
+    <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
+      <p>Loading wishes...</p>
+    </div>
+  `;
+  
+  // Get wishes from Firebase, ordered by timestamp (newest first)
+  db.collection("wishes")
+    .orderBy("timestamp", "desc")
+    .limit(20) // Limit to most recent 20 wishes
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        wishesContainer.innerHTML = `
+          <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
+            <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Process each document in the result
+      querySnapshot.forEach((doc) => {
+        const wishData = doc.data();
+        wishes.push({
+          name: wishData.name,
+          message: wishData.message,
+          timestamp: wishData.timestamp
+        });
+      });
+      
+      // Display the wishes
+      displayWishes();
+    })
+    .catch((error) => {
+      console.error("Error loading wishes: ", error);
+      wishesContainer.innerHTML = `
+        <div class="flex justify-center items-center h-16 text-red-500">
+          <p>Maaf, there was an error loading wishes.</p>
+        </div>
+      `;
+    });
+}
+  
+  
     // Function to display wishes in the container
     function displayWishes() {
       // Clear the container first
@@ -581,28 +631,38 @@
     });
     
     // Handle wish form submission
-    wishForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+wishForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const name = nameInput.value.trim();
+  const message = messageInput.value.trim();
+  
+  if (name && message) {
+    // Create a timestamp
+    const timestamp = new Date().toISOString();
+    
+    // Add to Firebase
+    db.collection("wishes").add({
+      name: name,
+      message: message,
+      timestamp: timestamp
+    })
+    .then(() => {
+      console.log("Wish added to Firebase!");
       
-      const name = nameInput.value.trim();
-      const message = messageInput.value.trim();
+      // Clear form
+      nameInput.value = '';
+      messageInput.value = '';
       
-      if (name && message) {
-        // Add new wish to the array
-        wishes.push({
-          name: name,
-          message: message,
-          timestamp: new Date().toISOString()
-        });
-        
-        // Clear form
-        nameInput.value = '';
-        messageInput.value = '';
-        
-        // Update display
-        displayWishes();
-      }
+      // Reload wishes from Firebase
+      loadWishesFromFirebase();
+    })
+    .catch((error) => {
+      console.error("Error adding wish: ", error);
+      alert("Maaf, there was an error submitting your wish. Please try again.");
     });
+  }
+});
 
     // Handle autoplay issues on page load
     document.addEventListener('DOMContentLoaded', function() {
@@ -732,6 +792,31 @@
 
     // Initialize the ticker at page load to ensure it runs properly
     document.addEventListener('DOMContentLoaded', function() {
+      // Load wishes from Firebase
+      // Set up real-time listener for wishes
+function setupRealTimeWishes() {
+  db.collection("wishes")
+    .orderBy("timestamp", "desc")
+    .limit(20)
+    .onSnapshot((snapshot) => {
+      wishes = [];
+      snapshot.forEach((doc) => {
+        const wishData = doc.data();
+        wishes.push({
+          name: wishData.name,
+          message: wishData.message,
+          timestamp: wishData.timestamp
+        });
+      });
+      
+      displayWishes();
+    }, (error) => {
+      console.error("Real-time listener error: ", error);
+    });
+}
+
+// Call this instead of loadWishesFromFirebase() in your DOMContentLoaded handler
+
       // Get the width of a single ticker-group
       const tickerGroup = document.querySelector('.ticker-group');
       if (tickerGroup) {
@@ -746,5 +831,24 @@
       }
     });
   </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDeoINlHv3oeaqDmwumoxlERQdEhrVMU2Y",
+    authDomain: "raya-wishes.firebaseapp.com",
+    projectId: "raya-wishes",
+    storageBucket: "raya-wishes.firebasestorage.app",
+    messagingSenderId: "932962646124",
+    appId: "1:932962646124:web:b1a029e6d30c8fdd3fc049"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>
