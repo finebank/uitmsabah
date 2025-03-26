@@ -1,541 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Hari Raya Aidilfitri</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            DEFAULT: '#5D5CDE',
-                            light: '#8281E9',
-                            dark: '#4A49B2'
-                        },
-                        secondary: {
-                            DEFAULT: '#E15EB0',
-                            light: '#F385C7',
-                            dark: '#B84A8D'
-                        },
-                        background: {
-                            light: '#FFFFFF',
-                            dark: '#181818'
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'spin-slow': 'spin 15s linear infinite',
-                        'sparkle': 'sparkle 2s linear infinite',
-                        'fade-in': 'fadeIn 2s ease-in-out',
-                        'slide-up': 'slideUp 1s ease-out',
-                        'bounce-light': 'bounceLight 2s infinite'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' }
-                        },
-                        sparkle: {
-                            '0%, 100%': { opacity: 1 },
-                            '50%': { opacity: 0.3 }
-                        },
-                        fadeIn: {
-                            '0%': { opacity: 0 },
-                            '100%': { opacity: 1 }
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(30px)', opacity: 0 },
-                            '100%': { transform: 'translateY(0)', opacity: 1 }
-                        },
-                        bounceLight: {
-                            '0%, 100%': { transform: 'translateY(0)', opacity: 1 },
-                            '50%': { transform: 'translateY(-5px)', opacity: 0.7 }
-                        }
-                    }
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Hari Raya Aidilfitri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#5D5CDE',
+              light: '#8281E9',
+              dark: '#4A49B2'
+            },
+            secondary: {
+              DEFAULT: '#E15EB0',
+              light: '#F385C7',
+              dark: '#B84A8D'
+            },
+            background: {
+              light: '#FFFFFF',
+              dark: '#181818'
             }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .ketupat {
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        }
-
-        .light-rays {
-            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-        }
-
-        .dark .light-rays {
-            background: radial-gradient(circle at center, rgba(93,92,222,0.3) 0%, rgba(93,92,222,0) 70%);
-        }
-
-        @keyframes lampPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 8px rgba(255, 234, 156, 0.8));
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'spin-slow': 'spin 15s linear infinite',
+            'sparkle': 'sparkle 2s linear infinite',
+            'fade-in': 'fadeIn 2s ease-in-out',
+            'slide-up': 'slideUp 1s ease-out',
+            'bounce-light': 'bounceLight 2s infinite',
+            'wish-appear': 'wishAppear 0.5s ease-out forwards'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' }
+            },
+            sparkle: {
+              '0%, 100%': { opacity: 1 },
+              '50%': { opacity: 0.3 }
+            },
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(30px)', opacity: 0 },
+              '100%': { transform: 'translateY(0)', opacity: 1 }
+            },
+            bounceLight: {
+              '0%, 100%': { transform: 'translateY(0)', opacity: 1 },
+              '50%': { transform: 'translateY(-5px)', opacity: 0.7 }
+            },
+            wishAppear: {
+              '0%': { transform: 'translateY(20px)', opacity: 0 },
+              '100%': { transform: 'translateY(0)', opacity: 1 }
             }
-            50% {
-                filter: drop-shadow(0 0 15px rgba(255, 234, 156, 1));
-            }
+          }
         }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-        .lamp {
-            animation: lampPulse 3s infinite ease-in-out;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
 
-        .dark .lamp {
-            animation: lampPulse 3s infinite ease-in-out;
-        }
+    .ketupat {
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
 
-        /* Audio player custom styling */
-        .audio-player {
-            --player-bg: #8281E9;
-            --player-text: white;
-            --player-btn: #F385C7;
-            --player-btn-hover: #B84A8D;
-        }
+    .light-rays {
+      background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    }
 
-        .dark .audio-player {
-            --player-bg: #4A49B2;
-        }
+    .dark .light-rays {
+      background: radial-gradient(circle at center, rgba(93,92,222,0.3) 0%, rgba(93,92,222,0) 70%);
+    }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+    @keyframes lampPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(255, 234, 156, 0.8));
+      }
+      50% {
+        filter: drop-shadow(0 0 15px rgba(255, 234, 156, 1));
+      }
+    }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
+    .lamp {
+      animation: lampPulse 3s infinite ease-in-out;
+    }
 
-        .dark ::-webkit-scrollbar-track {
-            background: #333;
-        }
+    .dark .lamp {
+      animation: lampPulse 3s infinite ease-in-out;
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: #5D5CDE;
-            border-radius: 4px;
-        }
+    /* Audio player custom styling */
+    .audio-player {
+      --player-bg: #8281E9;
+      --player-text: white;
+      --player-btn: #F385C7;
+      --player-btn-hover: #B84A8D;
+    }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4A49B2;
-        }
-        
-        /* Audio visualizer animation */
-        @keyframes equalizer-bar1 { 0%, 100% { height: 2px; } 50% { height: 8px; } }
-        @keyframes equalizer-bar2 { 0%, 100% { height: 3px; } 30% { height: 9px; } }
-        @keyframes equalizer-bar3 { 0%, 100% { height: 5px; } 40% { height: 10px; } }
-        @keyframes equalizer-bar4 { 0%, 100% { height: 7px; } 60% { height: 12px; } }
-        @keyframes equalizer-bar5 { 0%, 100% { height: 5px; } 70% { height: 9px; } }
-        @keyframes equalizer-bar6 { 0%, 100% { height: 4px; } 50% { height: 8px; } }
-        @keyframes equalizer-bar7 { 0%, 100% { height: 3px; } 40% { height: 7px; } }
-        
-        #audioVisualizer.active .audio-bar:nth-child(1) { animation: equalizer-bar1 0.9s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(2) { animation: equalizer-bar2 0.8s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(3) { animation: equalizer-bar3 0.7s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(4) { animation: equalizer-bar4 0.9s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(5) { animation: equalizer-bar5 0.8s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(6) { animation: equalizer-bar6 0.7s ease-in-out infinite; }
-        #audioVisualizer.active .audio-bar:nth-child(7) { animation: equalizer-bar7 0.6s ease-in-out infinite; }
-        
-        #audioVisualizer:not(.active) .audio-bar {
-            height: 2px;
-            transition: height 0.3s ease-out;
-        }
-        
-        /* News Ticker / Crawler Animation */
-        @keyframes ticker {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-        
-        .ticker-wrap {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .ticker-move {
-            display: flex;
-            white-space: nowrap;
-            animation: ticker 25s linear infinite;
-        }
-        
-        .ticker-item {
-            padding: 0 1.5rem;
-            font-weight: 600;
-            color: white;
-            font-size: 1.1rem;
-        }
-    </style>
+    .dark .audio-player {
+      --player-bg: #4A49B2;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .dark ::-webkit-scrollbar-track {
+      background: #333;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #5D5CDE;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4A49B2;
+    }
+    
+    /* Audio visualizer animation */
+    @keyframes equalizer-bar1 { 0%, 100% { height: 2px; } 50% { height: 8px; } }
+    @keyframes equalizer-bar2 { 0%, 100% { height: 3px; } 30% { height: 9px; } }
+    @keyframes equalizer-bar3 { 0%, 100% { height: 5px; } 40% { height: 10px; } }
+    @keyframes equalizer-bar4 { 0%, 100% { height: 7px; } 60% { height: 12px; } }
+    @keyframes equalizer-bar5 { 0%, 100% { height: 5px; } 70% { height: 9px; } }
+    @keyframes equalizer-bar6 { 0%, 100% { height: 4px; } 50% { height: 8px; } }
+    @keyframes equalizer-bar7 { 0%, 100% { height: 3px; } 40% { height: 7px; } }
+    
+    #audioVisualizer.active .audio-bar:nth-child(1) { animation: equalizer-bar1 0.9s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(2) { animation: equalizer-bar2 0.8s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(3) { animation: equalizer-bar3 0.7s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(4) { animation: equalizer-bar4 0.9s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(5) { animation: equalizer-bar5 0.8s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(6) { animation: equalizer-bar6 0.7s ease-in-out infinite; }
+    #audioVisualizer.active .audio-bar:nth-child(7) { animation: equalizer-bar7 0.6s ease-in-out infinite; }
+    
+    #audioVisualizer:not(.active) .audio-bar {
+      height: 2px;
+      transition: height 0.3s ease-out;
+    }
+    
+    /* News Ticker / Crawler Animation - IMPROVED VERSION */
+    @keyframes ticker {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .ticker-move {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 20s linear infinite;
+      width: auto;
+    }
+    
+    .ticker-group {
+      display: flex;
+      flex-shrink: 0;
+      width: 100%;
+    }
+    
+    .ticker-item {
+      padding: 0 1.5rem;
+      font-weight: 600;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    /* Chat section styles */
+    .wishes-container {
+      max-height: 300px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .wish-card {
+      opacity: 0;
+    }
+    
+    .wish-card.show {
+      animation: wishAppear 0.5s ease-out forwards;
+    }
+    
+    .emoji-picker {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+    
+    .emoji-btn {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+    
+    .emoji-btn:hover {
+      background-color: rgba(93, 92, 222, 0.1);
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
-    <!-- Check for dark mode -->
-    <script>
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-    </script>
+  <!-- Check for dark mode -->
+  <script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+  </script>
 
-    <!-- Main Container -->
-    <div class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        <!-- Background decorative elements -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <!-- Top Left Ketupat -->
-            <div class="absolute top-5 left-5 w-20 h-20 ketupat bg-primary-light dark:bg-primary-dark opacity-30 animate-float"></div>
-            
-            <!-- Top Right Crescent Moon -->
-            <svg class="absolute top-10 right-10 w-16 h-16 text-secondary-light dark:text-secondary animate-float" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C14.9 22 17.36 20.65 19.08 18.55C17.84 19.15 16.4 19.5 14.87 19.5C9.64 19.5 5.38 15.24 5.38 10.01C5.38 7.02 6.71 4.34 8.86 2.58C8.86 2.58 8.86 2.58 8.86 2.58C9.85 2.21 10.9 2 12 2Z"/>
-            </svg>
-            
-            <!-- Bottom Left Stars -->
-            <div class="absolute bottom-20 left-10">
-                <svg class="w-6 h-6 text-secondary animate-sparkle" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                </svg>
-            </div>
-            <div class="absolute bottom-10 left-20">
-                <svg class="w-4 h-4 text-primary-light dark:text-primary animate-sparkle" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                </svg>
-            </div>
-            
-            <!-- Bottom Right Decorative Elements -->
-            <div class="absolute bottom-5 right-5 w-24 h-24 ketupat rotate-45 bg-secondary-light dark:bg-secondary opacity-20 animate-spin-slow"></div>
-            
-            <!-- Floating Lamps -->
-            <div class="lamp absolute top-1/4 left-1/4 w-8 h-12 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light"></div>
-            <div class="lamp absolute top-1/3 right-1/3 w-6 h-10 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light" style="animation-delay: 1s;"></div>
-            
-            <!-- Light Rays Behind Main Card -->
-            <div class="light-rays absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] opacity-50"></div>
-        </div>
+  <!-- Main Container -->
+  <div class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <!-- Background decorative elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <!-- Top Left Ketupat -->
+      <div class="absolute top-5 left-5 w-20 h-20 ketupat bg-primary-light dark:bg-primary-dark opacity-30 animate-float"></div>
+      
+      <!-- Top Right Crescent Moon -->
+      <svg class="absolute top-10 right-10 w-16 h-16 text-secondary-light dark:text-secondary animate-float" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C14.9 22 17.36 20.65 19.08 18.55C17.84 19.15 16.4 19.5 14.87 19.5C9.64 19.5 5.38 15.24 5.38 10.01C5.38 7.02 6.71 4.34 8.86 2.58C8.86 2.58 8.86 2.58 8.86 2.58C9.85 2.21 10.9 2 12 2Z"/>
+      </svg>
+      
+      <!-- Bottom Left Stars -->
+      <div class="absolute bottom-20 left-10">
+        <svg class="w-6 h-6 text-secondary animate-sparkle" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+        </svg>
+      </div>
+      <div class="absolute bottom-10 left-20">
+        <svg class="w-4 h-4 text-primary-light dark:text-primary animate-sparkle" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+        </svg>
+      </div>
+      
+      <!-- Bottom Right Decorative Elements -->
+      <div class="absolute bottom-5 right-5 w-24 h-24 ketupat rotate-45 bg-secondary-light dark:bg-secondary opacity-20 animate-spin-slow"></div>
+      
+      <!-- Floating Lamps -->
+      <div class="lamp absolute top-1/4 left-1/4 w-8 h-12 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light"></div>
+      <div class="lamp absolute top-1/3 right-1/3 w-6 h-10 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light" style="animation-delay: 1s;"></div>
+      
+      <!-- Light Rays Behind Main Card -->
+      <div class="light-rays absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] opacity-50"></div>
+    </div>
 
-        <!-- Main Card -->
-        <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
-            <!-- Card Header with Mosque Silhouette -->
-            <div class="h-32 bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark relative overflow-hidden">
-                <!-- Mosque Silhouette -->
-                <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 w-full text-white dark:text-gray-800" viewBox="0 0 100 30" fill="currentColor">
-                    <path d="M0,30 L100,30 L100,25 L95,25 L95,20 L90,20 L90,25 L85,25 L85,15 L80,15 L80,25 L75,25 L75,20 L70,20 L70,25 L65,25 L65,20 L60,15 L55,20 L55,25 L50,25 L50,15 L45,15 L45,25 L40,25 L40,20 L35,20 L35,25 L30,25 L30,15 L25,15 L25,25 L20,25 L20,20 L15,20 L15,25 L10,25 L10,20 L5,20 L5,25 L0,25 L0,30 Z"/>
-                    <circle cx="50" cy="10" r="5"/>
-                    <rect x="48" y="0" width="4" height="5"/>
-                </svg>
-                
-                <!-- Decorative Stars -->
-                <div class="absolute top-2 left-5 flex space-x-2">
-                    <svg class="w-3 h-3 text-white animate-sparkle" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                    <svg class="w-4 h-4 text-white animate-sparkle" style="animation-delay: 0.3s;" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                    <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.7s;" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                </div>
-                
-                <div class="absolute top-3 right-7 flex space-x-1">
-                    <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.2s;" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                    <svg class="w-3 h-3 text-white animate-sparkle" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Card Content -->
-            <div class="p-6 text-center">
-                <h1 class="text-3xl md:text-4xl font-bold text-primary-dark dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
-                <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-6 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
-                
-                <p class="text-gray-600 dark:text-gray-300 mb-4 animate-slide-up" style="animation-delay: 0.3s;">
-                    Maaf Zahir dan Batin
-                </p>
-                
-                <!-- News Ticker / Crawler -->
-                <div class="w-full bg-primary-light dark:bg-primary-dark rounded-lg mb-4 overflow-hidden">
-                    <div class="ticker-wrap py-3 px-4">
-                        <div class="ticker-move">
-                            <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
-                            <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
-                            <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Aminah) 💐</div>
-                            <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Hamzah) 💐</div>
-                            <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Sarah) 💐</div>
-                            <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Decorative Ketupat -->
-                <div class="flex justify-center space-x-4 mb-8">
-                    <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float">
-                        <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
-                    </div>
-                    <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float" style="animation-delay: 0.5s;">
-                        <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
-                    </div>
-                    <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-secondary-light transform rotate-45 animate-float" style="animation-delay: 1s;">
-                        <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
-                    </div>
-                </div>
-                
-                <!-- Video Thumbnail -->
-                <div class="mb-6 animate-slide-up" style="animation-delay: 0.4s;">
-                    <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
-                        <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
-                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
-                            <svg class="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Background Music Player -->
-                <div class="mt-6 mb-2">
-                    <h3 class="text-gray-600 dark:text-gray-300 mb-2">Turn the Raya Song On!</h3>
-                    <div class="relative" style="width:100%;max-width:660px;margin:0 auto;">
-                        <!-- HTML5 Audio element (hidden but plays in background) -->
-                        <audio id="backgroundMusic" autoplay loop style="display:none;">
-                            <source src="https://finebank.github.io/uitmsabah/Dato'%20Sudirman%20-%20Balik%20Kampung%20(Audio%20Video).mp3" type="audio/mpeg">
-                        </audio>
-                        
-                        <!-- Custom audio controls that reflect the playing state -->
-                        <div class="bg-primary-light dark:bg-primary-dark text-white p-3 rounded-lg flex items-center justify-between">
-                            <div class="flex items-center">
-                                <button id="playPauseBtn" class="bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">
-                                    <svg id="pauseIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                                    </svg>
-                                    <svg id="playIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-                                </button>
-                                <div class="flex flex-col">
-                                    <span class="text-sm md:text-base">Ayok Balik Kampung!</span>
-                                    <!-- Audio visualizer (animated bars) -->
-                                    <div id="audioVisualizer" class="flex h-3 items-end space-x-[2px] mt-1">
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                        <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-xs">Vol</span>
-                                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-secondary-light">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Card -->
+    <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+      <!-- Card Header with Mosque Silhouette -->
+      <div class="h-32 bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark relative overflow-hidden">
+        <!-- Mosque Silhouette -->
+        <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 w-full text-white dark:text-gray-800" viewBox="0 0 100 30" fill="currentColor">
+          <path d="M0,30 L100,30 L100,25 L95,25 L95,20 L90,20 L90,25 L85,25 L85,15 L80,15 L80,25 L75,25 L75,20 L70,20 L70,25 L65,25 L65,20 L60,15 L55,20 L55,25 L50,25 L50,15 L45,15 L45,25 L40,25 L40,20 L35,20 L35,25 L30,25 L30,15 L25,15 L25,25 L20,25 L20,20 L15,20 L15,25 L10,25 L10,20 L5,20 L5,25 L0,25 L0,30 Z"/>
+          <circle cx="50" cy="10" r="5"/>
+          <rect x="48" y="0" width="4" height="5"/>
+        </svg>
+        
+        <!-- Decorative Stars -->
+        <div class="absolute top-2 left-5 flex space-x-2">
+          <svg class="w-3 h-3 text-white animate-sparkle" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+          </svg>
+          <svg class="w-4 h-4 text-white animate-sparkle" style="animation-delay: 0.3s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+          </svg>
+          <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.7s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+          </svg>
         </div>
         
-        <!-- Copyright Footer -->
-        <div class="mt-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-            &copy; 2025 FPP UiTM Cawangan Sabah | SirPoji
+        <div class="absolute top-3 right-7 flex space-x-1">
+          <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.2s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+          </svg>
+          <svg class="w-3 h-3 text-white animate-sparkle" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Card Content -->
+      <div class="p-6 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-primary-dark dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-6 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
+        
+        <p class="text-gray-600 dark:text-gray-300 mb-4 animate-slide-up" style="animation-delay: 0.3s;">
+          Maaf Zahir dan Batin
+        </p>
+        
+        <!-- News Ticker / Crawler - IMPROVED VERSION -->
+        <div class="w-full bg-primary-light dark:bg-primary-dark rounded-lg mb-4 overflow-hidden">
+          <div class="ticker-wrap py-3 px-4">
+            <div class="ticker-move">
+              <div class="ticker-group">
+                <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
+                <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
+                <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Maryam) 💐</div>
+                <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Ninalyn) 💐</div>
+                <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Beyya) 💐</div>
+                <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
+              </div>
+              <div class="ticker-group">
+                <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
+                <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
+                <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Maryam) 💐</div>
+                <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Ninalyn) 💐</div>
+                <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Beyya) 💐</div>
+                <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
+              </div>
+            </div>
+          </div>
         </div>
         
+        <!-- Decorative Ketupat -->
+        <div class="flex justify-center space-x-4 mb-8">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float">
+            <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
+          </div>
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float" style="animation-delay: 0.5s;">
+            <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
+          </div>
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-secondary-light transform rotate-45 animate-float" style="animation-delay: 1s;">
+            <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
+          </div>
+        </div>
+        
+        <!-- NEW SECTION: Raya Wishes Chat -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.3s;">
+          <h3 class="text-xl font-bold text-primary-dark dark:text-primary-light mb-4">Ucapan Raya</h3>
+          
+          <!-- Wishes Display Section -->
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
+            <div id="wishesContainer" class="wishes-container">
+              <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
+                <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
+              </div>
+            </div>
+          </div>
 
+          <!-- Wish Input Form -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+            <form id="wishForm" class="space-y-3">
+              <div>
+                <input type="text" id="nameInput" placeholder="Nama Anda" required 
+                  class="w-full px-4 py-2 text-base rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark">
+              </div>
+              
+              <div>
+                <textarea id="messageInput" placeholder="Ucapan Hari Raya Anda" required rows="3" 
+                  class="w-full px-4 py-2 text-base rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"></textarea>
+              </div>
+
+              <!-- Emoji Picker -->
+              <div class="emoji-picker bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
+                <div class="grid grid-cols-5 gap-1 sm:gap-2">
+                  <button type="button" class="emoji-btn text-xl" data-emoji="💐">💐</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🌙">🌙</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="✨">✨</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🕌">🕌</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🤲">🤲</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🥰">🥰</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🎉">🎉</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="❤️">❤️</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="😊">😊</button>
+                  <button type="button" class="emoji-btn text-xl" data-emoji="🙏">🙏</button>
+                </div>
+              </div>
+              
+              <button type="submit" 
+                class="w-full py-2 px-4 bg-primary-light hover:bg-primary dark:bg-primary-dark dark:hover:bg-primary text-white font-bold rounded-lg transition duration-300 flex justify-center items-center">
+                <span>Hantar Ucapan</span>
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Video Thumbnail -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.4s;">
+          <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+            <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
+              <svg class="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Background Music Player -->
+        <div class="mt-6 mb-2">
+          <h3 class="text-gray-600 dark:text-gray-300 mb-2">Sayang,Jom Nyanyi!</h3>
+          <div class="relative" style="width:100%;max-width:660px;margin:0 auto;">
+            <!-- HTML5 Audio element (hidden but plays in background) -->
+            <audio id="backgroundMusic" autoplay loop muted style="display:none;">
+              <source src="https://finebank.github.io/uitmsabah/Meriah_Lain_Macam_Hael_Husaini_Nadeera_Official_Music_Video_V1.mp3" type="audio/mpeg">
+            </audio>
+            
+            <!-- Custom audio controls that reflect the playing state -->
+            <div class="bg-primary-light dark:bg-primary-dark text-white p-3 rounded-lg flex items-center justify-between">
+              <button id="playPauseBtn" class="bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                <svg id="pauseIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                <svg id="playIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+              <div class="flex flex-col">
+                <span class="text-sm md:text-base"></span>
+                <!-- Audio visualizer (animated bars) -->
+                <div id="audioVisualizer" class="flex h-3 items-end space-x-[2px] mt-1">
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xs">Vol</span>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-secondary-light">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
-    <!-- Video Modal -->
-    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4">
-            <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
-            <div class="p-2">
-                <div class="relative" style="padding-top: 56.25%;">
-                    <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
-                </div>
-            </div>
-        </div>
+    <!-- Copyright Footer -->
+    <div class="mt-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+      &copy; 2025 FPP UiTM Cawangan Sabah | SirPoji
     </div>
-    
-    <script>
-        // Element references
-        const videoBtn = document.getElementById('videoBtn');
-        const videoModal = document.getElementById('videoModal');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const volumeSlider = document.getElementById('volumeSlider');
-        
-        const audioVisualizer = document.getElementById('audioVisualizer');
-        
-        // Set initial volume for non-intrusive background music
-        backgroundMusic.volume = 0.3;
-        
-        // Function to update audio visualizer state
-        function updateVisualizerState() {
-            if (backgroundMusic.paused) {
-                audioVisualizer.classList.remove('active');
-            } else {
-                audioVisualizer.classList.add('active');
-            }
-        }
-        
-        // Handle autoplay issues
-        document.addEventListener('DOMContentLoaded', function() {
-            // Try to play the audio when page loads
-            backgroundMusic.play().then(() => {
-                // Activate visualizer if autoplay succeeds
-                updateVisualizerState();
-            }).catch(error => {
-                console.log("Autoplay prevented: ", error);
-                // Show play icon if autoplay was prevented
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-                updateVisualizerState();
-            });
-        });
-        
-        // Update volume from slider
-        volumeSlider.addEventListener('input', function() {
-            backgroundMusic.volume = this.value;
-        });
-        
-        // Add audio event listeners to update visualizer state
-        backgroundMusic.addEventListener('play', updateVisualizerState);
-        backgroundMusic.addEventListener('pause', updateVisualizerState);
-        backgroundMusic.addEventListener('ended', updateVisualizerState);
-        
-        // Control background music
-        playPauseBtn.addEventListener('click', () => {
-            if (backgroundMusic.paused) {
-                // Play the music
-                backgroundMusic.play();
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-            } else {
-                // Pause the music
-                backgroundMusic.pause();
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-            }
-        });
-        
-        // Video modal functionality
-        videoBtn.addEventListener('click', () => {
-            videoModal.classList.remove('hidden');
-            videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
-            
-            // Pause the background music when video is opened
-            backgroundMusic.pause();
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-            updateVisualizerState();
-            
-            // Play video automatically
-            videoPlayer.play()
-                .then(() => {
-                    // Video started playing successfully
-                    console.log("Video started playing");
-                })
-                .catch(error => {
-                    console.log("Autoplay prevented: ", error);
-                    // Show a message or visual cue to encourage user to play manually
-                });
-            
-            // Request fullscreen if supported
-            if (videoPlayer.requestFullscreen) {
-                videoPlayer.requestFullscreen().catch(err => {
-                    console.log("Error attempting to enable fullscreen:", err);
-                });
-            } else if (videoPlayer.webkitRequestFullscreen) { /* Safari */
-                videoPlayer.webkitRequestFullscreen().catch(err => {
-                    console.log("Error attempting to enable fullscreen:", err);
-                });
-            } else if (videoPlayer.msRequestFullscreen) { /* IE11 */
-                videoPlayer.msRequestFullscreen().catch(err => {
-                    console.log("Error attempting to enable fullscreen:", err);
-                });
-            }
-        });
-        
-        closeModalBtn.addEventListener('click', () => {
-            videoModal.classList.add('hidden');
-            videoPlayer.pause();
-            videoPlayer.src = "";
-            
-            // Optionally resume the background music when video is closed
-            /*
-            backgroundMusic.play();
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
-            updateVisualizerState();
-            */
-        });
-        
-        // Close modal when clicking outside the video
-        videoModal.addEventListener('click', (e) => {
-            if (e.target === videoModal) {
-                videoModal.classList.add('hidden');
-                videoPlayer.pause();
-                videoPlayer.src = "";
-            }
-        });
-        
-        // Listen for fullscreen change events
-        document.addEventListener('fullscreenchange', exitHandler);
-        document.addEventListener('webkitfullscreenchange', exitHandler);
-        document.addEventListener('mozfullscreenchange', exitHandler);
-        document.addEventListener('MSFullscreenChange', exitHandler);
+  </div>
+  
+  <!-- Video Modal -->
+  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
+    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4">
+      <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
+      <div class="p-2">
+        <div class="relative" style="padding-top: 56.25%;">
+          <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Element references
+    const videoBtn = document.getElementById('videoBtn');
+    const videoModal = document.getElementById('videoModal');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const audioVisualizer = document.getElementById('audioVisualizer');
 
-        function exitHandler() {
-            if (!document.fullscreenElement && 
-                !document.webkitIsFullScreen && 
-                !document.mozFullScreen && 
-                !document.msFullscreenElement) {
-                // The user has exited fullscreen mode
-                // You can add additional handling here if needed
-            }
+    // Chat section elements
+    const wishForm = document.getElementById('wishForm');
+    const nameInput = document.getElementById('nameInput');
+    const messageInput = document.getElementById('messageInput');
+    const wishesContainer = document.getElementById('wishesContainer');
+    const emojiButtons = document.querySelectorAll('.emoji-btn');
+    
+    // Array to store wishes (since localStorage isn't available in the iframe)
+    let wishes = [
+      { name: "Izwan", message: "Selamat Hari Raya Aidilfitri! Mohon maaf zahir dan batin. 🙏✨", timestamp: new Date().toISOString() },
+      { name: "Nurazlina", message: "Maaf zahir dan batin. Semoga Allah menerima segala amalan kita sepanjang Ramadhan. 💐🕌", timestamp: new Date().toISOString() },
+      { name: "Aiman", message: "Takbir bergema, maaf dipinta. Selamat Aidilfitri, 'Kakak Sayang' 🌙❤️", timestamp: new Date().toISOString() }
+    ];
+
+    // Set initial volume for non-intrusive background music
+    backgroundMusic.volume = 0.3;
+
+    // Function to update audio visualizer state
+    function updateVisualizerState() {
+      if (backgroundMusic.paused) {
+        audioVisualizer.classList.remove('active');
+      } else {
+        audioVisualizer.classList.add('active');
+      }
+    }
+    
+    // Function to display wishes in the container
+    function displayWishes() {
+      // Clear the container first
+      wishesContainer.innerHTML = '';
+      
+      if (wishes.length === 0) {
+        wishesContainer.innerHTML = `
+          <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
+            <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Sort wishes by timestamp (newest first)
+      const sortedWishes = [...wishes].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      // Create and append wish cards
+      sortedWishes.forEach((wish, index) => {
+        const wishCard = document.createElement('div');
+        wishCard.className = 'wish-card bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 shadow-sm border border-gray-100 dark:border-gray-700';
+        
+        const date = new Date(wish.timestamp);
+        const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        
+        wishCard.innerHTML = `
+          <div class="flex justify-between items-start mb-1">
+            <h4 class="font-semibold text-primary-dark dark:text-primary-light">${wish.name}</h4>
+            <span class="text-xs text-gray-400">${formattedTime}</span>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300 text-left">${wish.message}</p>
+        `;
+        
+        wishesContainer.appendChild(wishCard);
+        
+        // Add a small delay before showing each card for a nice staggered effect
+        setTimeout(() => {
+          wishCard.classList.add('show');
+        }, index * 150);
+      });
+      
+      // Scroll to bottom after adding new wishes
+      wishesContainer.scrollTop = wishesContainer.scrollHeight;
+    }
+    
+    // Handle emoji button clicks
+    emojiButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const emoji = button.dataset.emoji;
+        messageInput.value += emoji;
+        messageInput.focus();
+      });
+    });
+    
+    // Handle wish form submission
+    wishForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+      
+      if (name && message) {
+        // Add new wish to the array
+        wishes.push({
+          name: name,
+          message: message,
+          timestamp: new Date().toISOString()
+        });
+        
+        // Clear form
+        nameInput.value = '';
+        messageInput.value = '';
+        
+        // Update display
+        displayWishes();
+      }
+    });
+
+    // Handle autoplay issues on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Display initial wishes
+      displayWishes();
+      
+      // Attempt to play the audio (it is muted initially)
+      backgroundMusic.play().then(() => {
+        updateVisualizerState();
+      }).catch(error => {
+        console.log("Autoplay prevented: ", error);
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        updateVisualizerState();
+      });
+
+      // Automatically unmute after 5 seconds
+      setTimeout(function() {
+        backgroundMusic.muted = false;
+        backgroundMusic.play().catch(error => {
+          console.log("Error playing audio after unmute:", error);
+        });
+      }, 5000);
+    });
+
+    // Update volume from slider
+    volumeSlider.addEventListener('input', function() {
+      backgroundMusic.volume = this.value;
+    });
+
+    // Add audio event listeners to update visualizer state
+    backgroundMusic.addEventListener('play', updateVisualizerState);
+    backgroundMusic.addEventListener('pause', updateVisualizerState);
+    backgroundMusic.addEventListener('ended', updateVisualizerState);
+
+    // Control background music manually
+    playPauseBtn.addEventListener('click', () => {
+      if (backgroundMusic.paused) {
+        backgroundMusic.play();
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      } else {
+        backgroundMusic.pause();
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      }
+    });
+
+    // Video modal functionality
+    videoBtn.addEventListener('click', () => {
+      videoModal.classList.remove('hidden');
+      videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
+
+      // Pause the background music when video is opened
+      backgroundMusic.pause();
+      playIcon.classList.remove('hidden');
+      pauseIcon.classList.add('hidden');
+      updateVisualizerState();
+
+      // Attempt to play video automatically
+      videoPlayer.play().then(() => {
+        console.log("Video started playing");
+      }).catch(error => {
+        console.log("Autoplay prevented for video: ", error);
+      });
+
+      // Request fullscreen if supported
+      if (videoPlayer.requestFullscreen) {
+        videoPlayer.requestFullscreen().catch(err => {
+          console.log("Error enabling fullscreen:", err);
+        });
+      } else if (videoPlayer.webkitRequestFullscreen) {
+        videoPlayer.webkitRequestFullscreen().catch(err => {
+          console.log("Error enabling fullscreen:", err);
+        });
+      } else if (videoPlayer.msRequestFullscreen) {
+        videoPlayer.msRequestFullscreen().catch(err => {
+          console.log("Error enabling fullscreen:", err);
+        });
+      }
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      videoModal.classList.add('hidden');
+      videoPlayer.pause();
+      videoPlayer.src = "";
+    });
+
+    // Close modal when clicking outside the video
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        videoModal.classList.add('hidden');
+        videoPlayer.pause();
+        videoPlayer.src = "";
+      }
+    });
+
+    // Listen for fullscreen change events
+    document.addEventListener('fullscreenchange', exitHandler);
+    document.addEventListener('webkitfullscreenchange', exitHandler);
+    document.addEventListener('mozfullscreenchange', exitHandler);
+    document.addEventListener('MSFullscreenChange', exitHandler);
+
+    function exitHandler() {
+      if (!document.fullscreenElement && 
+          !document.webkitIsFullScreen && 
+          !document.mozFullScreen && 
+          !document.msFullscreenElement) {
+        // The user has exited fullscreen mode; additional handling can be added here if needed.
+      }
+    }
+
+    // Decorative animations for floating elements
+    const floatingElements = document.querySelectorAll('.animate-float');
+    floatingElements.forEach((elem, index) => {
+      elem.style.animationDelay = `${index * 0.2}s`;
+    });
+
+    // Handle escape key to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
+        videoModal.classList.add('hidden');
+        videoPlayer.pause();
+        videoPlayer.src = "";
+      }
+    });
+
+    // Initialize the ticker at page load to ensure it runs properly
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get the width of a single ticker-group
+      const tickerGroup = document.querySelector('.ticker-group');
+      if (tickerGroup) {
+        // Adjust ticker animation speed based on content width for smoother scrolling
+        const tickerMove = document.querySelector('.ticker-move');
+        if (tickerMove) {
+          const contentWidth = tickerGroup.offsetWidth;
+          // Adjust animation duration based on content width (more content = slower speed for readability)
+          const duration = Math.max(20, contentWidth / 50); // At least 20 seconds, or longer for wider content
+          tickerMove.style.animationDuration = `${duration}s`;
         }
-        
-        // Decorative animations for floating elements
-        const floatingElements = document.querySelectorAll('.animate-float');
-        floatingElements.forEach((elem, index) => {
-            elem.style.animationDelay = `${index * 0.2}s`;
-        });
-        
-        // Handle escape key to close modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
-                videoModal.classList.add('hidden');
-                videoPlayer.pause();
-                videoPlayer.src = "";
-            }
-        });
-    </script>
+      }
+    });
+  </script>
 </body>
 </html>
