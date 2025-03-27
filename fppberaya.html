@@ -24,6 +24,12 @@
             background: {
               light: '#FFFFFF',
               dark: '#181818'
+            },
+            raya: {
+              green: '#2CA735',
+              gold: '#FFCB45',
+              teal: '#1D9E9E',
+              malay: '#26547C'
             }
           },
           animation: {
@@ -33,13 +39,14 @@
             'fade-in': 'fadeIn 2s ease-in-out',
             'slide-up': 'slideUp 1s ease-out',
             'bounce-light': 'bounceLight 2s infinite',
+            'confetti-fall': 'confettiFall 8s linear infinite',
           }
         }
       }
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Amiri:wght@400;700&display=swap');
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -187,6 +194,114 @@
     .gallery-btn {
       animation: galleryPulse 2s infinite ease-in-out;
     }
+    
+    /* Confetti animation */
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      opacity: 0.6;
+      animation: confettiFall linear infinite;
+    }
+    
+    /* Arabic text style */
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      direction: rtl;
+    }
+    
+    /* Enhanced button styles */
+    .enhanced-btn {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .enhanced-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .enhanced-btn:hover:before {
+      left: 100%;
+    }
+    
+    /* Image frame with pattern border */
+    .raya-frame {
+      position: relative;
+      padding: 10px;
+      background: linear-gradient(45deg, #FFCB45, #5D5CDE, #E15EB0);
+      border-radius: 0.5rem;
+    }
+    
+    .raya-frame::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: white;
+      border-radius: 0.3rem;
+      z-index: 0;
+    }
+    
+    .dark .raya-frame::before {
+      background: #181818;
+    }
+    
+    .raya-frame img {
+      position: relative;
+      z-index: 1;
+      border-radius: 0.2rem;
+    }
+    
+    /* Float animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    /* Sparkle animation */
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    
+    /* Custom tooltip */
+    .tooltip {
+      position: relative;
+    }
+    
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .tooltip:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
@@ -235,16 +350,24 @@
       <div class="lamp absolute top-1/4 left-1/4 w-8 h-12 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light"></div>
       <div class="lamp absolute top-1/3 right-1/3 w-6 h-10 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light" style="animation-delay: 1s;"></div>
       
+      <!-- Additional decorative elements (Hari Raya themed) -->
+      <img src="https://i.imgur.com/QJxp5T1.png" alt="Ketupat decoration" class="absolute top-16 left-1/4 w-12 h-12 animate-float" style="animation-delay: 1.5s;">
+      <img src="https://i.imgur.com/I3A7A54.png" alt="Lantern decoration" class="absolute bottom-1/4 right-16 w-14 h-14 animate-bounce-light" style="animation-delay: 0.7s;">
+      <img src="https://i.imgur.com/ocJZj8m.png" alt="Decorative crescent" class="absolute top-20 right-1/4 w-10 h-10 animate-float" style="animation-delay: 2s;">
+      
       <!-- Light Rays Behind Main Card -->
       <div class="light-rays absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] opacity-50"></div>
+      
+      <!-- Subtle confetti effect -->
+      <div id="confettiContainer" class="absolute inset-0 overflow-hidden"></div>
     </div>
 
     <!-- Main Card -->
-    <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+    <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in transition-transform duration-500 hover:shadow-[0_0_40px_rgba(93,92,222,0.4)]">
       <!-- Card Header with Mosque Silhouette -->
-      <div class="h-32 bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark relative overflow-hidden">
+      <div class="h-40 bg-gradient-to-r from-raya-malay via-primary-light to-secondary-light dark:from-raya-teal dark:via-primary-dark dark:to-secondary-dark relative overflow-hidden">
         <!-- Mosque Silhouette -->
-        <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 w-full text-white dark:text-gray-800" viewBox="0 0 100 30" fill="currentColor">
+        <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-32 w-full text-white dark:text-gray-800" viewBox="0 0 100 30" fill="currentColor">
           <path d="M0,30 L100,30 L100,25 L95,25 L95,20 L90,20 L90,25 L85,25 L85,15 L80,15 L80,25 L75,25 L75,20 L70,20 L70,25 L65,25 L65,20 L60,15 L55,20 L55,25 L50,25 L50,15 L45,15 L45,25 L40,25 L40,20 L35,20 L35,25 L30,25 L30,15 L25,15 L25,25 L20,25 L20,20 L15,20 L15,25 L10,25 L10,20 L5,20 L5,25 L0,25 L0,30 Z"/>
           <circle cx="50" cy="10" r="5"/>
           <rect x="48" y="0" width="4" height="5"/>
@@ -271,33 +394,42 @@
             <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
           </svg>
         </div>
+        
+        <!-- Decorative Islamic Patterns -->
+        <div class="absolute left-0 top-0 w-full h-full opacity-10">
+          <img src="https://i.imgur.com/TQrPTbx.png" alt="Islamic Pattern" class="w-full h-full object-cover">
+        </div>
       </div>
       
       <!-- Card Content -->
       <div class="p-6 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-primary-dark dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
-        <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-6 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
+        <h1 class="text-3xl md:text-4xl font-bold text-raya-malay dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-2 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
         
-        <p class="text-gray-600 dark:text-gray-300 mb-8 animate-slide-up" style="animation-delay: 0.3s;">
+        <p class="arabic-text text-xl text-raya-teal dark:text-raya-gold mb-2 animate-slide-up" style="animation-delay: 0.3s;">
+          عيد الفطر مبارك
+        </p>
+        
+        <p class="text-gray-600 dark:text-gray-300 mb-6 animate-slide-up" style="animation-delay: 0.4s;">
           Maaf Zahir dan Batin
         </p>
         
         <!-- Decorative Ketupat -->
-        <div class="flex justify-center space-x-4 mb-8">
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float">
+        <div class="flex justify-center space-x-4 mb-6">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float shadow-lg">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float" style="animation-delay: 0.5s;">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float shadow-lg" style="animation-delay: 0.5s;">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-secondary-light transform rotate-45 animate-float" style="animation-delay: 1s;">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-raya-green to-raya-gold transform rotate-45 animate-float shadow-lg" style="animation-delay: 1s;">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
         </div>
         
         <!-- Gallery Button -->
-        <div class="mb-8 animate-slide-up" style="animation-delay: 0.4s;">
-          <button id="galleryBtn" class="gallery-btn bg-primary hover:bg-primary-dark dark:bg-primary-dark dark:hover:bg-primary text-white py-3 px-6 rounded-lg shadow-lg transform transition-all duration-300 flex items-center justify-center mx-auto">
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.5s;">
+          <button id="galleryBtn" class="enhanced-btn gallery-btn bg-gradient-to-r from-raya-malay to-primary hover:from-primary hover:to-primary-dark dark:from-primary-dark dark:to-raya-teal dark:hover:from-primary dark:hover:to-primary-dark text-white py-3 px-6 rounded-lg shadow-lg transform transition-all duration-300 flex items-center justify-center mx-auto">
             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
@@ -306,20 +438,27 @@
         </div>
         
         <!-- Video Thumbnail -->
-        <div class="mb-6 animate-slide-up" style="animation-delay: 0.5s;">
-          <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
-            <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
-            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
-              <svg class="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.6s;">
+          <div class="raya-frame inline-block">
+            <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+              <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
+              <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
+                <svg class="w-16 h-16 text-white drop-shadow-lg transform hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
         
         <!-- Background Music Player -->
         <div class="mt-6 mb-2">
-          <h3 class="text-gray-600 dark:text-gray-300 mb-2">Sayang, Jom Nyanyi!</h3>
+          <h3 class="text-gray-600 dark:text-gray-300 mb-2 flex items-center justify-center">
+            <svg class="w-5 h-5 mr-2 text-raya-green dark:text-raya-gold" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+            Sayang, Jom Nyanyi!
+          </h3>
           <div class="relative" style="width:100%;max-width:660px;margin:0 auto;">
             <!-- HTML5 Audio element (hidden but plays in background) -->
             <audio id="backgroundMusic" autoplay loop muted style="display:none;">
@@ -327,8 +466,8 @@
             </audio>
             
             <!-- Custom audio controls that reflect the playing state -->
-            <div class="bg-primary-light dark:bg-primary-dark text-white p-3 rounded-lg flex items-center justify-between">
-              <button id="playPauseBtn" class="bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">
+            <div class="bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark text-white p-3 rounded-lg flex items-center justify-between shadow-lg">
+              <button id="playPauseBtn" class="enhanced-btn bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3 tooltip" data-tooltip="Play/Pause">
                 <svg id="pauseIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                 </svg>
@@ -340,18 +479,18 @@
                 <span class="text-sm md:text-base"></span>
                 <!-- Audio visualizer (animated bars) -->
                 <div id="audioVisualizer" class="flex h-3 items-end space-x-[2px] mt-1">
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
                 </div>
               </div>
               <div class="flex items-center space-x-2">
                 <span class="text-xs">Vol</span>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-secondary-light">
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-white">
               </div>
             </div>
           </div>
@@ -366,9 +505,9 @@
   </div>
   
   <!-- Video Modal -->
-  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4">
-      <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
+  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden backdrop-blur-sm">
+    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 transition-transform duration-500 transform scale-100">
+      <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-3xl enhanced-btn">&times;</button>
       <div class="p-2">
         <div class="relative" style="padding-top: 56.25%;">
           <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
@@ -378,26 +517,26 @@
   </div>
   
   <!-- Image Gallery Modal -->
-  <div id="galleryModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 py-4">
-      <button id="closeGalleryBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
+  <div id="galleryModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden backdrop-blur-sm">
+    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 py-4 transition-transform duration-500 transform scale-100">
+      <button id="closeGalleryBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-3xl enhanced-btn">&times;</button>
       
       <div class="p-2">
-        <h2 class="text-2xl font-bold text-primary-dark dark:text-primary-light text-center mb-4">Raya Gallery</h2>
+        <h2 class="text-2xl font-bold text-raya-malay dark:text-primary-light text-center mb-4">Raya Gallery</h2>
         
         <!-- Slider Container -->
-        <div class="relative overflow-hidden" style="height: 50vh; max-height: 500px;">
+        <div class="relative overflow-hidden rounded-lg shadow-xl" style="height: 50vh; max-height: 500px;">
           <div id="sliderContainer" class="w-full h-full relative">
             <!-- Images will be inserted here by JavaScript -->
           </div>
           
           <!-- Navigation Arrows -->
-          <button id="prevSlide" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-r-lg z-10">
+          <button id="prevSlide" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-r-lg z-10 enhanced-btn">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
-          <button id="nextSlide" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-l-lg z-10">
+          <button id="nextSlide" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-l-lg z-10 enhanced-btn">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
@@ -406,13 +545,13 @@
         
         <!-- Display Mode Toggle -->
         <div class="flex justify-center mt-4 gap-4">
-          <button id="sliderMode" class="py-2 px-4 bg-primary text-white rounded-lg active">Slider</button>
-          <button id="flipMode" class="py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg">Flip</button>
+          <button id="sliderMode" class="py-2 px-4 bg-primary text-white rounded-lg active enhanced-btn">Slider</button>
+          <button id="flipMode" class="py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn">Flip</button>
         </div>
         
         <!-- Image Counter -->
-        <div class="text-center mt-2">
-          <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+        <div class="text-center mt-2 text-raya-malay dark:text-gray-300">
+          <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
         </div>
       </div>
     </div>
@@ -430,6 +569,7 @@
     const backgroundMusic = document.getElementById('backgroundMusic');
     const volumeSlider = document.getElementById('volumeSlider');
     const audioVisualizer = document.getElementById('audioVisualizer');
+    const confettiContainer = document.getElementById('confettiContainer');
     
     // Gallery references
     const galleryBtn = document.getElementById('galleryBtn');
@@ -447,279 +587,57 @@
     let currentSlide = 0;
     let displayMode = 'slider'; // 'slider' or 'flip'
     
-    // Collection of images for the gallery 
-    // These are programmatically generated patterns in different colors to avoid external dependencies
+    // Collection of images for the gallery
     const galleryImages = [
-      generatePatternImage('mosque', '#8281E9', '#F385C7'), 
-      generatePatternImage('ketupat', '#4A49B2', '#E15EB0'),
-      generatePatternImage('crescent', '#8281E9', '#F385C7'),
-      generatePatternImage('lamp', '#F385C7', '#4A49B2'),
-      generatePatternImage('fireworks', '#E15EB0', '#8281E9')
+      // Real Hari Raya images from allowed domains
+      'https://images.unsplash.com/photo-1587463272361-565230be60a4?q=80&w=1000',
+      'https://i.imgur.com/RUzGCjh.jpg',
+      'https://i.imgur.com/CFQNPDO.jpg',
+      'https://i.imgur.com/6NiC3AA.jpg',
+      'https://i.imgur.com/dJQ1IlQ.jpg',
+      'https://i.imgur.com/b5RXcai.jpg',
+      'https://i.imgur.com/MFUKkfS.jpg'
     ];
     
     // Initialize the gallery and set the total slides
     totalSlidesEl.textContent = galleryImages.length.toString();
     
-    // Function to generate a pattern SVG image based on the type
-    function generatePatternImage(type, color1, color2) {
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-      svg.setAttribute("width", "600");
-      svg.setAttribute("height", "400");
-      svg.setAttribute("viewBox", "0 0 600 400");
+    // Create confetti pieces for background animation
+    function createConfetti() {
+      const colors = ['#5D5CDE', '#E15EB0', '#FFCB45', '#2CA735', '#26547C'];
+      const shapes = ['circle', 'square', 'triangle'];
       
-      // Background
-      const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-      bg.setAttribute("width", "600");
-      bg.setAttribute("height", "400");
-      bg.setAttribute("fill", "#F8F8F8");
-      svg.appendChild(bg);
-      
-      // Add pattern based on type
-      if (type === 'mosque') {
-        // Mosque silhouette and pattern
-        const mosque = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        mosque.setAttribute("d", "M200,300 L400,300 L400,250 L380,250 L380,200 L360,200 L360,250 L340,250 L340,180 L320,180 L320,250 L300,250 L300,200 L280,200 L280,250 L260,250 L260,180 L240,180 L240,250 L220,250 L220,200 L200,200 Z");
-        mosque.setAttribute("fill", color1);
-        svg.appendChild(mosque);
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
         
-        const dome = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        dome.setAttribute("cx", "300");
-        dome.setAttribute("cy", "180");
-        dome.setAttribute("r", "40");
-        dome.setAttribute("fill", color2);
-        svg.appendChild(dome);
+        // Random properties
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const left = Math.random() * 100 + 'vw';
+        const animationDuration = 5 + Math.random() * 10 + 's';
+        const animationDelay = Math.random() * 5 + 's';
         
-        // Add decorative elements
-        for (let i = 0; i < 10; i++) {
-          const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          star.setAttribute("cx", (50 + Math.random() * 500).toString());
-          star.setAttribute("cy", (50 + Math.random() * 150).toString());
-          star.setAttribute("r", (2 + Math.random() * 3).toString());
-          star.setAttribute("fill", i % 2 === 0 ? color1 : color2);
-          svg.appendChild(star);
+        // Apply styles
+        confetti.style.left = left;
+        confetti.style.backgroundColor = color;
+        confetti.style.animationDuration = animationDuration;
+        confetti.style.animationDelay = animationDelay;
+        
+        // Shape-specific styles
+        if (shape === 'circle') {
+          confetti.style.borderRadius = '50%';
+        } else if (shape === 'triangle') {
+          confetti.style.width = '0';
+          confetti.style.height = '0';
+          confetti.style.backgroundColor = 'transparent';
+          confetti.style.borderLeft = '5px solid transparent';
+          confetti.style.borderRight = '5px solid transparent';
+          confetti.style.borderBottom = '10px solid ' + color;
         }
         
-        // Add text
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", "300");
-        text.setAttribute("y", "350");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-family", "Arial, sans-serif");
-        text.setAttribute("font-size", "24");
-        text.setAttribute("fill", color1);
-        text.textContent = "Selamat Hari Raya Aidilfitri";
-        svg.appendChild(text);
-        
-      } else if (type === 'ketupat') {
-        // Create a ketupat (diamond) pattern
-        for (let i = 0; i < 5; i++) {
-          for (let j = 0; j < 7; j++) {
-            const ketupat = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            ketupat.setAttribute("x", (100 + j * 70).toString());
-            ketupat.setAttribute("y", (80 + i * 70).toString());
-            ketupat.setAttribute("width", "50");
-            ketupat.setAttribute("height", "50");
-            ketupat.setAttribute("transform", "rotate(45 " + (125 + j * 70) + " " + (105 + i * 70) + ")");
-            ketupat.setAttribute("fill", (i + j) % 2 === 0 ? color1 : color2);
-            ketupat.setAttribute("stroke", "#FFFFFF");
-            ketupat.setAttribute("stroke-width", "2");
-            svg.appendChild(ketupat);
-          }
-        }
-        
-        // Add text
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", "300");
-        text.setAttribute("y", "40");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-family", "Arial, sans-serif");
-        text.setAttribute("font-size", "24");
-        text.setAttribute("fill", color1);
-        text.textContent = "Ketupat Raya";
-        svg.appendChild(text);
-        
-      } else if (type === 'crescent') {
-        // Create crescent moon and stars
-        const moon = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        moon.setAttribute("d", "M300,200 C300,255 255,300 200,300 C145,300 100,255 100,200 C100,145 145,100 200,100 C255,100 300,145 300,200 Z");
-        moon.setAttribute("fill", color1);
-        svg.appendChild(moon);
-        
-        const cover = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        cover.setAttribute("cx", "250");
-        cover.setAttribute("cy", "200");
-        cover.setAttribute("r", "100");
-        cover.setAttribute("fill", "#F8F8F8");
-        svg.appendChild(cover);
-        
-        // Add stars
-        for (let i = 0; i < 15; i++) {
-          const star = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-          const x = 350 + Math.random() * 200;
-          const y = 50 + Math.random() * 300;
-          const size = 5 + Math.random() * 10;
-          
-          let points = "";
-          for (let j = 0; j < 5; j++) {
-            const angle = j * 2 * Math.PI / 5 - Math.PI / 2;
-            const px = x + size * Math.cos(angle);
-            const py = y + size * Math.sin(angle);
-            points += px + "," + py + " ";
-            
-            const innerAngle = angle + Math.PI / 5;
-            const innerSize = size / 2.5;
-            const ipx = x + innerSize * Math.cos(innerAngle);
-            const ipy = y + innerSize * Math.sin(innerAngle);
-            points += ipx + "," + ipy + " ";
-          }
-          
-          star.setAttribute("points", points);
-          star.setAttribute("fill", color2);
-          svg.appendChild(star);
-        }
-        
-        // Add text
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", "300");
-        text.setAttribute("y", "350");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-family", "Arial, sans-serif");
-        text.setAttribute("font-size", "24");
-        text.setAttribute("fill", color1);
-        text.textContent = "Maaf Zahir dan Batin";
-        svg.appendChild(text);
-        
-      } else if (type === 'lamp') {
-        // Draw Raya lamps
-        for (let i = 0; i < 3; i++) {
-          const x = 150 + i * 150;
-          
-          // Lamp body
-          const lamp = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          lamp.setAttribute("d", `M${x-30},150 L${x+30},150 L${x+25},250 L${x-25},250 Z`);
-          lamp.setAttribute("fill", i % 2 === 0 ? color1 : color2);
-          lamp.setAttribute("stroke", "#FFF");
-          lamp.setAttribute("stroke-width", "2");
-          svg.appendChild(lamp);
-          
-          // Lamp top
-          const lampTop = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          lampTop.setAttribute("d", `M${x-30},150 L${x-10},130 L${x+10},130 L${x+30},150`);
-          lampTop.setAttribute("fill", i % 2 === 0 ? color2 : color1);
-          svg.appendChild(lampTop);
-          
-          // Lamp bottom
-          const lampBottom = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          lampBottom.setAttribute("d", `M${x-25},250 L${x-15},270 L${x+15},270 L${x+25},250`);
-          lampBottom.setAttribute("fill", i % 2 === 0 ? color2 : color1);
-          svg.appendChild(lampBottom);
-          
-          // Hanging string
-          const string = document.createElementNS("http://www.w3.org/2000/svg", "line");
-          string.setAttribute("x1", x.toString());
-          string.setAttribute("y1", "70");
-          string.setAttribute("x2", x.toString());
-          string.setAttribute("y2", "130");
-          string.setAttribute("stroke", "#888");
-          string.setAttribute("stroke-width", "2");
-          svg.appendChild(string);
-          
-          // Lamp glow
-          const glow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          glow.setAttribute("cx", x.toString());
-          glow.setAttribute("cy", "200");
-          glow.setAttribute("r", "60");
-          glow.setAttribute("fill", "rgba(255, 255, 200, 0.3)");
-          glow.setAttribute("fill-opacity", "0.3");
-          svg.appendChild(glow);
-        }
-        
-        // Add decorative line at top
-        const topLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        topLine.setAttribute("x1", "100");
-        topLine.setAttribute("y1", "70");
-        topLine.setAttribute("x2", "500");
-        topLine.setAttribute("y2", "70");
-        topLine.setAttribute("stroke", "#888");
-        topLine.setAttribute("stroke-width", "3");
-        svg.appendChild(topLine);
-        
-        // Add text
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", "300");
-        text.setAttribute("y", "350");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-family", "Arial, sans-serif");
-        text.setAttribute("font-size", "24");
-        text.setAttribute("fill", color1);
-        text.textContent = "Pelita Raya";
-        svg.appendChild(text);
-        
-      } else if (type === 'fireworks') {
-        // Draw fireworks celebration
-        for (let i = 0; i < 5; i++) {
-          const x = 100 + Math.random() * 400;
-          const y = 70 + Math.random() * 200;
-          const size = 30 + Math.random() * 50;
-          const color = i % 2 === 0 ? color1 : color2;
-          
-          // Create the firework burst
-          for (let angle = 0; angle < 360; angle += Math.random() * 15 + 10) {
-            const radAngle = angle * Math.PI / 180;
-            const length = size * (0.7 + Math.random() * 0.3);
-            
-            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            line.setAttribute("x1", x.toString());
-            line.setAttribute("y1", y.toString());
-            line.setAttribute("x2", (x + length * Math.cos(radAngle)).toString());
-            line.setAttribute("y2", (y + length * Math.sin(radAngle)).toString());
-            line.setAttribute("stroke", color);
-            line.setAttribute("stroke-width", (1 + Math.random() * 2).toString());
-            svg.appendChild(line);
-            
-            // Add small sparkles at the end of some lines
-            if (Math.random() > 0.7) {
-              const sparkle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-              sparkle.setAttribute("cx", (x + length * Math.cos(radAngle)).toString());
-              sparkle.setAttribute("cy", (y + length * Math.sin(radAngle)).toString());
-              sparkle.setAttribute("r", (1 + Math.random() * 2).toString());
-              sparkle.setAttribute("fill", "#FFF");
-              svg.appendChild(sparkle);
-            }
-          }
-        }
-        
-        // Add a silhouette of a mosque at the bottom
-        const mosque = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        mosque.setAttribute("d", "M100,400 L500,400 L500,350 L450,350 L450,320 L430,320 L430,350 L410,350 L410,300 L390,300 L390,350 L350,350 L350,330 L330,330 L330,350 L310,350 L310,330 L290,300 L270,330 L270,350 L250,350 L250,300 L230,300 L230,350 L190,350 L190,320 L170,320 L170,350 L150,350 L150,320 L100,320 Z");
-        mosque.setAttribute("fill", "#000");
-        svg.appendChild(mosque);
-        
-        // Add domes on the mosque
-        const dome = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        dome.setAttribute("cx", "300");
-        dome.setAttribute("cy", "300");
-        dome.setAttribute("r", "20");
-        dome.setAttribute("fill", "#000");
-        svg.appendChild(dome);
-        
-        // Add text
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", "300");
-        text.setAttribute("y", "280");
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-family", "Arial, sans-serif");
-        text.setAttribute("font-size", "24");
-        text.setAttribute("fill", "#FFF");
-        text.textContent = "Selamat Hari Raya";
-        svg.appendChild(text);
+        confettiContainer.appendChild(confetti);
       }
-      
-      // Convert SVG to a data URL
-      const serializer = new XMLSerializer();
-      const svgString = serializer.serializeToString(svg);
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
     }
     
     // Set initial volume for non-intrusive background music
@@ -742,12 +660,17 @@
         const slide = document.createElement('div');
         slide.className = index === currentSlide ? 'absolute inset-0 flex items-center justify-center' : 'absolute inset-0 flex items-center justify-center hidden';
         
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'relative max-w-full max-h-full p-2';
+        
         const img = document.createElement('img');
         img.src = src;
         img.alt = `Raya Image ${index + 1}`;
-        img.className = 'max-w-full max-h-full object-contain';
+        img.className = 'max-w-full max-h-[45vh] object-contain rounded-lg shadow-lg';
+        img.loading = 'lazy';
         
-        slide.appendChild(img);
+        imgContainer.appendChild(img);
+        slide.appendChild(imgContainer);
         sliderContainer.appendChild(slide);
       });
       
@@ -762,7 +685,7 @@
     // Show a specific slide
     function showSlide(index) {
       // Remove all current animations and hide all slides
-      const slides = sliderContainer.querySelectorAll('div');
+      const slides = sliderContainer.querySelectorAll('div.absolute');
       slides.forEach(slide => {
         slide.className = 'absolute inset-0 flex items-center justify-center hidden';
       });
@@ -797,11 +720,11 @@
       displayMode = mode;
       
       if (mode === 'slider') {
-        sliderMode.className = 'py-2 px-4 bg-primary text-white rounded-lg';
-        flipMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg';
+        sliderMode.className = 'py-2 px-4 bg-primary text-white rounded-lg enhanced-btn';
+        flipMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn';
       } else {
-        flipMode.className = 'py-2 px-4 bg-primary text-white rounded-lg';
-        sliderMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg';
+        flipMode.className = 'py-2 px-4 bg-primary text-white rounded-lg enhanced-btn';
+        sliderMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn';
       }
       
       // Reshow current slide with new animation
@@ -810,6 +733,9 @@
     
     // Handle autoplay issues on page load
     document.addEventListener('DOMContentLoaded', function() {
+      // Create the confetti animation
+      createConfetti();
+      
       // Attempt to play the audio (it is muted initially)
       backgroundMusic.play().then(() => {
         updateVisualizerState();
@@ -830,6 +756,17 @@
       
       // Initialize the gallery
       initializeGallery();
+      
+      // Add hover effects to buttons
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          this.classList.add('scale-105');
+        });
+        button.addEventListener('mouseleave', function() {
+          this.classList.remove('scale-105');
+        });
+      });
     });
 
     // Update volume from slider
@@ -860,6 +797,11 @@
       videoModal.classList.remove('hidden');
       videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
 
+      // Add entrance animation
+      const modalContent = videoModal.querySelector('.relative');
+      modalContent.classList.add('scale-100');
+      modalContent.classList.remove('scale-90');
+
       // Pause the background music when video is opened
       backgroundMusic.pause();
       playIcon.classList.remove('hidden');
@@ -875,27 +817,42 @@
     });
 
     closeModalBtn.addEventListener('click', () => {
-      videoModal.classList.add('hidden');
-      videoPlayer.pause();
-      videoPlayer.src = "";
+      // Add exit animation
+      const modalContent = videoModal.querySelector('.relative');
+      modalContent.classList.remove('scale-100');
+      modalContent.classList.add('scale-90');
+      
+      // Wait for animation to complete
+      setTimeout(() => {
+        videoModal.classList.add('hidden');
+        videoPlayer.pause();
+        videoPlayer.src = "";
+      }, 300);
     });
     
     // Gallery modal functionality
     galleryBtn.addEventListener('click', () => {
       galleryModal.classList.remove('hidden');
       
+      // Add entrance animation
+      const modalContent = galleryModal.querySelector('.relative');
+      modalContent.classList.add('scale-100');
+      modalContent.classList.remove('scale-90');
+      
       // Initialize or refresh gallery
       initializeGallery();
-      
-      // Pause the background music when gallery is opened (optional)
-      // backgroundMusic.pause();
-      // playIcon.classList.remove('hidden');
-      // pauseIcon.classList.add('hidden');
-      // updateVisualizerState();
     });
     
     closeGalleryBtn.addEventListener('click', () => {
-      galleryModal.classList.add('hidden');
+      // Add exit animation
+      const modalContent = galleryModal.querySelector('.relative');
+      modalContent.classList.remove('scale-100');
+      modalContent.classList.add('scale-90');
+      
+      // Wait for animation to complete
+      setTimeout(() => {
+        galleryModal.classList.add('hidden');
+      }, 300);
     });
     
     // Gallery navigation
@@ -909,15 +866,29 @@
     // Close modals when clicking outside the content
     videoModal.addEventListener('click', (e) => {
       if (e.target === videoModal) {
-        videoModal.classList.add('hidden');
-        videoPlayer.pause();
-        videoPlayer.src = "";
+        // Add exit animation
+        const modalContent = videoModal.querySelector('.relative');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-90');
+        
+        setTimeout(() => {
+          videoModal.classList.add('hidden');
+          videoPlayer.pause();
+          videoPlayer.src = "";
+        }, 300);
       }
     });
     
     galleryModal.addEventListener('click', (e) => {
       if (e.target === galleryModal) {
-        galleryModal.classList.add('hidden');
+        // Add exit animation
+        const modalContent = galleryModal.querySelector('.relative');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-90');
+        
+        setTimeout(() => {
+          galleryModal.classList.add('hidden');
+        }, 300);
       }
     });
 
@@ -932,7 +903,7 @@
           !document.webkitIsFullScreen && 
           !document.mozFullScreen && 
           !document.msFullscreenElement) {
-        // The user has exited fullscreen mode; additional handling can be added here if needed.
+        // The user has exited fullscreen mode
       }
     }
 
@@ -946,13 +917,27 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (!videoModal.classList.contains('hidden')) {
-          videoModal.classList.add('hidden');
-          videoPlayer.pause();
-          videoPlayer.src = "";
+          // Add exit animation
+          const modalContent = videoModal.querySelector('.relative');
+          modalContent.classList.remove('scale-100');
+          modalContent.classList.add('scale-90');
+          
+          setTimeout(() => {
+            videoModal.classList.add('hidden');
+            videoPlayer.pause();
+            videoPlayer.src = "";
+          }, 300);
         }
         
         if (!galleryModal.classList.contains('hidden')) {
-          galleryModal.classList.add('hidden');
+          // Add exit animation
+          const modalContent = galleryModal.querySelector('.relative');
+          modalContent.classList.remove('scale-100');
+          modalContent.classList.add('scale-90');
+          
+          setTimeout(() => {
+            galleryModal.classList.add('hidden');
+          }, 300);
         }
       }
     });
@@ -967,6 +952,27 @@
         }
       }
     });
+    
+    // Add touch swipe support for gallery
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    sliderContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    sliderContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+    
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+        nextSlideHandler(); // Swipe left → next slide
+      } else if (touchEndX > touchStartX + 50) {
+        prevSlideHandler(); // Swipe right → previous slide
+      }
+    }
   </script>
 </body>
 </html>
