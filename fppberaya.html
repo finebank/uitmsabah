@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta property="og:title" content="FPP Beraya 2024" />
+  <meta property="og:description" content="Join us for a festive celebration at FPP UiTM Sabah!" />
+  <meta property="og:image" content="https://finebank.github.io/uitmsabah/fppberaya.jpg" />
+  <meta property="og:url" content="https://finebank.github.io/uitmsabah/fppberaya.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="600" />
+  <meta property="og:image:height" content="315" />
+  
+  <!-- Added Twitter Card metadata -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FPP Beraya 2024" />
+  <meta name="twitter:description" content="Join us for a festive celebration at FPP UiTM Sabah!" />
+  <meta name="twitter:image" content="https://finebank.github.io/uitmsabah/fppberaya.jpg" />
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Selamat Hari Raya Aidilfitri</title>
@@ -30,6 +47,10 @@
               gold: '#FFCB45',
               teal: '#1D9E9E',
               malay: '#26547C'
+            },
+            social: {
+              facebook: '#1877F2',
+              whatsapp: '#25D366'
             }
           },
           animation: {
@@ -423,6 +444,55 @@
       background: rgba(93, 92, 222, 0.5);
       animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
     }
+    
+    /* Share buttons animation */
+    @keyframes sharePopup {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .share-popup {
+      animation: sharePopup 0.3s ease-out;
+    }
+    
+    /* Share button box shadow */
+    .share-btn:hover {
+      box-shadow: 0 0 15px rgba(93, 92, 222, 0.5);
+    }
+    
+    /* Share button shine effect */
+    .share-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .share-btn:hover::after {
+      opacity: 1;
+    }
+    
+    /* Share thumbnail preview */
+    .share-thumbnail {
+      max-width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 0 auto 15px auto;
+    }
   </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
@@ -531,6 +601,23 @@
             </svg>
             Galeria Raya!
           </button>
+        </div>
+        
+        <!-- Share Buttons -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.55s;">
+          <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Kongsi kenangan raya ini:</p>
+          <div class="flex items-center justify-center space-x-4">
+            <!-- Facebook Share Button -->
+            <a id="facebookShareBtn" href="#" class="share-btn relative enhanced-btn bg-social-facebook text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+              <i class="fab fa-facebook-f mr-2"></i>
+              <span>Facebook</span>
+            </a>
+            <!-- WhatsApp Share Button -->
+            <a id="whatsappShareBtn" href="#" class="share-btn relative enhanced-btn bg-social-whatsapp text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+              <i class="fab fa-whatsapp mr-2"></i>
+              <span>WhatsApp</span>
+            </a>
+          </div>
         </div>
         
         <!-- Enhanced Video Thumbnail with Animated Button -->
@@ -655,6 +742,29 @@
     </div>
   </div>
   
+  <!-- Share Success Modal with Preview Thumbnail -->
+  <div id="shareSuccessModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl max-w-md w-full mx-4 share-popup">
+      <div class="text-center">
+        <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-check text-3xl text-green-500"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Shared Successfully!</h3>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Thank you for sharing our Hari Raya celebration with your friends and family.</p>
+        
+        <!-- Preview of thumbnail that will be shared -->
+        <div class="mb-4">
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">This thumbnail will appear with your shared post:</p>
+          <img src="https://finebank.github.io/uitmsabah/fppberaya.jpg" alt="Share Thumbnail" class="share-thumbnail mx-auto">
+        </div>
+        
+        <button id="closeShareModal" class="enhanced-btn bg-primary hover:bg-primary-dark text-white py-2 px-6 rounded-lg shadow-md transition-all duration-300">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+  
   <script>
     // Element references
     const videoBtn = document.getElementById('videoBtn');
@@ -680,6 +790,12 @@
     const currentSlideEl = document.getElementById('currentSlide');
     const totalSlidesEl = document.getElementById('totalSlides');
     
+    // Share buttons references
+    const facebookShareBtn = document.getElementById('facebookShareBtn');
+    const whatsappShareBtn = document.getElementById('whatsappShareBtn');
+    const shareSuccessModal = document.getElementById('shareSuccessModal');
+    const closeShareModal = document.getElementById('closeShareModal');
+    
     // Gallery settings and state
     let currentSlide = 0;
     
@@ -697,6 +813,40 @@
     
     // Initialize the gallery and set the total slides
     totalSlidesEl.textContent = galleryImages.length.toString();
+    
+    // Share URL and content
+    const shareUrl = 'https://finebank.github.io/uitmsabah/fppberaya.html';
+    const shareTitle = 'Selamat Hari Raya Aidilfitri';
+    const shareText = 'Join our Hari Raya Aidilfitri celebration! Maaf Zahir dan Batin 🌙✨';
+    
+    // Configure share buttons
+    facebookShareBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Use Facebook's sharing dialog with proper parameters to include the image
+      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareTitle)}&picture=${encodeURIComponent('https://finebank.github.io/uitmsabah/fppberaya.jpg')}`;
+      window.open(facebookShareUrl, '_blank', 'width=600,height=400');
+      showShareSuccessModal();
+    });
+    
+    whatsappShareBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // WhatsApp sharing - note that WhatsApp will automatically pull the og:image from the URL
+      const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+      window.open(whatsappShareUrl, '_blank');
+      showShareSuccessModal();
+    });
+    
+    // Share success modal functions
+    function showShareSuccessModal() {
+      shareSuccessModal.classList.remove('hidden');
+      setTimeout(() => {
+        shareSuccessModal.querySelector('div.share-popup').classList.add('scale-100');
+      }, 10);
+    }
+    
+    closeShareModal.addEventListener('click', function() {
+      shareSuccessModal.classList.add('hidden');
+    });
     
     // Create confetti pieces for background animation
     function createConfetti() {
@@ -1003,6 +1153,12 @@
         galleryModal.classList.add('hidden');
       }
     });
+    
+    shareSuccessModal.addEventListener('click', (e) => {
+      if (e.target === shareSuccessModal) {
+        shareSuccessModal.classList.add('hidden');
+      }
+    });
 
     // Listen for fullscreen change events
     document.addEventListener('fullscreenchange', exitHandler);
@@ -1040,6 +1196,10 @@
         
         if (!galleryModal.classList.contains('hidden')) {
           closeGalleryBtn.click();
+        }
+        
+        if (!shareSuccessModal.classList.contains('hidden')) {
+          closeShareModal.click();
         }
       }
     });
