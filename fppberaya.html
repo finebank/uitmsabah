@@ -40,6 +40,8 @@
             'slide-up': 'slideUp 1s ease-out',
             'bounce-light': 'bounceLight 2s infinite',
             'confetti-fall': 'confettiFall 8s linear infinite',
+            'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+            'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           }
         }
       }
@@ -302,6 +304,125 @@
       opacity: 1;
       visibility: visible;
     }
+
+    /* New animation for play button */
+    @keyframes ping {
+      0% {
+        transform: scale(0.95);
+        opacity: 1;
+      }
+      75%, 100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Fullscreen gallery styles */
+    .fullscreen-gallery {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Gallery navigation buttons */
+    .gallery-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 101;
+    }
+
+    .gallery-nav-btn:hover {
+      background: rgba(93, 92, 222, 0.7);
+    }
+
+    .gallery-nav-btn.prev {
+      left: 20px;
+    }
+
+    .gallery-nav-btn.next {
+      right: 20px;
+    }
+
+    /* Gallery close button */
+    .gallery-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 101;
+    }
+
+    .gallery-close-btn:hover {
+      background: rgba(225, 94, 176, 0.7);
+    }
+
+    /* Gallery counter */
+    .gallery-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 101;
+    }
+
+    /* Improved video button pulse */
+    .video-btn-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(93, 92, 222, 0.3);
+      z-index: 1;
+    }
+
+    .video-btn-pulse::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      background: rgba(93, 92, 222, 0.5);
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
   </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
@@ -366,9 +487,8 @@
     <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in transition-transform duration-500 hover:shadow-[0_0_40px_rgba(93,92,222,0.4)]">
       
       <!-- Updated Header Section (No Gradient) -->
-      <!-- Replace 'YOUR_IMAGE_URL.jpg' below with the actual path/URL to the new purple mosque image you uploaded -->
       <div class="h-48 relative overflow-hidden">
-        <img src="https://i.imgur.com/Glgj0YJ.jpeg" alt="Hari Raya Background" class="absolute inset-0 w-full h-full object-cover">
+        <img src="https://i.imgur.com/9G6ABBa.gif" alt="Hari Raya Background" class="absolute inset-0 w-full h-full object-cover">
         <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
           <h1 class="text-4xl md:text-5xl font-bold"></h1>
           <p class="mt-2 text-xl md:text-2xl"></p>
@@ -382,9 +502,9 @@
         <h1 class="text-3xl md:text-4xl font-bold text-raya-malay dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
         <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-2 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
         
-        <h3 class="arabic-text text-xl text-raya-teal dark:text-raya-gold mb-2 animate-slide-up" style="animation-delay: 0.3s;">
+        <p class="arabic-text text-xl text-raya-teal dark:text-raya-gold mb-2 animate-slide-up" style="animation-delay: 0.3s;">
           عيد الفطر مبارك
-        </h3>
+        </p>
         
         <p class="text-gray-600 dark:text-gray-300 mb-6 animate-slide-up" style="animation-delay: 0.4s;">
           Maaf Zahir dan Batin
@@ -413,15 +533,23 @@
           </button>
         </div>
         
-        <!-- Video Thumbnail -->
+        <!-- Enhanced Video Thumbnail with Animated Button -->
         <div class="mb-6 animate-slide-up" style="animation-delay: 0.6s;">
           <div class="raya-frame inline-block">
             <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
               <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
-              <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
-                <svg class="w-16 h-16 text-white drop-shadow-lg transform hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
+              <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all">
+                <!-- Animated Play Button with Enhanced Effects -->
+                <div class="video-btn-pulse"></div>
+                <div class="relative z-10 w-20 h-20 rounded-full bg-gradient-to-r from-raya-gold to-primary flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform duration-300 border-2 border-white">
+                  <svg class="w-10 h-10 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <!-- Watch Video Text -->
+                <div class="absolute bottom-4 bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg px-6 py-2 rounded-full shadow-lg animate-pulse">
+                  Watch Raya Video
+                </div>
               </div>
             </div>
           </div>
@@ -480,55 +608,49 @@
     </div>
   </div>
   
-  <!-- Video Modal -->
-  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden backdrop-blur-sm">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 transition-transform duration-500 transform scale-100">
-      <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-3xl enhanced-btn">&times;</button>
-      <div class="p-2">
-        <div class="relative" style="padding-top: 56.25%;">
-          <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
-        </div>
-      </div>
+  <!-- Enhanced Video Modal (Fullscreen) -->
+  <div id="videoModal" class="fixed inset-0 bg-black z-50 flex items-center justify-center hidden">
+    <div id="videoContainer" class="relative w-full h-full">
+      <button id="closeModalBtn" class="absolute top-5 right-5 z-10 w-12 h-12 bg-black bg-opacity-60 hover:bg-opacity-80 text-white rounded-full flex items-center justify-center transition-all duration-300">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <video id="videoPlayer" class="w-full h-full" controls playsinline></video>
     </div>
   </div>
   
-  <!-- Image Gallery Modal -->
-  <div id="galleryModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden backdrop-blur-sm">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4 py-4 transition-transform duration-500 transform scale-100">
-      <button id="closeGalleryBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-3xl enhanced-btn">&times;</button>
+  <!-- Enhanced Fullscreen Gallery Modal -->
+  <div id="galleryModal" class="fixed inset-0 bg-black z-50 hidden">
+    <div id="fullscreenGallery" class="w-full h-full relative flex items-center justify-center">
+      <!-- Gallery Navigation -->
+      <button id="prevSlide" class="gallery-nav-btn prev">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
       
-      <div class="p-2">
-        <h2 class="text-2xl font-bold text-raya-malay dark:text-primary-light text-center mb-4">Raya Gallery</h2>
-        
-        <!-- Slider Container -->
-        <div class="relative overflow-hidden rounded-lg shadow-xl" style="height: 50vh; max-height: 500px;">
-          <div id="sliderContainer" class="w-full h-full relative">
-            <!-- Images will be inserted here by JavaScript -->
-          </div>
-          
-          <!-- Navigation Arrows -->
-          <button id="prevSlide" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-r-lg z-10 enhanced-btn">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-          <button id="nextSlide" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-l-lg z-10 enhanced-btn">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-        </div>
-        
-        <!-- Display Mode Toggle -->
-        <div class="flex justify-center mt-4 gap-4">
-          <button id="sliderMode" class="py-2 px-4 bg-primary text-white rounded-lg active enhanced-btn">Slider</button>
-          <button id="flipMode" class="py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn">Flip</button>
-        </div>
-        
-        <!-- Image Counter -->
-        <div class="text-center mt-2 text-raya-malay dark:text-gray-300">
-          <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
-        </div>
+      <button id="nextSlide" class="gallery-nav-btn next">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+      
+      <!-- Close Button -->
+      <button id="closeGalleryBtn" class="gallery-close-btn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      
+      <!-- Gallery Counter -->
+      <div class="gallery-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
+      </div>
+      
+      <!-- Gallery Slider -->
+      <div id="sliderContainer" class="w-full h-full relative">
+        <!-- Images will be inserted here by JavaScript -->
       </div>
     </div>
   </div>
@@ -538,6 +660,7 @@
     const videoBtn = document.getElementById('videoBtn');
     const videoModal = document.getElementById('videoModal');
     const videoPlayer = document.getElementById('videoPlayer');
+    const videoContainer = document.getElementById('videoContainer');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const playIcon = document.getElementById('playIcon');
@@ -554,14 +677,11 @@
     const sliderContainer = document.getElementById('sliderContainer');
     const prevSlide = document.getElementById('prevSlide');
     const nextSlide = document.getElementById('nextSlide');
-    const sliderMode = document.getElementById('sliderMode');
-    const flipMode = document.getElementById('flipMode');
     const currentSlideEl = document.getElementById('currentSlide');
     const totalSlidesEl = document.getElementById('totalSlides');
     
     // Gallery settings and state
     let currentSlide = 0;
-    let displayMode = 'slider'; // 'slider' or 'flip'
     
     // Collection of images for the gallery
     const galleryImages = [
@@ -628,7 +748,7 @@
       }
     }
     
-    // Initialize gallery slides
+    // Initialize fullscreen gallery slides
     function initializeGallery() {
       sliderContainer.innerHTML = '';
       
@@ -642,7 +762,7 @@
         const img = document.createElement('img');
         img.src = src;
         img.alt = `Raya Image ${index + 1}`;
-        img.className = 'max-w-full max-h-[45vh] object-contain rounded-lg shadow-lg';
+        img.className = 'max-h-[90vh] max-w-[90vw] object-contain';
         img.loading = 'lazy';
         
         imgContainer.appendChild(img);
@@ -666,12 +786,8 @@
         slide.className = 'absolute inset-0 flex items-center justify-center hidden';
       });
       
-      // Show the current slide with appropriate animation
-      if (displayMode === 'slider') {
-        slides[index].className = 'absolute inset-0 flex items-center justify-center slide-active';
-      } else {
-        slides[index].className = 'absolute inset-0 flex items-center justify-center flip-active';
-      }
+      // Show the current slide with animation
+      slides[index].className = 'absolute inset-0 flex items-center justify-center slide-active';
       
       currentSlide = index;
       updateSlideCounter();
@@ -691,20 +807,26 @@
       showSlide(newIndex);
     }
     
-    // Toggle between slider and flip modes
-    function toggleDisplayMode(mode) {
-      displayMode = mode;
-      
-      if (mode === 'slider') {
-        sliderMode.className = 'py-2 px-4 bg-primary text-white rounded-lg enhanced-btn';
-        flipMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn';
-      } else {
-        flipMode.className = 'py-2 px-4 bg-primary text-white rounded-lg enhanced-btn';
-        sliderMode.className = 'py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded-lg enhanced-btn';
+    // Request fullscreen for video
+    function requestFullscreen(element) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) { /* Safari */
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) { /* IE11 */
+        element.msRequestFullscreen();
       }
-      
-      // Reshow current slide with new animation
-      showSlide(currentSlide);
+    }
+    
+    // Exit fullscreen
+    function exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+      }
     }
     
     // Handle autoplay issues on page load
@@ -768,15 +890,10 @@
       }
     });
 
-    // Video modal functionality
+    // Enhanced Video modal functionality with fullscreen
     videoBtn.addEventListener('click', () => {
       videoModal.classList.remove('hidden');
       videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
-
-      // Add entrance animation
-      const modalContent = videoModal.querySelector('.relative');
-      modalContent.classList.add('scale-100');
-      modalContent.classList.remove('scale-90');
 
       // Pause the background music when video is opened
       backgroundMusic.pause();
@@ -784,87 +901,106 @@
       pauseIcon.classList.add('hidden');
       updateVisualizerState();
 
-      // Attempt to play video automatically
-      videoPlayer.play().then(() => {
-        console.log("Video started playing");
-      }).catch(error => {
-        console.log("Autoplay prevented for video: ", error);
+      // Attempt to play video automatically and go fullscreen
+      videoPlayer.addEventListener('canplay', function onCanPlay() {
+        // Remove this listener to prevent multiple calls
+        videoPlayer.removeEventListener('canplay', onCanPlay);
+        
+        // Play video
+        videoPlayer.play().then(() => {
+          console.log("Video started playing");
+          
+          // Try to request fullscreen after user interaction
+          setTimeout(() => {
+            try {
+              requestFullscreen(videoContainer);
+            } catch (error) {
+              console.log("Fullscreen request failed:", error);
+            }
+          }, 1000);
+        }).catch(error => {
+          console.log("Autoplay prevented for video:", error);
+        });
       });
     });
 
     closeModalBtn.addEventListener('click', () => {
-      // Add exit animation
-      const modalContent = videoModal.querySelector('.relative');
-      modalContent.classList.remove('scale-100');
-      modalContent.classList.add('scale-90');
+      // Exit fullscreen if currently in fullscreen mode
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement || 
+          document.msFullscreenElement) {
+        exitFullscreen();
+      }
       
-      // Wait for animation to complete
-      setTimeout(() => {
-        videoModal.classList.add('hidden');
-        videoPlayer.pause();
-        videoPlayer.src = "";
-      }, 300);
+      // Hide modal and stop video
+      videoModal.classList.add('hidden');
+      videoPlayer.pause();
+      videoPlayer.src = "";
     });
     
-    // Gallery modal functionality
+    // Enhanced Gallery modal functionality with fullscreen
     galleryBtn.addEventListener('click', () => {
       galleryModal.classList.remove('hidden');
       
-      // Add entrance animation
-      const modalContent = galleryModal.querySelector('.relative');
-      modalContent.classList.add('scale-100');
-      modalContent.classList.remove('scale-90');
-      
       // Initialize or refresh gallery
       initializeGallery();
+      
+      // Try to request fullscreen after user interaction
+      setTimeout(() => {
+        try {
+          requestFullscreen(document.getElementById('fullscreenGallery'));
+        } catch (error) {
+          console.log("Fullscreen request failed:", error);
+        }
+      }, 1000);
     });
     
     closeGalleryBtn.addEventListener('click', () => {
-      // Add exit animation
-      const modalContent = galleryModal.querySelector('.relative');
-      modalContent.classList.remove('scale-100');
-      modalContent.classList.add('scale-90');
+      // Exit fullscreen if currently in fullscreen mode
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement || 
+          document.msFullscreenElement) {
+        exitFullscreen();
+      }
       
-      // Wait for animation to complete
-      setTimeout(() => {
-        galleryModal.classList.add('hidden');
-      }, 300);
+      // Hide gallery modal
+      galleryModal.classList.add('hidden');
     });
     
     // Gallery navigation
     prevSlide.addEventListener('click', prevSlideHandler);
     nextSlide.addEventListener('click', nextSlideHandler);
-    
-    // Display mode toggles
-    sliderMode.addEventListener('click', () => toggleDisplayMode('slider'));
-    flipMode.addEventListener('click', () => toggleDisplayMode('flip'));
 
     // Close modals when clicking outside the content
     videoModal.addEventListener('click', (e) => {
       if (e.target === videoModal) {
-        // Add exit animation
-        const modalContent = videoModal.querySelector('.relative');
-        modalContent.classList.remove('scale-100');
-        modalContent.classList.add('scale-90');
+        // Exit fullscreen if currently in fullscreen mode
+        if (document.fullscreenElement || 
+            document.webkitFullscreenElement || 
+            document.mozFullScreenElement || 
+            document.msFullscreenElement) {
+          exitFullscreen();
+        }
         
-        setTimeout(() => {
-          videoModal.classList.add('hidden');
-          videoPlayer.pause();
-          videoPlayer.src = "";
-        }, 300);
+        videoModal.classList.add('hidden');
+        videoPlayer.pause();
+        videoPlayer.src = "";
       }
     });
     
     galleryModal.addEventListener('click', (e) => {
       if (e.target === galleryModal) {
-        // Add exit animation
-        const modalContent = galleryModal.querySelector('.relative');
-        modalContent.classList.remove('scale-100');
-        modalContent.classList.add('scale-90');
+        // Exit fullscreen if currently in fullscreen mode
+        if (document.fullscreenElement || 
+            document.webkitFullscreenElement || 
+            document.mozFullScreenElement || 
+            document.msFullscreenElement) {
+          exitFullscreen();
+        }
         
-        setTimeout(() => {
-          galleryModal.classList.add('hidden');
-        }, 300);
+        galleryModal.classList.add('hidden');
       }
     });
 
@@ -880,6 +1016,12 @@
           !document.mozFullScreen && 
           !document.msFullscreenElement) {
         // The user has exited fullscreen mode
+        if (!videoModal.classList.contains('hidden')) {
+          closeModalBtn.click();
+        }
+        if (!galleryModal.classList.contains('hidden')) {
+          closeGalleryBtn.click();
+        }
       }
     }
 
@@ -893,27 +1035,11 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (!videoModal.classList.contains('hidden')) {
-          // Add exit animation
-          const modalContent = videoModal.querySelector('.relative');
-          modalContent.classList.remove('scale-100');
-          modalContent.classList.add('scale-90');
-          
-          setTimeout(() => {
-            videoModal.classList.add('hidden');
-            videoPlayer.pause();
-            videoPlayer.src = "";
-          }, 300);
+          closeModalBtn.click();
         }
         
         if (!galleryModal.classList.contains('hidden')) {
-          // Add exit animation
-          const modalContent = galleryModal.querySelector('.relative');
-          modalContent.classList.remove('scale-100');
-          modalContent.classList.add('scale-90');
-          
-          setTimeout(() => {
-            galleryModal.classList.add('hidden');
-          }, 300);
+          closeGalleryBtn.click();
         }
       }
     });
