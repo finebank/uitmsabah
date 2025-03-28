@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta property="og:title" content="FPP Beraya 2024" />
+  <meta property="og:description" content="Join us for a festive celebration at FPP UiTM Sabah!" />
+  <meta property="og:image" content="https://finebank.github.io/uitmsabah/fppberaya.jpg" />
+  <meta property="og:url" content="https://finebank.github.io/uitmsabah/fppberaya.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image:type" content="image/gif" />
+  <meta property="og:image:width" content="600" />
+  <meta property="og:image:height" content="315" />
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Selamat Hari Raya Aidilfitri</title>
@@ -24,6 +34,16 @@
             background: {
               light: '#FFFFFF',
               dark: '#181818'
+            },
+            raya: {
+              green: '#2CA735',
+              gold: '#FFCB45',
+              teal: '#1D9E9E',
+              malay: '#26547C'
+            },
+            social: {
+              facebook: '#1877F2',
+              whatsapp: '#25D366'
             }
           },
           animation: {
@@ -33,40 +53,16 @@
             'fade-in': 'fadeIn 2s ease-in-out',
             'slide-up': 'slideUp 1s ease-out',
             'bounce-light': 'bounceLight 2s infinite',
-            'wish-appear': 'wishAppear 0.5s ease-out forwards'
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' }
-            },
-            sparkle: {
-              '0%, 100%': { opacity: 1 },
-              '50%': { opacity: 0.3 }
-            },
-            fadeIn: {
-              '0%': { opacity: 0 },
-              '100%': { opacity: 1 }
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(30px)', opacity: 0 },
-              '100%': { transform: 'translateY(0)', opacity: 1 }
-            },
-            bounceLight: {
-              '0%, 100%': { transform: 'translateY(0)', opacity: 1 },
-              '50%': { transform: 'translateY(-5px)', opacity: 0.7 }
-            },
-            wishAppear: {
-              '0%': { transform: 'translateY(20px)', opacity: 0 },
-              '100%': { transform: 'translateY(0)', opacity: 1 }
-            }
+            'confetti-fall': 'confettiFall 8s linear infinite',
+            'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+            'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           }
         }
       }
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Amiri:wght@400;700&display=swap');
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -107,7 +103,7 @@
       --player-bg: #8281E9;
       --player-text: white;
       --player-btn: #F385C7;
-      --player-btn-hover: #B84A8D;
+      --player-btn-hover: #B8u4A8D;
     }
 
     .dark .audio-player {
@@ -157,78 +153,330 @@
       height: 2px;
       transition: height 0.3s ease-out;
     }
-    
-    /* News Ticker / Crawler Animation - IMPROVED VERSION */
-    @keyframes ticker {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
+
+    /* Gallery styles */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
     
-    .ticker-wrap {
-      width: 100%;
+    @keyframes slideUp {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes bounceLight {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-5px); opacity: 0.7; }
+    }
+    
+    /* Slider animation */
+    @keyframes slideIn {
+      0% { transform: translateX(100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(-100%); opacity: 0; }
+    }
+    
+    .slide-active {
+      animation: slideIn 0.5s forwards;
+    }
+    
+    .slide-inactive {
+      animation: slideOut 0.5s forwards;
+    }
+    
+    /* Flip animation */
+    @keyframes flipIn {
+      0% { transform: rotateY(90deg); opacity: 0; }
+      100% { transform: rotateY(0deg); opacity: 1; }
+    }
+    
+    .flip-active {
+      animation: flipIn 0.7s forwards;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+    
+    /* Gallery button pulse */
+    @keyframes galleryPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .gallery-btn {
+      animation: galleryPulse 2s infinite ease-in-out;
+    }
+    
+    /* Confetti animation */
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      opacity: 0.6;
+      animation: confettiFall linear infinite;
+    }
+    
+    /* Arabic text style */
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      direction: rtl;
+    }
+    
+    /* Enhanced button styles */
+    .enhanced-btn {
+      transition: all 0.3s ease;
+      position: relative;
       overflow: hidden;
+    }
+    
+    .enhanced-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .enhanced-btn:hover:before {
+      left: 100%;
+    }
+    
+    /* Image frame with pattern border */
+    .raya-frame {
+      position: relative;
+      padding: 10px;
+      background: linear-gradient(45deg, #FFCB45, #5D5CDE, #E15EB0);
+      border-radius: 0.5rem;
+    }
+    
+    .raya-frame::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: white;
+      border-radius: 0.3rem;
+      z-index: 0;
+    }
+    
+    .dark .raya-frame::before {
+      background: #181818;
+    }
+    
+    .raya-frame img {
+      position: relative;
+      z-index: 1;
+      border-radius: 0.2rem;
+    }
+    
+    /* Float animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    /* Sparkle animation */
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    
+    /* Custom tooltip */
+    .tooltip {
       position: relative;
     }
     
-    .ticker-move {
-      display: flex;
-      white-space: nowrap;
-      animation: ticker 20s linear infinite;
-      width: auto;
-    }
-    
-    .ticker-group {
-      display: flex;
-      flex-shrink: 0;
-      width: 100%;
-    }
-    
-    .ticker-item {
-      padding: 0 1.5rem;
-      font-weight: 600;
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 10px;
+      background: rgba(0,0,0,0.7);
       color: white;
-      font-size: 1.1rem;
-    }
-
-    /* Chat section styles */
-    .wishes-container {
-      max-height: 300px;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-    }
-
-    .wish-card {
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
       opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
     
-    .wish-card.show {
-      animation: wishAppear 0.5s ease-out forwards;
+    .tooltip:hover::after {
+      opacity: 1;
+      visibility: visible;
     }
-    
-    .emoji-picker {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
+
+    /* New animation for play button */
+    @keyframes ping {
+      0% {
+        transform: scale(0.95);
+        opacity: 1;
+      }
+      75%, 100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
     }
-    
-    .emoji-btn {
-      width: 30px;
-      height: 30px;
+
+    /* Fullscreen gallery styles */
+    .fullscreen-gallery {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Gallery navigation buttons */
+    .gallery-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: all 0.3s;
+      z-index: 101;
+    }
+
+    .gallery-nav-btn:hover {
+      background: rgba(93, 92, 222, 0.7);
+    }
+
+    .gallery-nav-btn.prev {
+      left: 20px;
+    }
+
+    .gallery-nav-btn.next {
+      right: 20px;
+    }
+
+    /* Gallery close button */
+    .gallery-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
       border-radius: 50%;
-      transition: all 0.2s;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 101;
+    }
+
+    .gallery-close-btn:hover {
+      background: rgba(225, 94, 176, 0.7);
+    }
+
+    /* Gallery counter */
+    .gallery-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 101;
+    }
+
+    /* Improved video button pulse */
+    .video-btn-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(93, 92, 222, 0.3);
+      z-index: 1;
+    }
+
+    .video-btn-pulse::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      background: rgba(93, 92, 222, 0.5);
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
     }
     
-    .emoji-btn:hover {
-      background-color: rgba(93, 92, 222, 0.1);
-      transform: scale(1.1);
+    /* Share buttons animation */
+    @keyframes sharePopup {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .share-popup {
+      animation: sharePopup 0.3s ease-out;
+    }
+    
+    /* Share button box shadow */
+    .share-btn:hover {
+      box-shadow: 0 0 15px rgba(93, 92, 222, 0.5);
+    }
+    
+    /* Share button shine effect */
+    .share-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .share-btn:hover::after {
+      opacity: 1;
     }
   </style>
 </head>
@@ -278,167 +526,124 @@
       <div class="lamp absolute top-1/4 left-1/4 w-8 h-12 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light"></div>
       <div class="lamp absolute top-1/3 right-1/3 w-6 h-10 bg-yellow-200 dark:bg-yellow-300 rounded-full opacity-70 animate-bounce-light" style="animation-delay: 1s;"></div>
       
+      <!-- Additional decorative elements (Hari Raya themed) -->
+      <img src="https://i.imgur.com/QJxp5T1.png" alt="Ketupat decoration" class="absolute top-16 left-1/4 w-12 h-12 animate-float" style="animation-delay: 1.5s;">
+      <img src="https://i.imgur.com/I3A7A54.png" alt="Lantern decoration" class="absolute bottom-1/4 right-16 w-14 h-14 animate-bounce-light" style="animation-delay: 0.7s;">
+      <img src="https://i.imgur.com/ocJZj8m.png" alt="Decorative crescent" class="absolute top-20 right-1/4 w-10 h-10 animate-float" style="animation-delay: 2s;">
+      
       <!-- Light Rays Behind Main Card -->
       <div class="light-rays absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] opacity-50"></div>
+      
+      <!-- Subtle confetti effect -->
+      <div id="confettiContainer" class="absolute inset-0 overflow-hidden"></div>
     </div>
 
     <!-- Main Card -->
-    <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
-      <!-- Card Header with Mosque Silhouette -->
-      <div class="h-32 bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark relative overflow-hidden">
-        <!-- Mosque Silhouette -->
-        <svg class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-24 w-full text-white dark:text-gray-800" viewBox="0 0 100 30" fill="currentColor">
-          <path d="M0,30 L100,30 L100,25 L95,25 L95,20 L90,20 L90,25 L85,25 L85,15 L80,15 L80,25 L75,25 L75,20 L70,20 L70,25 L65,25 L65,20 L60,15 L55,20 L55,25 L50,25 L50,15 L45,15 L45,25 L40,25 L40,20 L35,20 L35,25 L30,25 L30,15 L25,15 L25,25 L20,25 L20,20 L15,20 L15,25 L10,25 L10,20 L5,20 L5,25 L0,25 L0,30 Z"/>
-          <circle cx="50" cy="10" r="5"/>
-          <rect x="48" y="0" width="4" height="5"/>
-        </svg>
-        
-        <!-- Decorative Stars -->
-        <div class="absolute top-2 left-5 flex space-x-2">
-          <svg class="w-3 h-3 text-white animate-sparkle" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-          </svg>
-          <svg class="w-4 h-4 text-white animate-sparkle" style="animation-delay: 0.3s;" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-          </svg>
-          <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.7s;" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-          </svg>
-        </div>
-        
-        <div class="absolute top-3 right-7 flex space-x-1">
-          <svg class="w-2 h-2 text-white animate-sparkle" style="animation-delay: 0.2s;" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-          </svg>
-          <svg class="w-3 h-3 text-white animate-sparkle" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-          </svg>
+    <div class="relative z-10 w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in transition-transform duration-500 hover:shadow-[0_0_40px_rgba(93,92,222,0.4)]">
+      
+      <!-- Updated Header Section (No Gradient) -->
+      <div class="h-48 relative overflow-hidden">
+        <img src="https://i.imgur.com/Glgj0YJ_d.jpeg?maxwidth=520&shape=thumb&fidelity=high" alt="Hari Raya Background" class="absolute inset-0 w-full h-full object-cover">
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
+          <h1 class="text-4xl md:text-5xl font-bold"></h1>
+          <p class="mt-2 text-xl md:text-2xl"></p>
+          <!-- Optional Arabic Calligraphy -->
+          <p class="arabic-text mt-2 text-2xl md:text-3xl"></p>
         </div>
       </div>
       
       <!-- Card Content -->
       <div class="p-6 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold text-primary-dark dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
-        <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-6 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
+        <h1 class="text-3xl md:text-4xl font-bold text-raya-malay dark:text-primary-light mb-2 animate-slide-up">Selamat Hari Raya</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-secondary-dark dark:text-secondary-light mb-2 animate-slide-up" style="animation-delay: 0.2s;">Aidilfitri</h2>
         
-        <p class="text-gray-600 dark:text-gray-300 mb-4 animate-slide-up" style="animation-delay: 0.3s;">
+        <p class="arabic-text text-xl text-raya-teal dark:text-raya-gold mb-2 animate-slide-up" style="animation-delay: 0.3s;">
+          عيد الفطر مبارك
+        </p>
+        
+        <p class="text-gray-600 dark:text-gray-300 mb-6 animate-slide-up" style="animation-delay: 0.4s;">
           Maaf Zahir dan Batin
         </p>
         
-        <!-- News Ticker / Crawler - IMPROVED VERSION -->
-        <div class="w-full bg-primary-light dark:bg-primary-dark rounded-lg mb-4 overflow-hidden">
-          <div class="ticker-wrap py-3 px-4">
-            <div class="ticker-move">
-              <div class="ticker-group">
-                <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
-                <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
-                <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Maryam) 💐</div>
-                <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Ninalyn) 💐</div>
-                <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Beyya) 💐</div>
-                <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
-              </div>
-              <div class="ticker-group">
-                <div class="ticker-item">💐 Saya mohon maaf zahir dan batin (Poji) 💐</div>
-                <div class="ticker-item">💐 Matriyer kawan-kawan (Jizlai) 💐</div>
-                <div class="ticker-item">💐 Selamat beraya dan mohon maaf lahir batin (Maryam) 💐</div>
-                <div class="ticker-item">💐 Maaf zahir batin, semoga kita diberkati (Ninalyn) 💐</div>
-                <div class="ticker-item">💐 Takbir bergema, ampun dipinta (Beyya) 💐</div>
-                <div class="ticker-item">💐 Selamat Hari Raya, maaf zahir batin (Ahmad) 💐</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
         <!-- Decorative Ketupat -->
-        <div class="flex justify-center space-x-4 mb-8">
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float">
+        <div class="flex justify-center space-x-4 mb-6">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-primary-dark transform rotate-45 animate-float shadow-lg">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float" style="animation-delay: 0.5s;">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-secondary-light to-secondary-dark transform rotate-45 animate-float shadow-lg" style="animation-delay: 0.5s;">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
-          <div class="ketupat w-16 h-16 bg-gradient-to-br from-primary-light to-secondary-light transform rotate-45 animate-float" style="animation-delay: 1s;">
+          <div class="ketupat w-16 h-16 bg-gradient-to-br from-raya-green to-raya-gold transform rotate-45 animate-float shadow-lg" style="animation-delay: 1s;">
             <div class="absolute inset-2 ketupat bg-white dark:bg-gray-800"></div>
           </div>
         </div>
         
-        <!-- NEW SECTION: Raya Wishes Chat -->
-        <div class="mb-6 animate-slide-up" style="animation-delay: 0.3s;">
-          <h3 class="text-xl font-bold text-primary-dark dark:text-primary-light mb-4">Ucapan Raya</h3>
-          
-          <!-- Wishes Display Section -->
-          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
-            <div id="wishesContainer" class="wishes-container">
-              <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
-                <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
-              </div>
-            </div>
+        <!-- Gallery Button -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.5s;">
+          <button id="galleryBtn" class="enhanced-btn gallery-btn bg-gradient-to-r from-raya-malay to-primary hover:from-primary hover:to-primary-dark dark:from-primary-dark dark:to-raya-teal dark:hover:from-primary dark:hover:to-primary-dark text-white py-3 px-6 rounded-lg shadow-lg transform transition-all duration-300 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            Galeria Raya!
+          </button>
+        </div>
+        
+        <!-- Share Buttons -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.55s;">
+          <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Kongsi kenangan raya ini:</p>
+          <div class="flex items-center justify-center space-x-4">
+            <!-- Facebook Share Button -->
+            <a id="facebookShareBtn" href="#" class="share-btn relative enhanced-btn bg-social-facebook text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+              <i class="fab fa-facebook-f mr-2"></i>
+              <span>Facebook</span>
+            </a>
+            <!-- WhatsApp Share Button -->
+            <a id="whatsappShareBtn" href="#" class="share-btn relative enhanced-btn bg-social-whatsapp text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300">
+              <i class="fab fa-whatsapp mr-2"></i>
+              <span>WhatsApp</span>
+            </a>
           </div>
-
-          <!-- Wish Input Form -->
-          <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
-            <form id="wishForm" class="space-y-3">
-              <div>
-                <input type="text" id="nameInput" placeholder="Nama Anda" required 
-                  class="w-full px-4 py-2 text-base rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark">
-              </div>
-              
-              <div>
-                <textarea id="messageInput" placeholder="Ucapan Hari Raya Anda" required rows="3" 
-                  class="w-full px-4 py-2 text-base rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"></textarea>
-              </div>
-
-              <!-- Emoji Picker -->
-              <div class="emoji-picker bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
-                <div class="grid grid-cols-5 gap-1 sm:gap-2">
-                  <button type="button" class="emoji-btn text-xl" data-emoji="💐">💐</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🌙">🌙</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="✨">✨</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🕌">🕌</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🤲">🤲</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🥰">🥰</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🎉">🎉</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="❤️">❤️</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="😊">😊</button>
-                  <button type="button" class="emoji-btn text-xl" data-emoji="🙏">🙏</button>
+        </div>
+        
+        <!-- Enhanced Video Thumbnail with Animated Button -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.6s;">
+          <div class="raya-frame inline-block">
+            <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+              <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
+              <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-20 transition-all">
+                <!-- Animated Play Button with Enhanced Effects -->
+                <div class="video-btn-pulse"></div>
+                <div class="relative z-10 w-20 h-20 rounded-full bg-gradient-to-r from-raya-gold to-primary flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform duration-300 border-2 border-white">
+                  <svg class="w-10 h-10 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <!-- Watch Video Text -->
+                <div class="absolute bottom-4 bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg px-6 py-2 rounded-full shadow-lg animate-pulse">
+                  Watch Raya Video
                 </div>
               </div>
-              
-              <button type="submit" 
-                class="w-full py-2 px-4 bg-primary-light hover:bg-primary dark:bg-primary-dark dark:hover:bg-primary text-white font-bold rounded-lg transition duration-300 flex justify-center items-center">
-                <span>Hantar Ucapan</span>
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                </svg>
-              </button>
-            </form>
-          </div>
-        </div>
-        
-        <!-- Video Thumbnail -->
-        <div class="mb-6 animate-slide-up" style="animation-delay: 0.4s;">
-          <div id="videoBtn" class="relative mx-auto cursor-pointer max-w-md hover:opacity-95 transition-opacity rounded-lg overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
-            <img src="https://i.imgur.com/BFXtusG.gif" alt="Raya Video Thumbnail" class="w-full rounded-lg">
-            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-10 transition-all">
-              <svg class="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
             </div>
           </div>
         </div>
         
         <!-- Background Music Player -->
         <div class="mt-6 mb-2">
-          <h3 class="text-gray-600 dark:text-gray-300 mb-2">Sayang,Jom Nyanyi!</h3>
+          <h3 class="text-gray-600 dark:text-gray-300 mb-2 flex items-center justify-center">
+            <svg class="w-5 h-5 mr-2 text-raya-green dark:text-raya-gold" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+            Sayang, Jom Nyanyi!
+          </h3>
           <div class="relative" style="width:100%;max-width:660px;margin:0 auto;">
             <!-- HTML5 Audio element (hidden but plays in background) -->
             <audio id="backgroundMusic" autoplay loop muted style="display:none;">
-              <source src="https://finebank.github.io/uitmsabah/Meriah_Lain_Macam_Hael_Husaini_Nadeera_Official_Music_Video_V1.mp3" type="audio/mpeg">
+              <source src="https://finebank.github.io/uitmsabah/rayasong_V1.mp3" type="audio/mpeg">
             </audio>
             
             <!-- Custom audio controls that reflect the playing state -->
-            <div class="bg-primary-light dark:bg-primary-dark text-white p-3 rounded-lg flex items-center justify-between">
-              <button id="playPauseBtn" class="bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3">
+            <div class="bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark text-white p-3 rounded-lg flex items-center justify-between shadow-lg">
+              <button id="playPauseBtn" class="enhanced-btn bg-secondary-light hover:bg-secondary-dark text-white rounded-full w-10 h-10 flex items-center justify-center mr-3 tooltip" data-tooltip="Play/Pause">
                 <svg id="pauseIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                 </svg>
@@ -450,18 +655,18 @@
                 <span class="text-sm md:text-base"></span>
                 <!-- Audio visualizer (animated bars) -->
                 <div id="audioVisualizer" class="flex h-3 items-end space-x-[2px] mt-1">
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
-                  <div class="audio-bar w-1 bg-secondary-light rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
+                  <div class="audio-bar w-1 bg-white rounded-t"></div>
                 </div>
               </div>
               <div class="flex items-center space-x-2">
                 <span class="text-xs">Vol</span>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-secondary-light">
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.3" class="w-14 h-2 accent-white">
               </div>
             </div>
           </div>
@@ -469,20 +674,71 @@
       </div>
     </div>
     
-    <!-- Copyright Footer -->
+    <!-- Copyright -->
     <div class="mt-4 text-center text-gray-500 dark:text-gray-400 text-sm">
       &copy; 2025 FPP UiTM Cawangan Sabah | SirPoji
     </div>
   </div>
   
-  <!-- Video Modal -->
-  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full mx-4">
-      <button id="closeModalBtn" class="absolute -top-10 right-0 text-white hover:text-secondary-light text-2xl">&times;</button>
-      <div class="p-2">
-        <div class="relative" style="padding-top: 56.25%;">
-          <video id="videoPlayer" class="absolute inset-0 w-full h-full rounded-lg" controls></video>
+  <!-- Enhanced Video Modal (Fullscreen) -->
+  <div id="videoModal" class="fixed inset-0 bg-black z-50 flex items-center justify-center hidden">
+    <div id="videoContainer" class="relative w-full h-full">
+      <button id="closeModalBtn" class="absolute top-5 right-5 z-10 w-12 h-12 bg-black bg-opacity-60 hover:bg-opacity-80 text-white rounded-full flex items-center justify-center transition-all duration-300">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <video id="videoPlayer" class="w-full h-full" controls playsinline></video>
+    </div>
+  </div>
+  
+  <!-- Enhanced Fullscreen Gallery Modal -->
+  <div id="galleryModal" class="fixed inset-0 bg-black z-50 hidden">
+    <div id="fullscreenGallery" class="w-full h-full relative flex items-center justify-center">
+      <!-- Gallery Navigation -->
+      <button id="prevSlide" class="gallery-nav-btn prev">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      
+      <button id="nextSlide" class="gallery-nav-btn next">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+      
+      <!-- Close Button -->
+      <button id="closeGalleryBtn" class="gallery-close-btn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      
+      <!-- Gallery Counter -->
+      <div class="gallery-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
+      </div>
+      
+      <!-- Gallery Slider -->
+      <div id="sliderContainer" class="w-full h-full relative">
+        <!-- Images will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Share Success Modal -->
+  <div id="shareSuccessModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl max-w-md w-full mx-4 share-popup">
+      <div class="text-center">
+        <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+          <i class="fas fa-check text-3xl text-green-500"></i>
         </div>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Shared Successfully!</h3>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Thank you for sharing our Hari Raya celebration with your friends and family.</p>
+        <button id="closeShareModal" class="enhanced-btn bg-primary hover:bg-primary-dark text-white py-2 px-6 rounded-lg shadow-md transition-all duration-300">
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -492,6 +748,7 @@
     const videoBtn = document.getElementById('videoBtn');
     const videoModal = document.getElementById('videoModal');
     const videoPlayer = document.getElementById('videoPlayer');
+    const videoContainer = document.getElementById('videoContainer');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const playIcon = document.getElementById('playIcon');
@@ -499,21 +756,112 @@
     const backgroundMusic = document.getElementById('backgroundMusic');
     const volumeSlider = document.getElementById('volumeSlider');
     const audioVisualizer = document.getElementById('audioVisualizer');
-
-    // Chat section elements
-    const wishForm = document.getElementById('wishForm');
-    const nameInput = document.getElementById('nameInput');
-    const messageInput = document.getElementById('messageInput');
-    const wishesContainer = document.getElementById('wishesContainer');
-    const emojiButtons = document.querySelectorAll('.emoji-btn');
+    const confettiContainer = document.getElementById('confettiContainer');
     
-    // Array to store wishes (since localStorage isn't available in the iframe)
-    let wishes = [
-      { name: "Izwan", message: "Selamat Hari Raya Aidilfitri! Mohon maaf zahir dan batin. 🙏✨", timestamp: new Date().toISOString() },
-      { name: "Nurazlina", message: "Maaf zahir dan batin. Semoga Allah menerima segala amalan kita sepanjang Ramadhan. 💐🕌", timestamp: new Date().toISOString() },
-      { name: "Aiman", message: "Takbir bergema, maaf dipinta. Selamat Aidilfitri, 'Kakak Sayang' 🌙❤️", timestamp: new Date().toISOString() }
+    // Gallery references
+    const galleryBtn = document.getElementById('galleryBtn');
+    const galleryModal = document.getElementById('galleryModal');
+    const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+    const sliderContainer = document.getElementById('sliderContainer');
+    const prevSlide = document.getElementById('prevSlide');
+    const nextSlide = document.getElementById('nextSlide');
+    const currentSlideEl = document.getElementById('currentSlide');
+    const totalSlidesEl = document.getElementById('totalSlides');
+    
+    // Share buttons references
+    const facebookShareBtn = document.getElementById('facebookShareBtn');
+    const whatsappShareBtn = document.getElementById('whatsappShareBtn');
+    const shareSuccessModal = document.getElementById('shareSuccessModal');
+    const closeShareModal = document.getElementById('closeShareModal');
+    
+    // Gallery settings and state
+    let currentSlide = 0;
+    
+    // Collection of images for the gallery
+    const galleryImages = [
+      // Real Hari Raya images from allowed domains
+      'https://i.imgur.com/fFcQMZ7.png',
+      'https://i.imgur.com/RUzGCjh.jpg',
+      'https://i.imgur.com/CFQNPDO.jpg',
+      'https://i.imgur.com/6NiC3AA.jpg',
+      'https://i.imgur.com/dJQ1IlQ.jpg',
+      'https://i.imgur.com/b5RXcai.jpg',
+      'https://i.imgur.com/MFUKkfS.jpg'
     ];
-
+    
+    // Initialize the gallery and set the total slides
+    totalSlidesEl.textContent = galleryImages.length.toString();
+    
+    // Share URL
+    const shareUrl = 'https://finebank.github.io/uitmsabah/fppberaya.html';
+    const shareTitle = 'Selamat Hari Raya Aidilfitri';
+    const shareText = 'Join our Hari Raya Aidilfitri celebration! Maaf Zahir dan Batin 🌙✨';
+    
+    // Configure share buttons
+    facebookShareBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareTitle)}`;
+      window.open(facebookShareUrl, '_blank', 'width=600,height=400');
+      showShareSuccessModal();
+    });
+    
+    whatsappShareBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+      window.open(whatsappShareUrl, '_blank');
+      showShareSuccessModal();
+    });
+    
+    // Share success modal functions
+    function showShareSuccessModal() {
+      shareSuccessModal.classList.remove('hidden');
+      setTimeout(() => {
+        shareSuccessModal.querySelector('div.share-popup').classList.add('scale-100');
+      }, 10);
+    }
+    
+    closeShareModal.addEventListener('click', function() {
+      shareSuccessModal.classList.add('hidden');
+    });
+    
+    // Create confetti pieces for background animation
+    function createConfetti() {
+      const colors = ['#5D5CDE', '#E15EB0', '#FFCB45', '#2CA735', '#26547C'];
+      const shapes = ['circle', 'square', 'triangle'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        // Random properties
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const left = Math.random() * 100 + 'vw';
+        const animationDuration = 5 + Math.random() * 10 + 's';
+        const animationDelay = Math.random() * 5 + 's';
+        
+        // Apply styles
+        confetti.style.left = left;
+        confetti.style.backgroundColor = color;
+        confetti.style.animationDuration = animationDuration;
+        confetti.style.animationDelay = animationDelay;
+        
+        // Shape-specific styles
+        if (shape === 'circle') {
+          confetti.style.borderRadius = '50%';
+        } else if (shape === 'triangle') {
+          confetti.style.width = '0';
+          confetti.style.height = '0';
+          confetti.style.backgroundColor = 'transparent';
+          confetti.style.borderLeft = '5px solid transparent';
+          confetti.style.borderRight = '5px solid transparent';
+          confetti.style.borderBottom = '10px solid ' + color;
+        }
+        
+        confettiContainer.appendChild(confetti);
+      }
+    }
+    
     // Set initial volume for non-intrusive background music
     backgroundMusic.volume = 0.3;
 
@@ -525,149 +873,92 @@
         audioVisualizer.classList.add('active');
       }
     }
-    // Function to load wishes from Firebase
-function loadWishesFromFirebase() {
-  // Clear existing wishes
-  wishes = [];
-  
-  // Show loading state
-  wishesContainer.innerHTML = `
-    <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
-      <p>Loading wishes...</p>
-    </div>
-  `;
-  
-  // Get wishes from Firebase, ordered by timestamp (newest first)
-  db.collection("wishes")
-    .orderBy("timestamp", "desc")
-    .limit(20) // Limit to most recent 20 wishes
-    .get()
-    .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        wishesContainer.innerHTML = `
-          <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
-            <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
-          </div>
-        `;
-        return;
-      }
+    
+    // Initialize fullscreen gallery slides
+    function initializeGallery() {
+      sliderContainer.innerHTML = '';
       
-      // Process each document in the result
-      querySnapshot.forEach((doc) => {
-        const wishData = doc.data();
-        wishes.push({
-          name: wishData.name,
-          message: wishData.message,
-          timestamp: wishData.timestamp
-        });
+      galleryImages.forEach((src, index) => {
+        const slide = document.createElement('div');
+        slide.className = index === currentSlide ? 'absolute inset-0 flex items-center justify-center' : 'absolute inset-0 flex items-center justify-center hidden';
+        
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'relative max-w-full max-h-full p-2';
+        
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Raya Image ${index + 1}`;
+        img.className = 'max-h-[90vh] max-w-[90vw] object-contain';
+        img.loading = 'lazy';
+        
+        imgContainer.appendChild(img);
+        slide.appendChild(imgContainer);
+        sliderContainer.appendChild(slide);
       });
       
-      // Display the wishes
-      displayWishes();
-    })
-    .catch((error) => {
-      console.error("Error loading wishes: ", error);
-      wishesContainer.innerHTML = `
-        <div class="flex justify-center items-center h-16 text-red-500">
-          <p>Maaf, there was an error loading wishes.</p>
-        </div>
-      `;
-    });
-}
-  
-  
-    // Function to display wishes in the container
-    function displayWishes() {
-      // Clear the container first
-      wishesContainer.innerHTML = '';
-      
-      if (wishes.length === 0) {
-        wishesContainer.innerHTML = `
-          <div class="flex justify-center items-center h-16 text-gray-400 dark:text-gray-500">
-            <p>Jadilah orang pertama yang mengucapkan selamat Hari Raya!</p>
-          </div>
-        `;
-        return;
-      }
-      
-      // Sort wishes by timestamp (newest first)
-      const sortedWishes = [...wishes].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-      
-      // Create and append wish cards
-      sortedWishes.forEach((wish, index) => {
-        const wishCard = document.createElement('div');
-        wishCard.className = 'wish-card bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 shadow-sm border border-gray-100 dark:border-gray-700';
-        
-        const date = new Date(wish.timestamp);
-        const formattedTime = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        
-        wishCard.innerHTML = `
-          <div class="flex justify-between items-start mb-1">
-            <h4 class="font-semibold text-primary-dark dark:text-primary-light">${wish.name}</h4>
-            <span class="text-xs text-gray-400">${formattedTime}</span>
-          </div>
-          <p class="text-gray-700 dark:text-gray-300 text-left">${wish.message}</p>
-        `;
-        
-        wishesContainer.appendChild(wishCard);
-        
-        // Add a small delay before showing each card for a nice staggered effect
-        setTimeout(() => {
-          wishCard.classList.add('show');
-        }, index * 150);
-      });
-      
-      // Scroll to bottom after adding new wishes
-      wishesContainer.scrollTop = wishesContainer.scrollHeight;
+      updateSlideCounter();
     }
     
-    // Handle emoji button clicks
-    emojiButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const emoji = button.dataset.emoji;
-        messageInput.value += emoji;
-        messageInput.focus();
+    // Update the slide counter
+    function updateSlideCounter() {
+      currentSlideEl.textContent = (currentSlide + 1).toString();
+    }
+    
+    // Show a specific slide
+    function showSlide(index) {
+      // Remove all current animations and hide all slides
+      const slides = sliderContainer.querySelectorAll('div.absolute');
+      slides.forEach(slide => {
+        slide.className = 'absolute inset-0 flex items-center justify-center hidden';
       });
-    });
-    
-    // Handle wish form submission
-wishForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const name = nameInput.value.trim();
-  const message = messageInput.value.trim();
-  
-  if (name && message) {
-    // Create a timestamp
-    const timestamp = new Date().toISOString();
-    
-    // Add to Firebase
-    db.collection("wishes").add({
-      name: name,
-      message: message,
-      timestamp: timestamp
-    })
-    .then(() => {
-      console.log("Wish added to Firebase!");
       
-      // Clear form
-      nameInput.value = '';
-      messageInput.value = '';
+      // Show the current slide with animation
+      slides[index].className = 'absolute inset-0 flex items-center justify-center slide-active';
       
-      // Reload wishes from Firebase
-      loadWishesFromFirebase();
-    })
-    .catch((error) => {
-      console.error("Error adding wish: ", error);
-      alert("Maaf, there was an error submitting your wish. Please try again.");
-    });
-  }
-});
-
+      currentSlide = index;
+      updateSlideCounter();
+    }
+    
+    // Navigate to previous slide
+    function prevSlideHandler() {
+      let newIndex = currentSlide - 1;
+      if (newIndex < 0) newIndex = galleryImages.length - 1;
+      showSlide(newIndex);
+    }
+    
+    // Navigate to next slide
+    function nextSlideHandler() {
+      let newIndex = currentSlide + 1;
+      if (newIndex >= galleryImages.length) newIndex = 0;
+      showSlide(newIndex);
+    }
+    
+    // Request fullscreen for video
+    function requestFullscreen(element) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) { /* Safari */
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) { /* IE11 */
+        element.msRequestFullscreen();
+      }
+    }
+    
+    // Exit fullscreen
+    function exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+      }
+    }
+    
     // Handle autoplay issues on page load
     document.addEventListener('DOMContentLoaded', function() {
-      // Display initial wishes
-      displayWishes();
+      // Create the confetti animation
+      createConfetti();
       
       // Attempt to play the audio (it is muted initially)
       backgroundMusic.play().then(() => {
@@ -686,6 +977,20 @@ wishForm.addEventListener('submit', (e) => {
           console.log("Error playing audio after unmute:", error);
         });
       }, 5000);
+      
+      // Initialize the gallery
+      initializeGallery();
+      
+      // Add hover effects to buttons
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          this.classList.add('scale-105');
+        });
+        button.addEventListener('mouseleave', function() {
+          this.classList.remove('scale-105');
+        });
+      });
     });
 
     // Update volume from slider
@@ -711,7 +1016,7 @@ wishForm.addEventListener('submit', (e) => {
       }
     });
 
-    // Video modal functionality
+    // Enhanced Video modal functionality with fullscreen
     videoBtn.addEventListener('click', () => {
       videoModal.classList.remove('hidden');
       videoPlayer.src = "https://finebank.github.io/uitmsabah/Selamat Hari Raya_20250326_191322_0000.mp4";
@@ -722,41 +1027,112 @@ wishForm.addEventListener('submit', (e) => {
       pauseIcon.classList.add('hidden');
       updateVisualizerState();
 
-      // Attempt to play video automatically
-      videoPlayer.play().then(() => {
-        console.log("Video started playing");
-      }).catch(error => {
-        console.log("Autoplay prevented for video: ", error);
+      // Attempt to play video automatically and go fullscreen
+      videoPlayer.addEventListener('canplay', function onCanPlay() {
+        // Remove this listener to prevent multiple calls
+        videoPlayer.removeEventListener('canplay', onCanPlay);
+        
+        // Play video
+        videoPlayer.play().then(() => {
+          console.log("Video started playing");
+          
+          // Try to request fullscreen after user interaction
+          setTimeout(() => {
+            try {
+              requestFullscreen(videoContainer);
+            } catch (error) {
+              console.log("Fullscreen request failed:", error);
+            }
+          }, 1000);
+        }).catch(error => {
+          console.log("Autoplay prevented for video:", error);
+        });
       });
-
-      // Request fullscreen if supported
-      if (videoPlayer.requestFullscreen) {
-        videoPlayer.requestFullscreen().catch(err => {
-          console.log("Error enabling fullscreen:", err);
-        });
-      } else if (videoPlayer.webkitRequestFullscreen) {
-        videoPlayer.webkitRequestFullscreen().catch(err => {
-          console.log("Error enabling fullscreen:", err);
-        });
-      } else if (videoPlayer.msRequestFullscreen) {
-        videoPlayer.msRequestFullscreen().catch(err => {
-          console.log("Error enabling fullscreen:", err);
-        });
-      }
     });
 
     closeModalBtn.addEventListener('click', () => {
+      // Exit fullscreen if currently in fullscreen mode
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement || 
+          document.msFullscreenElement) {
+        exitFullscreen();
+      }
+      
+      // Hide modal and stop video
       videoModal.classList.add('hidden');
       videoPlayer.pause();
       videoPlayer.src = "";
     });
+    
+    // Enhanced Gallery modal functionality with fullscreen
+    galleryBtn.addEventListener('click', () => {
+      galleryModal.classList.remove('hidden');
+      
+      // Initialize or refresh gallery
+      initializeGallery();
+      
+      // Try to request fullscreen after user interaction
+      setTimeout(() => {
+        try {
+          requestFullscreen(document.getElementById('fullscreenGallery'));
+        } catch (error) {
+          console.log("Fullscreen request failed:", error);
+        }
+      }, 1000);
+    });
+    
+    closeGalleryBtn.addEventListener('click', () => {
+      // Exit fullscreen if currently in fullscreen mode
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement || 
+          document.msFullscreenElement) {
+        exitFullscreen();
+      }
+      
+      // Hide gallery modal
+      galleryModal.classList.add('hidden');
+    });
+    
+    // Gallery navigation
+    prevSlide.addEventListener('click', prevSlideHandler);
+    nextSlide.addEventListener('click', nextSlideHandler);
 
-    // Close modal when clicking outside the video
+    // Close modals when clicking outside the content
     videoModal.addEventListener('click', (e) => {
       if (e.target === videoModal) {
+        // Exit fullscreen if currently in fullscreen mode
+        if (document.fullscreenElement || 
+            document.webkitFullscreenElement || 
+            document.mozFullScreenElement || 
+            document.msFullscreenElement) {
+          exitFullscreen();
+        }
+        
         videoModal.classList.add('hidden');
         videoPlayer.pause();
         videoPlayer.src = "";
+      }
+    });
+    
+    galleryModal.addEventListener('click', (e) => {
+      if (e.target === galleryModal) {
+        // Exit fullscreen if currently in fullscreen mode
+        if (document.fullscreenElement || 
+            document.webkitFullscreenElement || 
+            document.mozFullScreenElement || 
+            document.msFullscreenElement) {
+          exitFullscreen();
+        }
+        
+        galleryModal.classList.add('hidden');
+      }
+    });
+    
+    shareSuccessModal.addEventListener('click', (e) => {
+      if (e.target === shareSuccessModal) {
+        shareSuccessModal.classList.add('hidden');
       }
     });
 
@@ -771,7 +1147,13 @@ wishForm.addEventListener('submit', (e) => {
           !document.webkitIsFullScreen && 
           !document.mozFullScreen && 
           !document.msFullscreenElement) {
-        // The user has exited fullscreen mode; additional handling can be added here if needed.
+        // The user has exited fullscreen mode
+        if (!videoModal.classList.contains('hidden')) {
+          closeModalBtn.click();
+        }
+        if (!galleryModal.classList.contains('hidden')) {
+          closeGalleryBtn.click();
+        }
       }
     }
 
@@ -781,74 +1163,54 @@ wishForm.addEventListener('submit', (e) => {
       elem.style.animationDelay = `${index * 0.2}s`;
     });
 
-    // Handle escape key to close modal
+    // Handle escape key to close modals
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
-        videoModal.classList.add('hidden');
-        videoPlayer.pause();
-        videoPlayer.src = "";
-      }
-    });
-
-    // Initialize the ticker at page load to ensure it runs properly
-    document.addEventListener('DOMContentLoaded', function() {
-      // Load wishes from Firebase
-      // Set up real-time listener for wishes
-function setupRealTimeWishes() {
-  db.collection("wishes")
-    .orderBy("timestamp", "desc")
-    .limit(20)
-    .onSnapshot((snapshot) => {
-      wishes = [];
-      snapshot.forEach((doc) => {
-        const wishData = doc.data();
-        wishes.push({
-          name: wishData.name,
-          message: wishData.message,
-          timestamp: wishData.timestamp
-        });
-      });
-      
-      displayWishes();
-    }, (error) => {
-      console.error("Real-time listener error: ", error);
-    });
-}
-
-// Call this instead of loadWishesFromFirebase() in your DOMContentLoaded handler
-
-      // Get the width of a single ticker-group
-      const tickerGroup = document.querySelector('.ticker-group');
-      if (tickerGroup) {
-        // Adjust ticker animation speed based on content width for smoother scrolling
-        const tickerMove = document.querySelector('.ticker-move');
-        if (tickerMove) {
-          const contentWidth = tickerGroup.offsetWidth;
-          // Adjust animation duration based on content width (more content = slower speed for readability)
-          const duration = Math.max(20, contentWidth / 50); // At least 20 seconds, or longer for wider content
-          tickerMove.style.animationDuration = `${duration}s`;
+      if (e.key === 'Escape') {
+        if (!videoModal.classList.contains('hidden')) {
+          closeModalBtn.click();
+        }
+        
+        if (!galleryModal.classList.contains('hidden')) {
+          closeGalleryBtn.click();
+        }
+        
+        if (!shareSuccessModal.classList.contains('hidden')) {
+          closeShareModal.click();
         }
       }
     });
+    
+    // Add keyboard navigation for gallery
+    document.addEventListener('keydown', (e) => {
+      if (!galleryModal.classList.contains('hidden')) {
+        if (e.key === 'ArrowLeft') {
+          prevSlideHandler();
+        } else if (e.key === 'ArrowRight') {
+          nextSlideHandler();
+        }
+      }
+    });
+    
+    // Add touch swipe support for gallery
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    sliderContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    sliderContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+    
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+        nextSlideHandler(); // Swipe left → next slide
+      } else if (touchEndX > touchStartX + 50) {
+        prevSlideHandler(); // Swipe right → previous slide
+      }
+    }
   </script>
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDeoINlHv3oeaqDmwumoxlERQdEhrVMU2Y",
-    authDomain: "raya-wishes.firebaseapp.com",
-    projectId: "raya-wishes",
-    storageBucket: "raya-wishes.firebasestorage.app",
-    messagingSenderId: "932962646124",
-    appId: "1:932962646124:web:b1a029e6d30c8fdd3fc049"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
 </body>
 </html>
