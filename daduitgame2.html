@@ -99,6 +99,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            position: relative;
         }
 
         .month-switcher {
@@ -180,6 +181,12 @@
         .day.special {
             border-color: var(--warning-color);
             border-width: 2px;
+        }
+
+        .day.final-day {
+            border-color: gold;
+            border-width: 3px;
+            box-shadow: 0 0 10px gold;
         }
 
         .day-icon {
@@ -386,6 +393,17 @@
 
         .button:active {
             transform: translateY(0);
+        }
+
+        .button.disabled {
+            background: var(--neutral-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .button.disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .achievements-container {
@@ -771,6 +789,84 @@
             font-weight: bold;
         }
 
+        /* Game Complete Modal */
+        .game-complete-modal {
+            text-align: center;
+        }
+
+        .game-complete-modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .game-complete-modal p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .results-summary {
+            background: var(--input-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: bold;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: confetti-fall linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Day completion banner */
+        .goal-notice {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--warning-color);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            font-weight: bold;
+            border-radius: 12px 12px 0 0;
+            animation: fadeIn 0.5s;
+            display: none;
+        }
+        
+        .goal-notice.show {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .game-container {
                 flex-direction: column;
@@ -1055,6 +1151,8 @@
         <h1 class="fancy-title">DADUit Game</h1>
         <div class="game-container">
             <div class="game-board">
+                <div class="goal-notice" id="goalNotice">Final Day Reached! Check Your Results</div>
+                
                 <div class="month-switcher">
                     <div class="month-tab active" data-month="1" id="month1Tab">Month 1</div>
                     <div class="month-tab" data-month="2" id="month2Tab">Month 2</div>
@@ -1085,6 +1183,7 @@
                     <div class="dice" id="dice">1</div>
                 </div>
                 <button class="button" id="rollDice">Roll Dice</button>
+                <button class="button" id="finishGameButton" style="display: none;">Finish Game</button>
                 
                 <div class="stats">
                     <h3>Player Stats</h3>
@@ -1226,6 +1325,54 @@
             </ul>
             
             <button class="button" id="startMonth2Button">Start Month 2</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="gameCompleteModal">
+        <div class="modal-content game-complete-modal">
+            <h2 id="gameCompleteTitle">Financial Journey Complete!</h2>
+            <p id="gameCompleteMessage">You've reached the end of your 60-day financial journey.</p>
+            
+            <div class="results-summary">
+                <div class="result-item">
+                    <span class="result-label">Final Balance:</span>
+                    <span id="finalMoney">RM0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Financial Goal:</span>
+                    <span id="goalResult">Not Achieved</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Skills Developed:</span>
+                    <span id="finalSkills">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Achievements:</span>
+                    <span id="finalAchievements">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Active Investments:</span>
+                    <span id="finalInvestments">0</span>
+                </div>
+            </div>
+            
+            <div class="share-prompt">Share your DADUit Game result with friends!</div>
+            <div class="share-container">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                   target="_blank" 
+                   class="share-button share-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Share on Facebook</span>
+                </a>
+                <a href="https://api.whatsapp.com/send?text=" 
+                   target="_blank" 
+                   class="share-button share-whatsapp" id="whatsappShareFinal">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Share on WhatsApp</span>
+                </a>
+            </div>
+            
+            <button class="button" onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
         </div>
     </div>
 
@@ -1621,6 +1768,7 @@
         let baseSalary = 1000;
         let investments = [];
         let pendingMonth1Investments = [];
+        let finalDayReached = false;
         
         let skills = {
             financialLiteracy: 1,
@@ -1691,6 +1839,12 @@
                     day.classList.add('special');
                 }
                 
+                // Mark final day
+                if (i === totalDays) {
+                    day.classList.add('final-day');
+                    dayIcon.textContent = '🏁';
+                }
+                
                 day.insertBefore(dayIcon, dayNumber);
                 
                 if (i === currentPosition) {
@@ -1740,10 +1894,28 @@
             // Check for special days
             checkSpecialDays();
             checkMonthTransition();
+            checkFinalDay();
             checkGameOver();
             updateAchievements();
             updateSkillDisplay();
             updateInvestments();
+        }
+        
+        // Check if we've reached the final day
+        function checkFinalDay() {
+            // If we're at day 60 (the final day), show the finish button
+            if (currentPosition >= totalDays && !finalDayReached) {
+                finalDayReached = true;
+                
+                // Show notice
+                document.getElementById('goalNotice').classList.add('show');
+                
+                // Show finish game button and disable roll dice button
+                document.getElementById('rollDice').classList.add('disabled');
+                document.getElementById('finishGameButton').style.display = 'block';
+                
+                showToast("Final Day Reached!", "You've reached the end of your financial journey. Check your results!", "success");
+            }
         }
         
         // Update which month container is displayed
@@ -1896,6 +2068,11 @@
         function showInvestmentDialog() {
             if (currentMonth < 2) {
                 showToast("Investments Locked", "Investments will be available in Month 2!", "warning");
+                return;
+            }
+            
+            if (finalDayReached || isGameOver) {
+                showToast("Game Ending", "You can't make new investments at the end of the game.", "warning");
                 return;
             }
             
@@ -2232,6 +2409,8 @@
         
         // Show special event
         function showSpecialEvent() {
+            if (finalDayReached || isGameOver) return;
+            
             // Select events based on current month
             const eventPool = currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
             
@@ -2285,6 +2464,11 @@
             }
             
             if (isGameOver) return;
+            
+            if (finalDayReached) {
+                showToast("Final Day Reached", "You've reached day 60! Click 'Finish Game' to see your results.", "warning");
+                return;
+            }
 
             const dice = document.getElementById('dice');
             const roll = Math.floor(Math.random() * 6) + 1;
@@ -2297,6 +2481,7 @@
                 dice.textContent = roll;
                 
                 const newPosition = Math.min(currentPosition + roll, totalDays);
+                const wasLastMove = newPosition >= totalDays; // Flag if this roll reaches the final day
                 currentPosition = newPosition;
                 
                 // Show month 2 if we've moved to it
@@ -2312,45 +2497,41 @@
                 
                 updateBoard();
                 
-                // Challenge probability
-                const challengeProbability = (difficulty === 'easy') ? 0.4 : (difficulty === 'normal' ? 0.5 : 0.6);
-                
-                if (Math.random() < challengeProbability && !specialDays.events.includes(currentPosition) && !isGameOver) {
-                    setTimeout(showRandomChallenge, 800);
+                // We only show challenges if this move didn't end the game
+                if (!wasLastMove && !isGameOver) {
+                    // Challenge probability
+                    const challengeProbability = (difficulty === 'easy') ? 0.4 : (difficulty === 'normal' ? 0.5 : 0.6);
+                    
+                    if (Math.random() < challengeProbability && !specialDays.events.includes(currentPosition)) {
+                        setTimeout(showRandomChallenge, 800);
+                    }
                 }
             }, 800);
         }
         
         // Show a random challenge
         function showRandomChallenge() {
+            if (finalDayReached || isGameOver) return;
+            
             // Select challenges based on current month
             const challengePool = currentMonth === 1 ? month1Challenges : month2Challenges;
             const challenge = challengePool[Math.floor(Math.random() * challengePool.length)];
             showChallenge(challenge);
         }
 
-        // Check if game is over
+        // Check if game is over (bankruptcy)
         function checkGameOver() {
-            if (!isGameOver) {
-                if (money <= 0) {
-                    showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
-                    isGameOver = true;
-                } else if (currentPosition >= totalDays) {
-                    // Final goal is 20,000
-                    if (money >= 20000) {
-                        showGameOver('win', 'Financial Master!', `Congratulations! You've successfully completed your 2-month financial journey with RM${money.toLocaleString()}!`);
-                    } else if (money >= 10000) {
-                        showGameOver('partial', 'Modest Success', `You completed the 2-month journey with RM${money.toLocaleString()}. You met the month 1 goal but fell short of the final RM20,000 target.`);
-                    } else {
-                        showGameOver('lose', 'Financial Struggle', `You completed the 2-month journey but ended with only RM${money.toLocaleString()}, below both of your financial goals.`);
-                    }
-                    isGameOver = true;
-                }
+            if (!isGameOver && money <= 0) {
+                showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
+                isGameOver = true;
             }
         }
 
-        // Show game over modal
+        // Show game over and completion screens
         function showGameOver(status, title, message) {
+            // Don't show if we're at the final day - we'll use showGameComplete instead
+            if (finalDayReached) return;
+            
             const modal = document.getElementById('challengeModal');
             const titleElement = document.getElementById('challengeTitle');
             const description = document.getElementById('challengeDescription');
@@ -2391,6 +2572,84 @@
             `;
             
             openModal(modal);
+        }
+        
+        // Game completion summary
+        function showGameComplete() {
+            if (isGameOver) return; // Don't show if already bankrupt
+            
+            // Collect all active investments before showing results
+            collectAllInvestments();
+            
+            const modal = document.getElementById('gameCompleteModal');
+            const titleElement = document.getElementById('gameCompleteTitle');
+            const message = document.getElementById('gameCompleteMessage');
+            
+            // Set result texts
+            document.getElementById('finalMoney').textContent = `RM${money.toLocaleString()}`;
+            
+            let goalStatus = '';
+            let statusClass = '';
+            let title = '';
+            
+            if (money >= 20000) {
+                goalStatus = 'Achieved - Financial Master!';
+                statusClass = 'positive';
+                title = 'Financial Master!';
+                message.textContent = 'Congratulations! You've successfully completed your 2-month financial journey!';
+                // Show confetti for winning
+                createConfetti();
+            } else if (money >= 10000) {
+                goalStatus = 'Partially Achieved - Month 1 goal only';
+                statusClass = 'neutral';
+                title = 'Modest Success';
+                message.textContent = 'You completed the 2-month journey and met the Month 1 goal, but fell short of the final RM20,000 target.';
+            } else {
+                goalStatus = 'Not Achieved';
+                statusClass = 'negative';
+                title = 'Financial Struggle';
+                message.textContent = 'You completed the 2-month journey but ended below both of your financial goals.';
+            }
+            
+            titleElement.textContent = title;
+            document.getElementById('goalResult').textContent = goalStatus;
+            document.getElementById('goalResult').className = statusClass;
+            
+            // Other stats
+            const totalSkills = skills.financialLiteracy + skills.entrepreneurship + skills.education - 3;
+            document.getElementById('finalSkills').textContent = totalSkills;
+            
+            const unlockedAchievements = achievements.filter(a => a.unlocked).length;
+            document.getElementById('finalAchievements').textContent = unlockedAchievements;
+            
+            document.getElementById('finalInvestments').textContent = investments.length;
+            
+            // Update share link
+            const shareText = `I finished DADUit Game with RM${money.toLocaleString()}! ${money >= 20000 ? "I'm a financial master!" : "Can you do better?"}`;
+            document.getElementById('whatsappShareFinal').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}%20https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html`;
+            
+            openModal(modal);
+            isGameOver = true; // Mark game as over
+        }
+        
+        // Collect all investments for final calculation
+        function collectAllInvestments() {
+            let totalCollected = 0;
+            
+            investments.forEach((inv, index) => {
+                if (!inv.collected) {
+                    totalCollected += inv.returnAmount;
+                    investments[index].collected = true;
+                }
+            });
+            
+            if (totalCollected > 0) {
+                addMoney(totalCollected, "Final investment returns");
+                showToast("Investments Matured", `You've collected RM${totalCollected} from your remaining investments!`, "success");
+                investments = [];
+            }
+            
+            updateInvestments();
         }
 
         // Check and update achievements
@@ -2436,6 +2695,8 @@
 
         // Show challenge modal
         function showChallenge(challenge) {
+            if (finalDayReached || isGameOver) return;
+            
             const modal = document.getElementById('challengeModal');
             const title = document.getElementById('challengeTitle');
             const description = document.getElementById('challengeDescription');
@@ -2486,12 +2747,46 @@
                     }
                     
                     closeModal(modal);
-                    updateBoard();
+                    
+                    // Check if bankrupt after the decision
+                    if (money <= 0) {
+                        setTimeout(() => {
+                            showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
+                            isGameOver = true;
+                        }, 1000);
+                    }
                 };
                 options.appendChild(button);
             });
             
             openModal(modal);
+        }
+        
+        // Create confetti animation for winning
+        function createConfetti() {
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.opacity = Math.random();
+                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        if (document.body.contains(confetti)) {
+                            document.body.removeChild(confetti);
+                        }
+                    }, 5000);
+                }, i * 50);
+            }
         }
         
         // Open modal with animation
@@ -2513,7 +2808,7 @@
 
         // Event listeners
         document.getElementById('rollDice').addEventListener('click', rollDice);
-        
+        document.getElementById('finishGameButton').addEventListener('click', showGameComplete);
         document.getElementById('investButton').addEventListener('click', showInvestmentDialog);
         
         // Tab switching
