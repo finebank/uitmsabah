@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#5D5CDE">
     <title>DADUit Game</title>
+    <!-- Add FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #5D5CDE;
@@ -830,6 +832,63 @@
         .difficulty-option.hard {
             background: rgba(239, 68, 68, 0.2);
         }
+
+        /* Share buttons styles */
+        .share-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .share-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .share-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .share-button i {
+            font-size: 1.2rem;
+        }
+
+        .share-facebook {
+            background: #1877F2;
+        }
+
+        .share-facebook:hover {
+            background: #0e6bdb;
+        }
+
+        .share-whatsapp {
+            background: #25D366;
+        }
+
+        .share-whatsapp:hover {
+            background: #1fba57;
+        }
+
+        /* Game over share prompt */
+        .share-prompt {
+            margin-top: 20px;
+            text-align: center;
+            padding: 12px;
+            background: var(--input-bg);
+            border-radius: 8px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -861,6 +920,22 @@
                 </div>
             </div>
             <button class="start-button" onclick="startGame()">Let's Begin!</button>
+            
+            <!-- Share buttons -->
+            <div class="share-container">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                   target="_blank" 
+                   class="share-button share-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Share</span>
+                </a>
+                <a href="https://api.whatsapp.com/send?text=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                   target="_blank" 
+                   class="share-button share-whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Share</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -944,6 +1019,22 @@
                             <!-- Achievements will be added here -->
                         </div>
                     </div>
+                </div>
+                
+                <!-- Share buttons in the controls section -->
+                <div class="share-container">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                       target="_blank" 
+                       class="share-button share-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Share on Facebook</span>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?text=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                       target="_blank" 
+                       class="share-button share-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Share on WhatsApp</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1550,8 +1641,25 @@
             
             titleElement.textContent = title;
             description.textContent = message;
+            
+            // Add share prompt and buttons in the game over screen
             options.innerHTML = `
-                <button class="button" onclick="location.reload()">Play Again</button>
+                <div class="share-prompt">Share your DADUit Game experience with friends!</div>
+                <div class="share-container">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                       target="_blank" 
+                       class="share-button share-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Share on Facebook</span>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?text=I%20just%20played%20DADUit%20Game%20and%20${status === 'win' ? 'won' : 'reached%20day%20' + currentPosition}%20with%20RM${money}!%20Try%20it%20at%20https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
+                       target="_blank" 
+                       class="share-button share-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Share on WhatsApp</span>
+                    </a>
+                </div>
+                <button class="button" onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
             `;
             
             openModal(modal);
