@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#5D5CDE">
+    <title>DADUit Game</title>
+    <style>
+        :root {
+            --primary-color: #5D5CDE;
+            --primary-hover: #4949c4;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --neutral-color: #6B7280;
+            --bg-light: #FFFFFF;
+            --text-light: #333333;
+            --border-light: #E2E8F0;
+            --bg-dark: #181818;
+            --text-dark: #F3F4F6;
+            --border-dark: #374151;
+        }
+
+        .dark {
+            --bg-color: var(--bg-dark);
+            --text-color: var(--text-dark);
+            --border-color: var(--border-dark);
+            --card-bg: #242424;
+            --input-bg: #333333;
+        }
+
+        :root:not(.dark) {
+            --bg-color: var(--bg-light);
+            --text-color: var(--text-light);
+            --border-color: var(--border-light);
+            --card-bg: #FFFFFF;
+            --input-bg: #F3F4F6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .fancy-title {
+            font-family: 'Segoe Script', cursive;
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, var(--primary-color), #93c5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .game-board {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            background: var(--card-bg);
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .day.current {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(93, 92, 222, 0.4);
+        }
+
+        .day.payday {
+            border-color: var(--success-color);
+            border-width: 2px;
+        }
+        
+        .day.expense {
+            border-color: var(--danger-color);
+            border-width: 2px;
+        }
+        
+        .day.special {
+            border-color: var(--warning-color);
+            border-width: 2px;
+        }
+
+        .day-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .player {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            perspective: 600px;
+            margin: 20px 0;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform-style: preserve-3d;
+        }
+
+        .dice:hover {
+            transform: scale(1.05) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .dice.rolling {
+            animation: rolling 0.8s ease-out;
+        }
+
+        @keyframes rolling {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            25% { transform: rotateX(90deg) rotateY(180deg) rotateZ(45deg); }
+            50% { transform: rotateX(270deg) rotateY(90deg) rotateZ(90deg); }
+            75% { transform: rotateX(180deg) rotateY(270deg) rotateZ(135deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+        }
+
+        .stats {
+            margin: 10px 0;
+            padding: 15px;
+            background: var(--input-bg);
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stats h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .skill-container {
+            margin-top: 10px;
+        }
+
+        .skill {
+            margin: 8px 0;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .skill-progress {
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            font-size: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            color: var(--text-color);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 1rem;
+            word-wrap: break-word;
+            white-space: normal;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .achievements-container {
+            margin-top: 20px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .achievements-container h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .achievement {
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .achievement.unlocked {
+            background: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        }
+
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            background: var(--card-bg);
+            padding: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .achievement-icon::before {
+            content: "🏆";
+            font-size: 1.8rem;
+        }
+
+        .achievement.unlocked .achievement-icon::before {
+            animation: bounce 1s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-7px);}
+        }
+
+        .achievement-content {
+            flex-grow: 1;
+        }
+
+        .achievement-content div:first-child {
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: var(--text-color);
+        }
+
+        .intro-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .intro-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+            color: var(--text-color);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .intro-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .intro-list {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .intro-list li {
+            margin: 10px 0;
+            color: var(--text-color);
+        }
+
+        .start-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            transition: all 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(93, 92, 222, 0.4);
+        }
+
+        .start-button:hover {
+            transform: scale(1.05);
+            background: var(--primary-hover);
+            box-shadow: 0 6px 12px rgba(93, 92, 222, 0.5);
+        }
+
+        .intro-emoji {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 10px 0;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .challenge-tag {
+            background: var(--warning-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            vertical-align: middle;
+            font-weight: normal;
+        }
+
+        .transaction-container {
+            max-height: 150px;
+            overflow-y: auto;
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        .neutral {
+            color: var(--neutral-color);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 1rem;
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .money-change {
+            position: fixed;
+            font-size: 1.5rem;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 9999;
+            animation: flyUp 1.5s forwards;
+        }
+
+        @keyframes flyUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+        }
+
+        .tab-container {
+            margin-top: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+            }
+
+            .game-board, .controls {
+                width: 100%;
+            }
+
+            .calendar {
+                grid-template-columns: repeat(7, minmax(60px, 1fr));
+            }
+
+            .dice {
+                width: 80px;
+                height: 80px;
+                font-size: 1.5em;
+            }
+
+            .button {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+
+            .modal-content {
+                font-size: 0.9rem;
+                padding: 20px;
+            }
+
+            #challengeTitle {
+                font-size: 1.3rem;
+            }
+
+            #challengeDescription {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .game-board, .controls {
+                padding: 15px;
+            }
+
+            .calendar {
+                grid-template-columns: repeat(7, minmax(50px, 1fr));
+            }
+
+            .dice {
+                width: 70px;
+                height: 70px;
+                font-size: 1.2em;
+            }
+
+            .button {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+                width: 100%;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            .modal-content {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+
+            .intro-content {
+                padding: 20px;
+            }
+            
+            .intro-title {
+                font-size: 1.5rem;
+            }
+            
+            .intro-text {
+                font-size: 1rem;
+            }
+            
+            .start-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            #challengeTitle {
+                font-size: 1.2rem;
+            }
+
+            #challengeDescription {
+                font-size: 0.9rem;
+                line-height: 1.3;
+            }
+
+            .challenge-tag {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+
+            .achievement {
+                padding: 8px;
+            }
+
+            .achievement-icon {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            .achievement-icon::before {
+                font-size: 1.4rem;
+            }
+
+            .stat-item {
+                font-size: 0.95rem;
+            }
+
+            .transaction {
+                font-size: 0.8rem;
+            }
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+
+        #toastContainer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        /* Theme switch */
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .theme-switch:hover {
+            transform: scale(1.1);
+        }
+
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .difficulty-option {
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .difficulty-option.active {
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .difficulty-option.easy {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .difficulty-option.normal {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .difficulty-option.hard {
+            background: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-switch" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+    </div>
+    
+    <div class="intro-modal" id="introModal">
+        <div class="intro-content">
+            <div class="intro-emoji">🎲💰</div>
+            <h2 class="intro-title">Welcome to DADUit Game!</h2>
+            <div class="intro-text">
+                Get ready to embark on an exciting financial journey! In this game, you'll navigate through real-life financial scenarios while managing your money wisely.
+                
+                <ul class="intro-list">
+                    <li><strong>Starting Balance:</strong> RM5,000</li>
+                    <li><strong>Goal:</strong> Reach RM10,000 by day 30</li>
+                    <li><strong>Gameplay:</strong> Roll the dice to move through days</li>
+                    <li><strong>Challenges:</strong> Face random financial decisions</li>
+                    <li><strong>Strategy:</strong> Make smart choices to grow your money</li>
+                </ul>
+
+                <p>Watch out for special events, paydays, and expenses as you progress!</p>
+
+                <div class="difficulty-selector">
+                    <div class="difficulty-option easy active" data-difficulty="easy">Easy</div>
+                    <div class="difficulty-option normal" data-difficulty="normal">Normal</div>
+                    <div class="difficulty-option hard" data-difficulty="hard">Hard</div>
+                </div>
+            </div>
+            <button class="start-button" onclick="startGame()">Let's Begin!</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="fancy-title">DADUit Game</h1>
+        <div class="game-container">
+            <div class="game-board">
+                <div class="calendar" id="calendar"></div>
+            </div>
+            <div class="controls">
+                <div class="dice-container">
+                    <div class="dice" id="dice">1</div>
+                </div>
+                <button class="button" id="rollDice">Roll Dice</button>
+                
+                <div class="stats">
+                    <h3>Player Stats</h3>
+                    <div class="stat-item">
+                        <span>Money:</span>
+                        <span id="money">RM5,000</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Current Day:</span>
+                        <span id="currentDay">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Difficulty:</span>
+                        <span id="difficultyDisplay">Easy</span>
+                    </div>
+                    
+                    <div class="skill-container">
+                        <div class="skill">
+                            <div class="skill-name">
+                                <span>Financial Literacy</span>
+                                <span id="financialLiteracyLevel">1</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-bar" id="financialLiteracyBar" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">
+                                <span>Entrepreneurship</span>
+                                <span id="entrepreneurshipLevel">1</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-bar" id="entrepreneurshipBar" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">
+                                <span>Education</span>
+                                <span id="educationLevel">1</span>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-bar" id="educationBar" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="transactions">Transactions</div>
+                        <div class="tab" data-tab="achievements">Achievements</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="transactionsTab">
+                        <h3>Recent Transactions</h3>
+                        <div class="transaction-container" id="transactionHistory">
+                            <div class="transaction">
+                                <span>Starting Balance</span>
+                                <span class="positive">+RM5,000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="achievementsTab">
+                        <div id="achievementsContainer">
+                            <h3>Achievements</h3>
+                            <!-- Achievements will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="challengeModal">
+        <div class="modal-content">
+            <h2 id="challengeTitle">Financial Challenge</h2>
+            <p id="challengeDescription"></p>
+            <div id="challengeOptions"></div>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script>
+        // Check for dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').textContent = '☀️';
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').textContent = '☀️';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeIcon').textContent = '🌙';
+            }
+        });
+        
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeIcon').textContent = '🌙';
+            } else {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').textContent = '☀️';
+            }
+        });
+
+        // Game data
+        const challenges = [
+            {
+                title: "🎉 Hari Raya Spending Dilemma",
+                description: "The festive season is here! Will you splurge on celebrations or keep it simple?",
+                tag: "Festival",
+                options: [
+                    { text: "Budget RM800 for modest celebrations", effect: -800, consequence: "Good balance between celebration and financial responsibility!" },
+                    { text: "Go all out with RM2000", effect: -2000, consequence: "Create unforgettable memories but feel the pinch in savings." },
+                    { text: "Keep it simple with RM400", effect: -400, consequence: "Practical choice but might miss out on festive cheer." }
+                ]
+            },
+            {
+                title: "🍛 Mamak Stall Investment",
+                description: "Your friend wants you to join a mamak stall business. Should you invest?",
+                tag: "Business",
+                options: [
+                    { text: "Invest RM1500 as active partner", effect: -1500, consequence: "High risk but could yield substantial returns!" },
+                    { text: "Invest RM500 as silent partner", effect: -500, consequence: "Moderate risk with potential passive income." },
+                    { text: "Decline the offer", effect: 0, consequence: "Play it safe but miss a potential opportunity." }
+                ]
+            },
+            {
+                title: "💻 Side Hustle Opportunity",
+                description: "You have a chance to start a freelance web development side hustle. What will you do?",
+                tag: "Career",
+                options: [
+                    { text: "Invest RM300 in equipment and marketing", effect: -300, consequence: "Initial investment paid off! You gained a new income stream.", onSelect: () => addSkill('entrepreneurship', 1) },
+                    { text: "Use existing resources", effect: 0, consequence: "Limited growth but no initial costs." },
+                    { text: "Take an online course first (RM200)", effect: -200, consequence: "Good foundation for future success.", onSelect: () => addSkill('education', 1) }
+                ]
+            },
+            {
+                title: "🏠 Rental Increase",
+                description: "Your landlord has informed you of a rental increase. How will you respond?",
+                tag: "Housing",
+                options: [
+                    { text: "Negotiate a smaller increase", effect: -150, consequence: "Partial success in negotiation - saved some money!" },
+                    { text: "Accept the full increase", effect: -300, consequence: "Avoided conflict but it impacts your budget." },
+                    { text: "Find a more affordable place", effect: -500, consequence: "Moving costs money now but saves in the long run." }
+                ]
+            },
+            {
+                title: "💼 Job Offer",
+                description: "You received a job offer with higher pay but longer hours. What's your decision?",
+                tag: "Career",
+                options: [
+                    { text: "Accept the offer", effect: 800, consequence: "More income but less free time." },
+                    { text: "Stay at current job", effect: 0, consequence: "Maintain work-life balance with current income." },
+                    { text: "Negotiate better terms", effect: 500, consequence: "Compromise reached with moderate pay increase." }
+                ]
+            },
+            {
+                title: "📱 Phone Dilemma",
+                description: "Your phone is damaged. What will you do?",
+                tag: "Technology",
+                options: [
+                    { text: "Buy latest flagship (RM3000)", effect: -3000, consequence: "Premium features but significant expense." },
+                    { text: "Get mid-range model (RM1200)", effect: -1200, consequence: "Good balance between quality and price." },
+                    { text: "Repair existing phone (RM400)", effect: -400, consequence: "Most economical option but limited lifespan." }
+                ]
+            },
+            {
+                title: "🏥 Health Insurance",
+                description: "Time to review your health insurance. What's your approach?",
+                tag: "Insurance",
+                options: [
+                    { text: "Premium comprehensive plan", effect: -600, consequence: "Better coverage but higher cost." },
+                    { text: "Standard coverage plan", effect: -300, consequence: "Balanced protection at moderate cost." },
+                    { text: "Basic minimum coverage", effect: -150, consequence: "Saves money but higher risk in emergencies." }
+                ]
+            },
+            {
+                title: "🚗 Car Breakdown",
+                description: "Your car needs unexpected repairs. How will you handle it?",
+                tag: "Emergency",
+                options: [
+                    { text: "Complete overhaul (RM2000)", effect: -2000, consequence: "Expensive but prevents future problems." },
+                    { text: "Essential repairs only (RM800)", effect: -800, consequence: "Addresses immediate issues at moderate cost." },
+                    { text: "Temporary fix (RM200)", effect: -200, consequence: "Cheapest now but might cost more later." }
+                ]
+            },
+            {
+                title: "💰 Unexpected Tax Refund",
+                description: "You received an unexpected tax refund! How will you use it?",
+                tag: "Windfall",
+                options: [
+                    { text: "Save the entire amount", effect: 600, consequence: "Responsible choice for future security." },
+                    { text: "Invest in stocks", effect: { min: 300, max: 1200 }, consequence: "Potential for growth but results vary." },
+                    { text: "Treat yourself", effect: 300, consequence: "Improved well-being but smaller financial benefit." }
+                ]
+            },
+            {
+                title: "👨‍👩‍👧 Family Emergency",
+                description: "A relative needs financial help for medical treatment. What will you do?",
+                tag: "Family",
+                options: [
+                    { text: "Provide full support (RM1000)", effect: -1000, consequence: "Generous help strengthens family bonds." },
+                    { text: "Contribute partially (RM500)", effect: -500, consequence: "Balanced approach to helping while managing your finances." },
+                    { text: "Offer non-financial assistance", effect: 0, consequence: "Preserved your finances but may affect relationships." }
+                ]
+            }
+        ];
+
+        const specialEvents = [
+            {
+                title: "🏦 Bank Error in Your Favor",
+                description: "The bank made an error and deposited extra money in your account. They haven't noticed yet.",
+                options: [
+                    { text: "Report the error to the bank", effect: -100, consequence: "You did the right thing ethically. Small fee for processing.", onSelect: () => addSkill('financialLiteracy', 2) },
+                    { text: "Keep the money and stay quiet", effect: 500, consequence: "You got lucky this time, but this could have consequences later." }
+                ]
+            },
+            {
+                title: "📊 Market Crash",
+                description: "The stock market has crashed! This affects everyone's finances.",
+                options: [
+                    { text: "Panic and withdraw all investments", effect: -500, consequence: "You sold at the bottom and locked in your losses." },
+                    { text: "Stay calm and hold your position", effect: -200, consequence: "Short-term loss, but better long-term strategy.", onSelect: () => addSkill('financialLiteracy', 1) },
+                    { text: "Invest more while prices are low", effect: -300, consequence: "Bold move that could pay off later.", onSelect: () => addSkill('financialLiteracy', 2) }
+                ]
+            },
+            {
+                title: "💧 Water Bill Shock",
+                description: "You received an unusually high water bill this month due to a leak.",
+                options: [
+                    { text: "Pay the full amount (RM400)", effect: -400, consequence: "Painful but resolves the issue immediately." },
+                    { text: "Contest the bill and fix the leak (RM200)", effect: -200, consequence: "Saved money by addressing the root cause.", onSelect: () => addSkill('financialLiteracy', 1) },
+                    { text: "Ignore it for now", effect: 0, consequence: "The problem will only get worse with late fees and more leakage." }
+                ]
+            }
+        ];
+
+        const achievements = [
+            {
+                id: 'firstDay',
+                title: 'First Day',
+                description: 'Complete the first day of the financial journey',
+                check: () => currentPosition >= 1,
+                unlocked: false
+            },
+            {
+                id: 'day7',
+                title: 'One Week In',
+                description: 'Reach day 7 of the financial journey',
+                check: () => currentPosition >= 7,
+                unlocked: false
+            },
+            {
+                id: 'day15',
+                title: 'Halfway There',
+                description: 'Reach the middle of your financial journey',
+                check: () => currentPosition >= 15,
+                unlocked: false
+            },
+            {
+                id: 'day30',
+                title: 'Full Month',
+                description: 'Complete a full 30-day financial cycle',
+                check: () => currentPosition >= 30,
+                unlocked: false
+            },
+            {
+                id: 'moneyUp',
+                title: 'Money Smart',
+                description: 'Increase your money by 10%',
+                check: () => money > 5500,
+                unlocked: false
+            },
+            {
+                id: 'money8k',
+                title: 'Growing Wealth',
+                description: 'Accumulate RM8,000 in your financial journey',
+                check: () => money >= 8000,
+                unlocked: false
+            },
+            {
+                id: 'money10k',
+                title: 'Financial Milestone',
+                description: 'Accumulate RM10,000 in your financial journey',
+                check: () => money >= 10000,
+                unlocked: false
+            },
+            {
+                id: 'skillMaster',
+                title: 'Skill Master',
+                description: 'Reach level 3 in any skill',
+                check: () => skills.financialLiteracy >= 3 || skills.entrepreneurship >= 3 || skills.education >= 3,
+                unlocked: false
+            },
+            {
+                id: 'allSkills',
+                title: 'Jack of All Trades',
+                description: 'Improve all skills to at least level 2',
+                check: () => skills.financialLiteracy >= 2 && skills.entrepreneurship >= 2 && skills.education >= 2,
+                unlocked: false
+            }
+        ];
+
+        // Game variables
+        let currentPosition = 1;
+        let money = 5000;
+        const daysInMonth = 30;
+        let isGameOver = false;
+        let gameStarted = false;
+        let difficulty = "easy";
+        let skills = {
+            financialLiteracy: 1,
+            entrepreneurship: 1,
+            education: 1
+        };
+        let transactions = [
+            { day: 0, description: "Starting Balance", amount: 5000 }
+        ];
+        let difficultyMultipliers = {
+            easy: { income: 1.2, expense: 0.8 },
+            normal: { income: 1.0, expense: 1.0 },
+            hard: { income: 0.8, expense: 1.2 }
+        };
+        
+        // Special days (payday, bills, etc.)
+        let specialDays = {
+            // Paydays (default: every 7 days)
+            paydays: [7, 14, 21, 28],
+            // Regular expenses (rent, utilities, etc.)
+            expenses: [5, 15, 25],
+            // Special event days
+            events: [9, 19, 29]
+        };
+        
+        // Initialize game board
+        function createBoard() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.className = 'day';
+                
+                // Day number
+                const dayNumber = document.createElement('span');
+                dayNumber.textContent = i;
+                day.appendChild(dayNumber);
+                
+                // Add icon based on special day
+                const dayIcon = document.createElement('div');
+                dayIcon.className = 'day-icon';
+                
+                if (specialDays.paydays.includes(i)) {
+                    dayIcon.textContent = '💰';
+                    day.classList.add('payday');
+                } else if (specialDays.expenses.includes(i)) {
+                    dayIcon.textContent = '💸';
+                    day.classList.add('expense');
+                } else if (specialDays.events.includes(i)) {
+                    dayIcon.textContent = '⭐';
+                    day.classList.add('special');
+                }
+                
+                day.insertBefore(dayIcon, dayNumber);
+                
+                if (i === currentPosition) {
+                    day.className += ' current';
+                    const player = document.createElement('div');
+                    player.className = 'player';
+                    day.appendChild(player);
+                }
+                calendar.appendChild(day);
+            }
+        }
+
+        // Update game board
+        function updateBoard() {
+            const days = document.querySelectorAll('.day');
+            days.forEach((day, index) => {
+                day.classList.remove('current');
+                // Remove any existing player marker
+                const existingPlayer = day.querySelector('.player');
+                if (existingPlayer) {
+                    day.removeChild(existingPlayer);
+                }
+                
+                if (index + 1 === currentPosition) {
+                    day.classList.add('current');
+                    const player = document.createElement('div');
+                    player.className = 'player';
+                    day.appendChild(player);
+                }
+            });
+            
+            document.getElementById('currentDay').textContent = currentPosition;
+            document.getElementById('money').textContent = `RM${money.toLocaleString()}`;
+            
+            // Check for special days
+            checkSpecialDays();
+            checkGameOver();
+            updateAchievements();
+            updateSkillDisplay();
+        }
+        
+        // Check if the current position is a special day
+        function checkSpecialDays() {
+            if (specialDays.paydays.includes(currentPosition)) {
+                handlePayday();
+            }
+            
+            if (specialDays.expenses.includes(currentPosition)) {
+                handleExpenses();
+            }
+            
+            if (specialDays.events.includes(currentPosition)) {
+                setTimeout(() => showSpecialEvent(), 800);
+            }
+        }
+        
+        // Handle payday event
+        function handlePayday() {
+            // Base salary
+            let salary = 1000;
+            
+            // Skill bonuses
+            let entrepreneurBonus = skills.entrepreneurship * 100;
+            let educationBonus = skills.education * 150;
+            
+            // Apply difficulty multiplier
+            let totalSalary = Math.round((salary + entrepreneurBonus + educationBonus) * difficultyMultipliers[difficulty].income);
+            
+            // Add money and transaction
+            addMoney(totalSalary, "Salary Payment");
+            
+            // Show notification
+            showToast("Payday!", `You received RM${totalSalary.toLocaleString()} as your salary.`, "success");
+        }
+        
+        // Handle regular expenses
+        function handleExpenses() {
+            // Base expenses (rent, utilities, etc.)
+            let baseExpense = 600;
+            
+            // Financial literacy reduces expenses
+            let reduction = skills.financialLiteracy * 50;
+            
+            // Apply difficulty multiplier
+            let totalExpense = Math.round((baseExpense - reduction) * difficultyMultipliers[difficulty].expense);
+            
+            // Remove money and add transaction
+            addMoney(-totalExpense, "Regular Expenses");
+            
+            // Show notification
+            showToast("Expenses Paid", `You paid RM${totalExpense.toLocaleString()} for regular expenses.`, "warning");
+        }
+        
+        // Add money and create transaction record
+        function addMoney(amount, description) {
+            const oldMoney = money;
+            money += amount;
+            
+            // Add transaction to history
+            transactions.push({ 
+                day: currentPosition, 
+                description: description, 
+                amount: amount 
+            });
+            
+            // Update transaction display
+            updateTransactionHistory();
+            
+            // Visual money change indicator
+            showMoneyChange(amount);
+        }
+        
+        // Show money change animation
+        function showMoneyChange(amount) {
+            const moneyElement = document.getElementById('money');
+            const rect = moneyElement.getBoundingClientRect();
+            
+            const changeElement = document.createElement('div');
+            changeElement.className = 'money-change';
+            changeElement.textContent = amount > 0 ? `+RM${amount.toLocaleString()}` : `-RM${Math.abs(amount).toLocaleString()}`;
+            changeElement.style.color = amount > 0 ? 'var(--success-color)' : 'var(--danger-color)';
+            changeElement.style.left = `${rect.left}px`;
+            changeElement.style.top = `${rect.top}px`;
+            
+            document.body.appendChild(changeElement);
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                if (document.body.contains(changeElement)) {
+                    document.body.removeChild(changeElement);
+                }
+            }, 1500);
+        }
+        
+        // Show toast notification
+        function showToast(title, message, type = "neutral") {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            toast.innerHTML = `
+                <div class="toast-title">${title}</div>
+                <div>${message}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Trigger reflow for animation
+            toast.offsetHeight;
+            toast.classList.add('show');
+            
+            // Remove after some time
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toastContainer.contains(toast)) {
+                        toastContainer.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Update transaction history display
+        function updateTransactionHistory() {
+            const container = document.getElementById('transactionHistory');
+            container.innerHTML = '';
+            
+            // Get last 10 transactions (or all if less than 10)
+            const recentTransactions = transactions.slice(-10).reverse();
+            
+            recentTransactions.forEach(transaction => {
+                const element = document.createElement('div');
+                element.className = 'transaction';
+                
+                const description = document.createElement('span');
+                description.textContent = `Day ${transaction.day}: ${transaction.description}`;
+                
+                const amount = document.createElement('span');
+                amount.textContent = transaction.amount > 0 
+                    ? `+RM${transaction.amount.toLocaleString()}` 
+                    : `-RM${Math.abs(transaction.amount).toLocaleString()}`;
+                amount.className = transaction.amount > 0 ? 'positive' : 'negative';
+                
+                element.appendChild(description);
+                element.appendChild(amount);
+                container.appendChild(element);
+            });
+        }
+        
+        // Add skill points and update display
+        function addSkill(skillName, points) {
+            if (skills.hasOwnProperty(skillName)) {
+                skills[skillName] += points;
+                showToast("Skill Improved", `Your ${skillName} skill increased by ${points}!`, "success");
+                updateSkillDisplay();
+            }
+        }
+        
+        // Update skill display
+        function updateSkillDisplay() {
+            for (const skill in skills) {
+                const levelElement = document.getElementById(`${skill}Level`);
+                const barElement = document.getElementById(`${skill}Bar`);
+                
+                if (levelElement && barElement) {
+                    levelElement.textContent = skills[skill];
+                    
+                    // Set width based on level (max level 5)
+                    const percent = (skills[skill] / 5) * 100;
+                    barElement.style.width = `${percent}%`;
+                }
+            }
+        }
+        
+        // Show special event
+        function showSpecialEvent() {
+            const event = specialEvents[Math.floor(Math.random() * specialEvents.length)];
+            showChallenge(event);
+        }
+
+        // Start the game
+        function startGame() {
+            // Get selected difficulty
+            const difficultyOptions = document.querySelectorAll('.difficulty-option');
+            difficultyOptions.forEach(option => {
+                if (option.classList.contains('active')) {
+                    difficulty = option.dataset.difficulty;
+                }
+            });
+            
+            document.getElementById('difficultyDisplay').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+            
+            const introModal = document.getElementById('introModal');
+            introModal.style.opacity = '0';
+            setTimeout(() => {
+                introModal.style.display = 'none';
+                gameStarted = true;
+            }, 500);
+        }
+
+        // Roll the dice
+        function rollDice() {
+            if (!gameStarted) {
+                showToast("Game Not Started", "Please click 'Let's Begin!' to start the game first!", "error");
+                return;
+            }
+            
+            if (isGameOver) return;
+
+            const dice = document.getElementById('dice');
+            const roll = Math.floor(Math.random() * 6) + 1;
+            
+            dice.className = 'dice rolling';
+            dice.textContent = '';
+            
+            setTimeout(() => {
+                dice.className = 'dice';
+                dice.textContent = roll;
+                
+                const newPosition = Math.min(currentPosition + roll, daysInMonth);
+                currentPosition = newPosition;
+                updateBoard();
+                
+                // Challenge probability
+                const challengeProbability = (difficulty === 'easy') ? 0.4 : (difficulty === 'normal' ? 0.5 : 0.6);
+                
+                if (Math.random() < challengeProbability && !specialDays.events.includes(currentPosition)) {
+                    setTimeout(showRandomChallenge, 800);
+                }
+            }, 800);
+        }
+        
+        // Show a random challenge
+        function showRandomChallenge() {
+            const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+            showChallenge(challenge);
+        }
+
+        // Check if game is over
+        function checkGameOver() {
+            if (!isGameOver) {
+                if (money <= 0) {
+                    showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
+                    isGameOver = true;
+                } else if (currentPosition >= daysInMonth) {
+                    if (money >= 10000) {
+                        showGameOver('win', 'Financial Success!', `You successfully managed your finances for 30 days and ended with RM${money.toLocaleString()}!`);
+                    } else {
+                        showGameOver('lose', 'Financial Struggle', `You completed the 30 days but didn't reach the RM10,000 goal. You ended with RM${money.toLocaleString()}.`);
+                    }
+                    isGameOver = true;
+                }
+            }
+        }
+
+        // Show game over modal
+        function showGameOver(status, title, message) {
+            const modal = document.getElementById('challengeModal');
+            const titleElement = document.getElementById('challengeTitle');
+            const description = document.getElementById('challengeDescription');
+            const options = document.getElementById('challengeOptions');
+            
+            titleElement.textContent = title;
+            description.textContent = message;
+            options.innerHTML = `
+                <button class="button" onclick="location.reload()">Play Again</button>
+            `;
+            
+            openModal(modal);
+        }
+
+        // Check and update achievements
+        function updateAchievements() {
+            achievements.forEach(achievement => {
+                if (!achievement.unlocked && achievement.check()) {
+                    achievement.unlocked = true;
+                    showAchievementNotification(achievement);
+                }
+            });
+            updateAchievementsDisplay();
+        }
+
+        // Show achievement notification
+        function showAchievementNotification(achievement) {
+            showToast("Achievement Unlocked!", `${achievement.title}: ${achievement.description}`, "success");
+        }
+
+        // Update achievements display
+        function updateAchievementsDisplay() {
+            const container = document.getElementById('achievementsContainer');
+            container.innerHTML = '<h3>Achievements</h3>';
+            
+            achievements.forEach(achievement => {
+                const element = document.createElement('div');
+                element.className = `achievement ${achievement.unlocked ? 'unlocked' : ''}`;
+                
+                const icon = document.createElement('div');
+                icon.className = 'achievement-icon';
+                
+                const content = document.createElement('div');
+                content.className = 'achievement-content';
+                content.innerHTML = `
+                    <div>${achievement.title}</div>
+                    <div>${achievement.description}</div>
+                `;
+                
+                element.appendChild(icon);
+                element.appendChild(content);
+                container.appendChild(element);
+            });
+        }
+
+        // Show challenge modal
+        function showChallenge(challenge) {
+            const modal = document.getElementById('challengeModal');
+            const title = document.getElementById('challengeTitle');
+            const description = document.getElementById('challengeDescription');
+            const options = document.getElementById('challengeOptions');
+            
+            title.textContent = challenge.title;
+            
+            if (challenge.tag) {
+                title.innerHTML += `<span class="challenge-tag">${challenge.tag}</span>`;
+            }
+            
+            description.textContent = challenge.description;
+            options.innerHTML = '';
+            
+            challenge.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'button';
+                button.textContent = option.text;
+                button.onclick = () => {
+                    let effect = option.effect;
+                    
+                    // If effect is a range, generate a random value
+                    if (typeof effect === 'object' && effect.min !== undefined && effect.max !== undefined) {
+                        effect = Math.floor(Math.random() * (effect.max - effect.min + 1)) + effect.min;
+                    }
+                    
+                    // Apply financial literacy bonus to positive effects
+                    if (effect > 0) {
+                        effect = Math.round(effect * (1 + (skills.financialLiteracy - 1) * 0.1));
+                    }
+                    
+                    // Add money and create transaction
+                    addMoney(effect, challenge.title);
+                    
+                    // Show consequence
+                    showToast("Decision Made", option.consequence, effect > 0 ? "success" : "warning");
+                    
+                    // Call onSelect callback if exists
+                    if (typeof option.onSelect === 'function') {
+                        option.onSelect();
+                    }
+                    
+                    // Add small financial literacy boost for all decisions
+                    if (Math.random() < 0.3) {
+                        addSkill('financialLiteracy', 1);
+                    }
+                    
+                    closeModal(modal);
+                    updateBoard();
+                };
+                options.appendChild(button);
+            });
+            
+            openModal(modal);
+        }
+        
+        // Open modal with animation
+        function openModal(modal) {
+            modal.style.display = 'flex';
+            
+            // Trigger reflow for animation
+            modal.offsetHeight;
+            modal.classList.add('active');
+        }
+        
+        // Close modal with animation
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Event listeners
+        document.getElementById('rollDice').addEventListener('click', rollDice);
+        
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab content
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show selected tab content
+                const selectedTab = tab.dataset.tab;
+                document.getElementById(`${selectedTab}Tab`).classList.add('active');
+            });
+        });
+        
+        // Difficulty selection in intro modal
+        const difficultyOptions = document.querySelectorAll('.difficulty-option');
+        difficultyOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                difficultyOptions.forEach(opt => opt.classList.remove('active'));
+                
+                // Add active class to clicked option
+                option.classList.add('active');
+            });
+        });
+        
+        // Initialize game
+        createBoard();
+        updateAchievementsDisplay();
+        updateTransactionHistory();
+        updateSkillDisplay();
+    </script>
+</body>
+</html>
