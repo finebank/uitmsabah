@@ -493,6 +493,44 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       margin: 0 auto 15px auto;
     }
+    
+    /* Gallery video controls */
+    .gallery-video-controls {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 400px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      z-index: 101;
+    }
+    
+    .video-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(225, 94, 176, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 102;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .gallery-video {
+      max-height: 80vh;
+      max-width: 80vw;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark transition-colors duration-300">
@@ -732,7 +770,7 @@
       
       <!-- Gallery Counter -->
       <div class="gallery-counter">
-        <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
+        <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
       </div>
       
       <!-- Gallery Slider -->
@@ -799,20 +837,21 @@
     // Gallery settings and state
     let currentSlide = 0;
     
-    // Collection of images for the gallery
-    const galleryImages = [
+    // Collection of media (images and videos) for the gallery
+    const galleryMedia = [
+   // Raya video from user-provided URL
+      { type: 'video', src: 'https://sirpoji.my/FPPBERAYA.mp4' }
       // Real Hari Raya images from allowed domains
-      'https://i.imgur.com/fFcQMZ7.png',
-      'https://i.imgur.com/RUzGCjh.jpg',
-      'https://i.imgur.com/CFQNPDO.jpg',
-      'https://i.imgur.com/6NiC3AA.jpg',
-      'https://i.imgur.com/dJQ1IlQ.jpg',
-      'https://i.imgur.com/b5RXcai.jpg',
-      'https://i.imgur.com/MFUKkfS.jpg'
-    ];
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/profimbarine.png' },
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/drdayang.png' },
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/drjacqueline.png' },
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/drrapheedah.png' },
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/drrainah.png' },
+      { type: 'image', src: 'https://finebank.github.io/uitmsabah/drjasmine.png' }
+   ];
     
     // Initialize the gallery and set the total slides
-    totalSlidesEl.textContent = galleryImages.length.toString();
+    totalSlidesEl.textContent = galleryMedia.length.toString();
     
     // Share URL and content - Using the correct URLs provided
     const shareUrl = 'https://finebank.github.io/uitmsabah/fppberaya.html';
@@ -902,21 +941,62 @@
     function initializeGallery() {
       sliderContainer.innerHTML = '';
       
-      galleryImages.forEach((src, index) => {
+      galleryMedia.forEach((media, index) => {
         const slide = document.createElement('div');
         slide.className = index === currentSlide ? 'absolute inset-0 flex items-center justify-center' : 'absolute inset-0 flex items-center justify-center hidden';
         
-        const imgContainer = document.createElement('div');
-        imgContainer.className = 'relative max-w-full max-h-full p-2';
+        const mediaContainer = document.createElement('div');
+        mediaContainer.className = 'relative max-w-full max-h-full p-2';
         
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `Raya Image ${index + 1}`;
-        img.className = 'max-h-[90vh] max-w-[90vw] object-contain';
-        img.loading = 'lazy';
+        if (media.type === 'image') {
+          const img = document.createElement('img');
+          img.src = media.src;
+          img.alt = `Raya Image ${index + 1}`;
+          img.className = 'max-h-[90vh] max-w-[90vw] object-contain';
+          img.loading = 'lazy';
+          mediaContainer.appendChild(img);
+        } else if (media.type === 'video') {
+          // Create a badge to indicate it's a video
+          const videoBadge = document.createElement('div');
+          videoBadge.className = 'video-badge';
+          videoBadge.innerHTML = `
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <span>Video</span>
+          `;
+          mediaContainer.appendChild(videoBadge);
+          
+          // Create the video element
+          const video = document.createElement('video');
+          video.className = 'gallery-video';
+          video.src = media.src;
+          video.controls = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
+          mediaContainer.appendChild(video);
+          
+          // Add event listener to pause background music when video plays
+          video.addEventListener('play', () => {
+            backgroundMusic.pause();
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            updateVisualizerState();
+          });
+          
+          // Add event listener to resume background music when video pauses
+          video.addEventListener('pause', () => {
+            // Only resume if user hasn't manually paused the music
+            if (!backgroundMusic.paused) {
+              backgroundMusic.play();
+              playIcon.classList.add('hidden');
+              pauseIcon.classList.remove('hidden');
+              updateVisualizerState();
+            }
+          });
+        }
         
-        imgContainer.appendChild(img);
-        slide.appendChild(imgContainer);
+        slide.appendChild(mediaContainer);
         sliderContainer.appendChild(slide);
       });
       
@@ -930,9 +1010,16 @@
     
     // Show a specific slide
     function showSlide(index) {
-      // Remove all current animations and hide all slides
+      // Find all slides - any video that might be playing
       const slides = sliderContainer.querySelectorAll('div.absolute');
       slides.forEach(slide => {
+        // If there's a video in this slide, pause it
+        const video = slide.querySelector('video');
+        if (video) {
+          video.pause();
+        }
+        
+        // Hide all slides
         slide.className = 'absolute inset-0 flex items-center justify-center hidden';
       });
       
@@ -946,14 +1033,14 @@
     // Navigate to previous slide
     function prevSlideHandler() {
       let newIndex = currentSlide - 1;
-      if (newIndex < 0) newIndex = galleryImages.length - 1;
+      if (newIndex < 0) newIndex = galleryMedia.length - 1;
       showSlide(newIndex);
     }
     
     // Navigate to next slide
     function nextSlideHandler() {
       let newIndex = currentSlide + 1;
-      if (newIndex >= galleryImages.length) newIndex = 0;
+      if (newIndex >= galleryMedia.length) newIndex = 0;
       showSlide(newIndex);
     }
     
@@ -1107,6 +1194,12 @@
     });
     
     closeGalleryBtn.addEventListener('click', () => {
+      // Pause any videos that might be playing
+      const videoElements = sliderContainer.querySelectorAll('video');
+      videoElements.forEach(video => {
+        video.pause();
+      });
+      
       // Exit fullscreen if currently in fullscreen mode
       if (document.fullscreenElement || 
           document.webkitFullscreenElement || 
@@ -1142,6 +1235,12 @@
     
     galleryModal.addEventListener('click', (e) => {
       if (e.target === galleryModal) {
+        // Pause any videos that might be playing
+        const videoElements = sliderContainer.querySelectorAll('video');
+        videoElements.forEach(video => {
+          video.pause();
+        });
+        
         // Exit fullscreen if currently in fullscreen mode
         if (document.fullscreenElement || 
             document.webkitFullscreenElement || 
