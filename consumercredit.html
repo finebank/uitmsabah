@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managing Consumer Credit | Financial Planning</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles */
+        .section-divider {
+            height: 5px;
+            background: linear-gradient(90deg, #5D5CDE 0%, #a5a4ff 100%);
+            border-radius: 5px;
+            margin: 2rem 0;
+        }
+        
+        /* Dark mode styles */
+        .dark {
+            background-color: #181818;
+            color: #f1f1f1;
+        }
+        
+        .dark .card {
+            background-color: #2d2d2d;
+        }
+        
+        .dark .section-header {
+            background-color: #333;
+        }
+        
+        .dark .nav-link {
+            color: #e1e1e1;
+        }
+        
+        .dark .nav-link:hover {
+            background-color: #3e3e3e;
+        }
+        
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 5px;
+            z-index: 50;
+        }
+        
+        .progress-bar {
+            height: 5px;
+            background: #5D5CDE;
+            width: 0%;
+        }
+        
+        /* Custom animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom card hover effects */
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(93, 92, 222, 0.3);
+        }
+        
+        /* Pill tabs */
+        .pill-active {
+            background-color: #5D5CDE;
+            color: white;
+        }
+        
+        .pill-inactive {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+        
+        .dark .pill-inactive {
+            background-color: #2d2d2d;
+            color: #e1e1e1;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased">
+    <!-- Progress bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="bg-white dark:bg-gray-900 fixed w-full z-40 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-credit-card text-purple-600 text-xl"></i>
+                <span class="font-bold text-xl">FIN333: Chapter 4</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#section-4.1" class="nav-link px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">Basics of Credit</a>
+                <a href="#section-4.2" class="nav-link px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">Credit Capacity</a>
+                <a href="#section-4.3" class="nav-link px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">Credit Scores</a>
+                <a href="#section-4.4" class="nav-link px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">Credit Mistakes</a>
+            </div>
+            
+            <button id="darkModeToggle" class="bg-gray-200 dark:bg-gray-700 p-2 rounded-full">
+                <i class="fas fa-moon text-gray-700 dark:hidden"></i>
+                <i class="fas fa-sun text-yellow-300 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="md:hidden overflow-x-auto whitespace-nowrap px-4 py-2 border-t border-gray-200 dark:border-gray-700">
+            <a href="#section-4.1" class="nav-link inline-block px-3 py-1 mr-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">4.1 Basics</a>
+            <a href="#section-4.2" class="nav-link inline-block px-3 py-1 mr-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">4.2 Capacity</a>
+            <a href="#section-4.3" class="nav-link inline-block px-3 py-1 mr-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">4.3 Scores</a>
+            <a href="#section-4.4" class="nav-link inline-block px-3 py-1 mr-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">4.4 Mistakes</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 pt-24 pb-16 min-h-screen">
+        <!-- Introduction -->
+        <section class="mb-12 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">Managing Consumer Credit</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Learn about consumer credit, measuring credit capacity, maintaining credit scores, and avoiding credit mistakes.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Learning Objectives</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <i class="fas fa-star text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-200">Describe the importance of credit creation</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <i class="fas fa-credit-card text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-200">Recognize types and products of credit</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <i class="fas fa-calculator text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-200">Measure consumer credit capacity</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <i class="fas fa-chart-line text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-200">Explain how to maintain credit scores and ratings</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-start md:col-span-2">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <i class="fas fa-exclamation-triangle text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-200">Identify common credit mistakes and the solutions</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4.1: Basics of Consumer Credit -->
+        <section id="section-4.1" class="mb-16 scroll-mt-24 fade-in">
+            <div class="bg-purple-50 dark:bg-gray-800 rounded-t-2xl p-6">
+                <h3 class="text-3xl font-bold text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-book-open text-purple-600 mr-3"></i>
+                    4.1 Basics of Consumer Credit
+                </h3>
+            </div><!-- Embedded YouTube Video for Section 4.1 -->
+          <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/RYPWkvzAgTc' frameborder='0' allowfullscreen></iframe></div> 
+            <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">What is Consumer Credit?</h3>
+                
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                    <div class="w-full md:w-1/3">
+                        <img src="https://img.freepik.com/free-vector/accounting-process-isometric-set-with-financial-documents-analyzing-reporting-tax-collection-control-magnifier-banknotes-symbols-vector-illustration_1284-73551.jpg" alt="Consumer Credit Illustration" class="rounded-lg shadow-md">
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Consumer credit is the use of credit by individuals for personal or household purposes.
+                            It involves obtaining goods or services and paying for them at a later date under agreed upon terms.
+                        </p>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Consumer credit helps individuals buy goods or services, cope with emergencies, but it also comes with costs and risks.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.1.1 Importance of Credit Creation</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-green-50 dark:bg-gray-700 p-5 rounded-xl hover-card">
+                        <h4 class="font-bold text-xl mb-3 text-green-700 dark:text-green-400">Benefits of Credit</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Enable purchase even when funds are low</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">A cushion for financial emergencies</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Advance notice of sales</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Easier to return merchandise</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Increases the money supply, affecting economic activity</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Promotes economic growth and enhances social welfare</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-50 dark:bg-gray-700 p-5 rounded-xl hover-card">
+                        <h4 class="font-bold text-xl mb-3 text-red-700 dark:text-red-400">Pitfalls of Credit</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Temptation to overspend</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Failure to repay loan may lead to loss of income</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">It does not increase total purchasing power</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Credit costs money</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.1.2 Types and Products of Credit</h3>
+                
+                </div><!-- Embedded YouTube Video for Section 4.2 -->
+          <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='https://www.youtube.com/embed/4O4Y2AcAGnc' frameborder='0' allowfullscreen></iframe></div>                  </div>
+                <!-- Credit Types Tabs -->
+                <div class="mb-8">
+                    <div class="flex space-x-2 mb-4">
+                        <button class="credit-tab pill-active py-2 px-4 rounded-full text-sm font-medium transition duration-300" data-target="open-end">Open-End Credit</button>
+                        <button class="credit-tab pill-inactive py-2 px-4 rounded-full text-sm font-medium transition duration-300" data-target="closed-end">Closed-End Credit</button>
+                    </div>
+                    
+                    <!-- Open-End Credit Content -->
+                    <div id="open-end-content" class="credit-content bg-white dark:bg-gray-700 p-5 rounded-xl">
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Open-end credit allows borrowing up to a limit and repaying it flexibly. Examples include credit cards, personal lines of credit, and home equity lines of credit.
+                        </p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 mt-6">
+                            <!-- Credit Card -->
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-5 text-white hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-credit-card text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg">Credit Card</h5>
+                                </div>
+                                <p class="text-sm">A payment card that allows you to borrow money to make purchases. You must repay the borrowed amount, plus interest if you don't pay in full.</p>
+                            </div>
+                            
+                            <!-- Personal Line of Credit -->
+                            <div class="bg-gradient-to-r from-green-500 to-teal-600 rounded-xl p-5 text-white hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-hand-holding-usd text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg">Personal Line of Credit</h5>
+                                </div>
+                                <p class="text-sm">A type of loan that allows you to borrow money when needed, up to a certain limit. You pay interest only on the amount borrowed.</p>
+                            </div>
+                            
+                            <!-- Home Equity Line of Credit -->
+                            <div class="bg-gradient-to-r from-yellow-500 to-orange-600 rounded-xl p-5 text-white hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-home text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg">Home Equity Line of Credit</h5>
+                                </div>
+                                <p class="text-sm">A loan that allows homeowners to borrow against the equity in their home with a variable interest rate based on the prime rate.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Closed-End Credit Content (Hidden by default) -->
+                    <div id="closed-end-content" class="credit-content hidden bg-white dark:bg-gray-700 p-5 rounded-xl">
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Closed-end credit involves borrowing a fixed amount and repaying it in equal instalments. Examples include personal loans, automobile loans, housing loans, and education loans.
+                        </p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mt-6">
+                            <!-- Personal Loan -->
+                            <div class="bg-white dark:bg-gray-600 shadow-md rounded-xl p-5 hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-money-bill-wave text-purple-600 dark:text-purple-400 text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Personal Loan</h5>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">An unsecured loan that can be used for various personal expenses such as home renovations, wedding expenses, or debt consolidation.</p>
+                            </div>
+                            
+                            <!-- Automobile Loan -->
+                            <div class="bg-white dark:bg-gray-600 shadow-md rounded-xl p-5 hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-car text-purple-600 dark:text-purple-400 text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Automobile Loan</h5>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">A type of loan used to purchase a vehicle, typically secured by the car itself. The borrower makes monthly payments until the loan is paid off.</p>
+                            </div>
+                            
+                            <!-- Housing Loan -->
+                            <div class="bg-white dark:bg-gray-600 shadow-md rounded-xl p-5 hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-house-user text-purple-600 dark:text-purple-400 text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Housing Loan</h5>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">A type of loan used to purchase or construct a home, secured by the property being purchased.</p>
+                            </div>
+                            
+                            <!-- Education Loan -->
+                            <div class="bg-white dark:bg-gray-600 shadow-md rounded-xl p-5 hover-card">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-graduation-cap text-purple-600 dark:text-purple-400 text-2xl mr-3"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Education Loan</h5>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">A type of financial assistance provided to help students pursue higher education. Repayment begins after graduation or when the student starts working.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Interactive Credit Quiz -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mt-8">
+                    <h4 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Test Your Knowledge</h4>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                            <p class="font-medium text-gray-800 dark:text-white mb-3">Which of the following is NOT an example of open-end credit?</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" name="q1" id="q1a" class="mr-2">
+                                    <label for="q1a" class="text-gray-700 dark:text-gray-300">Credit Card</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="q1" id="q1b" class="mr-2">
+                                    <label for="q1b" class="text-gray-700 dark:text-gray-300">Home Equity Line of Credit</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="q1" id="q1c" class="mr-2">
+                                    <label for="q1c" class="text-gray-700 dark:text-gray-300">Personal Line of Credit</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="q1" id="q1d" class="mr-2">
+                                    <label for="q1d" class="text-gray-700 dark:text-gray-300">Automobile Loan</label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden" id="q1-feedback">
+                                <p class="text-green-600 dark:text-green-400 font-medium">Correct! An automobile loan is a closed-end credit product as it involves borrowing a fixed amount and repaying it in equal instalments.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        Check Answer
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4.2: Measuring Credit Capacity -->
+        <section id="section-4.2" class="mb-16 scroll-mt-24 fade-in">
+            <div class="bg-purple-50 dark:bg-gray-800 rounded-t-2xl p-6">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-calculator text-purple-600 mr-3"></i>
+                    4.2 Measuring Credit Capacity
+                </h2>
+            </div>
+            
+            </div>
+            
+            <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                    <div class="w-full md:w-1/3">
+                        <img src="https://img.freepik.com/free-vector/credit-score-concept-illustration_114360-5239.jpg" alt="Credit Capacity Illustration" class="rounded-lg shadow-md">
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Understanding Credit Capacity</h3>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Credit capacity refers to your ability to take on debt and repay it. Lenders evaluate your credit capacity to determine whether to approve your loan application and how much to lend you.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.2.1 Debt Service Ratio (DSR)</h3>
+                
+                <div class="bg-blue-50 dark:bg-gray-700 p-6 rounded-xl mb-8">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Debt Service Ratio (DSR) is a ratio that measures the percentage of your income that goes to paying your debts. The lower your DSR, the higher your credit capacity and the lower your credit risk.
+                    </p>
+                    
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-bold text-lg mb-2 text-gray-800 dark:text-white">DSR Formula:</h4>
+                        <div class="flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
+                            <span class="text-xl font-mono text-purple-700 dark:text-purple-400">DSR = (Total Debt Payments / Gross Income) x 100</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="font-bold text-lg mb-2 text-gray-800 dark:text-white">DSR Calculator:</h4>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Total Monthly Debt Payments (RM)</label>
+                                    <input type="number" id="debtPayments" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white" placeholder="e.g., 1500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 mb-2">Gross Monthly Income (RM)</label>
+                                    <input type="number" id="grossIncome" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white" placeholder="e.g., 5000">
+                                </div>
+                            </div>
+                            <button id="calculateDSR" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                                Calculate DSR
+                            </button>
+                            <div id="dsrResult" class="mt-4 hidden">
+                                <div class="p-4 bg-purple-50 dark:bg-gray-700 rounded-lg">
+                                    <p class="text-gray-800 dark:text-white">Your Debt Service Ratio (DSR) is: <span id="dsrValue" class="font-bold text-purple-700 dark:text-purple-400">30%</span></p>
+                                    <p id="dsrInterpretation" class="mt-2 text-gray-700 dark:text-gray-300">Your DSR is good. Most lenders prefer a DSR below 40%, which indicates that you have sufficient income to cover your debt obligations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.2.2 The Concept of 5 C's</h3>
+                
+                <p class="text-gray-700 dark:text-gray-300 mb-6">
+                    Lenders use the 5 C's framework to evaluate the creditworthiness of borrowers. The 5 C's are character, capacity, capital, collateral, and conditions.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Character -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-5 hover-card">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <h5 class="font-bold text-lg text-gray-800 dark:text-white">1. Character</h5>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Do you pay bills on time? Your CCRIS payment report will tell the bank on your behalf.</p>
+                    </div>
+                    
+                    <!-- Capacity -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-5 hover-card">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-pie text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <h5 class="font-bold text-lg text-gray-800 dark:text-white">2. Capacity</h5>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Can you repay the loan? Your Debt-to-Income ratio will do the math for you.</p>
+                    </div>
+                    
+                    <!-- Capital -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-5 hover-card">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-coins text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <h5 class="font-bold text-lg text-gray-800 dark:text-white">3. Capital</h5>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">What assets or net worth currently you have?</p>
+                    </div>
+                    
+                    <!-- Collateral -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-5 hover-card md:col-span-1.5">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-shield-alt text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <h5 class="font-bold text-lg text-gray-800 dark:text-white">4. Collateral</h5>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">What property can you pledge to convince the loan provider that they can repossess should you default on the loan?</p>
+                    </div>
+                    
+                    <!-- Conditions -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-5 hover-card md:col-span-1.5">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-globe text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <h5 class="font-bold text-lg text-gray-800 dark:text-white">5. Conditions</h5>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">What condition (e.g., economically) could affect your ability to pay back the loan?</p>
+                    </div>
+                </div>
+                
+                <!-- DSR Example -->
+                <div class="mt-8 bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                    <h4 class="font-bold text-lg mb-4 text-gray-800 dark:text-white">DSR Example:</h4>
+                    
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300"><strong>Gross Income:</strong> RM2,800</p>
+                                <p class="text-gray-700 dark:text-gray-300"><strong>Car Loan:</strong> RM640</p>
+                                <p class="text-gray-700 dark:text-gray-300"><strong>PTPTN:</strong> RM220</p>
+                                <p class="text-gray-700 dark:text-gray-300"><strong>Total Debt:</strong> RM860</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300"><strong>DSR Calculation:</strong></p>
+                                <p class="text-gray-700 dark:text-gray-300">DSR = (RM860 / RM2,800) x 100 = 30.71%</p>
+                                <div class="mt-2 p-2 bg-green-50 dark:bg-green-900 rounded-lg">
+                                    <p class="text-green-800 dark:text-green-200">Most lenders in Malaysia set a threshold of 70%, which means you have a remaining 39.29% from your current income of RM2,800 (RM1,100) for future loan applications.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4.3: Maintaining Credit Scores and Ratings -->
+        <section id="section-4.3" class="mb-16 scroll-mt-24 fade-in">
+            <div class="bg-purple-50 dark:bg-gray-800 rounded-t-2xl p-6">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-chart-line text-purple-600 mr-3"></i>
+                    4.3 Maintaining Credit Scores and Ratings
+                </h2>
+            </div>
+            
+            </div>
+            
+            <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                    <div class="w-full md:w-1/3">
+                        <img src="https://ppapk.treasury.gov.my/images/banners/rcra1.png" alt="Credit Score Illustration" class="rounded-lg shadow-md">
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Credit Scores in Malaysia</h3>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Credit scores are numerical representations of your creditworthiness. In Malaysia, your credit information is primarily managed through CCRIS (Central Credit Reference Information System) and CTOS (Credit Tip-Off Service).
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.3.1 CCRIS and CTOS</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- CCRIS -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6 hover-card">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-university text-blue-600 dark:text-blue-400 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-800 dark:text-white">CCRIS</h4>
+                        </div>
+                        
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Central Credit Reference Information System (CCRIS) is a computerized database system operated by Bank Negara Malaysia. It processes credit-related data from financial institutions and synthesizes it into credit reports.
+                        </p>
+                        
+                        <div class="bg-blue-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h5 class="font-bold text-blue-800 dark:text-blue-400 mb-2">What CCRIS Reports Include:</h5>
+                            <ul class="space-y-1">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-600 dark:text-blue-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Outstanding credits</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-600 dark:text-blue-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Special attention accounts</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-blue-600 dark:text-blue-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Applications for credit</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- CTOS -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6 hover-card">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-search-dollar text-orange-600 dark:text-orange-400 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-800 dark:text-white">CTOS</h4>
+                        </div>
+                        
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Credit Tip-Off Service (CTOS) is an electronic 'archive' of information collated from various sources like gazettes, newspapers, court notices, and statutory bodies.
+                        </p>
+                        
+                        <div class="bg-orange-50 dark:bg-gray-800 p-4 rounded-lg">
+                            <h5 class="font-bold text-orange-800 dark:text-orange-400 mb-2">What CTOS Reports Include:</h5>
+                            <ul class="space-y-1">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-orange-600 dark:text-orange-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Bankruptcy information</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-orange-600 dark:text-orange-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Legal actions and summons</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-orange-600 dark:text-orange-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Company directorships</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-orange-600 dark:text-orange-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">CTOS Score (ranges from 300 to 850)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-700 p-5 rounded-lg mb-8">
+                    <p class="text-gray-700 dark:text-gray-300 font-medium">
+                        It is important to know that both CCRIS and CTOS credit reports never blacklist the borrower. They only provide insights to help financial institutions in decision making.
+                    </p>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.3.2 Importance of Good Credit Records</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6">
+                        <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white">Why Good Credit Records Matter</h4>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Access to Affordable Credit</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">Good credit allows you to access affordable loans for major purchases like homes or cars.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Better Loan Terms</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">A good credit score can lead to lower interest rates and better loan terms, saving you money.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Job Opportunities</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">Some employers check credit reports as part of their hiring process, especially for finance-related positions.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6">
+                        <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white">How to Maintain Good Credit</h4>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-calendar-check text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Pay Bills on Time</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">Late payments can negatively impact your credit score. Set up reminders or automatic payments.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-credit-card text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Keep Credit Card Balances Low</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">High utilization rates can lower your credit score. Aim to use less than 30% of your available credit.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-file-alt text-blue-600 dark:text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Regularly Check Your Credit Reports</p>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm">Monitor your CCRIS and CTOS reports for any errors or fraudulent activities.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Interactive Poll -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mt-8">
+                    <h4 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Quick Poll</h4>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">Have you checked your CCRIS or CTOS report in the past year?</p>
+                    
+                    <div class="space-y-2">
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 transition duration-300">
+                            <input type="radio" name="poll" id="poll1" class="mr-3">
+                            <label for="poll1" class="text-gray-700 dark:text-gray-300 cursor-pointer">Yes, I regularly check both</label>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 transition duration-300">
+                            <input type="radio" name="poll" id="poll2" class="mr-3">
+                            <label for="poll2" class="text-gray-700 dark:text-gray-300 cursor-pointer">I've checked one of them</label>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 transition duration-300">
+                            <input type="radio" name="poll" id="poll3" class="mr-3">
+                            <label for="poll3" class="text-gray-700 dark:text-gray-300 cursor-pointer">No, I haven't checked any</label>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 transition duration-300">
+                            <input type="radio" name="poll" id="poll4" class="mr-3">
+                            <label for="poll4" class="text-gray-700 dark:text-gray-300 cursor-pointer">I don't know what these reports are</label>
+                        </div>
+                    </div>
+                    
+                    <button class="mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        Submit Answer
+                    </button>
+                    
+                    <div id="pollResults" class="mt-4 hidden">
+                        <h5 class="font-bold text-gray-800 dark:text-white mb-2">Poll Results:</h5>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">Yes, I regularly check both</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">35%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">I've checked one of them</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">28%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 28%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">No, I haven't checked any</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">22%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 22%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">I don't know what these reports are</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">15%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 15%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-700 dark:text-gray-300">Based on 248 responses</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4.4: Avoiding and Correcting Credit Mistakes -->
+        <section id="section-4.4" class="mb-16 scroll-mt-24 fade-in">
+            <div class="bg-purple-50 dark:bg-gray-800 rounded-t-2xl p-6">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-exclamation-triangle text-purple-600 mr-3"></i>
+                    4.4 Avoiding and Correcting Credit Mistakes
+                </h2>
+            </div>
+           
+            </div>
+            
+            <div class="mt-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                    <div class="w-full md:w-1/3">
+                        <img src="https://img.freepik.com/free-vector/warning-concept-illustration_114360-1551.jpg" alt="Credit Mistakes Illustration" class="rounded-lg shadow-md">
+                    </div>
+                    <div class="w-full md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Credit Mistakes</h3>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Credit mistakes can have serious consequences for your financial health and well-being. They can lower your credit score, increase your interest rates, limit your access to credit, and even affect your employment opportunities.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.4.1 Loans Problem and Solutions</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Problems -->
+                    <div class="bg-red-50 dark:bg-gray-700 p-6 rounded-xl hover-card">
+                        <h4 class="font-bold text-xl mb-4 text-red-800 dark:text-red-400">Common Loan Problems</h4>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Taking on too much high-interest debt</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Missing loan payments or paying late</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Paying only the minimum on credit cards</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Not having a budget to manage debt</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">Borrowing for non-essential expenses</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-4 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                            <p class="text-sm text-gray-700 dark:text-gray-300">According to Bank Negara Malaysia (2021), the household debt-to-GDP ratio in Malaysia was 93.3% as of June 2021, which was higher than the pre-pandemic level of 82.9% in 2019.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Solutions -->
+                    <div class="bg-green-50 dark:bg-gray-700 p-6 rounded-xl hover-card">
+                        <h4 class="font-bold text-xl mb-4 text-green-800 dark:text-green-400">Effective Solutions</h4>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 rounded-full w-7 h-7 flex items-center justify-center mr-3 mt-1">
+                                    <span class="font-bold text-green-700 dark:text-green-400">1</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Create a Budget</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Track your income and expenses to live within your means and avoid overspending.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 rounded-full w-7 h-7 flex items-center justify-center mr-3 mt-1">
+                                    <span class="font-bold text-green-700 dark:text-green-400">2</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Pay More Than the Minimum</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">This helps reduce debt faster and save on interest charges.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 rounded-full w-7 h-7 flex items-center justify-center mr-3 mt-1">
+                                    <span class="font-bold text-green-700 dark:text-green-400">3</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Use Debt Snowball/Avalanche Method</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Prioritize debts by either smallest balance first (snowball) or highest interest rate first (avalanche).</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 rounded-full w-7 h-7 flex items-center justify-center mr-3 mt-1">
+                                    <span class="font-bold text-green-700 dark:text-green-400">4</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Consider Debt Consolidation</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Combine multiple debts into one loan with a lower interest rate and a fixed repayment term.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900 rounded-full w-7 h-7 flex items-center justify-center mr-3 mt-1">
+                                    <span class="font-bold text-green-700 dark:text-green-400">5</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Seek Professional Help</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Consult a debt management agency like AKPK (Credit Counselling and Debt Management Agency) for assistance.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Debt Repayment Strategies -->
+                <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6 mb-8">
+                    <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white">Debt Repayment Strategies</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Debt Snowball Method -->
+                        <div class="bg-blue-50 dark:bg-gray-800 p-5 rounded-lg">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-snowflake text-blue-600 dark:text-blue-400 text-xl mr-3"></i>
+                                <h5 class="font-bold text-lg text-gray-800 dark:text-white">Debt Snowball Method</h5>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 mb-3">
+                                This method involves paying off debts in order from smallest to largest balance, regardless of interest rate.
+                            </p>
+                            <div class="bg-white dark:bg-gray-700 p-3 rounded-lg">
+                                <h6 class="font-bold text-gray-800 dark:text-white mb-2">How it works:</h6>
+                                <ol class="list-decimal pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>List all your debts from smallest to largest balance</li>
+                                    <li>Make minimum payments on all debts</li>
+                                    <li>Put extra money toward the smallest debt</li>
+                                    <li>Once the smallest debt is paid off, add that payment to the next smallest debt</li>
+                                    <li>Continue this process until all debts are paid off</li>
+                                </ol>
+                            </div>
+                            <p class="text-sm italic mt-3 text-gray-600 dark:text-gray-400">
+                                Psychological advantage: Quick wins keep you motivated
+                            </p>
+                        </div>
+                        
+                        <!-- Debt Avalanche Method -->
+                        <div class="bg-purple-50 dark:bg-gray-800 p-5 rounded-lg">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-mountain text-purple-600 dark:text-purple-400 text-xl mr-3"></i>
+                                <h5 class="font-bold text-lg text-gray-800 dark:text-white">Debt Avalanche Method</h5>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 mb-3">
+                                This method involves paying off debts in order from highest to lowest interest rate.
+                            </p>
+                            <div class="bg-white dark:bg-gray-700 p-3 rounded-lg">
+                                <h6 class="font-bold text-gray-800 dark:text-white mb-2">How it works:</h6>
+                                <ol class="list-decimal pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>List all your debts from highest to lowest interest rate</li>
+                                    <li>Make minimum payments on all debts</li>
+                                    <li>Put extra money toward the highest-interest debt</li>
+                                    <li>Once the highest-interest debt is paid off, add that payment to the next highest-interest debt</li>
+                                    <li>Continue this process until all debts are paid off</li>
+                                </ol>
+                            </div>
+                            <p class="text-sm italic mt-3 text-gray-600 dark:text-gray-400">
+                                Financial advantage: Saves the most money on interest in the long run
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">4.4.2 Bankruptcy in Malaysia</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- What is Bankruptcy -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6 md:col-span-1">
+                        <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white">What is Bankruptcy?</h4>
+                        
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Bankruptcy is a legal process that allows you to discharge some or all of your debts if you are unable to pay them.
+                        </p>
+                        
+                        <div class="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <h5 class="font-bold text-red-800 dark:text-red-400 mb-2">Negative Impacts:</h5>
+                            <ul class="space-y-1 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Losing your assets such as home, car, or savings</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Damaging your credit record for up to 10 years</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 mt-1 mr-2"></i>
+                                    <span class="text-gray-700 dark:text-gray-300">Restricting your financial freedom for up to 5 years</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Alternatives to Bankruptcy -->
+                    <div class="bg-white dark:bg-gray-700 shadow-md rounded-xl p-6 md:col-span-2">
+                        <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white">Alternatives to Bankruptcy</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Voluntary Arrangement -->
+                            <div class="bg-blue-50 dark:bg-gray-800 p-4 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-handshake text-blue-600 dark:text-blue-400 text-xl mr-2"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Voluntary Arrangement</h5>
+                                </div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    An agreement between you and your creditors to repay your debts in full or in part over a period. Requires 75% creditor approval and court authorization.
+                                </p>
+                            </div>
+                            
+                            <!-- Debt Management Programme -->
+                            <div class="bg-green-50 dark:bg-gray-800 p-4 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-tasks text-green-600 dark:text-green-400 text-xl mr-2"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Debt Management Programme</h5>
+                                </div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    A plan offered by AKPK that allows you to consolidate your debts into one monthly payment with lower interest rates and longer repayment terms.
+                                </p>
+                            </div>
+                            
+                            <!-- Individual Voluntary Arrangement -->
+                            <div class="bg-purple-50 dark:bg-gray-800 p-4 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-file-contract text-purple-600 dark:text-purple-400 text-xl mr-2"></i>
+                                    <h5 class="font-bold text-lg text-gray-800 dark:text-white">Individual Voluntary Arrangement</h5>
+                                </div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">
+                                    Similar to Voluntary Arrangement but involves appointing an insolvency practitioner to supervise the process. Also requires 75% creditor approval.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                <i class="fas fa-lightbulb text-yellow-600 dark:text-yellow-400 mr-2"></i>
+                                According to AKPK, as of June 2021, they have enrolled more than 300,000 Malaysians in the DMP and helped them to repay more than RM9 billion of debts.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Interactive Calculator Section -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mt-8">
+                    <h4 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Online Financial Calculators</h4>
+                    
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Use these calculators to plan your finances and avoid credit problems:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <a href="#" class="block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm text-center hover:shadow-md transition duration-300">
+                            <i class="fas fa-home text-4xl text-purple-600 dark:text-purple-400 mb-3"></i>
+                            <p class="font-bold text-gray-800 dark:text-white">Housing Loan Calculator</p>
+                        </a>
+                        <a href="#" class="block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm text-center hover:shadow-md transition duration-300">
+                            <i class="fas fa-graduation-cap text-4xl text-purple-600 dark:text-purple-400 mb-3"></i>
+                            <p class="font-bold text-gray-800 dark:text-white">Education Loan Calculator</p>
+                        </a>
+                        <a href="#" class="block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm text-center hover:shadow-md transition duration-300">
+                            <i class="fas fa-car text-4xl text-purple-600 dark:text-purple-400 mb-3"></i>
+                            <p class="font-bold text-gray-800 dark:text-white">Car Loan Calculator</p>
+                        </a>
+                        <a href="#" class="block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm text-center hover:shadow-md transition duration-300">
+                            <i class="fas fa-money-bill-wave text-4xl text-purple-600 dark:text-purple-400 mb-3"></i>
+                            <p class="font-bold text-gray-800 dark:text-white">Personal Loan Calculator</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary and Resources -->
+        <section class="mb-16 fade-in">
+            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">Chapter Summary</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Key Takeaways</h3>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">Consumer credit is a tool that helps individuals buy goods or services, but it comes with costs and risks.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">Credit capacity can be measured using the Debt Service Ratio (DSR) and the 5 C's framework.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">Maintaining good credit scores through CCRIS and CTOS is essential for financial well-being.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-check text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <span class="text-gray-700 dark:text-gray-300">Common credit mistakes can be avoided through proper budgeting, debt management strategies, and seeking professional help when needed.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Additional Resources</h3>
+                        
+                        <div class="space-y-4">
+                            <a href="https://www.bnm.gov.my" target="_blank" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300">
+                                <i class="fas fa-university text-purple-600 dark:text-purple-400 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">Bank Negara Malaysia</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Malaysia's central bank website with financial education resources</p>
+                                </div>
+                            </a>
+                            
+                            <a href="https://www.akpk.org.my" target="_blank" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300">
+                                <i class="fas fa-hands-helping text-purple-600 dark:text-purple-400 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">AKPK (Credit Counselling and Debt Management Agency)</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Free financial counseling and debt management services</p>
+                                </div>
+                            </a>
+                            
+                            <a href="https://www.ctos.com.my" target="_blank" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300">
+                                <i class="fas fa-search-dollar text-purple-600 dark:text-purple-400 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">CTOS Data Systems</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Access your credit report and learn about credit scores</p>
+                                </div>
+                            </a>
+                            
+                            <a href="https://eccris.bnm.gov.my" target="_blank" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300">
+                                <i class="fas fa-file-alt text-purple-600 dark:text-purple-400 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white">eCCRIS</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Bank Negara Malaysia's online CCRIS portal</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Self-Assessment -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Self-Assessment</h3>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Rate your understanding of the following concepts:</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 dark:text-gray-300">Types and Products of Credit</span>
+                                    <span class="text-gray-700 dark:text-gray-300" id="creditRating">0/5</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="range" min="0" max="5" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600 dark:bg-gray-600" id="creditSlider">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 dark:text-gray-300">Measuring Credit Capacity</span>
+                                    <span class="text-gray-700 dark:text-gray-300" id="capacityRating">0/5</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="range" min="0" max="5" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600 dark:bg-gray-600" id="capacitySlider">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 dark:text-gray-300">Credit Scores and Ratings</span>
+                                    <span class="text-gray-700 dark:text-gray-300" id="scoresRating">0/5</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="range" min="0" max="5" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600 dark:bg-gray-600" id="scoresSlider">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 dark:text-gray-300">Avoiding Credit Mistakes</span>
+                                    <span class="text-gray-700 dark:text-gray-300" id="mistakesRating">0/5</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="range" min="0" max="5" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600 dark:bg-gray-600" id="mistakesSlider">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <p class="text-gray-700 dark:text-gray-300">Based on your self-assessment, which topics would you like to review further?</p>
+                            <div class="mt-2 space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="reviewCredit" class="mr-2">
+                                    <label for="reviewCredit" class="text-gray-700 dark:text-gray-300">Types and Products of Credit</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="reviewCapacity" class="mr-2">
+                                    <label for="reviewCapacity" class="text-gray-700 dark:text-gray-300">Measuring Credit Capacity</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="reviewScores" class="mr-2">
+                                    <label for="reviewScores" class="text-gray-700 dark:text-gray-300">Credit Scores and Ratings</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="reviewMistakes" class="mr-2">
+                                    <label for="reviewMistakes" class="text-gray-700 dark:text-gray-300">Avoiding Credit Mistakes</label>
+                                </div>
+                            </div>
+                            
+                            <button class="mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                                Generate Review Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 py-8 border-t border-gray-200 dark:border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-xl font-bold text-gray-800 dark:text-white mb-4">UiTM © FIN333:Fundamentals of Personal Financial Planning</p>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Chapter 4:Managing Consumer Credit</p>
+                <div class="flex justify-center space-x-4">
+               
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        // Check for saved theme preference or system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Toggle dark mode when button is clicked
+        darkModeToggle.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+        });
+        
+        // Progress bar
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        };
+        
+        // Credit Tab Toggle
+        const creditTabs = document.querySelectorAll('.credit-tab');
+        
+        creditTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                creditTabs.forEach(t => {
+                    t.classList.remove('pill-active');
+                    t.classList.add('pill-inactive');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('pill-active');
+                this.classList.remove('pill-inactive');
+                
+                // Hide all content
+                document.querySelectorAll('.credit-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show content corresponding to clicked tab
+                const target = this.getAttribute('data-target');
+                document.getElementById(target + '-content').classList.remove('hidden');
+            });
+        });
+        
+        // DSR Calculator
+        const calculateDSRBtn = document.getElementById('calculateDSR');
+        
+        calculateDSRBtn.addEventListener('click', function() {
+            const debtPayments = parseFloat(document.getElementById('debtPayments').value) || 0;
+            const grossIncome = parseFloat(document.getElementById('grossIncome').value) || 1; // Avoid division by zero
+            
+            if (debtPayments > 0 && grossIncome > 0) {
+                const dsr = (debtPayments / grossIncome) * 100;
+                document.getElementById('dsrValue').textContent = dsr.toFixed(2) + '%';
+                
+                // Update interpretation based on DSR value
+                let interpretation = '';
+                if (dsr < 30) {
+                    interpretation = 'Your DSR is excellent. Most lenders prefer a DSR below 40%, which indicates that you have sufficient income to cover your debt obligations.';
+                } else if (dsr < 40) {
+                    interpretation = 'Your DSR is good. Most lenders prefer a DSR below 40%, which indicates that you have sufficient income to cover your debt obligations.';
+                } else if (dsr < 60) {
+                    interpretation = 'Your DSR is moderate. Some lenders may see this as a concern. Consider reducing your debt or increasing your income.';
+                } else {
+                    interpretation = 'Your DSR is high. Most lenders will be concerned about your ability to repay new loans. Focus on reducing your debt or increasing your income.';
+                }
+                
+                document.getElementById('dsrInterpretation').textContent = interpretation;
+                document.getElementById('dsrResult').classList.remove('hidden');
+            } else {
+                alert('Please enter valid values for debt payments and gross income.');
+            }
+        });
+        
+        // Quiz functionality
+        const quizCheckBtn = document.querySelector('button:contains("Check Answer")');
+        if (quizCheckBtn) {
+            quizCheckBtn.addEventListener('click', function() {
+                if (document.getElementById('q1d').checked) {
+                    document.getElementById('q1-feedback').classList.remove('hidden');
+                } else {
+                    document.getElementById('q1-feedback').innerHTML = '<p class="text-red-600 dark:text-red-400 font-medium">Incorrect. Try again! Hint: Look at the types of credit discussed in the lesson.</p>';
+                    document.getElementById('q1-feedback').classList.remove('hidden');
+                }
+            });
+        }
+        
+        // Poll functionality
+        const pollSubmitBtn = document.querySelector('button:contains("Submit Answer")');
+        if (pollSubmitBtn) {
+            pollSubmitBtn.addEventListener('click', function() {
+                if (document.querySelector('input[name="poll"]:checked')) {
+                    document.getElementById('pollResults').classList.remove('hidden');
+                } else {
+                    alert('Please select an answer before submitting.');
+                }
+            });
+        }
+        
+        // Self-assessment sliders
+        const sliders = ['credit', 'capacity', 'scores', 'mistakes'];
+        
+        sliders.forEach(slider => {
+            const sliderEl = document.getElementById(`${slider}Slider`);
+            const ratingEl = document.getElementById(`${slider}Rating`);
+            
+            sliderEl.addEventListener('input', function() {
+                ratingEl.textContent = `${this.value}/5`;
+            });
+        });
+        
+        // Fade-in animation for sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.8s ease-in-out, transform 0.8s ease-in-out';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
