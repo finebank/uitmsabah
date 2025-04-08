@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investing & Growing Financial Assets - Microlearning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#FF6B6B',
+                        dark: {
+                            bg: '#181818',
+                            card: '#222222',
+                            text: '#E0E0E0'
+                        },
+                        light: {
+                            bg: '#FFFFFF',
+                            card: '#F5F5F5',
+                            text: '#333333'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #5D5CDE;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b4ac6;
+        }
+        
+        /* Dark mode scrollbar */
+        .dark ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        
+        /* Custom animations */
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Fade animation for tab transitions */
+        .tab-content {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Progress bar animation */
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        /* Card hover effects */
+        .investment-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .investment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Quiz styles */
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            border-color: #5D5CDE;
+        }
+        
+        .quiz-option.selected {
+            background-color: #5D5CDE;
+            color: white;
+        }
+        
+        /* Chart styles */
+        .chart-bar {
+            transition: height 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans relative">
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-dark-card shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-chart-line text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold">Investing & Growing Financial Assets</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-300"></i>
+                </button>
+                <div class="hidden md:flex space-x-4">
+                    <a href="#basics" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Basics</a>
+                    <a href="#investment-vehicles" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Investment Vehicles</a>
+                    <a href="#alternatives" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Alternatives</a>
+                    <a href="#planning" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Planning</a>
+                    <a href="#quiz" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary">Quiz</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden px-4 py-2 bg-white dark:bg-dark-card border-t dark:border-gray-700">
+            <div class="flex flex-col space-y-2 pb-2">
+                <a href="#basics" class="nav-link p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Basics of Investing</a>
+                <a href="#investment-vehicles" class="nav-link p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Investment Vehicles</a>
+                <a href="#alternatives" class="nav-link p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Investment Alternatives</a>
+                <a href="#planning" class="nav-link p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Effective Planning</a>
+                <a href="#quiz" class="nav-link p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Knowledge Quiz</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="sticky top-[60px] z-40 w-full h-1 bg-gray-200 dark:bg-gray-700">
+        <div id="progress-bar" class="progress-bar h-full bg-primary" style="width: 0%"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-16 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="md:w-1/2 slide-in">
+                    <h1 class="text-4xl font-bold mb-4">Grow Your Wealth Through Smart Investing</h1>
+                    <p class="text-lg mb-6">Learn the fundamentals of investing and discover strategies to grow your financial assets over time.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#basics" class="px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                            Start Learning
+                        </a>
+                        <button id="show-objectives" class="px-6 py-3 border border-primary text-primary rounded-full hover:bg-primary/10 transition-colors">
+                            Learning Objectives
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 slide-in" style="animation-delay: 0.2s">
+                    <img src="https://img.freepik.com/free-vector/isometric-investment-horizontal-composition-with-isolated-concepts-financial-icons-text-captions-bar-chart-infographic-elements-vector-illustration_1284-82361.jpg" alt="Investment Growth Illustration" class="w-full max-w-md mx-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Objectives Modal -->
+    <div id="objectives-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50" id="modal-backdrop"></div>
+        <div class="relative bg-white dark:bg-dark-card rounded-lg shadow-xl w-full max-w-md p-6 m-4">
+            <button id="close-objectives" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold mb-4">Learning Objectives</h2>
+            <p class="mb-4">Upon completion of this chapter, you will be able to:</p>
+            <ul class="space-y-2">
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-primary mt-1 mr-2"></i>
+                    <span>Describe the concept and importance of personal investing and risk management</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-primary mt-1 mr-2"></i>
+                    <span>Evaluate various types of investment vehicles for optimal asset allocation and diversification</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-primary mt-1 mr-2"></i>
+                    <span>Device effective investing strategies to grow your financial assets</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Sections -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Section 1: Basics of Investing -->
+        <section id="basics" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Basics of Investing</h2>
+                <div class="h-1 w-24 bg-primary rounded"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Establishing Personal Investing Goals</h3>
+                    <p class="mb-4">Setting clear and specific financial goals is the foundation of successful investing. Your goals will determine your investment strategy, time horizon, and risk tolerance.</p>
+                    
+                    <div class="bg-light-card dark:bg-dark-card p-6 rounded-lg shadow-sm mb-6">
+                        <h4 class="font-semibold mb-3">Common Investment Goals</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-bullseye text-primary mt-1 mr-3"></i>
+                                <span>Retirement planning</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-bullseye text-primary mt-1 mr-3"></i>
+                                <span>Education funding</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-bullseye text-primary mt-1 mr-3"></i>
+                                <span>Home purchase</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-bullseye text-primary mt-1 mr-3"></i>
+                                <span>Starting a business</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-bullseye text-primary mt-1 mr-3"></i>
+                                <span>Building wealth</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tip-box border-l-4 border-primary bg-primary/5 p-4 rounded-r-lg">
+                        <h4 class="font-semibold flex items-center">
+                            <i class="fas fa-lightbulb text-primary mr-2"></i>
+                            SMART Investment Goals
+                        </h4>
+                        <p class="mt-2">Make your investment goals <strong>S</strong>pecific, <strong>M</strong>easurable, <strong>A</strong>chievable, <strong>R</strong>elevant, and <strong>T</strong>ime-bound for greater success.</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Factors Affecting Investment Choices</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-3">Risk-Reward Tradeoff</h4>
+                        <p>The relationship between risk and potential return is one of the most fundamental concepts in investing. Generally, investments with higher potential returns come with higher risks.</p>
+                        
+                        <div class="mt-4 bg-light-card dark:bg-dark-card p-4 rounded-lg">
+                            <div class="flex justify-between mb-2">
+                                <span>Lower Risk</span>
+                                <span>Higher Risk</span>
+                            </div>
+                            <div class="h-12 w-full bg-gradient-to-r from-blue-500 to-red-500 rounded-lg relative">
+                                <div class="absolute inset-0 flex items-center justify-around text-white text-sm">
+                                    <span>Cash</span>
+                                    <span>Bonds</span>
+                                    <span>Stocks</span>
+                                    <span>Alternatives</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-2">
+                                <span>Lower Return</span>
+                                <span>Higher Return</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-light-card dark:bg-dark-card p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fas fa-chart-line text-primary mr-2"></i> 
+                                Risk Factors
+                            </h4>
+                            <ul class="space-y-1 text-sm">
+                                <li>• Market risk</li>
+                                <li>• Interest rate risk</li>
+                                <li>• Inflation risk</li>
+                                <li>• Liquidity risk</li>
+                                <li>• Credit risk</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-light-card dark:bg-dark-card p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2 flex items-center">
+                                <i class="fas fa-university text-primary mr-2"></i>
+                                Financial Position
+                            </h4>
+                            <ul class="space-y-1 text-sm">
+                                <li>• Current income</li>
+                                <li>• Savings rate</li>
+                                <li>• Debt levels</li>
+                                <li>• Emergency fund</li>
+                                <li>• Time horizon</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Interactive Risk Tolerance Assessment -->
+            <div class="mt-10 bg-light-card dark:bg-dark-card p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Assess Your Risk Tolerance</h3>
+                <p class="mb-6">Understanding your risk tolerance is crucial for making appropriate investment decisions. Answer these questions to get a sense of your risk tolerance:</p>
+                
+                <div id="risk-assessment" class="space-y-6">
+                    <div class="question">
+                        <p class="font-medium mb-3">1. How would you react if your investment suddenly dropped 20% in value?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="1">Sell everything immediately</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="2">Sell some investments</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="3">Hold and wait</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="4">Buy more at lower prices</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="5">Significantly increase holdings</button>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <p class="font-medium mb-3">2. When making investment decisions, you care most about:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="1">Avoiding losses</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="2">Protecting principal with some growth</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="3">Balanced growth and protection</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="4">Growth with some volatility</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="5">Maximum growth regardless of volatility</button>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <p class="font-medium mb-3">3. Your investment time horizon is:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="1">Less than 1 year</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="2">1-3 years</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="3">3-5 years</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="4">5-10 years</button>
+                            <button class="risk-option p-3 border rounded-lg hover:border-primary" data-score="5">More than 10 years</button>
+                        </div>
+                    </div>
+                    
+                    <button id="calculate-risk" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        Calculate My Risk Profile
+                    </button>
+                </div>
+                
+                <div id="risk-result" class="mt-6 hidden">
+                    <div class="p-4 rounded-lg border border-primary">
+                        <h4 class="font-semibold text-lg mb-2">Your Risk Tolerance Profile:</h4>
+                        <p id="risk-profile-description" class="mb-4"></p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div id="risk-profile-meter" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between mt-1 text-sm">
+                            <span>Conservative</span>
+                            <span>Moderate</span>
+                            <span>Aggressive</span>
+                        </div>
+                        <div class="mt-4">
+                            <button id="reset-risk" class="text-primary hover:underline">
+                                <i class="fas fa-redo-alt mr-1"></i> Retake Assessment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Investment Vehicles -->
+        <section id="investment-vehicles" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Types of Investment Vehicles</h2>
+                <div class="h-1 w-24 bg-primary rounded"></div>
+            </div>
+            
+            <!-- Investment Vehicles Tabs -->
+            <div class="mb-8">
+                <div class="flex flex-wrap border-b dark:border-gray-700">
+                    <button class="vehicle-tab px-6 py-3 border-b-2 border-primary text-primary" data-tab="cash-deposits">
+                        Cash & Deposits
+                    </button>
+                    <button class="vehicle-tab px-6 py-3 border-b-2 border-transparent hover:text-primary" data-tab="bonds">
+                        Bonds
+                    </button>
+                    <button class="vehicle-tab px-6 py-3 border-b-2 border-transparent hover:text-primary" data-tab="funds">
+                        Mutual & ETFs
+                    </button>
+                    <button class="vehicle-tab px-6 py-3 border-b-2 border-transparent hover:text-primary" data-tab="equities">
+                        Equities
+                    </button>
+                </div>
+                
+                <!-- Tab Contents -->
+                <div class="p-6 bg-light-card dark:bg-dark-card rounded-b-lg shadow-sm">
+                    <!-- Cash & Fixed Deposits Tab -->
+                    <div id="cash-deposits-content" class="tab-content">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-semibold mb-4">Cash & Fixed Deposits</h3>
+                                <p class="mb-4">Cash and fixed deposits are the most liquid and low-risk investment vehicles. They involve depositing money in a bank account or a financial institution and earning interest over a fixed period.</p>
+                                
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Key Features:</h4>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                            <span>High liquidity and accessibility</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                            <span>Capital preservation with minimal risk</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                            <span>Predictable, fixed returns</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                            <span>Low returns that may not keep pace with inflation</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                            <span>Limited growth potential compared to other investments</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="tip-box border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-r-lg">
+                                    <h4 class="font-semibold flex items-center">
+                                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                        Malaysia Fixed Deposit Rates
+                                    </h4>
+                                    <p class="mt-2">According to Bank Negara Malaysia, the average interest rate for fixed deposits in Malaysia was 2.35% per annum as of March 2021.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="md:w-1/3">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                                    <h4 class="font-semibold mb-3 text-center">Best For</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                            <i class="fas fa-shield-alt text-blue-500 mr-3"></i>
+                                            <span>Emergency funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                            <i class="fas fa-clock text-blue-500 mr-3"></i>
+                                            <span>Short-term savings goals</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                            <i class="fas fa-money-bill-wave text-blue-500 mr-3"></i>
+                                            <span>Temporary cash parking</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                            <i class="fas fa-user-shield text-blue-500 mr-3"></i>
+                                            <span>Conservative investors</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Risk Level</h4>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                        <div class="flex justify-between mt-1 text-xs">
+                                            <span>Low</span>
+                                            <span>Medium</span>
+                                            <span>High</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bonds Tab -->
+                    <div id="bonds-content" class="tab-content hidden">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-semibold mb-4">Government & Corporate Bonds</h3>
+                                <p class="mb-4">Bonds are debt securities that represent a loan from an investor to a borrower, such as a government or a corporation. The borrower promises to pay back the principal amount plus interest at a specified date in the future.</p>
+                                
+                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-yellow-700 dark:text-yellow-300">Government Bonds</h4>
+                                        <p class="text-sm mb-3">Issued by federal or state governments to finance budget deficits or development projects.</p>
+                                        <ul class="text-sm space-y-1">
+                                            <li>• Malaysian Government Securities (MGS)</li>
+                                            <li>• Government Investment Issues (GII)</li>
+                                            <li>• Malaysian Treasury Bills (MTB)</li>
+                                            <li>• Malaysian Islamic Treasury Bills (MITB)</li>
+                                            <li>• Malaysian Savings Bonds (MSB)</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-orange-700 dark:text-orange-300">Corporate Bonds</h4>
+                                        <p class="text-sm mb-3">Issued by private or public companies to raise funds for business operations or expansion plans.</p>
+                                        <ul class="text-sm space-y-1">
+                                            <li>• Medium-Term Notes (MTN)</li>
+                                            <li>• Islamic Medium Term Notes (IMTN)</li>
+                                            <li>• Commercial Papers (CP)</li>
+                                            <li>• Islamic Commercial Papers (ICP)</li>
+                                            <li>• Asset-Backed Securities (ABS)</li>
+                                            <li>• Sukuk (Islamic bonds)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tip-box border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
+                                    <h4 class="font-semibold flex items-center">
+                                        <i class="fas fa-info-circle text-yellow-500 mr-2"></i>
+                                        Malaysian Bond Market
+                                    </h4>
+                                    <p class="mt-2">According to Bank Negara Malaysia, the total outstanding amount of bonds in Malaysia was RM1.7 trillion as of March 2021, of which RM789 billion were government bonds and RM911 billion were corporate bonds.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="md:w-1/3">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                                    <h4 class="font-semibold mb-3 text-center">Best For</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                            <i class="fas fa-hand-holding-usd text-yellow-500 mr-3"></i>
+                                            <span>Income-focused investors</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                            <i class="fas fa-balance-scale text-yellow-500 mr-3"></i>
+                                            <span>Portfolio diversification</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                            <i class="fas fa-chart-line text-yellow-500 mr-3"></i>
+                                            <span>Medium-term goals</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                            <i class="fas fa-user-tie text-yellow-500 mr-3"></i>
+                                            <span>Moderate risk investors</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Risk Level</h4>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                            <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 40%"></div>
+                                        </div>
+                                        <div class="flex justify-between mt-1 text-xs">
+                                            <span>Low</span>
+                                            <span>Medium</span>
+                                            <span>High</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Yield vs Risk</h4>
+                                        <div class="grid grid-cols-2 gap-2 text-sm">
+                                            <div class="p-2 bg-green-50 dark:bg-green-900/20 rounded text-center">
+                                                <div class="font-semibold">Gov Bonds</div>
+                                                <div>2-4%</div>
+                                                <div class="text-xs">Low Risk</div>
+                                            </div>
+                                            <div class="p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded text-center">
+                                                <div class="font-semibold">A-Rated Corp</div>
+                                                <div>4-5%</div>
+                                                <div class="text-xs">Medium Risk</div>
+                                            </div>
+                                            <div class="p-2 bg-orange-50 dark:bg-orange-900/20 rounded text-center">
+                                                <div class="font-semibold">BBB-Rated</div>
+                                                <div>5-6%</div>
+                                                <div class="text-xs">Medium-High</div>
+                                            </div>
+                                            <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded text-center">
+                                                <div class="font-semibold">High Yield</div>
+                                                <div>7-9%+</div>
+                                                <div class="text-xs">High Risk</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mutual & ETFs Tab -->
+                    <div id="funds-content" class="tab-content hidden">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-semibold mb-4">Mutual Funds & Exchange Traded Funds</h3>
+                                <p class="mb-4">Mutual funds and exchange traded funds (ETFs) are pooled investment vehicles that allow investors to diversify their portfolios by investing in a collection of securities, such as stocks, bonds, commodities, or currencies.</p>
+                                
+                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-green-700 dark:text-green-300">Mutual Funds</h4>
+                                        <p class="text-sm mb-3">Open-ended funds that issue and redeem units based on the net asset value (NAV) of the fund at the end of each trading day.</p>
+                                        <ul class="text-sm space-y-2">
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Professional management</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Diversification across assets</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Wide variety of investment strategies</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Higher expense ratios</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Only priced once per day</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-teal-700 dark:text-teal-300">Exchange Traded Funds (ETFs)</h4>
+                                        <p class="text-sm mb-3">Closed-ended funds that trade on stock exchanges like stocks at market prices that may differ from the NAV.</p>
+                                        <ul class="text-sm space-y-2">
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Lower expense ratios</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Trade throughout the day</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>More tax-efficient</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Bid-ask spreads when trading</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Fewer active management options</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tip-box border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 p-4 rounded-r-lg">
+                                    <h4 class="font-semibold flex items-center">
+                                        <i class="fas fa-info-circle text-green-500 mr-2"></i>
+                                        Malaysian Fund Market
+                                    </h4>
+                                    <p class="mt-2">According to the Securities Commission Malaysia, there were 212 mutual funds with a total NAV of RM478 billion and 18 ETFs with a total NAV of RM3 billion in Malaysia as of March 2021.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="md:w-1/3">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                                    <h4 class="font-semibold mb-3 text-center">Fund Types</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                            <i class="fas fa-coins text-blue-500 mr-3"></i>
+                                            <span>Money Market Funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                            <i class="fas fa-file-invoice-dollar text-yellow-500 mr-3"></i>
+                                            <span>Bond/Fixed Income Funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
+                                            <i class="fas fa-balance-scale-right text-green-500 mr-3"></i>
+                                            <span>Balanced/Mixed Funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-red-50 dark:bg-red-900/20 rounded">
+                                            <i class="fas fa-chart-line text-red-500 mr-3"></i>
+                                            <span>Equity/Stock Funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded">
+                                            <i class="fas fa-globe text-purple-500 mr-3"></i>
+                                            <span>International/Regional Funds</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">
+                                            <i class="fas fa-industry text-indigo-500 mr-3"></i>
+                                            <span>Sector-Specific Funds</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Investment Minimum</h4>
+                                        <div class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <span>Mutual Funds (Initial)</span>
+                                                <span class="font-semibold">RM1,000-RM10,000</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span>Mutual Funds (Subsequent)</span>
+                                                <span class="font-semibold">RM100-RM1,000</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span>ETFs</span>
+                                                <span class="font-semibold">~RM100 (1 lot)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Equities Tab -->
+                    <div id="equities-content" class="tab-content hidden">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-semibold mb-4">Equities (Common & Preferred Stock)</h3>
+                                <p class="mb-4">Equities are shares of ownership in a company that entitle investors to a proportionate share of the company's assets, earnings, and dividends. Equities are the most risky but also potentially the most rewarding investment vehicles.</p>
+                                
+                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-red-700 dark:text-red-300">Common Stock</h4>
+                                        <p class="text-sm mb-3">The most common type of equity that gives investors voting rights and residual claims on the company's assets and earnings.</p>
+                                        <ul class="text-sm space-y-2">
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Voting rights in company decisions</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Potential for dividends (not guaranteed)</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Potential for capital appreciation</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Highest risk among equity holders</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Last claim on assets in bankruptcy</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-pink-50 dark:bg-pink-900/20 p-4 rounded-lg">
+                                        <h4 class="font-semibold mb-2 text-pink-700 dark:text-pink-300">Preferred Stock</h4>
+                                        <p class="text-sm mb-3">A hybrid type of equity that gives investors fixed dividends and priority claims but no voting rights.</p>
+                                        <ul class="text-sm space-y-2">
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Fixed dividend payments</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Priority over common stockholders for dividends</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                                <span>Higher claim on assets in bankruptcy</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>No voting rights</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mt-1 mr-2"></i>
+                                                <span>Limited potential for capital appreciation</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tip-box border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
+                                    <h4 class="font-semibold flex items-center">
+                                        <i class="fas fa-info-circle text-red-500 mr-2"></i>
+                                        Malaysian Stock Market
+                                    </h4>
+                                    <p class="mt-2">According to Bursa Malaysia, there were 906 companies with a total market capitalization of RM1.9 trillion listed on the Main Market and the ACE Market as of March 2021.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="md:w-1/3">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                                    <h4 class="font-semibold mb-3 text-center">Market Categories</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center p-2 bg-red-50 dark:bg-red-900/20 rounded">
+                                            <i class="fas fa-building text-red-500 mr-3"></i>
+                                            <span>Main Market (Established Companies)</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded">
+                                            <i class="fas fa-rocket text-orange-500 mr-3"></i>
+                                            <span>ACE Market (Growth Companies)</span>
+                                        </div>
+                                        <div class="flex items-center p-2 bg-pink-50 dark:bg-pink-900/20 rounded">
+                                            <i class="fas fa-seedling text-pink-500 mr-3"></i>
+                                            <span>LEAP Market (SMEs & Startups)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Risk Level</h4>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                            <div class="bg-red-500 h-2.5 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                        <div class="flex justify-between mt-1 text-xs">
+                                            <span>Low</span>
+                                            <span>Medium</span>
+                                            <span>High</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6">
+                                        <h4 class="font-semibold mb-3 text-center">Historical Performance</h4>
+                                        <div class="aspect-[4/3] bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                            <div class="h-full flex items-end p-2">
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[30%] mx-1 rounded-t-sm" data-height="30" data-year="2016"></div>
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[50%] mx-1 rounded-t-sm" data-height="50" data-year="2017"></div>
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[20%] mx-1 rounded-t-sm" data-height="20" data-year="2018"></div>
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[40%] mx-1 rounded-t-sm" data-height="40" data-year="2019"></div>
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[15%] mx-1 rounded-t-sm" data-height="15" data-year="2020"></div>
+                                                <div class="chart-bar bg-red-500 w-1/6 h-[45%] mx-1 rounded-t-sm" data-height="45" data-year="2021"></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between mt-1 text-xs text-center">
+                                            <span>2016</span>
+                                            <span>2017</span>
+                                            <span>2018</span>
+                                            <span>2019</span>
+                                            <span>2020</span>
+                                            <span>2021</span>
+                                        </div>
+                                        <div class="text-center text-xs mt-2 text-gray-500">
+                                            FTSE Bursa Malaysia KLCI
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Interactive Investment Simulator -->
+            <div class="mt-10 bg-light-card dark:bg-dark-card p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Investment Growth Simulator</h3>
+                <p class="mb-6">See how your investments could grow over time with different investment vehicles and strategies.</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 font-medium">Initial Investment (RM)</label>
+                                <input type="range" id="initial-investment" min="1000" max="100000" step="1000" value="10000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                <div class="flex justify-between text-sm mt-1">
+                                    <span>RM1,000</span>
+                                    <span id="initial-investment-value">RM10,000</span>
+                                    <span>RM100,000</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium">Monthly Contribution (RM)</label>
+                                <input type="range" id="monthly-contribution" min="0" max="5000" step="100" value="500" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                <div class="flex justify-between text-sm mt-1">
+                                    <span>RM0</span>
+                                    <span id="monthly-contribution-value">RM500</span>
+                                    <span>RM5,000</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium">Investment Period (Years)</label>
+                                <input type="range" id="investment-period" min="1" max="30" step="1" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                                <div class="flex justify-between text-sm mt-1">
+                                    <span>1 year</span>
+                                    <span id="investment-period-value">10 years</span>
+                                    <span>30 years</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium">Investment Type</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <button class="investment-type-btn p-2 border rounded-lg hover:border-primary bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800" data-return="2">Fixed Deposit<br/><span class="text-sm text-blue-600 dark:text-blue-400">~2%</span></button>
+                                    <button class="investment-type-btn p-2 border rounded-lg hover:border-primary bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800" data-return="4">Bonds<br/><span class="text-sm text-yellow-600 dark:text-yellow-400">~4%</span></button>
+                                    <button class="investment-type-btn p-2 border rounded-lg hover:border-primary bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800" data-return="6">Balanced Fund<br/><span class="text-sm text-green-600 dark:text-green-400">~6%</span></button>
+                                    <button class="investment-type-btn p-2 border rounded-lg hover:border-primary bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800" data-return="8">Equities<br/><span class="text-sm text-red-600 dark:text-red-400">~8%</span></button>
+                                </div>
+                            </div>
+                            
+                            <button id="calculate-investment" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                                Calculate Growth
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow h-full">
+                            <h4 class="font-semibold text-lg mb-4">Projected Growth</h4>
+                            
+                            <div id="investment-result" class="hidden">
+                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                    <div class="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Total Invested</div>
+                                        <div id="total-invested" class="text-xl font-semibold">RM70,000</div>
+                                    </div>
+                                    <div class="p-3 bg-primary/10 rounded-lg">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Future Value</div>
+                                        <div id="future-value" class="text-xl font-semibold text-primary">RM98,715</div>
+                                    </div>
+                                    <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Total Interest Earned</div>
+                                        <div id="total-interest" class="text-xl font-semibold text-green-600 dark:text-green-400">RM28,715</div>
+                                    </div>
+                                    <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Annual Return</div>
+                                        <div id="annual-return" class="text-xl font-semibold text-purple-600 dark:text-purple-400">6%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="aspect-[16/9] bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4 relative">
+                                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
+                                        Growth chart visualization will appear here
+                                    </div>
+                                </div>
+                                
+                                <div class="tip-box border-l-4 border-primary bg-primary/5 p-3 rounded-r-lg text-sm">
+                                    <div class="font-semibold flex items-center">
+                                        <i class="fas fa-lightbulb text-primary mr-2"></i>
+                                        Investing Insight
+                                    </div>
+                                    <p class="mt-1" id="investing-insight">Starting early and consistently contributing to your investments can significantly impact your long-term financial growth thanks to compound interest.</p>
+                                </div>
+                            </div>
+                            
+                            <div id="investment-placeholder" class="h-full flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+                                <i class="fas fa-chart-line text-5xl mb-4"></i>
+                                <p>Adjust the sliders and click "Calculate Growth" to see your projected investment results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Investment Alternatives -->
+        <section id="alternatives" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Other Investment Alternatives</h2>
+                <div class="h-1 w-24 bg-primary rounded"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Derivatives & Commodities -->
+                <div class="investment-card bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Derivatives & Commodities</h3>
+                        <i class="fas fa-exchange-alt text-indigo-500 text-2xl"></i>
+                    </div>
+                    
+                    <p class="mb-4">Financial instruments that derive value from underlying assets or physical goods traded on markets.</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Examples</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Futures Contracts</div>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Options</div>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Swaps</div>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Forwards</div>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Gold & Silver</div>
+                            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded">Crude Oil</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Risk Level</h4>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 80%"></div>
+                        </div>
+                        <div class="flex justify-between mt-1 text-xs">
+                            <span>Low</span>
+                            <span>Medium</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Leverage: Control large positions with small capital</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Inflation hedge (especially commodities)</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>High volatility and risk of significant losses</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>Requires advanced knowledge and experience</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2: REITs & Foreign Currency Exchange -->
+                <div class="investment-card bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">REITs & Forex</h3>
+                        <i class="fas fa-building text-purple-500 text-2xl"></i>
+                    </div>
+                    
+                    <p class="mb-4">Real Estate Investment Trusts and Foreign Currency Exchange offer opportunities to diversify beyond traditional investments.</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">REITs Categories</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded">Retail REITs</div>
+                            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded">Office REITs</div>
+                            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded">Healthcare REITs</div>
+                            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded">Industrial REITs</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Risk Level</h4>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-purple-500 h-2.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                        <div class="flex justify-between mt-1 text-xs">
+                            <span>Low</span>
+                            <span>Medium</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>REITs: High dividend yields (typically 4-8%)</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Forex: 24-hour market with high liquidity</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>REITs: Sensitive to interest rate changes</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>Forex: High volatility and leverage risks</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3: Cryptocurrency & Digital Assets -->
+                <div class="investment-card bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Cryptocurrency & Digital Assets</h3>
+                        <i class="fas fa-coins text-amber-500 text-2xl"></i>
+                    </div>
+                    
+                    <p class="mb-4">Digital or virtual currencies using cryptography for security and digital tokens representing ownership of unique assets.</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Popular Cryptocurrencies</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded">Bitcoin (BTC)</div>
+                            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded">Ethereum (ETH)</div>
+                            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded">Binance Coin (BNB)</div>
+                            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded">Ripple (XRP)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-2">Risk Level</h4>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-amber-500 h-2.5 rounded-full" style="width: 90%"></div>
+                        </div>
+                        <div class="flex justify-between mt-1 text-xs">
+                            <span>Low</span>
+                            <span>Medium</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Potential for high returns in short periods</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>24/7 trading and portfolio diversification</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>Extreme volatility and price fluctuations</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                            <span>Regulatory uncertainty and security risks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Investment Alternatives Comparison -->
+            <div class="mt-10 bg-light-card dark:bg-dark-card p-6 rounded-lg shadow overflow-x-auto">
+                <h3 class="text-xl font-semibold mb-4">Investment Alternatives Comparison</h3>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b dark:border-gray-700">
+                            <th class="py-3 px-4 text-left">Investment Type</th>
+                            <th class="py-3 px-4 text-left">Potential Return</th>
+                            <th class="py-3 px-4 text-left">Risk Level</th>
+                            <th class="py-3 px-4 text-left">Liquidity</th>
+                            <th class="py-3 px-4 text-left">Minimum Investment</th>
+                            <th class="py-3 px-4 text-left">Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="py-3 px-4 font-medium">Derivatives</td>
+                            <td class="py-3 px-4">Variable (High)</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">High</span>
+                                    <div class="w-16 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                                        <div class="bg-red-500 h-1.5 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">Medium-High</td>
+                            <td class="py-3 px-4">Varies by contract</td>
+                            <td class="py-3 px-4">Advanced investors, hedging</td>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="py-3 px-4 font-medium">Commodities</td>
+                            <td class="py-3 px-4">Variable (Medium)</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">Medium-High</span>
+                                    <div class="w-16 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                                        <div class="bg-orange-500 h-1.5 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">Medium</td>
+                            <td class="py-3 px-4">RM5,000-RM10,000</td>
+                            <td class="py-3 px-4">Inflation hedging, diversification</td>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="py-3 px-4 font-medium">REITs</td>
+                            <td class="py-3 px-4">4-8% (dividends)</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">Medium</span>
+                                    <div class="w-16 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                                        <div class="bg-yellow-500 h-1.5 rounded-full" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">High</td>
+                            <td class="py-3 px-4">RM500-RM1,000</td>
+                            <td class="py-3 px-4">Income-focused investors</td>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="py-3 px-4 font-medium">Forex</td>
+                            <td class="py-3 px-4">Variable (High)</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">High</span>
+                                    <div class="w-16 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                                        <div class="bg-red-500 h-1.5 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">Very High</td>
+                            <td class="py-3 px-4">RM250-RM1,000</td>
+                            <td class="py-3 px-4">Active traders, currency hedging</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">Cryptocurrency</td>
+                            <td class="py-3 px-4">Variable (Very High)</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <span class="mr-2">Very High</span>
+                                    <div class="w-16 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                                        <div class="bg-red-700 h-1.5 rounded-full" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">High</td>
+                            <td class="py-3 px-4">As low as RM10</td>
+                            <td class="py-3 px-4">Risk-tolerant investors, long-term speculation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 4: Effective Investment Planning -->
+        <section id="planning" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Steps for Effective Investment Planning</h2>
+                <div class="h-1 w-24 bg-primary rounded"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Define Your Goals & Objectives</h3>
+                    <p class="mb-4">Just as building a house requires a clear understanding of what you want to achieve, start by identifying your financial goals and objectives.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Identify short, medium, and long-term financial goals</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Quantify goals with specific amounts and timeframes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Prioritize goals based on importance and urgency</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Assess Your Risk Tolerance</h3>
+                    <p class="mb-4">Similar to considering the architectural style and location of a house, understanding your risk tolerance is essential in investment planning.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Consider your emotional comfort with market volatility</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Evaluate your financial capacity to absorb losses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Take risk tolerance assessments or consult with a professional</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Determine Your Time Horizon</h3>
+                    <p class="mb-4">Just like considering the construction timeline of a house, identify your investment time horizon for each financial goal.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Short-term: Less than 3 years</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Medium-term: 3-7 years</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Long-term: More than 7 years</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Build a Diversified Portfolio</h3>
+                    <p class="mb-4">Just as a well-designed house requires a mix of materials and components, a diversified investment portfolio is vital for managing risk and maximizing returns.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Spread investments across different asset classes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Diversify within each asset class (sectors, geographies)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Align asset allocation with risk tolerance and time horizon</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">5</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Conduct Thorough Research</h3>
+                    <p class="mb-4">Like researching the quality and reputation of contractors or suppliers before starting construction, it is crucial to research potential investment options.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Analyze historical performance and trends</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Evaluate fund management teams or company fundamentals</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Consider fees, expense ratios, and tax implications</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">6</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Monitor & Review Regularly</h3>
+                    <p class="mb-4">Similar to conducting regular inspections during construction, regularly monitor and review your investments to ensure they align with your goals.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Review portfolio performance quarterly or annually</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Rebalance portfolio to maintain target asset allocation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Adjust strategy as life circumstances or goals change</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Step 7 -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        <span class="text-primary font-bold text-xl">7</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Stay Disciplined & Patient</h3>
+                    <p class="mb-4">Just as it takes time to build a house, investing for the long term requires discipline and patience to achieve your financial goals.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Avoid emotional reactions to market fluctuations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Stick to your investment plan and strategy</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-angle-right text-primary mt-1 mr-2"></i>
+                            <span>Focus on long-term goals rather than short-term volatility</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Expert Tips -->
+                <div class="md:col-span-2 lg:col-span-3 bg-primary/5 dark:bg-primary/10 rounded-lg shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Expert Investment Planning Tips</h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-clock text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Start Early</h4>
+                            </div>
+                            <p class="text-sm">Time is one of the most powerful factors in investing. The earlier you start, the more time your investments have to grow through compounding.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-sync-alt text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Invest Consistently</h4>
+                            </div>
+                            <p class="text-sm">Regular investing through techniques like dollar-cost averaging can reduce the impact of market volatility and build wealth steadily over time.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-shield-alt text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Protect Your Downside</h4>
+                            </div>
+                            <p class="text-sm">Always have an emergency fund and appropriate insurance coverage before investing. This protects your investments from being liquidated in emergencies.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-hand-holding-usd text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Minimize Fees</h4>
+                            </div>
+                            <p class="text-sm">Investment fees can significantly impact your returns over time. Pay attention to expense ratios, transaction costs, and management fees.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-graduation-cap text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Educate Yourself</h4>
+                            </div>
+                            <p class="text-sm">Continuously learn about investing principles, markets, and financial planning. Knowledge is your best defense against poor investment decisions.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-users text-primary mr-3 text-xl"></i>
+                                <h4 class="font-semibold">Seek Professional Advice</h4>
+                            </div>
+                            <p class="text-sm">Consider consulting with a qualified financial advisor, especially for complex financial situations or when you're just starting out.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Knowledge Quiz -->
+        <section id="quiz" class="mb-12">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Test Your Investment Knowledge</h2>
+                <div class="h-1 w-24 bg-primary rounded"></div>
+            </div>
+            
+            <div class="bg-light-card dark:bg-dark-card p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Investment Knowledge Quiz</h3>
+                <p class="mb-6">Test your understanding of investment concepts and principles with this quick quiz.</p>
+                
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Question 1 -->
+                    <div class="quiz-question">
+                        <h4 class="font-semibold mb-3">1. Which investment vehicle typically has the lowest risk?</h4>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                A. Stocks
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                B. Fixed Deposits
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                C. Cryptocurrencies
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                D. Derivatives
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-question">
+                        <h4 class="font-semibold mb-3">2. What is the primary difference between a mutual fund and an ETF?</h4>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                A. ETFs are managed by professionals, mutual funds are not
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                B. Mutual funds invest in stocks, ETFs invest in bonds
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                C. ETFs trade throughout the day, mutual funds trade once per day
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                D. Mutual funds are diversified, ETFs are not
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-question">
+                        <h4 class="font-semibold mb-3">3. What investment principle involves spreading investments across different asset classes?</h4>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                A. Leverage
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                B. Arbitrage
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                C. Diversification
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                D. Dollar-cost averaging
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 4 -->
+                    <div class="quiz-question">
+                        <h4 class="font-semibold mb-3">4. According to the FIN333 ebook, what was the total outstanding amount of bonds in Malaysia as of March 2021?</h4>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                A. RM789 billion
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                B. RM911 billion
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                C. RM1.7 trillion
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                D. RM3 billion
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 5 -->
+                    <div class="quiz-question">
+                        <h4 class="font-semibold mb-3">5. Which of the following would be best for an investor with a long-term horizon and high risk tolerance?</h4>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                A. Fixed deposits and money market funds
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                B. Government bonds and REITs
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                C. Corporate bonds and balanced funds
+                            </button>
+                            <button class="quiz-option w-full text-left p-3 border rounded-lg hover:border-primary">
+                                D. Equities and growth-oriented funds
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button id="submit-quiz" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        Submit Answers
+                    </button>
+                </div>
+                
+                <div id="quiz-results" class="hidden">
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-lg mb-2">Your Score</h4>
+                        <div class="flex items-center">
+                            <div id="score-display" class="text-3xl font-bold text-primary mr-3">0/5</div>
+                            <div id="score-message" class="text-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="answer-explanations" class="space-y-4">
+                        <!-- Answer explanations will be populated here -->
+                    </div>
+                    
+                    <button id="retake-quiz" class="mt-6 px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors">
+                        Retake Quiz
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-gray-800 py-8">
+                <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                    <a href="#basics" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">Back to Top</a>
+                    <span class="hidden md:inline text-gray-400">|</span>
+                </div>
+            </div>
+            
+            <hr class="my-6 border-gray-200 dark:border-gray-700">
+            
+            <div class="text-sm text-left text-gray-600 dark:text-gray-400">
+                <p>© 2025 UiTM Sabah. All rights reserved.</p>
+                <p class="mt-1">Disclaimer: This Microsite is created for educational purposes only. All information provided is for learning and should not be considered as financial advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for user preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            htmlElement.classList.add('dark');
+        }
+        
+        // Listen for changes in user preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+        });
+        
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Learning objectives modal
+        const objectivesButton = document.getElementById('show-objectives');
+        const objectivesModal = document.getElementById('objectives-modal');
+        const closeObjectives = document.getElementById('close-objectives');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        
+        objectivesButton.addEventListener('click', () => {
+            objectivesModal.classList.remove('hidden');
+        });
+        
+        closeObjectives.addEventListener('click', () => {
+            objectivesModal.classList.add('hidden');
+        });
+        
+        modalBackdrop.addEventListener('click', () => {
+            objectivesModal.classList.add('hidden');
+        });
+        
+        // Progress bar
+        const progressBar = document.getElementById('progress-bar');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
+        
+        // Active navigation link highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary');
+                link.classList.add('text-gray-600', 'dark:text-gray-300');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.remove('text-gray-600', 'dark:text-gray-300');
+                    link.classList.add('text-primary');
+                }
+            });
+        });
+        
+        // Risk Assessment
+        const riskOptions = document.querySelectorAll('.risk-option');
+        const calculateRiskBtn = document.getElementById('calculate-risk');
+        const riskResult = document.getElementById('risk-result');
+        const riskAssessment = document.getElementById('risk-assessment');
+        const resetRiskBtn = document.getElementById('reset-risk');
+        const riskProfileMeter = document.getElementById('risk-profile-meter');
+        const riskProfileDescription = document.getElementById('risk-profile-description');
+        
+        let selectedRiskScores = [];
+        
+        riskOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Find all options in this question group and remove selected class
+                const questionDiv = this.closest('.question');
+                const optionsInGroup = questionDiv.querySelectorAll('.risk-option');
+                optionsInGroup.forEach(opt => opt.classList.remove('bg-primary', 'text-white'));
+                
+                // Add selected class to clicked option
+                this.classList.add('bg-primary', 'text-white');
+                
+                // Save the score
+                const score = parseInt(this.getAttribute('data-score'));
+                const questionIndex = Array.from(questionDiv.parentNode.children).indexOf(questionDiv);
+                selectedRiskScores[questionIndex] = score;
+            });
+        });
+        
+        calculateRiskBtn.addEventListener('click', () => {
+            // Check if all questions have been answered
+            if (selectedRiskScores.length === 3 && !selectedRiskScores.includes(undefined)) {
+                // Calculate average score
+                const totalScore = selectedRiskScores.reduce((acc, score) => acc + score, 0);
+                const averageScore = totalScore / selectedRiskScores.length;
+                
+                // Set meter width based on score (1-5 scale)
+                const meterWidth = (averageScore / 5) * 100;
+                riskProfileMeter.style.width = `${meterWidth}%`;
+                
+                // Set description based on average score
+                if (averageScore < 2) {
+                    riskProfileDescription.textContent = "Conservative: You prioritize protecting your principal over growth. Consider stable investments like fixed deposits, government bonds, and conservative funds.";
+                } else if (averageScore < 3.5) {
+                    riskProfileDescription.textContent = "Moderate: You seek a balance between growth and safety. Consider a mix of bonds, dividend stocks, balanced funds, and REITs.";
+                } else {
+                    riskProfileDescription.textContent = "Aggressive: You prioritize growth and can tolerate significant volatility. Consider growth stocks, sector funds, international investments, and alternative assets.";
+                }
+                
+                // Show results
+                riskAssessment.classList.add('hidden');
+                riskResult.classList.remove('hidden');
+            } else {
+                alert("Please answer all questions to calculate your risk profile.");
+            }
+        });
+        
+        resetRiskBtn.addEventListener('click', () => {
+            // Reset selections
+            riskOptions.forEach(option => {
+                option.classList.remove('bg-primary', 'text-white');
+            });
+            selectedRiskScores = [];
+            
+            // Hide results, show questions
+            riskResult.classList.add('hidden');
+            riskAssessment.classList.remove('hidden');
+        });
+        
+        // Investment Vehicles Tabs
+        const vehicleTabs = document.querySelectorAll('.vehicle-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        vehicleTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                vehicleTabs.forEach(t => {
+                    t.classList.remove('border-primary', 'text-primary');
+                    t.classList.add('border-transparent');
+                });
+                
+                // Add active class to clicked tab
+                tab.classList.add('border-primary', 'text-primary');
+                tab.classList.remove('border-transparent');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('block');
+                });
+                
+                // Show corresponding tab content
+                const tabId = tab.getAttribute('data-tab');
+                const tabContent = document.getElementById(`${tabId}-content`);
+                tabContent.classList.remove('hidden');
+                tabContent.classList.add('block');
+            });
+        });
+        
+        // Investment Growth Simulator
+        const initialInvestmentSlider = document.getElementById('initial-investment');
+        const initialInvestmentValue = document.getElementById('initial-investment-value');
+        const monthlyContributionSlider = document.getElementById('monthly-contribution');
+        const monthlyContributionValue = document.getElementById('monthly-contribution-value');
+        const investmentPeriodSlider = document.getElementById('investment-period');
+        const investmentPeriodValue = document.getElementById('investment-period-value');
+        const investmentTypeButtons = document.querySelectorAll('.investment-type-btn');
+        const calculateInvestmentBtn = document.getElementById('calculate-investment');
+        const investmentResult = document.getElementById('investment-result');
+        const investmentPlaceholder = document.getElementById('investment-placeholder');
+        const totalInvested = document.getElementById('total-invested');
+        const futureValue = document.getElementById('future-value');
+        const totalInterest = document.getElementById('total-interest');
+        const annualReturn = document.getElementById('annual-return');
+        const investingInsight = document.getElementById('investing-insight');
+        
+        let selectedInvestmentType = null;
+        
+        // Update sliders value display
+        initialInvestmentSlider.addEventListener('input', () => {
+            initialInvestmentValue.textContent = `RM${parseInt(initialInvestmentSlider.value).toLocaleString()}`;
+        });
+        
+        monthlyContributionSlider.addEventListener('input', () => {
+            monthlyContributionValue.textContent = `RM${parseInt(monthlyContributionSlider.value).toLocaleString()}`;
+        });
+        
+        investmentPeriodSlider.addEventListener('input', () => {
+            investmentPeriodValue.textContent = `${investmentPeriodSlider.value} years`;
+        });
+        
+        // Investment type selection
+        investmentTypeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selected class from all buttons
+                investmentTypeButtons.forEach(btn => {
+                    btn.classList.remove('ring-2', 'ring-primary');
+                });
+                
+                // Add selected class to clicked button
+                this.classList.add('ring-2', 'ring-primary');
+                
+                // Save selected type
+                selectedInvestmentType = parseFloat(this.getAttribute('data-return'));
+            });
+        });
+        
+        // Calculate investment growth
+        calculateInvestmentBtn.addEventListener('click', () => {
+            if (selectedInvestmentType === null) {
+                alert("Please select an investment type.");
+                return;
+            }
+            
+            const initialInvestment = parseInt(initialInvestmentSlider.value);
+            const monthlyContribution = parseInt(monthlyContributionSlider.value);
+            const investmentPeriod = parseInt(investmentPeriodSlider.value);
+            const annualRate = selectedInvestmentType / 100;
+            
+            // Calculate future value
+            const monthlyRate = annualRate / 12;
+            const totalMonths = investmentPeriod * 12;
+            
+            let fv = initialInvestment * Math.pow(1 + monthlyRate, totalMonths);
+            
+            if (monthlyContribution > 0) {
+                fv += monthlyContribution * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
+            }
+            
+            const totalContributions = initialInvestment + (monthlyContribution * totalMonths);
+            const interestEarned = fv - totalContributions;
+            
+            // Update result display
+            totalInvested.textContent = `RM${Math.round(totalContributions).toLocaleString()}`;
+            futureValue.textContent = `RM${Math.round(fv).toLocaleString()}`;
+            totalInterest.textContent = `RM${Math.round(interestEarned).toLocaleString()}`;
+            annualReturn.textContent = `${selectedInvestmentType}%`;
+            
+            // Generate insight based on results
+            if (investmentPeriod > 20) {
+                investingInsight.textContent = "The power of compound interest is evident in your long-term investment. By starting early and staying invested, you're maximizing your growth potential.";
+            } else if (monthlyContribution > initialInvestment/10) {
+                investingInsight.textContent = "Your consistent monthly contributions are key to building wealth. Regular investing helps smooth market volatility through dollar-cost averaging.";
+            } else if (selectedInvestmentType >= 6) {
+                investingInsight.textContent = "Your higher-risk investment strategy has significant growth potential but remember to reassess your risk tolerance periodically as you approach your financial goals.";
+            } else {
+                investingInsight.textContent = "Your conservative approach provides stability, but consider if your growth rate will meet your long-term goals after accounting for inflation.";
+            }
+            
+            // Show results
+            investmentPlaceholder.classList.add('hidden');
+            investmentResult.classList.remove('hidden');
+        });
+        
+        // Animate chart bars on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate chart bars
+            setTimeout(() => {
+                const chartBars = document.querySelectorAll('.chart-bar');
+                chartBars.forEach(bar => {
+                    const height = bar.getAttribute('data-height');
+                    bar.style.height = `${height}%`;
+                });
+            }, 500);
+        });
+        
+        // Knowledge Quiz
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        const submitQuizBtn = document.getElementById('submit-quiz');
+        const quizContainer = document.getElementById('quiz-container');
+        const quizResults = document.getElementById('quiz-results');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreMessage = document.getElementById('score-message');
+        const answerExplanations = document.getElementById('answer-explanations');
+        const retakeQuizBtn = document.getElementById('retake-quiz');
+        
+        // Correct answers
+        const correctAnswers = [
+            'B. Fixed Deposits',
+            'C. ETFs trade throughout the day, mutual funds trade once per day',
+            'C. Diversification',
+            'C. RM1.7 trillion',
+            'D. Equities and growth-oriented funds'
+        ];
+        
+        // Explanations
+        const explanations = [
+            'Fixed deposits typically have the lowest risk among these options because they are guaranteed by the bank and offer a fixed return. Stocks and cryptocurrencies have much higher risk due to market volatility, while derivatives can involve significant leverage and risk of loss.',
+            'The primary difference is that ETFs (Exchange Traded Funds) trade throughout the trading day like stocks, while mutual funds are priced and traded once per day at the closing NAV (Net Asset Value). Both can be professionally managed and diversified.',
+            'Diversification is the investment principle of spreading investments across different asset classes, sectors, or geographic regions to reduce risk. This helps ensure that poor performance in one area doesn\'t significantly impact your entire portfolio.',
+            'According to the text, Bank Negara Malaysia reported that the total outstanding amount of bonds in Malaysia was RM1.7 trillion as of March 2021, of which RM789 billion were government bonds and RM911 billion were corporate bonds.',
+            'Investors with a long-term horizon and high risk tolerance can afford to invest in more volatile assets like equities and growth-oriented funds, which historically have provided higher returns over long periods despite short-term volatility.'
+        ];
+        
+        let selectedAnswers = [];
+        
+        // Select answer
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Find all options in this question group and remove selected class
+                const questionDiv = this.closest('.quiz-question');
+                const optionsInGroup = questionDiv.querySelectorAll('.quiz-option');
+                optionsInGroup.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Save the answer
+                const answer = this.textContent.trim();
+                const questionIndex = Array.from(questionDiv.parentNode.children).indexOf(questionDiv);
+                selectedAnswers[questionIndex] = answer;
+            });
+        });
+        
+        // Submit quiz
+        submitQuizBtn.addEventListener('click', () => {
+            // Filter out questions (we have 5 questions, but the array also contains the submit button)
+            const questionCount = document.querySelectorAll('.quiz-question').length;
+            
+            // Check if all questions have been answered
+            if (selectedAnswers.length < questionCount || selectedAnswers.includes(undefined)) {
+                alert("Please answer all questions before submitting.");
+                return;
+            }
+            
+            // Calculate score
+            let score = 0;
+            for (let i = 0; i < questionCount; i++) {
+                if (selectedAnswers[i] === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            
+            // Update score display
+            scoreDisplay.textContent = `${score}/${questionCount}`;
+            
+            // Set score message
+            if (score === questionCount) {
+                scoreMessage.textContent = "Perfect! You have an excellent understanding of investment concepts.";
+            } else if (score >= Math.floor(questionCount * 0.7)) {
+                scoreMessage.textContent = "Good job! You have a solid grasp of investment fundamentals.";
+            } else if (score >= Math.floor(questionCount * 0.5)) {
+                scoreMessage.textContent = "Not bad. Review the areas you missed to strengthen your knowledge.";
+            } else {
+                scoreMessage.textContent = "Keep learning! Review the chapter content to improve your understanding.";
+            }
+            
+            // Generate answer explanations
+            answerExplanations.innerHTML = '';
+            for (let i = 0; i < questionCount; i++) {
+                const questionText = document.querySelectorAll('.quiz-question h4')[i].textContent.trim();
+                const isCorrect = selectedAnswers[i] === correctAnswers[i];
+                
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = `p-4 rounded-lg ${isCorrect ? 'bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500' : 'bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500'}`;
+                
+                explanationDiv.innerHTML = `
+                    <h5 class="font-semibold mb-1">${questionText}</h5>
+                    <p class="mb-1 ${isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}">
+                        ${isCorrect ? 'Correct!' : 'Incorrect.'} You answered: ${selectedAnswers[i]}
+                    </p>
+                    ${!isCorrect ? `<p class="mb-1 font-medium">Correct answer: ${correctAnswers[i]}</p>` : ''}
+                    <p class="text-sm mt-2">${explanations[i]}</p>
+                `;
+                
+                answerExplanations.appendChild(explanationDiv);
+            }
+            
+            // Show results
+            quizContainer.classList.add('hidden');
+            quizResults.classList.remove('hidden');
+        });
+        
+        // Retake quiz
+        retakeQuizBtn.addEventListener('click', () => {
+            // Reset selections
+            quizOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedAnswers = [];
+            
+            // Hide results, show questions
+            quizResults.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

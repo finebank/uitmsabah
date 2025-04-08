@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chibify - 3D Chibi Converter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5D5CDE',
+            secondary: '#FF6B9A',
+          },
+          animation: {
+            'bounce-slow': 'bounce 2s infinite',
+          }
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200">
+  <div class="container mx-auto px-4 py-8 max-w-3xl">
+    <div class="text-center mb-8">
+      <div class="inline-block relative mb-2">
+        <svg class="w-16 h-16 mx-auto text-secondary" viewBox="0 0 64 64" fill="currentColor">
+          <circle cx="32" cy="32" r="30" fill="currentColor" opacity="0.2"/>
+          <circle cx="32" cy="38" r="24" fill="currentColor" opacity="0.4"/>
+          <circle cx="22" cy="26" r="4" fill="#000" opacity="0.7"/>
+          <circle cx="42" cy="26" r="4" fill="#000" opacity="0.7"/>
+          <path d="M26 36 Q32 40 38 36" stroke="#000" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-center mb-2 text-primary">Chibify</h1>
+      <p class="text-center">Transform your photos into adorable 3D chibi anime style characters!</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        Chibis are super-deformed characters with oversized heads, tiny bodies, and exaggerated cute features
+      </p>
+    </div>
+    
+    <div id="error-banner" class="hidden bg-red-100 dark:bg-red-900 border-l-4 border-red-500 text-red-700 dark:text-red-300 p-4 mb-4 rounded">
+      <p id="error-message"></p>
+    </div>
+    
+    <div id="upload-container" class="mb-8">
+      <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-8 text-center hover:border-primary dark:hover:border-primary transition-colors cursor-pointer">
+        <div class="flex flex-col items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <p class="mb-2 text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">PNG, JPG or JPEG (MAX. 5MB)</p>
+          <input id="photo-upload" type="file" accept="image/*" class="hidden" />
+        </div>
+      </div>
+      <button id="convert-button" class="mt-4 w-full py-2 px-4 bg-primary text-white font-medium rounded-md hover:bg-opacity-90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        Convert to Chibi
+      </button>
+    </div>
+    
+    <div id="preview-container" class="mb-6 hidden">
+      <h2 class="text-xl font-semibold mb-3">Your Photo</h2>
+      <div class="w-full h-64 bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
+        <img id="preview-image" class="max-w-full max-h-full object-contain" src="" alt="Preview" />
+      </div>
+    </div>
+    
+    <div id="loading-container" class="hidden text-center py-8">
+      <div class="flex flex-col items-center">
+        <div class="relative w-20 h-20 mb-4">
+          <div class="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800"></div>
+          <div class="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+          <svg class="absolute inset-0 w-full h-full text-secondary animate-bounce-slow" viewBox="0 0 64 64" fill="currentColor">
+            <circle cx="32" cy="32" r="10" fill="currentColor" opacity="0.8"/>
+            <circle cx="28" cy="28" r="2" fill="#000"/>
+            <circle cx="36" cy="28" r="2" fill="#000"/>
+            <path d="M30 32 Q32 34 34 32" stroke="#000" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <p id="loading-text" class="text-lg">Processing your image...</p>
+        <p id="loading-step" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Analyzing features...</p>
+      </div>
+    </div>
+    
+    <div id="results-container" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 class="text-xl font-semibold mb-3">Chibi Description</h2>
+          <div id="description-container" class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-full prose prose-sm dark:prose-invert max-w-none overflow-y-auto max-h-64 md:max-h-80">
+            <!-- Description will be inserted here -->
+          </div>
+        </div>
+        
+        <div>
+          <h2 class="text-xl font-semibold mb-3">3D Chibi Result</h2>
+          <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 md:h-80 flex items-center justify-center">
+            <img id="result-image" class="max-w-full max-h-full object-contain" src="" alt="Chibi Result" />
+          </div>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">Right-click on the image to save it</p>
+        </div>
+      </div>
+      
+      <button id="try-again-button" class="mt-8 w-full py-2 px-4 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-medium rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+        Convert Another Photo
+      </button>
+    </div>
+  </div>
+  
+  <script>
+    // Dark mode detection
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+    
+    // DOM elements
+    const uploadContainer = document.getElementById('upload-container');
+    const photoUpload = document.getElementById('photo-upload');
+    const convertButton = document.getElementById('convert-button');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImage = document.getElementById('preview-image');
+    const loadingContainer = document.getElementById('loading-container');
+    const loadingText = document.getElementById('loading-text');
+    const loadingStep = document.getElementById('loading-step');
+    const resultsContainer = document.getElementById('results-container');
+    const descriptionContainer = document.getElementById('description-container');
+    const resultImage = document.getElementById('result-image');
+    const tryAgainButton = document.getElementById('try-again-button');
+    const errorBanner = document.getElementById('error-banner');
+    const errorMessage = document.getElementById('error-message');
+    
+    // Variables to store data
+    let uploadedFile = null;
+    let descriptionText = '';
+    
+    // Helper function to show error
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorBanner.classList.remove('hidden');
+      setTimeout(() => {
+        errorBanner.classList.add('hidden');
+      }, 5000);
+    }
+    
+    // Click handler for the upload container
+    uploadContainer.addEventListener('click', () => {
+      photoUpload.click();
+    });
+    
+    // File upload handler
+    photoUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          showError('File is too large. Maximum size is 5MB.');
+          return;
+        }
+        
+        uploadedFile = file;
+        const reader = new FileReader();
+        
+        reader.onload = (event) => {
+          previewImage.src = event.target.result;
+          previewContainer.classList.remove('hidden');
+          convertButton.disabled = false;
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Drag and drop handlers
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadContainer.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadContainer.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadContainer.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      uploadContainer.classList.add('border-primary');
+    }
+    
+    function unhighlight() {
+      uploadContainer.classList.remove('border-primary');
+    }
+    
+    uploadContainer.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          showError('File is too large. Maximum size is 5MB.');
+          return;
+        }
+        
+        uploadedFile = file;
+        const reader = new FileReader();
+        
+        reader.onload = (event) => {
+          previewImage.src = event.target.result;
+          previewContainer.classList.remove('hidden');
+          convertButton.disabled = false;
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // Convert button handler
+    convertButton.addEventListener('click', async () => {
+      if (!uploadedFile) return;
+      
+      // Show loading state
+      uploadContainer.classList.add('hidden');
+      previewContainer.classList.add('hidden');
+      loadingContainer.classList.remove('hidden');
+      loadingText.textContent = 'Processing your image...';
+      loadingStep.textContent = 'Analyzing features and creating chibi description...';
+      
+      try {
+        // Register handler for the description generation
+        window.Poe.registerHandler('description-handler', (result, context) => {
+          const msg = result.responses[0];
+          
+          if (msg.status === 'error') {
+            loadingContainer.classList.add('hidden');
+            uploadContainer.classList.remove('hidden');
+            previewContainer.classList.remove('hidden');
+            showError('Error: ' + (msg.statusText || 'Failed to generate description'));
+            return;
+          }
+          
+          if (msg.status === 'complete') {
+            descriptionText = msg.content;
+            descriptionContainer.innerHTML = marked.parse(descriptionText);
+            
+            // Now that we have the description, generate the chibi image
+            generateChibiImage();
+          }
+        });
+        
+        // Send the photo to Claude to generate the chibi description
+        await window.Poe.sendUserMessage('@Claude-3.7-Sonnet You are a 3D chibi anime character designer. Look at this photo and craft a detailed description for creating a 3D chibi anime character based on it. Focus on key features like hair style/color, eye color, clothing, accessories, and facial features that would make it recognizable yet adorably chibi. Add cute exaggerated elements and mention the chibi proportions (big head, small body). Keep the description between 100-150 words.', {
+          attachments: [uploadedFile],
+          handler: 'description-handler',
+          stream: false,
+          openChat: false
+        });
+      } catch (err) {
+        loadingContainer.classList.add('hidden');
+        uploadContainer.classList.remove('hidden');
+        previewContainer.classList.remove('hidden');
+        showError('Error: ' + (err.message || 'Something went wrong'));
+        console.error('Error:', err);
+      }
+    });
+    
+    // Function to generate the chibi image using the description
+    async function generateChibiImage() {
+      loadingText.textContent = 'Almost there!';
+      loadingStep.textContent = 'Creating your 3D chibi anime character...';
+      
+      try {
+        // Register handler for the image generation
+        window.Poe.registerHandler('image-handler', (result, context) => {
+          const msg = result.responses[0];
+          
+          if (msg.status === 'error') {
+            loadingContainer.classList.add('hidden');
+            uploadContainer.classList.remove('hidden');
+            previewContainer.classList.remove('hidden');
+            showError('Error: ' + (msg.statusText || 'Failed to generate image'));
+            return;
+          }
+          
+          if (msg.status === 'complete') {
+            if (msg.attachments?.length > 0) {
+              const imageAttachment = msg.attachments[0];
+              resultImage.src = imageAttachment.url;
+              
+              // Show the results container
+              loadingContainer.classList.add('hidden');
+              resultsContainer.classList.remove('hidden');
+            } else {
+              loadingContainer.classList.add('hidden');
+              uploadContainer.classList.remove('hidden');
+              previewContainer.classList.remove('hidden');
+              showError('No image was generated. Please try again.');
+            }
+          }
+        });
+        
+        // Send the description to FLUX to generate the chibi image
+        const prompt = `3D chibi anime character with exaggerated cute features, big head and small body: ${descriptionText} Rendered in a polished 3D style with soft lighting. --aspect 1:1`;
+        
+        await window.Poe.sendUserMessage('@FLUX-pro-1.1 ' + prompt, {
+          handler: 'image-handler',
+          stream: false,
+          openChat: false
+        });
+      } catch (err) {
+        loadingContainer.classList.add('hidden');
+        uploadContainer.classList.remove('hidden');
+        previewContainer.classList.remove('hidden');
+        showError('Error: ' + (err.message || 'Something went wrong'));
+        console.error('Error:', err);
+      }
+    }
+    
+    // Try again button handler
+    tryAgainButton.addEventListener('click', () => {
+      // Reset the state
+      uploadedFile = null;
+      descriptionText = '';
+      photoUpload.value = '';
+      convertButton.disabled = true;
+      
+      // Reset the UI
+      resultsContainer.classList.add('hidden');
+      previewContainer.classList.add('hidden');
+      uploadContainer.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
