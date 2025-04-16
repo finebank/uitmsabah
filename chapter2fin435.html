@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Rates | Banking & Financial Markets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f0ff',
+                            100: '#e0e1ff',
+                            200: '#c0c2fe',
+                            300: '#9e9ffc',
+                            400: '#7e7cf9',
+                            500: '#5D5CDE',
+                            600: '#4a4ab3',
+                            700: '#3d3c94',
+                            800: '#2e2e70',
+                            900: '#1f1f4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Quiz styles */
+        .quiz-option:hover {
+            background-color: rgba(93, 92, 222, 0.1);
+            cursor: pointer;
+        }
+        
+        .quiz-option.selected {
+            background-color: rgba(93, 92, 222, 0.2);
+            border-color: #5D5CDE;
+        }
+        
+        .quiz-option.correct {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: rgb(34, 197, 94);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-color: rgb(239, 68, 68);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Calculator input styling */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #555;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D5CDE;
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+        
+        .dark .progress-bar {
+            background-color: #334155;
+        }
+        
+        /* Timeline styling */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background-color: #e2e8f0;
+            left: 0;
+            top: 0;
+        }
+        
+        .dark .timeline::before {
+            background-color: #334155;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #5D5CDE;
+            left: -2.5rem;
+            top: 0.25rem;
+            border: 2px solid #fff;
+            z-index: 1;
+        }
+        
+        .dark .timeline-item::before {
+            border-color: #1e1e1e;
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: normal;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .dark .tooltip .tooltip-text {
+            background-color: #111;
+        }
+        
+        .dark .tooltip .tooltip-text::after {
+            border-color: #111 transparent transparent transparent;
+        }
+        
+        /* Card hover effects */
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .hover-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Dark mode toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-indigo-300 hidden dark:block"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md fixed top-0 w-full z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-primary-500">
+                <i class="fas fa-percentage mr-2"></i>Interest Rates
+            </h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#introduction" class="hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#types" class="hover:text-primary-500 transition-colors">Types</a></li>
+                    <li><a href="#determinants" class="hover:text-primary-500 transition-colors">Determinants</a></li>
+                    <li><a href="#policy-rates" class="hover:text-primary-500 transition-colors">Policy Rates</a></li>
+                    <li><a href="#reference-rates" class="hover:text-primary-500 transition-colors">Reference Rates</a></li>
+                    <li><a href="#practice" class="hover:text-primary-500 transition-colors">Practice</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-primary-500">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 shadow-md">
+            <div class="container mx-auto px-4 py-2">
+                <ul class="space-y-2">
+                    <li><a href="#introduction" class="block py-2 hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#types" class="block py-2 hover:text-primary-500 transition-colors">Types</a></li>
+                    <li><a href="#determinants" class="block py-2 hover:text-primary-500 transition-colors">Determinants</a></li>
+                    <li><a href="#policy-rates" class="block py-2 hover:text-primary-500 transition-colors">Policy Rates</a></li>
+                    <li><a href="#reference-rates" class="block py-2 hover:text-primary-500 transition-colors">Reference Rates</a></li>
+                    <li><a href="#practice" class="block py-2 hover:text-primary-500 transition-colors">Practice</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress tracker -->
+    <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg z-10">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Chapter 2: Interest Rates</span>
+                <span id="progress-percentage" class="text-sm font-medium text-primary-500">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Introduction Section -->
+        <section id="introduction" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-money-bill-wave text-primary-500 mr-3"></i>
+                        Introduction to Interest Rates
+                    </h2>
+                    
+                    <!-- Course outline card -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-list-check text-primary-500 mr-2"></i>
+                            Course Syllabus
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                <thead class="bg-gray-100 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left">No</th>
+                                        <th class="py-3 px-4 text-left">Chapter</th>
+                                        <th class="py-3 px-4 text-left">Week</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Introduction and Overview of Financial System</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1 & 2</td>
+                                    </tr>
+                                    <tr class="bg-primary-50 dark:bg-primary-900/20">
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">2</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Interest rates</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Money & Foreign Exchange market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Capital market – Equity and Bond market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Derivatives market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Offshore market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Digital Technologies in the Financial Industry</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">8</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Cryptocurrency</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">13</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">9</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Banking products and services</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">10 & 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4">10</td>
+                                        <td class="py-3 px-4">Banking regulation and management</td>
+                                        <td class="py-3 px-4">8 & 9</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <p class="mb-4 text-gray-600 dark:text-gray-300">
+                            Interest rates play a central role in our financial system and economy. They influence decisions made by individuals, businesses, and governments on a daily basis.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md"><i class="fas fa-percent text-3xl text-primary-500"></i></div>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3 text-center">What is Interest Rate?</h3>
+                                <div class="space-y-2">
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">To a lender (surplus unit):</span> The return earned for parting with funds over a period of time.
+                                    </p>
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">To a borrower (deficit unit):</span> The price to pay over a specific period of time (the interest expenses).
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md"><i class="fas fa-university text-3xl text-primary-500"></i></div>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3 text-center">Central Bank's Role</h3>
+                                <div class="space-y-2">
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        Central banks play an important role in stabilizing prices, output, the financial system, exchange rates, and interest rates.
+                                    </p>
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        They control the monetary base by:
+                                    </p>
+                                    <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                        <li>Buying and selling assets (government securities)</li>
+                                        <li>Making loans to banks at interest rate corridors</li>
+                                        <li>Adjusting the mix of assets they hold</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4">Significance of Interest Rates</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-chart-line text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">Benchmark Setting</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Sets benchmark for Average Overnight Interbank Rate (AOIR) and serves as a monetary policy tool.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-hand-holding-usd text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">Cost & Returns</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Determines cost of borrowing for consumers and businesses, as well as returns on investments and savings.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-tag text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">Price Stability</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Helps manage inflationary pressure - lower rates encourage spending while higher rates help control inflation.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-exchange-alt text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">FX Rates</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Influences exchange rates between currencies - affects the value of Ringgit and can attract foreign capital.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-home text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">Asset Pricing</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Impacts the pricing of various assets like bonds, stocks, and real estate, affecting investment decisions.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                            <i class="fas fa-briefcase text-primary-500"></i>
+                                        </div>
+                                        <h4 class="font-medium">Credit Growth</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Higher rates restrict credit growth making it harder for businesses and households to get financing.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">What is the primary function of interest rates in an economy?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        To increase government tax revenue
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        To serve as the cost of borrowing and reward for lending
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        To directly control currency exchange rates
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        To regulate the number of banks in the financial system
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Types of Interest Rates Section -->
+        <section id="types" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-layer-group text-primary-500 mr-3"></i>
+                        Types of Interest Rates
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Nominal vs. Real Interest Rates</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-percentage text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Nominal Interest Rate</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-center">
+                                    The interest rate that you see advertised by banks and lenders. This is the actual percentage you earn or pay on a loan, but it doesn't account for inflation.
+                                </p>
+                                <div class="mt-4 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 italic text-center">
+                                        "This is the rate you see on bank signs and loan agreements."
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-calculator text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Real Interest Rate</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-center">
+                                    The nominal interest rate adjusted for inflation. This is the effective interest rate that represents the actual purchasing power you gain or lose.
+                                </p>
+                                <div class="mt-4 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 italic text-center">
+                                        "This shows the true economic value of interest when inflation is considered."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Converting Between Nominal and Real Rates</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden">
+                                <div class="bg-primary-100 dark:bg-primary-900/20 p-4">
+                                    <h4 class="font-medium text-primary-500">The Formula</h4>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex justify-center mb-6">
+                                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg inline-block">
+                                            <h4 class="text-center text-lg font-medium mb-2">Real Interest Rate = Nominal Interest Rate − Inflation Rate</h4>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300 text-center">
+                                                This is a simple approximation formula that works well for relatively low inflation rates.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg mb-6">
+                                        <h4 class="font-medium mb-2 text-primary-500">Example:</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                            Suppose a bank wants to earn 10% interest, but it expects inflation to be 3% during the loan period.
+                                        </p>
+                                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                            <li>• If the bank charged only 10% (not accounting for inflation), their real return would be just 7% (10% - 3%).</li>
+                                            <li>• To achieve a real return of 10%, the bank would need to charge a nominal interest rate of 13% (10% + 3%).</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Interactive Calculator -->
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                        <h4 class="font-medium mb-4 text-center">Real Interest Rate Calculator</h4>
+                                        <div class="max-w-lg mx-auto">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nominal Interest Rate (%)</label>
+                                                    <input type="number" id="nominal-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="5" min="0" step="0.1">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Inflation Rate (%)</label>
+                                                    <input type="number" id="inflation-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="2" min="0" step="0.1">
+                                                </div>
+                                            </div>
+                                            <button id="calculate-real-rate" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                                Calculate Real Interest Rate
+                                            </button>
+                                            <div id="real-rate-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                                The real interest rate is: <span class="font-medium text-primary-500">3.0%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Simple Interest Calculation</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden">
+                                <div class="bg-primary-100 dark:bg-primary-900/20 p-4">
+                                    <h4 class="font-medium text-primary-500">Simple Interest Formula</h4>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex justify-center mb-6">
+                                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg inline-block">
+                                            <h4 class="text-center text-lg font-medium mb-2">Simple Interest = Principal × Rate × Time</h4>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300 text-center">
+                                                Total Amount = Principal + (Principal × Rate × Time)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg mb-6">
+                                        <h4 class="font-medium mb-2 text-primary-500">Example:</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                            You have borrowed RM10,000 at a simple interest rate of 8% per annum for 3 years.
+                                        </p>
+                                        <div class="space-y-2 text-gray-600 dark:text-gray-300">
+                                            <p><strong>Principal</strong> = RM10,000</p>
+                                            <p><strong>Rate</strong> = 8% per year = 0.08</p>
+                                            <p><strong>Time</strong> = 3 years = 3</p>
+                                            <p><strong>Interest</strong> = 10,000 × 0.08 × 3 = RM2,400</p>
+                                            <p><strong>Total Repayment</strong> = RM10,000 + RM2,400 = RM12,400</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Interactive Calculator -->
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                        <h4 class="font-medium mb-4 text-center">Simple Interest Calculator</h4>
+                                        <div class="max-w-lg mx-auto">
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Principal (RM)</label>
+                                                    <input type="number" id="principal" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="10000" min="0">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Interest Rate (%)</label>
+                                                    <input type="number" id="interest-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="8" min="0" step="0.1">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Time (Years)</label>
+                                                    <input type="number" id="time-years" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="3" min="0" step="0.5">
+                                                </div>
+                                            </div>
+                                            <button id="calculate-simple-interest" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                                Calculate Simple Interest
+                                            </button>
+                                            <div id="simple-interest-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                                <div>Interest: <span class="font-medium text-primary-500">RM2,400.00</span></div>
+                                                <div>Total Amount: <span class="font-medium text-primary-500">RM12,400.00</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Fixed vs. Variable Rates -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Fixed vs. Variable Rates</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Fixed Rate -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-lock text-xl text-primary-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">Fixed Rate</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                    An interest rate that does not change over the life of a loan; amount of monthly installment remains the same.
+                                </p>
+                                <div class="space-y-3">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-check-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Advantage:</span> Predictable payments make budgeting easier for customers
+                                        </p>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-red-500 mr-2">
+                                            <i class="fas fa-times-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Disadvantage:</span> Exposes banks to interest rate risk, especially when rates are volatile
+                                        </p>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Applications:</span> Credit card facilities, car loans, hire purchase agreements
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Variable Rate -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-exchange-alt text-xl text-primary-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">Variable Rate</h4>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                    An interest rate that fluctuates over time - known as Base Rate (BR) and Base Lending Rate (BLR).
+                                </p>
+                                <div class="space-y-3">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-check-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Advantage:</span> Protects both borrower and lender against interest rate fluctuations
+                                        </p>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-red-500 mr-2">
+                                            <i class="fas fa-times-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Disadvantage:</span> Can increase credit and collateral risk for borrowers
+                                        </p>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            <span class="font-medium">Applications:</span> Property-based lending and business loans
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">If the nominal interest rate is 6% and the inflation rate is 2%, what is the real interest rate?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        2%
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        3%
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        4%
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        8%
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Determinants of Interest Rates Section -->
+        <section id="determinants" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-arrows-alt-h text-primary-500 mr-3"></i>
+                        Determinants of Interest Rates
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Several key factors influence the level of interest rates in an economy. Understanding these determinants helps explain why rates fluctuate over time.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Inflation -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-fire-alt text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Inflation</h3>
+                            <div class="space-y-3">
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Higher actual or expected inflation leads to higher interest rates (positive relationship).
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Investors need to earn higher returns to compensate for the increased cost of foregoing consumption today only to buy more expensive goods in the future.
+                                </p>
+                                <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                        When inflation rises, central banks often raise interest rates to cool down the economy and control price increases.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Real Interest Rates -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-balance-scale text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Real Interest Rates</h3>
+                            <div class="space-y-3">
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The rate that would exist on a security without any expected inflation over the holding period.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    It measures consumers' relative time preference for consuming today rather than later - the higher the preference to consume today, the higher the real interest rate.
+                                </p>
+                                <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                        During economic growth, the rate of return on investments increases, leading to higher demand for loans and higher real interest rates.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Default Risk -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-exclamation-triangle text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Default Risk</h3>
+                            <div class="space-y-3">
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The risk that the issuer will not pay the interest and principal on a timely basis.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Higher default risk means investors demand higher interest rates to compensate for the risk exposure.
+                                </p>
+                                <div class="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                        This is why corporate bonds typically pay higher interest rates than government bonds, and why borrowers with poor credit scores pay higher rates.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Liquidity Risk -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-tint text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Liquidity Risk</h3>
+                            <div class="space-y-3">
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Liquidity Preference Theory suggests that investors should demand a higher interest rate on securities with long-term maturities that carry greater risk.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    All other factors being equal, investors prefer cash or other highly liquid holdings.
+                                </p>
+                                <div class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                        When more people want to hold money for transactions (high liquidity preference), interest rates tend to rise.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Time to Maturity -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-hourglass-half text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Time to Maturity</h3>
+                            <div class="space-y-3">
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Refers to the length of time until a security will mature, affecting interest rates through the 'term structure of interest rates' or 'yield curve'.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The change in required interest rates as maturity changes is called the 'maturity premium'.
+                                </p>
+                                <div class="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                        The maturity premium can be positive (upward sloping yield curve), negative (downward sloping), or zero (flat yield curve).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yield Curve Illustration -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Understanding Yield Curves</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                A yield curve shows the relationship between interest rates (or yields) and time to maturity for debt securities with equal credit quality.
+                            </p>
+                            
+                            <div class="mb-6">
+                                <canvas id="yield-curve-chart" class="w-full" height="300"></canvas>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Normal (Upward Sloping)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Longer-term bonds have higher yields than shorter-term ones. This is the most common shape, indicating economic expansion.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Inverted (Downward Sloping)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Short-term yields are higher than long-term yields. Often viewed as a predictor of economic recession.
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Flat</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Short and long-term yields are similar. May indicate economic transition, often between normal and inverted curves.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which factor is a key determinant of interest rates in Malaysia?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Global weather patterns
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Political campaign cycles
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Inflation expectations
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Social media trends
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Policy Interest Rates Section -->
+        <section id="policy-rates" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-landmark text-primary-500 mr-3"></i>
+                        Policy Interest Rates
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Central banks use policy interest rates as a key tool to influence the broader economy and achieve monetary policy objectives.
+                    </p>
+                    
+                    <!-- BNM's Role in Interest Rates -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Bank Negara Malaysia's Influence on Interest Rates</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <div class="flex flex-col md:flex-row items-center mb-6">
+                                <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md"><i class="fas fa-landmark text-3xl text-primary-500"></i></div>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        Bank Negara Malaysia (BNM) influences domestic interest rates primarily through the Overnight Policy Rate (OPR). The Monetary Policy Committee (MPC) of BNM decides whether the OPR is at an appropriate level.
+                                    </p>
+                                    <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                        The main objective of setting the OPR is to maintain price stability while giving due regard to developments in the economy.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg mb-6">
+                                <h4 class="font-medium text-primary-500 mb-2">What is the OPR?</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The Overnight Policy Rate (OPR) is BNM's main reference rate in the financial market. It influences, among other things, banks' lending and financing rates, as well as deposit rates throughout the economy.
+                                </p>
+                            </div>
+                            
+                            <!-- OPR Rate Timeline -->
+                            <h4 class="font-medium text-lg mb-4">OPR Rate Changes (2020-2023)</h4>
+                            <div class="timeline mb-6">
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">July 7, 2020</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR reduced to <span class="font-medium text-primary-500">1.75%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Response to COVID-19 economic challenges</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">May 11, 2022</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR increased to <span class="font-medium text-primary-500">2.00%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Economic recovery begins</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">July 6, 2022</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR increased to <span class="font-medium text-primary-500">2.25%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Continued normalization of monetary policy</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">September 8, 2022</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR increased to <span class="font-medium text-primary-500">2.50%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Further adjustment to support sustainable growth</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">November 3, 2022</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR increased to <span class="font-medium text-primary-500">2.75%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Managing inflationary pressures</p>
+                                </div>
+                                <div class="timeline-item">
+                                    <h5 class="font-medium">May 3, 2023</h5>
+                                    <p class="text-gray-600 dark:text-gray-300">OPR increased to <span class="font-medium text-primary-500">3.00%</span></p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Current level as of last update</p>
+                                </div>
+                            </div>
+                            
+                            <!-- OPR Chart -->
+                            <div class="mb-6">
+                                <canvas id="opr-chart" class="w-full" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monetary Policy Tools -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Monetary Policy Tools</h3>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow">
+                                <thead class="bg-primary-50 dark:bg-primary-900/20">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left">Tool</th>
+                                        <th class="py-3 px-4 text-left">What is it?</th>
+                                        <th class="py-3 px-4 text-left">How is it controlled?</th>
+                                        <th class="py-3 px-4 text-left">What are its impacts?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Interest Rate Policy (OPR) -->
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Interest Rate Policy (OPR)</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            BNM's policy interest rate that influences banks' lending and financing rates, as well as deposit rates.
+                                        </td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            Set by the Monetary Policy Committee (MPC)
+                                        </td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <ul class="list-disc list-inside text-sm">
+                                                <li>Keeping inflation low and stable</li>
+                                                <li>Influencing economic activity and price levels</li>
+                                                <li>Affecting interest rates throughout the economy</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Open Market Operations -->
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Open Market Operations</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            Market operations where BNM adjusts liquidity in the banking system.
+                                        </td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            BNM absorbs or adds liquidity through buying or selling government securities in the open market.
+                                        </td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <ul class="list-disc list-inside text-sm">
+                                                <li>Affects money circulating in the banking system</li>
+                                                <li>Influences Average Overnight Interbank Rate (AOIR)</li>
+                                                <li>Manages market liquidity conditions</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Statutory Reserve Requirement -->
+                                    <tr>
+                                        <td class="py-3 px-4 font-medium">Statutory Reserve Requirement (SRR)</td>
+                                        <td class="py-3 px-4">
+                                            An instrument to manage liquidity. Not used to signal monetary policy stance but used to manage liquidity and financial stability.
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <ul class="list-disc list-inside text-sm">
+                                                <li>Based on liquidity conditions</li>
+                                                <li>Financial stability considerations</li>
+                                                <li>Macroeconomic conditions</li>
+                                                <li>Banking sector's requirements</li>
+                                            </ul>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <ul class="list-disc list-inside text-sm">
+                                                <li>Adjusts liquidity in the banking system</li>
+                                                <li>Affects lending and credit growth</li>
+                                                <li>Influences interest rates on loans</li>
+                                                <li>Impacts banks' profits</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Impact of OPR Changes -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Impact of OPR Changes</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- OPR Increase -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-4">
+                                        <i class="fas fa-arrow-up text-red-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">When OPR Increases</h4>
+                                </div>
+                                <ul class="space-y-3">
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-red-500 mr-2">
+                                            <i class="fas fa-arrow-up mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Cost of borrowing increases for individuals and businesses
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-arrow-up mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Higher returns on savings and investments
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-arrow-down mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Reduces overall consumption and investment
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-yellow-500 mr-2">
+                                            <i class="fas fa-arrow-down mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Helps cool inflation by slowing economic activity
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-purple-500 mr-2">
+                                            <i class="fas fa-arrow-up mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            May strengthen the currency as foreign investment is attracted
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- OPR Decrease -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-4">
+                                        <i class="fas fa-arrow-down text-green-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">When OPR Decreases</h4>
+                                </div>
+                                <ul class="space-y-3">
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-arrow-down mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Lower borrowing costs make loans more affordable
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-red-500 mr-2">
+                                            <i class="fas fa-arrow-down mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Reduced returns on savings and deposits
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-arrow-up mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Stimulates spending and investment
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-yellow-500 mr-2">
+                                            <i class="fas fa-arrow-up mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Can increase inflation if maintained for extended periods
+                                        </p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-purple-500 mr-2">
+                                            <i class="fas fa-arrow-down mt-1"></i>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            May weaken currency relative to other currencies
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">What is the primary function of the Overnight Policy Rate (OPR) set by Bank Negara Malaysia?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Manage monetary policy
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Determine exchange rates
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Regulate banking licenses
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Manage government debt
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Reference Rates Section -->
+        <section id="reference-rates" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-file-invoice-dollar text-primary-500 mr-3"></i>
+                        Reference Rate Frameworks
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Financial institutions use reference rates to price their lending products. Malaysia has seen several reference rate frameworks over the years.
+                    </p>
+                    
+                    <!-- OPR and Lending Rate Relationship -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">OPR and Lending Rate Relationship</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Changes in the Overnight Policy Rate (OPR) affect lending rates used by banks. Over time, Malaysia has used different reference rate frameworks.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <!-- BLR Framework -->
+                                <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm p-6">
+                                    <div class="bg-orange-100 dark:bg-orange-900/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                        <i class="fas fa-history text-orange-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium mb-3">Base Lending Rate (BLR)</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                                        <strong>Period:</strong> Before January 2, 2015
+                                    </p>
+                                    <div class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <p>• Set by BNM based on cost of lending to financial institutions</p>
+                                        <p>• Computed based on 3-month weighted average interbank rate</p>
+                                        <p>• Included a flat administrative margin of 2.25 percentage points</p>
+                                        <p>• Linked to BNM's intervention rate (now known as OPR)</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- BR Framework -->
+                                <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm p-6">
+                                    <div class="bg-blue-100 dark:bg-blue-900/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                        <i class="fas fa-sync-alt text-blue-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium mb-3">Base Rate (BR)</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                                        <strong>Period:</strong> January 2, 2015 - July 31, 2022
+                                    </p>
+                                    <div class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <p>• Determined by financial institutions themselves</p>
+                                        <p>• Based on banks' cost of funds and SRR</p>
+                                        <p>• Also considered borrower credit risk, liquidity risk premium, operating costs, and profit margin</p>
+                                        <p>• More transparent pricing framework compared to BLR</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- SBR Framework -->
+                                <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-sm p-6">
+                                    <div class="bg-green-100 dark:bg-green-900/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                        <i class="fas fa-check-circle text-green-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium mb-3">Standardized Base Rate (SBR)</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">
+                                        <strong>Period:</strong> From August 1, 2022
+                                    </p>
+                                    <div class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <p>• Directly linked to the OPR</p>
+                                        <p>• SBR = OPR</p>
+                                        <p>• Lending/financing rate = SBR + spread</p>
+                                        <p>• Creates greater transparency and allows faster transmission of monetary policy</p>
+                                        <p>• Easier for consumers to compare loan products</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Old Reference Rate Framework (BLR) -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Old Reference Rate Framework (BLR)</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                The Base Lending Rate (BLR) was computed based on the 3-month weighted average interbank rate of the previous month, and a flat administrative margin of 2.25 percentage points.
+                            </p>
+                            
+                            <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg mb-6">
+                                <h4 class="font-medium text-orange-600 dark:text-orange-400 mb-2">BLR Formula:</h4>
+                                <div class="space-y-2">
+                                    <p class="font-medium">For Commercial Banks:</p>
+                                    <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                        Computed BLR = Intervention rate / (1-SRR) × 0.8 + 2.25%
+                                    </p>
+                                    <p class="font-medium mt-2">For Finance Companies:</p>
+                                    <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                        Computed BLR = Intervention rate / (1-SRR) + 2.25%
+                                    </p>
+                                    <p class="text-sm mt-2 italic">Note: The "Intervention rate" is now known as the OPR</p>
+                                </div>
+                            </div>
+                            
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                In this framework, banks would typically quote lending rates to customers as "<span class="font-medium">BLR - x%</span>" (for favorable borrowers) or "<span class="font-medium">BLR + y%</span>" (for higher risk borrowers), where x and y are the risk adjustments.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- New Reference Rate Framework (BR & SBR) -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">New Reference Rate Frameworks</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <!-- Base Rate (BR) -->
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-blue-600 dark:text-blue-400 mb-3">Base Rate (BR) Framework</h4>
+                                <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                    Effective January 2, 2015, Base Rate (BR) replaced the BLR as the main reference rate for new retail floating-rate loans. This framework allowed for more transparency and flexibility.
+                                </p>
+                                <p class="mb-2 text-gray-600 dark:text-gray-300">
+                                    Under the BR system, the rate was determined by financial institutions themselves, taking into account:
+                                </p>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
+                                    <li>Bank's cost of funds</li>
+                                    <li>Statutory Reserve Requirement (SRR)</li>
+                                    <li>Borrower credit risk</li>
+                                    <li>Liquidity risk premium</li>
+                                    <li>Operating costs</li>
+                                    <li>Profit margin</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Standardized Base Rate (SBR) -->
+                            <div class="mb-6">
+                                <h4 class="text-lg font-medium text-green-600 dark:text-green-400 mb-3">Standardized Base Rate (SBR) Framework</h4>
+                                <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                    Effective August 1, 2022, the Standardized Base Rate (SBR) took effect as the reference rate for the pricing of new retail floating-rate loans and the refinancing of existing loans.
+                                </p>
+                                
+                                <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mb-4">
+                                    <h5 class="font-medium mb-2">SBR Formula:</h5>
+                                    <div class="space-y-2">
+                                        <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                            Standardized Base Rate (SBR) = Benchmark rate
+                                        </p>
+                                        <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                            Benchmark rate = OPR
+                                        </p>
+                                        <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                            Lending/financing rate = SBR + spread
+                                        </p>
+                                        <p class="bg-white dark:bg-gray-800 p-2 rounded">
+                                            Or, Lending/financing rate = OPR + spread
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The SBR framework provides greater transparency as it directly links lending rates to the OPR. This makes it easier for borrowers to understand the impact of OPR changes on their loan repayments.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comparison of Reference Rate Frameworks -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Comparison Example</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Here's a comparison of how the different reference rate frameworks would apply to a sample loan:
+                            </p>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                    <thead class="bg-gray-100 dark:bg-gray-700">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">Details</th>
+                                            <th class="py-3 px-4 text-left">BLR</th>
+                                            <th class="py-3 px-4 text-left">BR</th>
+                                            <th class="py-3 px-4 text-left">SBR</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Loan Amount</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">RM350,000</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">RM350,000</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">RM350,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Tenure</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">30 years</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">30 years</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">30 years</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Reference Rate</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">BLR: 6.65%</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">BR: 3.15%</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">SBR: 3.00%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Spread/Risk Factor</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">BLR - 2.10%</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">BR + 1.40%</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">SBR + 1.60%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">Effective Interest Rate</td>
+                                            <td class="py-3 px-4">4.55%</td>
+                                            <td class="py-3 px-4">4.55%</td>
+                                            <td class="py-3 px-4">4.60%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-6 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Key Differences:</h4>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1">
+                                    <li>Under BLR, the risk factor is <strong>deducted</strong> from the BLR (e.g., BLR - 2.1%)</li>
+                                    <li>Under BR and SBR, the spread is <strong>added</strong> to the reference rate (e.g., BR + 1.4%)</li>
+                                    <li>SBR creates consistency across all banks since it directly links to the OPR</li>
+                                    <li>With SBR, when OPR changes, the impact on loan rates is immediate and transparent</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- How BR Framework Affects Consumers -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Impact on Consumers</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Existing Borrowers -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+                                        <i class="fas fa-user-check text-blue-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">For Existing Borrowers</h4>
+                                </div>
+                                <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Existing loans under BLR or BR will continue until refinanced or restructured</p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Changes in OPR still affect existing loans but the transmission mechanism might be different</p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-blue-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Opportunity to refinance under SBR if terms are more favorable</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- New Borrowers -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-4">
+                                        <i class="fas fa-user-plus text-green-500"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium">For New Borrowers</h4>
+                                </div>
+                                <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>All new floating-rate loans use the SBR framework</p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Greater transparency - easier to understand how OPR changes affect loan rates</p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Easier to compare loan offerings across different banks</p>
+                                    </li>
+                                    <li class="flex">
+                                        <div class="flex-shrink-0 text-green-500 mr-2">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                        </div>
+                                        <p>Immediate impact of monetary policy changes on loan rates</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">How does an increase in the Overnight Policy Rate (OPR) affect borrowing costs in Malaysia?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Decreases standardized base rate (SBR)
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Has no impact on borrowing costs
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Increases the base rate (BR)
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Stabilizes base lending rate (BLR)
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Practice Problems Section -->
+        <section id="practice" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-brain text-primary-500 mr-3"></i>
+                        Practice Problems
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Test your understanding by solving these practice problems related to interest rates.
+                    </p>
+                    
+                    <!-- Problem 1 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 1: Real Interest Rate</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Convert the following nominal interest rate to a real interest rate using the inflation rate:
+                                <br>
+                                Nominal interest rate = 8%, Inflation rate = 3%
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <input type="number" id="problem1-answer" class="w-24 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                    <span class="text-gray-600 dark:text-gray-300">%</span>
+                                    <button id="check-problem1" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem1-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem1-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Using the formula: Real interest rate = Nominal interest rate - Inflation rate
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Real interest rate = 8% - 3% = 5%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 2 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 2: Simple Interest</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Calculate the simple interest earned on a principal of RM10,000 for 3 years at an annual interest rate of 5%.
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-gray-600 dark:text-gray-300 mr-2">RM</span>
+                                    <input type="number" id="problem2-answer" class="w-32 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                    <button id="check-problem2" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem2-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem2-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Using the formula: Simple Interest = Principal × Rate × Time
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Simple Interest = RM10,000 × 0.05 × 3 = RM1,500
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 3 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 3: Total Amount Due</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Using the simple interest formula, calculate the total amount due for a RM5,000 loan at a 6% interest rate over 4 years.
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-gray-600 dark:text-gray-300 mr-2">RM</span>
+                                    <input type="number" id="problem3-answer" class="w-32 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                    <button id="check-problem3" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem3-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem3-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    First, calculate the interest: Simple Interest = Principal × Rate × Time
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Simple Interest = RM5,000 × 0.06 × 4 = RM1,200
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Total Amount Due = Principal + Interest
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Total Amount Due = RM5,000 + RM1,200 = RM6,200
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- True/False Questions -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">True/False Questions</h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <div class="space-y-6">
+                                <!-- Question 1 -->
+                                <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="mb-3 text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">1.</span> The Overnight Policy Rate (OPR) is set by the Malaysian government to control the exchange rate of the Malaysian Ringgit.
+                                    </p>
+                                    <div class="flex space-x-4">
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="1" data-answer="true">
+                                            True
+                                        </button>
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="1" data-answer="false">
+                                            False
+                                        </button>
+                                    </div>
+                                    <div id="tf-feedback-1" class="mt-3 hidden"></div>
+                                </div>
+                                
+                                <!-- Question 2 -->
+                                <div class="py-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="mb-3 text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">2.</span> Inflation expectations have no impact on the decision-making of businesses and consumers in Malaysia.
+                                    </p>
+                                    <div class="flex space-x-4">
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="2" data-answer="true">
+                                            True
+                                        </button>
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="2" data-answer="false">
+                                            False
+                                        </button>
+                                    </div>
+                                    <div id="tf-feedback-2" class="mt-3 hidden"></div>
+                                </div>
+                                
+                                <!-- Question 3 -->
+                                <div class="py-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="mb-3 text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">3.</span> The Kuala Lumpur Interbank Offered Rate (KLIBOR) is influenced solely by global economic conditions and has no connection to Malaysian economic factors.
+                                    </p>
+                                    <div class="flex space-x-4">
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="3" data-answer="true">
+                                            True
+                                        </button>
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="3" data-answer="false">
+                                            False
+                                        </button>
+                                    </div>
+                                    <div id="tf-feedback-3" class="mt-3 hidden"></div>
+                                </div>
+                                
+                                <!-- Question 4 -->
+                                <div class="py-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="mb-3 text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">4.</span> An increase in the Overnight Policy Rate (OPR) would likely lead to a decrease in borrowing costs for businesses and individuals in Malaysia.
+                                    </p>
+                                    <div class="flex space-x-4">
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="4" data-answer="true">
+                                            True
+                                        </button>
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="4" data-answer="false">
+                                            False
+                                        </button>
+                                    </div>
+                                    <div id="tf-feedback-4" class="mt-3 hidden"></div>
+                                </div>
+                                
+                                <!-- Question 5 -->
+                                <div class="py-4">
+                                    <p class="mb-3 text-gray-600 dark:text-gray-300">
+                                        <span class="font-medium">5.</span> Bank Negara Malaysia's primary goal in adjusting interest rates is to maximize corporate profits and stock market performance.
+                                    </p>
+                                    <div class="flex space-x-4">
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="5" data-answer="true">
+                                            True
+                                        </button>
+                                        <button class="tf-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-question="5" data-answer="false">
+                                            False
+                                        </button>
+                                    </div>
+                                    <div id="tf-feedback-5" class="mt-3 hidden"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <button id="show-all-tf-answers" class="py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                    Show All Answers
+                                </button>
+                                <div id="all-tf-answers" class="mt-4 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg hidden">
+                                    <h4 class="font-medium text-primary-500 mb-2">Answers:</h4>
+                                    <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li>False - The OPR is set by Bank Negara Malaysia (not the government) primarily to manage monetary policy and price stability, not directly control exchange rates.</li>
+                                        <li>False - Inflation expectations significantly impact business and consumer decision-making regarding investments, savings, and spending.</li>
+                                        <li>False - KLIBOR is heavily influenced by Malaysian economic factors, including BNM's monetary policy, domestic interest rates, and local banking conditions.</li>
+                                        <li>False - An increase in OPR typically leads to an increase in borrowing costs as banks adjust their lending rates upward.</li>
+                                        <li>False - BNM's primary goal in adjusting interest rates is to achieve price stability and support sustainable economic growth.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-16 right-4 p-3 rounded-full bg-primary-500 text-white shadow-md hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Check for saved theme preference or use device preference
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Listen for theme toggle click
+        themeToggle.addEventListener('click', function() {
+            // Toggle the dark class on the html element
+            document.documentElement.classList.toggle('dark');
+            
+            // Update local storage
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+            }
+            
+            // Update charts if they exist
+            if (window.yieldCurveChart) {
+                updateYieldCurveChartColors();
+            }
+            if (window.oprChart) {
+                updateOPRChartColors();
+            }
+        });
+        
+        // Also listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('color-theme')) {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                
+                // Update charts if they exist
+                if (window.yieldCurveChart) {
+                    updateYieldCurveChartColors();
+                }
+                if (window.oprChart) {
+                    updateOPRChartColors();
+                }
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+        for (let link of mobileMenuLinks) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+        
+        // Real Interest Rate Calculator
+        const nominalRateInput = document.getElementById('nominal-rate');
+        const inflationRateInput = document.getElementById('inflation-rate');
+        const calculateRealRateBtn = document.getElementById('calculate-real-rate');
+        const realRateResult = document.getElementById('real-rate-result');
+        
+        calculateRealRateBtn.addEventListener('click', function() {
+            const nominalRate = parseFloat(nominalRateInput.value) || 0;
+            const inflationRate = parseFloat(inflationRateInput.value) || 0;
+            const realRate = (nominalRate - inflationRate).toFixed(1);
+            
+            realRateResult.innerHTML = `The real interest rate is: <span class="font-medium text-primary-500">${realRate}%</span>`;
+        });
+        
+        // Simple Interest Calculator
+        const principalInput = document.getElementById('principal');
+        const interestRateInput = document.getElementById('interest-rate');
+        const timeYearsInput = document.getElementById('time-years');
+        const calculateSimpleInterestBtn = document.getElementById('calculate-simple-interest');
+        const simpleInterestResult = document.getElementById('simple-interest-result');
+        
+        calculateSimpleInterestBtn.addEventListener('click', function() {
+            const principal = parseFloat(principalInput.value) || 0;
+            const rate = (parseFloat(interestRateInput.value) || 0) / 100;
+            const time = parseFloat(timeYearsInput.value) || 0;
+            
+            const interest = principal * rate * time;
+            const totalAmount = principal + interest;
+            
+            simpleInterestResult.innerHTML = `
+                <div>Interest: <span class="font-medium text-primary-500">RM${interest.toFixed(2)}</span></div>
+                <div>Total Amount: <span class="font-medium text-primary-500">RM${totalAmount.toFixed(2)}</span></div>
+            `;
+        });
+        
+        // Yield Curve Chart
+        const yieldCurveCtx = document.getElementById('yield-curve-chart').getContext('2d');
+        let yieldCurveChartConfig = {
+            type: 'line',
+            data: {
+                labels: ['1 Month', '3 Months', '6 Months', '1 Year', '2 Years', '5 Years', '10 Years', '30 Years'],
+                datasets: [
+                    {
+                        label: 'Normal Yield Curve',
+                        data: [2.1, 2.3, 2.5, 2.8, 3.2, 3.7, 4.0, 4.2],
+                        borderColor: '#5D5CDE',
+                        backgroundColor: 'rgba(93, 92, 222, 0.1)',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Inverted Yield Curve',
+                        data: [4.2, 4.0, 3.8, 3.5, 3.2, 2.8, 2.5, 2.3],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Flat Yield Curve',
+                        data: [3.2, 3.2, 3.2, 3.3, 3.3, 3.3, 3.2, 3.2],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        titleFont: {
+                            family: 'Poppins, sans-serif'
+                        },
+                        bodyFont: {
+                            family: 'Poppins, sans-serif'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(160, 174, 192, 0.1)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(160, 174, 192, 0.1)'
+                        }
+                    }
+                }
+            }
+        };
+        
+        window.yieldCurveChart = new Chart(yieldCurveCtx, yieldCurveChartConfig);
+        
+        // OPR Chart
+        const oprCtx = document.getElementById('opr-chart').getContext('2d');
+        let oprChartConfig = {
+            type: 'line',
+            data: {
+                labels: ['Jul 2020', 'May 2022', 'Jul 2022', 'Sep 2022', 'Nov 2022', 'May 2023'],
+                datasets: [{
+                    label: 'OPR Rate (%)',
+                    data: [1.75, 2.00, 2.25, 2.50, 2.75, 3.00],
+                    borderColor: '#5D5CDE',
+                    backgroundColor: 'rgba(93, 92, 222, 0.1)',
+                    pointBackgroundColor: '#5D5CDE',
+                    pointBorderColor: '#fff',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    tension: 0.1,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        titleFont: {
+                            family: 'Poppins, sans-serif'
+                        },
+                        bodyFont: {
+                            family: 'Poppins, sans-serif'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(160, 174, 192, 0.1)'
+                        }
+                    },
+                    y: {
+                        min: 1.5,
+                        max: 3.2,
+                        ticks: {
+                            color: '#4B5563',
+                            font: {
+                                family: 'Poppins, sans-serif'
+                            },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(160, 174, 192, 0.1)'
+                        }
+                    }
+                }
+            }
+        };
+        
+        window.oprChart = new Chart(oprCtx, oprChartConfig);
+        
+        // Function to update chart colors based on theme
+        function updateYieldCurveChartColors() {
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            
+            // Update text colors
+            yieldCurveChart.options.plugins.legend.labels.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            yieldCurveChart.options.scales.x.ticks.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            yieldCurveChart.options.scales.y.ticks.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            
+            // Update grid colors
+            yieldCurveChart.options.scales.x.grid.color = isDarkMode ? 'rgba(75, 85, 99, 0.15)' : 'rgba(160, 174, 192, 0.1)';
+            yieldCurveChart.options.scales.y.grid.color = isDarkMode ? 'rgba(75, 85, 99, 0.15)' : 'rgba(160, 174, 192, 0.1)';
+            
+            yieldCurveChart.update();
+        }
+        
+        function updateOPRChartColors() {
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            
+            // Update text colors
+            oprChart.options.plugins.legend.labels.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            oprChart.options.scales.x.ticks.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            oprChart.options.scales.y.ticks.color = isDarkMode ? '#D1D5DB' : '#4B5563';
+            
+            // Update grid colors
+            oprChart.options.scales.x.grid.color = isDarkMode ? 'rgba(75, 85, 99, 0.15)' : 'rgba(160, 174, 192, 0.1)';
+            oprChart.options.scales.y.grid.color = isDarkMode ? 'rgba(75, 85, 99, 0.15)' : 'rgba(160, 174, 192, 0.1)';
+            
+            oprChart.update();
+        }
+        
+        // Update chart colors on load
+        if (document.documentElement.classList.contains('dark')) {
+            updateYieldCurveChartColors();
+            updateOPRChartColors();
+        }
+        
+        // Quiz functionality
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Get all options in the same question
+                const questionOptions = this.parentElement.querySelectorAll('.quiz-option');
+                const feedbackEl = this.parentElement.nextElementSibling;
+                
+                // If quiz has already been answered, don't allow more selections
+                if (this.classList.contains('correct') || this.classList.contains('incorrect')) {
+                    return;
+                }
+                
+                // Remove selected class from all options
+                questionOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                // After a short delay, show the result
+                setTimeout(() => {
+                    // Remove selected class
+                    this.classList.remove('selected');
+                    
+                    // Add correct/incorrect class
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! Well done.</div>';
+                    } else {
+                        this.classList.add('incorrect');
+                        
+                        // Find the correct answer and highlight it
+                        questionOptions.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                        
+                        feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. See the correct answer highlighted above.</div>';
+                    }
+                    
+                    // Show feedback
+                    feedbackEl.classList.remove('hidden');
+                }, 500);
+            });
+        });
+        
+        // Practice Problems Functionality
+        // Problem 1
+        document.getElementById('check-problem1').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem1-answer').value);
+            const correctAnswer = 5;
+            const feedbackEl = document.getElementById('problem1-feedback');
+            const solutionEl = document.getElementById('problem1-solution');
+            
+            if (userAnswer === correctAnswer) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The real interest rate is 5%.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 2
+        document.getElementById('check-problem2').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem2-answer').value);
+            const correctAnswer = 1500;
+            const feedbackEl = document.getElementById('problem2-feedback');
+            const solutionEl = document.getElementById('problem2-solution');
+            
+            if (userAnswer === correctAnswer) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The simple interest is RM1,500.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 3
+        document.getElementById('check-problem3').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem3-answer').value);
+            const correctAnswer = 6200;
+            const feedbackEl = document.getElementById('problem3-feedback');
+            const solutionEl = document.getElementById('problem3-solution');
+            
+            if (userAnswer === correctAnswer) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The total amount due is RM6,200.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // True/False Questions
+        const tfOptions = document.querySelectorAll('.tf-option');
+        const correctTFAnswers = {
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false
+        };
+        
+        tfOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const questionNumber = this.getAttribute('data-question');
+                const userAnswer = this.getAttribute('data-answer') === 'true';
+                const feedbackEl = document.getElementById(`tf-feedback-${questionNumber}`);
+                const isCorrect = userAnswer === correctTFAnswers[questionNumber];
+                
+                // Disable buttons for this question
+                const questionButtons = document.querySelectorAll(`.tf-option[data-question="${questionNumber}"]`);
+                questionButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50');
+                });
+                
+                // Highlight selected answer
+                this.classList.remove('bg-gray-100', 'dark:bg-gray-800');
+                if (isCorrect) {
+                    this.classList.add('bg-green-100', 'dark:bg-green-900/20', 'text-green-800', 'dark:text-green-200');
+                    feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct!</div>';
+                } else {
+                    this.classList.add('bg-red-100', 'dark:bg-red-900/20', 'text-red-800', 'dark:text-red-200');
+                    feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect.</div>';
+                }
+                
+                // Show feedback
+                feedbackEl.classList.remove('hidden');
+            });
+        });
+        
+        // Show all T/F answers button
+        document.getElementById('show-all-tf-answers').addEventListener('click', function() {
+            document.getElementById('all-tf-answers').classList.remove('hidden');
+            this.disabled = true;
+            this.classList.add('opacity-50');
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Scroll progress tracker
+        const progressBar = document.getElementById('progress-bar-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            
+            progressBar.style.width = scrollPercentage + '%';
+            progressPercentage.textContent = Math.round(scrollPercentage) + '%';
+        });
+        
+        // Add intersection observer to add animation when elements come into view
+        const animateOnScroll = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        
+        const observer = new IntersectionObserver(animateOnScroll, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('section > div').forEach(section => {
+            section.style.opacity = '0';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
