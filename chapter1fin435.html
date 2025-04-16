@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial System: Introduction & Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/marked@4.0.2/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f0ff',
+                            100: '#e0e1ff',
+                            200: '#c0c2fe',
+                            300: '#9e9ffc',
+                            400: '#7e7cf9',
+                            500: '#5D5CDE',
+                            600: '#4a4ab3',
+                            700: '#3d3c94',
+                            800: '#2e2e70',
+                            900: '#1f1f4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background-color: #5D5CDE;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        
+        .timeline-item-left::after,
+        .timeline-item-right::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #5D5CDE;
+            border-radius: 50%;
+            top: 24px;
+            z-index: 2;
+        }
+        
+        .timeline-item-left::after {
+            right: -10px;
+        }
+        
+        .timeline-item-right::after {
+            left: -10px;
+        }
+        
+        .quiz-option:hover {
+            background-color: rgba(93, 92, 222, 0.1);
+            cursor: pointer;
+        }
+        
+        .quiz-option.selected {
+            background-color: rgba(93, 92, 222, 0.2);
+            border-color: #5D5CDE;
+        }
+        
+        .quiz-option.correct {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: rgb(34, 197, 94);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-color: rgb(239, 68, 68);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #555;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D5CDE;
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+        
+        .dark .progress-bar {
+            background-color: #334155;
+        }
+        
+        /* Flip card */
+        .flip-card {
+            perspective: 1000px;
+            height: 300px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Dark mode toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-indigo-300 hidden dark:block"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md fixed top-0 w-full z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-primary-500">
+                <i class="fas fa-landmark mr-2"></i>Financial System
+            </h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#introduction" class="hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#components" class="hover:text-primary-500 transition-colors">Components</a></li>
+                    <li><a href="#markets" class="hover:text-primary-500 transition-colors">Markets</a></li>
+                    <li><a href="#institutions" class="hover:text-primary-500 transition-colors">Institutions</a></li>
+                    <li><a href="#regulation" class="hover:text-primary-500 transition-colors">Regulation</a></li>
+                    <li><a href="#islamic-banking" class="hover:text-primary-500 transition-colors">Islamic Banking</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-primary-500">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 shadow-md">
+            <div class="container mx-auto px-4 py-2">
+                <ul class="space-y-2">
+                    <li><a href="#introduction" class="block py-2 hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#components" class="block py-2 hover:text-primary-500 transition-colors">Components</a></li>
+                    <li><a href="#markets" class="block py-2 hover:text-primary-500 transition-colors">Markets</a></li>
+                    <li><a href="#institutions" class="block py-2 hover:text-primary-500 transition-colors">Institutions</a></li>
+                    <li><a href="#regulation" class="block py-2 hover:text-primary-500 transition-colors">Regulation</a></li>
+                    <li><a href="#islamic-banking" class="block py-2 hover:text-primary-500 transition-colors">Islamic Banking</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress tracker -->
+    <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg z-10">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Chapter 1: Introduction & Overview</span>
+                <span id="progress-percentage" class="text-sm font-medium text-primary-500">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Introduction Section -->
+        <section id="introduction" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-book-open text-primary-500 mr-3"></i>
+                        Introduction to Financial Systems
+                    </h2>
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Financial systems are at the core of modern economies, facilitating the flow of money and resources between different economic actors. 
+                        This chapter provides an overview of financial systems, their components, and how they function.
+                    </p>
+                    
+                    <!-- Course outline card -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-list-check text-primary-500 mr-2"></i>
+                            Course Syllabus
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                <thead class="bg-gray-100 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left">No</th>
+                                        <th class="py-3 px-4 text-left">Chapter</th>
+                                        <th class="py-3 px-4 text-left">Week</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-primary-50 dark:bg-primary-900/20">
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Introduction and Overview of Financial System</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1 & 2</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">2</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Interest rates</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Money & Foreign Exchange market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Capital market – Equity and Bond market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Derivatives market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Offshore market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Digital Technologies in the Financial Industry</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">8</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Cryptocurrency</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">13</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">9</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Banking products and services</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">10 & 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4">10</td>
+                                        <td class="py-3 px-4">Banking regulation and management</td>
+                                        <td class="py-3 px-4">8 & 9</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline for Malaysian Financial System Development -->
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-history text-primary-500 mr-2"></i>
+                        Development of Malaysian Financial System
+                    </h3>
+                    
+                    <div class="relative timeline-container py-8">
+                        <!-- Pre-Independence to 1970s -->
+                        <div class="timeline-item-left relative mb-8 mr-auto w-5/12 pr-8">
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                <h4 class="font-semibold text-primary-500">Pre-Independence – 1970</h4>
+                                <ul class="mt-2 text-sm space-y-1">
+                                    <li>• British colonial influence on financial system</li>
+                                    <li>• Financial institutions set up to facilitate trade</li>
+                                    <li>• Establishment of Bank Negara Malaysia (BNM)</li>
+                                    <li>• Early development of commercial banking</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 1980s-1990s -->
+                        <div class="timeline-item-right relative mb-8 ml-auto w-5/12 pl-8">
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                <h4 class="font-semibold text-primary-500">1980s – 1990s</h4>
+                                <ul class="mt-2 text-sm space-y-1">
+                                    <li>• Liberalization of Malaysian financial sector</li>
+                                    <li>• Expansion of KLSE with more market participants</li>
+                                    <li>• Emergence of Islamic finance (BIMB established in 1983)</li>
+                                    <li>• Development of sukuk and Shariah-compliant products</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Asian Financial Crisis -->
+                        <div class="timeline-item-left relative mb-8 mr-auto w-5/12 pr-8">
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                <h4 class="font-semibold text-primary-500">Asian Financial Crisis (1997-1998)</h4>
+                                <ul class="mt-2 text-sm space-y-1">
+                                    <li>• Sharp decline in Malaysian stock market</li>
+                                    <li>• Currency devaluation and banking sector instability</li>
+                                    <li>• Introduction of capital controls</li>
+                                    <li>• Ringgit pegged to USD</li>
+                                    <li>• Policies to stabilize banking and financial sectors</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 2000-Present -->
+                        <div class="timeline-item-right relative mb-8 ml-auto w-5/12 pl-8">
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                <h4 class="font-semibold text-primary-500">2000 – Present</h4>
+                                <ul class="mt-2 text-sm space-y-1">
+                                    <li>• Consolidation of banking sector</li>
+                                    <li>• Development of stronger corporate governance</li>
+                                    <li>• Capital market masterplans (1, 2, and 3)</li>
+                                    <li>• Growth of Islamic finance</li>
+                                    <li>• Digital and Fintech transformation</li>
+                                    <li>• Sustainability and Green Finance initiatives</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Components of Financial System Section -->
+        <section id="components" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-puzzle-piece text-primary-500 mr-3"></i>
+                        Components of Financial System
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        A financial system consists of several interconnected components that work together to facilitate the flow of funds in an economy. Let's explore each component in detail.
+                    </p>
+                    
+                    <!-- Components Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Money -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-coins text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Money</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Used to pay for purchases and store wealth.</p>
+                        </div>
+                        
+                        <!-- Financial Instruments -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-file-contract text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Financial Instruments</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Transfer resources from savers to investors and distribute risk.</p>
+                        </div>
+                        
+                        <!-- Financial Markets -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-chart-line text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Financial Markets</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Allow buying and selling of financial instruments quickly and cheaply.</p>
+                        </div>
+                        
+                        <!-- Financial Institutions -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-building-columns text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Financial Institutions</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Provide access to markets and assess borrower creditworthiness.</p>
+                        </div>
+                        
+                        <!-- Regulatory Agencies -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-balance-scale text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Regulatory Agencies</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Ensure safe and reliable operation of the financial system.</p>
+                        </div>
+                        
+                        <!-- Central Bank -->
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-center mb-4">
+                                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-landmark text-3xl text-primary-500"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-3">Central Bank</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-center">Monitors and stabilizes the economy through monetary policy.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Direct vs. Indirect Finance -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-exchange-alt text-primary-500 mr-2"></i>
+                            Direct vs. Indirect Finance
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Direct Finance -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <h4 class="text-lg font-medium mb-3 text-primary-500">Direct Finance</h4>
+                                <div class="flex justify-center mb-4"><div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-500 text-xl rounded-full shadow-md">Digital</div></div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                    In direct finance, borrowers sell securities directly to lenders without intermediaries.
+                                </p>
+                                <ul class="text-gray-600 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                    <li>Borrower issues securities</li>
+                                    <li>Lender purchases securities directly</li>
+                                    <li>Often facilitated by investment banks/brokers</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Indirect Finance -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <h4 class="text-lg font-medium mb-3 text-primary-500">Indirect Finance</h4>
+                                <div class="flex justify-center mb-4"><div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-500 text-xl rounded-full shadow-md">Digital</div></div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                    In indirect finance, financial intermediaries stand between lenders and borrowers.
+                                </p>
+                                <ul class="text-gray-600 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                    <li>Savers deposit funds with intermediaries</li>
+                                    <li>Intermediaries make loans to borrowers</li>
+                                    <li>Intermediaries transform assets and manage risk</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Instruments Section -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-file-invoice-dollar text-primary-500 mr-2"></i>
+                            Financial Instruments
+                        </h3>
+                        
+                        <p class="mb-4 text-gray-600 dark:text-gray-300">
+                            Financial instruments are written legal obligations of one party to transfer something of value (usually money) to another party at a future date, under specified conditions.
+                        </p>
+                        
+                        <!-- Tabs for Different Financial Instruments -->
+                        <div class="mb-6">
+                            <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4 overflow-x-auto">
+                                <button class="instrument-tab py-2 px-4 text-primary-500 border-b-2 border-primary-500 font-medium" data-target="store-value">
+                                    Store Value
+                                </button>
+                                <button class="instrument-tab py-2 px-4 text-gray-500 dark:text-gray-400 font-medium" data-target="transfer-risk">
+                                    Transfer Risk
+                                </button>
+                                <button class="instrument-tab py-2 px-4 text-gray-500 dark:text-gray-400 font-medium" data-target="characteristics">
+                                    Characteristics
+                                </button>
+                            </div>
+                            
+                            <!-- Store Value Content -->
+                            <div id="store-value" class="instrument-content block">
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-university text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Bank loans</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-file-invoice-dollar text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Bonds</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-home text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Home mortgages</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-chart-line text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Stocks</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-layer-group text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Asset-backed securities</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Transfer Risk Content -->
+                            <div id="transfer-risk" class="instrument-content hidden">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-shield-alt text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Insurance contracts</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-clock text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Futures contracts</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-coins text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Options</h4>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow text-center">
+                                        <i class="fas fa-sync-alt text-3xl text-primary-500 mb-2"></i>
+                                        <h4 class="font-medium">Swaps</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Characteristics Content -->
+                            <div id="characteristics" class="instrument-content hidden">
+                                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong class="text-gray-800 dark:text-gray-100">Standardization of terms</strong> - Use of standardized financial instruments with clear terms and conditions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong class="text-gray-800 dark:text-gray-100">Information communication</strong> - Summarize important details about the issuer to help investors make informed decisions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong class="text-gray-800 dark:text-gray-100">Liquidity</strong> - Ability to convert the instrument into cash quickly without significant loss of value</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong class="text-gray-800 dark:text-gray-100">Risk-return profile</strong> - Different instruments carry varying levels of risk and potential return</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following is NOT a component of the financial system?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Financial Markets
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Central Bank
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Social Security Programs
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Financial Instruments
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Financial Markets Section -->
+        <section id="markets" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-chart-bar text-primary-500 mr-3"></i>
+                        Financial Markets
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Financial markets are the places where financial instruments are bought and sold. They play a crucial role in allocating resources and determining asset prices.
+                    </p>
+                    
+                    <!-- Functions of Financial Markets -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-tasks text-primary-500 mr-2"></i>
+                            Functions of Financial Markets
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Market Liquidity -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-5">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                    <i class="fas fa-tint text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">Market Liquidity</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Ensure that owners of financial instruments can buy and sell them cheaply and easily.
+                                </p>
+                            </div>
+                            
+                            <!-- Information -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-5">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                    <i class="fas fa-info-circle text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">Information</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Pool and communicate information about the issuer of a financial instrument.
+                                </p>
+                            </div>
+                            
+                            <!-- Risk Sharing -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-5">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                    <i class="fas fa-shield-alt text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">Risk Sharing</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Provide individuals with a place to buy and sell risks, and/or share them with others.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Structure of Financial Markets -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-network-wired text-primary-500 mr-2"></i>
+                            Structure of Financial Markets
+                        </h3>
+                        
+                        <!-- Flip Cards for Market Types -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                            <!-- Primary vs. Secondary -->
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front bg-white dark:bg-gray-700 flex flex-col justify-center items-center p-6">
+                                        <i class="fas fa-sync-alt text-5xl text-primary-500 mb-4"></i>
+                                        <h4 class="text-lg font-medium">Primary vs. Secondary Markets</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">Click to learn more</p>
+                                    </div>
+                                    <div class="flip-card-back bg-primary-50 dark:bg-primary-900/20 p-6">
+                                        <h4 class="text-lg font-medium text-primary-500 mb-3">Primary vs. Secondary Markets</h4>
+                                        <ul class="text-sm space-y-2">
+                                            <li><strong>Primary Markets:</strong> Where newly issued securities are sold for the first time</li>
+                                            <li><strong>Secondary Markets:</strong> Where existing securities are traded between investors</li>
+                                            <li><strong>Primary Market Example:</strong> IPOs (Initial Public Offerings)</li>
+                                            <li><strong>Secondary Market Example:</strong> Stock exchanges like Bursa Malaysia</li>
+                                        </ul>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">Click to flip back</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Centralized vs. OTC -->
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front bg-white dark:bg-gray-700 flex flex-col justify-center items-center p-6">
+                                        <i class="fas fa-exchange-alt text-5xl text-primary-500 mb-4"></i>
+                                        <h4 class="text-lg font-medium">Centralized vs. OTC Markets</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">Click to learn more</p>
+                                    </div>
+                                    <div class="flip-card-back bg-primary-50 dark:bg-primary-900/20 p-6">
+                                        <h4 class="text-lg font-medium text-primary-500 mb-3">Centralized vs. OTC Markets</h4>
+                                        <ul class="text-sm space-y-2">
+                                            <li><strong>Centralized Exchanges:</strong> Trading occurs at a central location or platform</li>
+                                            <li><strong>Over-the-Counter (OTC):</strong> Decentralized trading between dealers electronically</li>
+                                            <li><strong>Centralized Example:</strong> Bursa Malaysia, NYSE</li>
+                                            <li><strong>OTC Example:</strong> Bond markets, forex markets</li>
+                                        </ul>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">Click to flip back</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Debt, Equity, Derivatives -->
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front bg-white dark:bg-gray-700 flex flex-col justify-center items-center p-6">
+                                        <i class="fas fa-sitemap text-5xl text-primary-500 mb-4"></i>
+                                        <h4 class="text-lg font-medium">Debt, Equity & Derivatives</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">Click to learn more</p>
+                                    </div>
+                                    <div class="flip-card-back bg-primary-50 dark:bg-primary-900/20 p-6">
+                                        <h4 class="text-lg font-medium text-primary-500 mb-3">Debt, Equity & Derivatives</h4>
+                                        <ul class="text-sm space-y-2">
+                                            <li><strong>Debt Markets:</strong> For loans, mortgages, and bonds</li>
+                                            <li><strong>Equity Markets:</strong> For stocks (shares of company ownership)</li>
+                                            <li><strong>Derivative Markets:</strong> For futures, options, and swaps</li>
+                                            <li><strong>Key Difference:</strong> In derivatives, agreements are settled later rather than immediate exchange of assets</li>
+                                        </ul>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">Click to flip back</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Money Market vs. Capital Market -->
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium mb-4">Money Market vs. Capital Market</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white dark:bg-gray-800">
+                                    <thead class="bg-gray-100 dark:bg-gray-700">
+                                        <tr>
+                                            <th class="py-3 px-4 text-left">Feature</th>
+                                            <th class="py-3 px-4 text-left">Money Market</th>
+                                            <th class="py-3 px-4 text-left">Capital Market</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Maturity</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Less than 1 year</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">More than 1 year</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Purpose</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Short-term financing needs</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Long-term investment and financing</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Instruments</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Treasury bills, commercial papers, certificates of deposit</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Stocks, bonds, long-term loans</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Risk</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Lower risk</td>
+                                            <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Higher risk</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">Liquidity</td>
+                                            <td class="py-3 px-4">Higher liquidity</td>
+                                            <td class="py-3 px-4">Lower liquidity</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">When a company issues new shares to the public for the first time, this occurs in what type of market?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Primary Market
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Secondary Market
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Money Market
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Derivative Market
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Financial Institutions Section -->
+        <section id="institutions" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-university text-primary-500 mr-3"></i>
+                        Financial Institutions
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Financial institutions are firms that provide access to financial markets for both savers and borrowers. They play a critical role in the efficient allocation of resources in the economy.
+                    </p>
+                    
+                    <!-- Roles of Financial Institutions -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-tasks text-primary-500 mr-2"></i>
+                            Roles of Financial Institutions
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <ul class="space-y-4">
+                                <li class="flex">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-dollar-sign text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Reduce transactions costs</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">Make buying and selling financial instruments more efficient and less expensive.</p>
+                                    </div>
+                                </li>
+                                <li class="flex">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-search text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Reduce information costs</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">Screen and monitor borrowers to reduce asymmetric information problems.</p>
+                                    </div>
+                                </li>
+                                <li class="flex">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-clock text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Offer long-term loans</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">Provide financing for extended periods to support investments and growth.</p>
+                                    </div>
+                                </li>
+                                <li class="flex">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-wallet text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Offer savers ready access to funds</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">Allow depositors to withdraw funds when needed while still providing long-term financing.</p>
+                                    </div>
+                                </li>
+                                <li class="flex">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-shield-alt text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Provide less risky financial instruments</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">Transform high-risk assets into lower-risk instruments for savers.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Flow of Funds -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-exchange-alt text-primary-500 mr-2"></i>
+                            Flow of Funds through Financial Institutions
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 text-center">
+                            <div class="w-full h-32 bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center rounded-lg text-primary-500 text-lg">Flow Diagram</div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mt-6">
+                                <div>
+                                    <h4 class="font-medium text-primary-500 mb-2">Financial Institutions as Brokers</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                        Act as intermediaries that facilitate the direct transfer of funds from savers to borrowers without transforming the nature of the claims.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-primary-500 mb-2">Financial Institutions that Transform Assets</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                        Take deposits or insurance premiums from savers and transform them into different types of assets (loans, bonds, stocks, real estate).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Types of Financial Institutions -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-building text-primary-500 mr-2"></i>
+                            Types of Financial Institutions in Malaysia
+                        </h3>
+                        
+                        <!-- Tabbed content for institutions -->
+                        <div class="mb-6">
+                            <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4 overflow-x-auto">
+                                <button class="institution-tab py-2 px-4 text-primary-500 border-b-2 border-primary-500 font-medium" data-target="depository">
+                                    Depository Institutions
+                                </button>
+                                <button class="institution-tab py-2 px-4 text-gray-500 dark:text-gray-400 font-medium" data-target="non-depository">
+                                    Non-Depository Institutions
+                                </button>
+                                <button class="institution-tab py-2 px-4 text-gray-500 dark:text-gray-400 font-medium" data-target="central-bank">
+                                    Central Bank
+                                </button>
+                            </div>
+                            
+                            <!-- Depository Institutions Content -->
+                            <div id="depository" class="institution-content block">
+                                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        Depository institutions accept deposits from savers and make loans to borrowers. They are the most visible financial intermediaries in the economy.
+                                    </p>
+                                    
+                                    <h4 class="font-medium text-lg mb-3">Types of Depository Institutions in Malaysia:</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h5 class="font-medium text-primary-500 mb-2">Commercial Banks</h5>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">Offer a wide range of banking services to individuals and businesses.</p>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h5 class="font-medium text-primary-500 mb-2">Islamic Banks</h5>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">Operate according to Shariah principles, avoiding interest-based transactions.</p>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h5 class="font-medium text-primary-500 mb-2">Digital Banks</h5>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">Operate primarily online without physical branch networks.</p>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h5 class="font-medium text-primary-500 mb-2">Investment Banks</h5>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">Specialize in raising capital and providing advisory services.</p>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h5 class="font-medium text-primary-500 mb-2">Development Financial Institutions (DFIs)</h5>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">Provide financing for specific economic sectors or development goals.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Non-Depository Institutions Content -->
+                            <div id="non-depository" class="institution-content hidden">
+                                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        Non-depository financial institutions do not accept deposits but provide various financial services. They play important roles in the financial system.
+                                    </p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <h4 class="font-medium text-lg mb-3">Key Non-Depository Institutions:</h4>
+                                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Insurance Companies & Takaful Operators</strong></span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Pension Funds</strong> (EPF, KWAP, SOCSO, LTAT)</span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Unit Trust Management Companies</strong></span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Microfinance Institutions</strong></span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Leasing & Factoring Companies</strong></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-lg mb-3">Other Important Institutions:</h4>
+                                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Pilgrims Fund Board</strong> (Lembaga Tabung Haji)</span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Cagamas Berhad</strong> (National Mortgage Corporation)</span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Rating Agencies</strong></span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Venture Capital and Private Equity Firms</strong></span>
+                                                </li>
+                                                <li class="flex items-start">
+                                                    <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                                    <span><strong>Housing Credit Institutions</strong></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Central Bank Content -->
+                            <div id="central-bank" class="institution-content hidden">
+                                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow">
+                                    <div class="flex flex-col md:flex-row md:items-center mb-6">
+                                        <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                                            <div class="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-500 text-xl rounded-full shadow-md">BNM</div>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-lg">Bank Negara Malaysia (BNM)</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                The central bank of Malaysia that acts as the regulator and supervisor for the whole financial system.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <h4 class="font-medium text-lg mb-3">Objectives of BNM:</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 mb-6">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                            <span>Promote and maintain monetary and financial stability</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                            <span>Promote a sound and efficient financial system</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary-500 mt-1 mr-2"></i>
+                                            <span>Maintain the strength of financial institutions and infrastructure</span>
+                                        </li>
+                                    </ul>
+                                    
+                                    <h4 class="font-medium text-lg mb-3">Key Functions:</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <i class="fas fa-money-bill-wave text-primary-500 mr-2"></i>
+                                            <span>Issue currency and maintain reserves to safeguard the value of Ringgit</span>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <i class="fas fa-chart-line text-primary-500 mr-2"></i>
+                                            <span>Responsible for monetary policy and management of financial system</span>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <i class="fas fa-briefcase text-primary-500 mr-2"></i>
+                                            <span>Act as banker and financial adviser to the government</span>
+                                        </div>
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <i class="fas fa-university text-primary-500 mr-2"></i>
+                                            <span>Serve as banker to banks and regulate financial institutions</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following is NOT considered a depository institution?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Commercial Bank
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Islamic Bank
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Insurance Company
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Digital Bank
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Regulation Section -->
+        <section id="regulation" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-balance-scale text-primary-500 mr-3"></i>
+                        Regulation of the Financial System
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Financial regulation plays a crucial role in maintaining stability, protecting consumers, and ensuring the efficient functioning of the financial system.
+                    </p>
+                    
+                    <!-- Reasons for Regulation -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-question-circle text-primary-500 mr-2"></i>
+                            Why Regulate the Financial System?
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Protect Investors -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-user-shield text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">To Protect Investors</h4>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                    Ensure investors receive fair treatment, accurate information, and protection from fraud and manipulation.
+                                </p>
+                            </div>
+                            
+                            <!-- Prevent Monopolistic Exploitation -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-hand-holding-usd text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">To Protect Against Monopolies</h4>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                    Prevent financial institutions from exploiting customers through monopolistic practices.
+                                </p>
+                            </div>
+                            
+                            <!-- Maintain Financial Stability -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-chart-bar text-xl text-primary-500"></i>
+                                </div>
+                                <h4 class="text-lg font-medium mb-2">To Safeguard Financial Stability</h4>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                    Ensure the overall stability of the financial system and prevent systemic risks that could damage the economy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Regulation in Malaysia -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-gavel text-primary-500 mr-2"></i>
+                            Financial Regulation in Malaysia
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                In Malaysia, the regulation of depository institutions is overseen by Bank Negara Malaysia (BNM) under several key laws:
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Financial Services Act 2013 (FSA)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Governs conventional banks, focusing on consumer protection, financial stability, and systemic risk management.
+                                    </p>
+                                </div>
+                                
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Islamic Financial Services Act 2013 (IFSA)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Regulates Islamic banks, ensuring compliance with Shariah law while maintaining financial stability.
+                                    </p>
+                                </div>
+                                
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Development Financial Institutions Act 2002</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Oversees the operations and governance of Development Financial Institutions (DFIs).
+                                    </p>
+                                </div>
+                                
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Deposit Insurance (PIDM)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Perbadanan Insurans Deposit Malaysia (PIDM) guarantees deposits up to RM250,000 per depositor per bank in case of bank failures.
+                                    </p>
+                                </div>
+                                
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                    <h4 class="font-medium text-primary-500 mb-2">Central Bank of Malaysia Act 2009</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                        Governs the powers, functions, and governance structure of Bank Negara Malaysia as a central bank.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Stability -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-shield-alt text-primary-500 mr-2"></i>
+                            Financial Stability
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <div class="mb-4">
+                                <h4 class="font-medium text-lg mb-2">What is Financial Stability?</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Financial stability is a condition where the financial intermediation process functions smoothly and there is confidence in the operation of key financial institutions and markets within the economy.
+                                </p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="font-medium text-lg mb-2">Importance of Financial Stability</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Financial stability is crucial to support the efficient allocation of resources and distribution of risks across the economy. It provides the foundation for sustainable economic growth.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-lg mb-2">Consequences of Financial Instability</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Financial instability can lead to costly spillover effects to the economy and potentially trigger financial crises with adverse economic consequences, including recession, unemployment, and loss of wealth.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Central Bank Objectives -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-bullseye text-primary-500 mr-2"></i>
+                            Central Bank Objectives
+                        </h3>
+                        
+                        <p class="mb-4 text-gray-600 dark:text-gray-300">
+                            Central banks work to reduce the volatility of economic and financial systems by pursuing specific objectives:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-10 h-10 flex items-center justify-center mb-3">
+                                    <i class="fas fa-percentage text-primary-500"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Low and Stable Inflation</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Maintain price stability to preserve purchasing power and create a predictable economic environment.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-10 h-10 flex items-center justify-center mb-3">
+                                    <i class="fas fa-chart-line text-primary-500"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">High and Stable Growth</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Promote sustainable economic growth and high employment levels.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-10 h-10 flex items-center justify-center mb-3">
+                                    <i class="fas fa-university text-primary-500"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Stable Financial Markets</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Ensure the stability of financial institutions and markets to prevent crises.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-10 h-10 flex items-center justify-center mb-3">
+                                    <i class="fas fa-money-bill-wave text-primary-500"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Stable Interest Rates</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Minimize volatility in interest rates to provide certainty for borrowers and lenders.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 rounded-full w-10 h-10 flex items-center justify-center mb-3">
+                                    <i class="fas fa-exchange-alt text-primary-500"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Stable Exchange Rate</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Maintain a stable currency value relative to other currencies.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following is NOT one of the primary objectives of a central bank?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Maintaining low and stable inflation
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Ensuring financial market stability
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Maximizing bank profits
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Promoting stable economic growth
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Islamic Banking Section -->
+        <section id="islamic-banking" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-mosque text-primary-500 mr-3"></i>
+                        Islamic Banking
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Islamic banking operates according to Shariah principles, which prohibit interest (riba) and encourage profit-sharing arrangements.
+                    </p>
+                    
+                    <!-- Introduction to Islamic Banking -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-info-circle text-primary-500 mr-2"></i>
+                            Introduction to Islamic Banking
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                The need for Islamic banking arose due to the increasing desire among Muslims to lead their lives in accordance with Shariah principles. This includes economic activities such as banking and finance.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <div>
+                                    <h4 class="font-medium text-primary-500 mb-2">Key Principles</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-ban text-red-500 mt-1 mr-2"></i>
+                                            <span>Prohibition of interest (riba)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Promotion of profit-sharing</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Ethical investing and financing</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Asset-backed transactions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-ban text-red-500 mt-1 mr-2"></i>
+                                            <span>Avoidance of uncertainty (gharar)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-ban text-red-500 mt-1 mr-2"></i>
+                                            <span>Prohibition of gambling (maysir)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-primary-500 mb-2">Product Offerings</h4>
+                                    <p class="mb-2 text-gray-600 dark:text-gray-300">
+                                        Islamic banks offer similar product lines as conventional banks, but structured differently:
+                                    </p>
+                                    <ul class="space-y-1 text-gray-600 dark:text-gray-300">
+                                        <li>• Deposits</li>
+                                        <li>• Investment accounts</li>
+                                        <li>• Financing</li>
+                                        <li>• Trade finance</li>
+                                        <li>• Card services</li>
+                                        <li>• Money market instruments</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                <h4 class="font-medium text-primary-500 mb-2">Did You Know?</h4>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                    Malaysia is recognized as a global leader in Islamic finance, with one of the most developed Islamic banking systems in the world. Bank Islam Malaysia Berhad (BIMB), established in 1983, was Malaysia's first Islamic bank.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Development of Islamic Banking in Malaysia -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-history text-primary-500 mr-2"></i>
+                            Development of Islamic Banking in Malaysia
+                        </h3>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                <thead class="bg-gray-100 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left">Period</th>
+                                        <th class="py-3 px-4 text-left">Key Developments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">1980</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <p>First formal request made during Bumiputra Economic Congress</p>
+                                            <p>Pilgrimage Board proposed establishing an Islamic bank</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">1983</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <p>Islamic Banking Act 1983 was enacted</p>
+                                            <p>Bank Islam Malaysia Berhad (BIMB) was established in July</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">1993</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <p>Skim Perbankan Tanpa Faedah (SPTF) introduced in March</p>
+                                            <p>Initially offered by 3 conventional banks (pilot basis)</p>
+                                            <p>By July, opened to other commercial banks, finance companies and merchant banks</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">1998</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">
+                                            <p>SPTF replaced with Skim Perbankan Islam (SPI)</p>
+                                            <p>Islamic Banking Unit upgraded to Islamic Banking Division</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 font-medium">1999-Present</td>
+                                        <td class="py-3 px-4">
+                                            <p>Continued growth and development of Islamic banking</p>
+                                            <p>Establishment of more full-fledged Islamic banks</p>
+                                            <p>Introduction of Islamic Financial Services Act 2013</p>
+                                            <p>Growth in sukuk (Islamic bonds) and other Shariah-compliant products</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Shariah Concepts in Islamic Banking -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-book text-primary-500 mr-2"></i>
+                            Shariah Concepts in Islamic Banking
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Mudarabah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Mudharabah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Profit Sharing</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Partnership where one party provides capital and the other provides expertise/management. Profits are shared according to an agreed ratio.
+                                </p>
+                            </div>
+                            
+                            <!-- Musharakah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Musyarakah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Joint Venture</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Partnership where all parties contribute capital. Profits are shared according to an agreed ratio, while losses are shared according to capital contribution.
+                                </p>
+                            </div>
+                            
+                            <!-- Murabahah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Murabahah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Cost Plus</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Sale with a declared profit margin. The bank purchases an asset and sells it to the customer at a higher price, with payment deferred.
+                                </p>
+                            </div>
+                            
+                            <!-- Wakalah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Wakalah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Agency</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Contract where one party appoints another to act on its behalf. The bank acts as an agent and charges a fee for its services.
+                                </p>
+                            </div>
+                            
+                            <!-- Wadiah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Wadiah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Safekeeping</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Contract where one party entrusts assets to another for safekeeping. Used for current and savings accounts.
+                                </p>
+                            </div>
+                            
+                            <!-- Ijarah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Ijarah Thumma Al bai</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Hire Purchase</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Leasing contract followed by a sale. The bank leases an asset to a customer, who eventually purchases it at the end of the lease term.
+                                </p>
+                            </div>
+                            
+                            <!-- Bai' Bithaman Ajil -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Bai' Bithaman Ajil</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Deferred Payment Sale</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Sale with deferred payment. The bank buys an asset and sells it to the customer at a markup, with payment in installments.
+                                </p>
+                            </div>
+                            
+                            <!-- Qardhul Hassan -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Qardhul Hassan</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Benevolent Loan</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Interest-free loan given for welfare purposes. The borrower is only required to repay the principal amount.
+                                </p>
+                            </div>
+                            
+                            <!-- Bai' al-inah -->
+                            <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                <h4 class="font-medium text-primary-500 mb-2">Bai' al-inah</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    <span class="font-medium">Sell and Buy Back</span>
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    Arrangement where the bank sells an asset to a customer on deferred payment and then immediately buys it back for cash at a lower price.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Application of Concepts -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-cogs text-primary-500 mr-2"></i>
+                            Application of Concepts on Products and Services
+                        </h3>
+                        
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <ul class="space-y-4 text-gray-600 dark:text-gray-300">
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-wallet text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Deposits-taking products</h4>
+                                        <p class="text-sm">Current and savings deposits under al-wadiah (guaranteed custody)</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-chart-line text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Investment deposits</h4>
+                                        <p class="text-sm">Under al-mudharabah (profit sharing)</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                        <i class="fas fa-hand-holding-usd text-primary-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium">Financing facilities</h4>
+                                        <p class="text-sm">Working capital financing under al-murabahah (cost-plus)</p>
+                                        <p class="text-sm">House financing under bai'bithaman ajil (deferred payment sale)</p>
+                                        <p class="text-sm">Leasing under al-ijarah</p>
+                                        <p class="text-sm">Project financing under al-musyarakah (profit-loss sharing)</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following is a fundamental principle of Islamic banking?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Charging high interest rates
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Prohibition of interest (riba)
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Investing primarily in speculative ventures
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Operating exclusively in Islamic countries
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-16 right-4 p-3 rounded-full bg-primary-500 text-white shadow-md hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Check for saved theme preference or use device preference
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Listen for theme toggle click
+        themeToggle.addEventListener('click', function() {
+            // Toggle the dark class on the html element
+            document.documentElement.classList.toggle('dark');
+            
+            // Update local storage
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+            }
+        });
+        
+        // Also listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('color-theme')) {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+        for (let link of mobileMenuLinks) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+        
+        // Financial instruments tabs
+        const instrumentTabs = document.querySelectorAll('.instrument-tab');
+        const instrumentContents = document.querySelectorAll('.instrument-content');
+        
+        instrumentTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                instrumentTabs.forEach(t => {
+                    t.classList.remove('text-primary-500', 'border-primary-500');
+                    t.classList.add('text-gray-500', 'dark:text-gray-400');
+                });
+                
+                // Add active class to clicked tab
+                tab.classList.remove('text-gray-500', 'dark:text-gray-400');
+                tab.classList.add('text-primary-500', 'border-primary-500');
+                
+                // Hide all content
+                instrumentContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('block');
+                });
+                
+                // Show content for clicked tab
+                const target = tab.getAttribute('data-target');
+                document.getElementById(target).classList.remove('hidden');
+                document.getElementById(target).classList.add('block');
+            });
+        });
+        
+        // Financial institutions tabs
+        const institutionTabs = document.querySelectorAll('.institution-tab');
+        const institutionContents = document.querySelectorAll('.institution-content');
+        
+        institutionTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                institutionTabs.forEach(t => {
+                    t.classList.remove('text-primary-500', 'border-primary-500');
+                    t.classList.add('text-gray-500', 'dark:text-gray-400');
+                });
+                
+                // Add active class to clicked tab
+                tab.classList.remove('text-gray-500', 'dark:text-gray-400');
+                tab.classList.add('text-primary-500', 'border-primary-500');
+                
+                // Hide all content
+                institutionContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('block');
+                });
+                
+                // Show content for clicked tab
+                const target = tab.getAttribute('data-target');
+                document.getElementById(target).classList.remove('hidden');
+                document.getElementById(target).classList.add('block');
+            });
+        });
+        
+        // Flip cards
+        const flipCards = document.querySelectorAll('.flip-card');
+        
+        flipCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+        
+        // Quiz functionality
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Get all options in the same question
+                const questionOptions = this.parentElement.querySelectorAll('.quiz-option');
+                const feedbackEl = this.parentElement.nextElementSibling;
+                
+                // If quiz has already been answered, don't allow more selections
+                if (this.classList.contains('correct') || this.classList.contains('incorrect')) {
+                    return;
+                }
+                
+                // Remove selected class from all options
+                questionOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                // After a short delay, show the result
+                setTimeout(() => {
+                    // Remove selected class
+                    this.classList.remove('selected');
+                    
+                    // Add correct/incorrect class
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! Well done.</div>';
+                    } else {
+                        this.classList.add('incorrect');
+                        
+                        // Find the correct answer and highlight it
+                        questionOptions.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                        
+                        feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. See the correct answer highlighted above.</div>';
+                    }
+                    
+                    // Show feedback
+                    feedbackEl.classList.remove('hidden');
+                }, 500);
+            });
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Scroll progress tracker
+        const progressBar = document.getElementById('progress-bar-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            
+            progressBar.style.width = scrollPercentage + '%';
+            progressPercentage.textContent = Math.round(scrollPercentage) + '%';
+        });
+        
+        // Add intersection observer to add animation when elements come into view
+        const animateOnScroll = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        
+        const observer = new IntersectionObserver(animateOnScroll, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('section > div').forEach(section => {
+            section.style.opacity = '0';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
