@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money & Foreign Exchange Markets | Banking & Financial Markets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f0ff',
+                            100: '#e0e1ff',
+                            200: '#c0c2fe',
+                            300: '#9e9ffc',
+                            400: '#7e7cf9',
+                            500: '#5D5CDE',
+                            600: '#4a4ab3',
+                            700: '#3d3c94',
+                            800: '#2e2e70',
+                            900: '#1f1f4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Quiz styles */
+        .quiz-option:hover {
+            background-color: rgba(93, 92, 222, 0.1);
+            cursor: pointer;
+        }
+        
+        .quiz-option.selected {
+            background-color: rgba(93, 92, 222, 0.2);
+            border-color: #5D5CDE;
+        }
+        
+        .quiz-option.correct {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: rgb(34, 197, 94);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-color: rgb(239, 68, 68);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Calculator input styling */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #555;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5D5CDE;
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+        
+        .dark .progress-bar {
+            background-color: #334155;
+        }
+        
+        /* Process flow styles */
+        .process-flow {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .process-flow::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 20px;
+            height: calc(100% - 40px);
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+        
+        .dark .process-flow::before {
+            background-color: #334155;
+        }
+        
+        .process-step {
+            position: relative;
+            display: flex;
+            z-index: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .process-number {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #5D5CDE;
+            color: white;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: normal;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .dark .tooltip .tooltip-text {
+            background-color: #111;
+        }
+        
+        .dark .tooltip .tooltip-text::after {
+            border-color: #111 transparent transparent transparent;
+        }
+        
+        /* Card hover effects */
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .hover-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Forex rate table */
+        .forex-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .forex-table th,
+        .forex-table td {
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        
+        .forex-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        
+        .dark .forex-table th {
+            background-color: #374151;
+        }
+        
+        .forex-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        .dark .forex-table tr:nth-child(even) {
+            background-color: #1f2937;
+        }
+        
+        .forex-table tr:hover {
+            background-color: #f0f0ff;
+        }
+        
+        .dark .forex-table tr:hover {
+            background-color: #2e2e70;
+        }
+        
+        /* Currency card styles */
+        .currency-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .currency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(93, 92, 222, 0.1) 0%, rgba(93, 92, 222, 0) 100%);
+            z-index: 0;
+        }
+        
+        .currency-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .currency-change {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .currency-change.up {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: rgb(34, 197, 94);
+        }
+        
+        .currency-change.down {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: rgb(239, 68, 68);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Dark mode toggle -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-indigo-300 hidden dark:block"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md fixed top-0 w-full z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-primary-500">
+                <i class="fas fa-money-bill-wave mr-2"></i>Money & Forex Markets
+            </h1>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#introduction" class="hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#money-market" class="hover:text-primary-500 transition-colors">Money Market</a></li>
+                    <li><a href="#money-instruments" class="hover:text-primary-500 transition-colors">Money Instruments</a></li>
+                    <li><a href="#forex-market" class="hover:text-primary-500 transition-colors">Forex Market</a></li>
+                    <li><a href="#forex-transactions" class="hover:text-primary-500 transition-colors">Forex Transactions</a></li>
+                    <li><a href="#practice" class="hover:text-primary-500 transition-colors">Practice</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-primary-500">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 shadow-md">
+            <div class="container mx-auto px-4 py-2">
+                <ul class="space-y-2">
+                    <li><a href="#introduction" class="block py-2 hover:text-primary-500 transition-colors">Introduction</a></li>
+                    <li><a href="#money-market" class="block py-2 hover:text-primary-500 transition-colors">Money Market</a></li>
+                    <li><a href="#money-instruments" class="block py-2 hover:text-primary-500 transition-colors">Money Instruments</a></li>
+                    <li><a href="#forex-market" class="block py-2 hover:text-primary-500 transition-colors">Forex Market</a></li>
+                    <li><a href="#forex-transactions" class="block py-2 hover:text-primary-500 transition-colors">Forex Transactions</a></li>
+                    <li><a href="#practice" class="block py-2 hover:text-primary-500 transition-colors">Practice</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress tracker -->
+    <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg z-10">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Chapter 3: Money & Foreign Exchange Markets</span>
+                <span id="progress-percentage" class="text-sm font-medium text-primary-500">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Introduction Section -->
+        <section id="introduction" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-exchange-alt text-primary-500 mr-3"></i>
+                        Introduction to Money & Foreign Exchange Markets
+                    </h2>
+                    
+                    <!-- Course outline card -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-list-check text-primary-500 mr-2"></i>
+                            Course Syllabus
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                                <thead class="bg-gray-100 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left">No</th>
+                                        <th class="py-3 px-4 text-left">Chapter</th>
+                                        <th class="py-3 px-4 text-left">Week</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Introduction and Overview of Financial System</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">1 & 2</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">2</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Interest rates</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                    </tr>
+                                    <tr class="bg-primary-50 dark:bg-primary-900/20">
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">3</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700 font-medium">Money & Foreign Exchange market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">4</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Capital market – Equity and Bond market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">5</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Derivatives market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">6</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Offshore market</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">7</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Digital Technologies in the Financial Industry</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">8</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Cryptocurrency</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">13</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">9</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">Banking products and services</td>
+                                        <td class="py-3 px-4 border-b border-gray-200 dark:border-gray-700">10 & 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4">10</td>
+                                        <td class="py-3 px-4">Banking regulation and management</td>
+                                        <td class="py-3 px-4">8 & 9</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Chapter Overview</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md">
+    <i class="fas fa-hand-holding-usd text-3xl text-primary-500"></i>
+</div>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3 text-center">Money Market</h3>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The money market is where short-term debt instruments (with maturities of one year or less) are issued and traded. These markets are crucial for providing liquidity to financial institutions, corporations, and governments.
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md">
+    <i class="fas fa-globe text-3xl text-primary-500"></i>
+</div>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3 text-center">Foreign Exchange Market</h3>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    The foreign exchange (forex) market is where cash flows from the sale of products or assets denominated in foreign currencies are transacted. It's the largest and most liquid financial market in the world.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4">In This Chapter You Will Learn</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="flex items-center text-primary-500 font-medium mb-2">
+                                        <i class="fas fa-money-bill-wave mr-2"></i>Money Market
+                                    </h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Development and structure of money markets</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Objectives, operations, participants and categories</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Description of money market instruments</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Calculation of proceeds</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Money market risks and risk management</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="flex items-center text-primary-500 font-medium mb-2">
+                                        <i class="fas fa-globe-asia mr-2"></i>Foreign Exchange Market
+                                    </h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Characteristics, developments and participants</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Foreign exchange quotations</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Currency appreciation and depreciation</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Risks and factors affecting forex market</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Role of Bank Negara Malaysia in forex market</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following best describes the money market?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        A market where investors buy and sell physical currency notes
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        A market for short-term debt instruments with maturities of one year or less
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        A market exclusively for government bonds with long-term maturities
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        A market where only central banks can participate
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Money Market Section -->
+        <section id="money-market" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-money-bill text-primary-500 mr-3"></i>
+                        Money Market
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Definition & Characteristics</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-hand-holding-usd text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">What is the Money Market?</h3>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <p>
+                                        The money market is a segment of the financial market where short-term debt instruments (with maturities of one year or less) are issued and traded.
+                                    </p>
+                                    <p>
+                                        It serves as a mechanism for short-term borrowing and lending, allowing market participants to manage their short-term liquidity needs.
+                                    </p>
+                                    <p>
+                                        Once issued, money market instruments trade in an active secondary market, providing liquidity to holders.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-clipboard-list text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Key Characteristics</h3>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <p>
+                                        Money market instruments provide investment opportunities that offer:
+                                    </p>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong>Higher returns than cash</strong> - Better returns than simply holding physical cash</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong>High liquidity</strong> - Can be easily converted to cash with minimal loss of value</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span><strong>Low default risk</strong> - Relatively safe compared to longer-term investments</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Market Participants</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden">
+                                <div class="bg-primary-100 dark:bg-primary-900/20 p-4">
+                                    <h4 class="font-medium text-primary-500">Key Participants in the Malaysian Money Market</h4>
+                                </div>
+                                
+                                <div class="p-6">
+                                    <div class="process-flow">
+                                        <div class="process-step">
+                                            <div class="process-number">1</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Bank Negara Malaysia (BNM)</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    Acts as the supervising and controlling authority. BNM plays a direct role in managing liquidity in the Malaysian banking system, controlling inflation, and influencing interest rates through money market operations.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="process-step">
+                                            <div class="process-number">2</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Banking Institutions</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    Commercial banks and investment banks are major participants in the money market. They use it to manage their short-term liquidity needs, lend excess reserves, and trade various instruments.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="process-step">
+                                            <div class="process-number">3</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Non-Bank Financial Institutions</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    Pension funds, unit trust funds, and insurance companies participate in the money market to manage their short-term cash positions and earn returns on temporarily idle funds.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="process-step">
+                                            <div class="process-number">4</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Corporations</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    Multinational companies and small/medium enterprises use the money market to manage their cash flows, invest excess cash, and raise short-term funding through instruments like commercial paper.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="process-step">
+                                            <div class="process-number">5</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Cagamas Berhad</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    The National Mortgage Corporation of Malaysia issues debt securities to fund the purchase of housing loans from financial institutions.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="process-step">
+                                            <div class="process-number">6</div>
+                                            <div>
+                                                <h5 class="font-medium text-primary-500">Money Brokers</h5>
+                                                <p class="text-gray-600 dark:text-gray-300">
+                                                    Act as intermediaries to market participants, facilitating transactions between buyers and sellers in the money market.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Malaysian Money Market -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Malaysian Money Market</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex flex-col md:flex-row items-center mb-6">
+                                    <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                                        <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md">
+    <i class="fas fa-landmark text-3xl text-primary-500"></i>
+</div>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                            The Malaysian Money Market comprises both conventional and Islamic markets. Bank Negara Malaysia (BNM) uses the money market in implementing monetary policy, including money market operations.
+                                        </p>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            BNM plays a direct role in managing liquidity in the Malaysian banking system by controlling inflation and influencing interest rates. To achieve this, various money market operations are implemented.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium mb-3">BNM's Money Market Instruments Include:</h4>
+                                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Bank Negara Monetary Notes (BNMN)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Malaysia Islamic Treasury Bills (MITB)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Repurchase Agreements (Repo)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Banker's Acceptances</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Malaysia Treasury Bills (MTB)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-primary-500 text-xs mt-1.5 mr-2"></i>
+                                            <span>Islamic Interbank Money Market</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Money Market Risks & Management -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Money Market Risks & Management</h3>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="text-lg font-medium mb-4 text-primary-500">
+                                        <i class="fas fa-exclamation-triangle mr-2"></i>Types of Risks
+                                    </h4>
+                                    
+                                    <ul class="space-y-4">
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-user-shield text-red-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Credit Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    The risk that a borrower is unable to make payment on the maturity date agreed. Default payment can cause the other party to suffer losses.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-tint-slash text-yellow-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Liquidity Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    The inability to convert assets to cash or inability to have access to funds when needed, potentially forcing the sale of assets at unfavorable prices.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-chart-line text-blue-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Interest Rate Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    The risk that fluctuations in interest rates will lead to adverse value of assets, affecting the market value of money market instruments.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-cogs text-green-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Operational Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    Risks arising from inadequate or failed internal processes, people, and systems, including bad systems and manpower problems.
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="text-lg font-medium mb-4 text-primary-500">
+                                        <i class="fas fa-shield-alt mr-2"></i>Risk Management Strategies
+                                    </h4>
+                                    
+                                    <ul class="space-y-4">
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-user-shield text-red-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Managing Credit Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    Conduct proper credit evaluation of counterparties, set exposure limits, diversify investments across different issuers, and monitor credit ratings regularly.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-tint text-yellow-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Managing Liquidity Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    Maintain a balance of short-term and long-term assets, establish liquidity contingency plans, and ensure access to multiple funding sources.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-balance-scale text-blue-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Managing Interest Rate Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    Develop tools to predict interest rate movements and maintain a "matched book" where asset durations match liability durations, and use hedging instruments when appropriate.
+                                                </p>
+                                            </div>
+                                        </li>
+                                        
+                                        <li class="flex">
+                                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+                                                <i class="fas fa-clipboard-check text-green-500"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="font-medium">Managing Operational Risk</h5>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                    Provide regular training to staff, implement robust internal controls, update systems regularly, and conduct periodic risk assessments.
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following is NOT a risk typically associated with money markets?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Credit risk
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Liquidity risk
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Interest rate risk
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Commodity price risk
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Money Market Instruments Section -->
+        <section id="money-instruments" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-file-invoice-dollar text-primary-500 mr-3"></i>
+                        Money Market Instruments
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <p class="mb-6 text-gray-600 dark:text-gray-300">
+                            Money market instruments are short-term debt securities that enable borrowers to raise funds for short periods and allow lenders to earn returns on temporarily idle funds. Let's explore the main instruments.
+                        </p>
+                        
+                        <!-- Treasury Bills -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-landmark text-primary-500 mr-2"></i>
+                                Treasury Bills (T-bills)
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 col-span-1 md:col-span-2">
+                                    <h4 class="font-medium text-lg mb-3">Characteristics</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Short-term obligations issued by the government (In Malaysia, known as Malaysia Government Securities or MGS)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Issued to cover current government budget deficits or to refinance maturing government debt</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Issued on a discount basis (sold below face value and redeemed at face value)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Used as a main tool by BNM to implement monetary policy</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Can be bought and sold in an active secondary market</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Default risk-free (because backed by government) – typically referred to as "risk-free assets"</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Low interest rate risk and liquidity risk due to short-term nature and active trading in secondary market</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="font-medium text-lg mb-3">T-bills Price Formula</h4>
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                        <p class="text-center font-medium">
+                                            T-bills price (Po) = PAR – (iT-bills,d × n/360 × PAR)
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                            Where:
+                                        </p>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 mt-1">
+                                            <li>PAR = Face value of the T-bill</li>
+                                            <li>iT-bills,d = Discount yield</li>
+                                            <li>n = Number of days to maturity</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2 text-primary-500">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            Suppose you purchase a T-bill maturing on March 30, 2023, with a discount yield of 4.200%. The T-bill matures 132 days after the quote date (Nov 18, 2022) and has a face value of RM10,000.
+                                        </p>
+                                        <div class="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                T-bills price (Po) = 10,000 – (0.042 × 132/360 × 10,000)<br>
+                                                = 10,000 – 154.35<br>
+                                                = <strong>RM9,845.65</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- T-bills Calculator -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                <h4 class="font-medium mb-4 text-center">T-bills Price Calculator</h4>
+                                <div class="max-w-lg mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Face Value (RM)</label>
+                                            <input type="number" id="tbill-par" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="10000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Discount Yield (%)</label>
+                                            <input type="number" id="tbill-yield" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="4.2" min="0" step="0.1">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Days to Maturity</label>
+                                            <input type="number" id="tbill-days" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="132" min="0">
+                                        </div>
+                                    </div>
+                                    <button id="calculate-tbill-price" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Calculate T-bill Price
+                                    </button>
+                                    <div id="tbill-price-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                        The T-bill price is: <span class="font-medium text-primary-500">RM9,845.65</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Repurchase Agreements -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-sync-alt text-primary-500 mr-2"></i>
+                                Repurchase Agreements (REPO)
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 col-span-1 md:col-span-2">
+                                    <h4 class="font-medium text-lg mb-3">Characteristics</h4>
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        A REPO is an agreement involving the purchase of securities by one party (the repo buyer) from another party (the repo seller), with a promise to sell the securities back at a specified price on a specified date in the future.
+                                    </p>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Most REPOs are collateralized, meaning the seller holds securities to back the transaction</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>From the lender's perspective, the transaction is referred to as a "Reverse REPO"</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>REPOs function essentially as collateralized loans, where the securities serve as collateral</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Common maturities range from overnight to a few weeks, though longer terms are possible</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Central banks use REPOs as a tool for implementing monetary policy and managing liquidity</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="font-medium text-lg mb-3">REPO Yield Formula</h4>
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                        <p class="text-center font-medium">
+                                            REPO Yield = [(P₁ - P₀) / P₀] × (360/n) × 100%
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                            Where:
+                                        </p>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 mt-1">
+                                            <li>P₀ = Initial purchase price</li>
+                                            <li>P₁ = Repurchase price</li>
+                                            <li>n = Number of days in the REPO period</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2 text-primary-500">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            A bank enters a REPO where it agrees to buy MGS from a corresponding bank at a price of RM24,000,000, with a promise to sell them back at a price of RM24,008,000 after 7 days.
+                                        </p>
+                                        <div class="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                REPO Yield = [(24,008,000 - 24,000,000) / 24,000,000] × (360/7) × 100%<br>
+                                                = [8,000 / 24,000,000] × 51.43 × 100%<br>
+                                                = 0.000333 × 51.43 × 100%<br>
+                                                = <strong>1.71%</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- REPO Calculator -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                <h4 class="font-medium mb-4 text-center">REPO Yield Calculator</h4>
+                                <div class="max-w-lg mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Initial Price (RM)</label>
+                                            <input type="number" id="repo-initial" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="24000000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Repurchase Price (RM)</label>
+                                            <input type="number" id="repo-repurchase" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="24008000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Days in REPO Period</label>
+                                            <input type="number" id="repo-days" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="7" min="1">
+                                        </div>
+                                    </div>
+                                    <button id="calculate-repo-yield" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Calculate REPO Yield
+                                    </button>
+                                    <div id="repo-yield-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                        The REPO Yield is: <span class="font-medium text-primary-500">1.71%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Other Money Market Instruments -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Other Money Market Instruments</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Commercial Paper -->
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                    <div class="flex justify-center mb-4">
+                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-file-invoice text-2xl text-primary-500"></i>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-center mb-3">Commercial Paper (CP)</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Unsecured short-term promissory note issued by a company</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Used to finance working capital requirements</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Generally held by investors from issue until maturity</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Maturities range from 1 to 270 days</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Credit rating is important as CP is unsecured and not actively traded</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Negotiable CDs -->
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                    <div class="flex justify-center mb-4">
+                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-certificate text-2xl text-primary-500"></i>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-center mb-3">Negotiable Certificates of Deposit (CD)</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Bank-issued time deposit with specified interest rate and maturity date</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Negotiable (can be sold) in the secondary market</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Whoever holds the CD at maturity receives the principal and interest</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Maturities up to 5 years for retail investors</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Generally offers higher interest rates compared to fixed deposits</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>In Malaysia, known as Negotiable Instrument of Deposits (NIDs)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Banker's Acceptances -->
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                    <div class="flex justify-center mb-4">
+                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-handshake text-2xl text-primary-500"></i>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-center mb-3">Banker's Acceptances (BA)</h4>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Time draft payable to a seller of goods, with payment guaranteed by a bank</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Many arise from international trade transactions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Includes Letters of Credit (L/C) used to finance trade in goods</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Foreign exporters often prefer banks as guarantors before shipping goods</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Can be traded in secondary markets (payable to bearer at maturity)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <span>Sold at a discount from face value</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which money market instrument is considered "risk-free" because it is backed by the government?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Treasury Bills
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Commercial Paper
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Banker's Acceptances
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Negotiable Certificates of Deposit
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Foreign Exchange Market Section -->
+        <section id="forex-market" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-globe text-primary-500 mr-3"></i>
+                        Foreign Exchange Market
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Definition & Characteristics</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-exchange-alt text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">What is the Forex Market?</h3>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <p>
+                                        The foreign exchange market (FX) is a market in which cash flows from the sale of products or assets denominated in foreign currency are transacted.
+                                    </p>
+                                    <p>
+                                        It is the largest and most liquid financial market in the world, with a daily trading volume exceeding $6 trillion.
+                                    </p>
+                                    <p>
+                                        The most actively traded currency pairs in the global FX market are EUR/USD, USD/JPY, and GBP/USD.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-money-bill-wave text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Exchange Rates</h3>
+                                <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <p>
+                                        The foreign exchange rate is the price at which one currency can be exchanged for another currency.
+                                    </p>
+                                    <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                        <p class="font-medium">Example:</p>
+                                        <p>1 USD = 4.3350 MYR</p>
+                                        <p class="mt-2 text-sm">This means that 1 US Dollar can be exchanged for 4.3350 Malaysian Ringgit. If you go to a money exchange counter in Malaysia with 1 USD, you would get back RM4.3350 in return.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Real-time Forex Rates -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4">Currency Exchange Rates</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="currency-card bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-dollar-sign text-2xl text-primary-500 mr-2"></i>
+                                            <span class="font-medium">USD/MYR</span>
+                                        </div>
+                                        <div class="currency-change up">
+                                            <i class="fas fa-arrow-up mr-1"></i>0.15%
+                                        </div>
+                                    </div>
+                                    <div class="currency-value">4.3350</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">US Dollar / Malaysian Ringgit</div>
+                                </div>
+                                
+                                <div class="currency-card bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-euro-sign text-2xl text-primary-500 mr-2"></i>
+                                            <span class="font-medium">EUR/MYR</span>
+                                        </div>
+                                        <div class="currency-change up">
+                                            <i class="fas fa-arrow-up mr-1"></i>0.22%
+                                        </div>
+                                    </div>
+                                    <div class="currency-value">4.7725</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">Euro / Malaysian Ringgit</div>
+                                </div>
+                                
+                                <div class="currency-card bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-pound-sign text-2xl text-primary-500 mr-2"></i>
+                                            <span class="font-medium">GBP/MYR</span>
+                                        </div>
+                                        <div class="currency-change up">
+                                            <i class="fas fa-arrow-up mr-1"></i>0.31%
+                                        </div>
+                                    </div>
+                                    <div class="currency-value">5.6524</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">British Pound / Malaysian Ringgit</div>
+                                </div>
+                                
+                                <div class="currency-card bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-yen-sign text-2xl text-primary-500 mr-2"></i>
+                                            <span class="font-medium">JPY100/MYR</span>
+                                        </div>
+                                        <div class="currency-change down">
+                                            <i class="fas fa-arrow-down mr-1"></i>0.18%
+                                        </div>
+                                    </div>
+                                    <div class="currency-value">3.0390</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">Japanese Yen (100) / Malaysian Ringgit</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Forex Market Participants -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Participants in the Forex Market</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="process-flow">
+                                    <div class="process-step">
+                                        <div class="process-number">1</div>
+                                        <div>
+                                            <h4 class="font-medium text-primary-500">Commercial Banks</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                Meet requirements of corporations, manage their own trading positions, and operate under regulatory authority. Commercial banks are the primary participants in the forex market.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="process-step">
+                                        <div class="process-number">2</div>
+                                        <div>
+                                            <h4 class="font-medium text-primary-500">Corporations</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                Pay exporters for the purchase of goods and services, manage currency risk for international operations, and convert profits earned in foreign currencies.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="process-step">
+                                        <div class="process-number">3</div>
+                                        <div>
+                                            <h4 class="font-medium text-primary-500">Non-Bank Financial Institutions</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                Investment firms, hedge funds, pension funds, and insurance companies participate in forex markets for investment purposes and to manage their international exposures.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="process-step">
+                                        <div class="process-number">4</div>
+                                        <div>
+                                            <h4 class="font-medium text-primary-500">Money Brokers</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                Act as middlemen in identifying buyers and sellers who have matching amounts to trade in foreign currencies. They earn income from commissions on transactions and interact with banks by providing "indication rates" and "dealing rates."
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="process-step">
+                                        <div class="process-number">5</div>
+                                        <div>
+                                            <h4 class="font-medium text-primary-500">Bank Negara Malaysia</h4>
+                                            <p class="text-gray-600 dark:text-gray-300">
+                                                Ensures exchange rate stability, manages foreign reserves, intervenes in forex markets to reduce volatility by buying or selling large amounts of currencies, and implements forex policies such as fixed rate or managed floating exchange rate regimes based on economic conditions.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Currency Movements -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Currency Appreciation & Depreciation</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Currency Appreciation -->
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <div class="flex items-center mb-4">
+                                        <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-4">
+                                            <i class="fas fa-arrow-up text-green-500"></i>
+                                        </div>
+                                        <h4 class="text-lg font-medium">Currency Appreciation</h4>
+                                    </div>
+                                    
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        Currency appreciation occurs when a country's currency rises in value relative to other currencies. This means the country's goods become more expensive for foreign buyers, and foreign goods become cheaper for domestic buyers.
+                                    </p>
+                                    
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            Last month: 1 USD = 4.50 MYR<br>
+                                            This month: 1 USD = 4.00 MYR (MYR has appreciated)
+                                        </p>
+                                        <div class="mt-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                If a US buyer wanted to purchase a Malaysian product that costs RM4,500:
+                                            </p>
+                                            <ul class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                                                <li>• Last month: USD 1,000 (RM4,500 ÷ 4.50)</li>
+                                                <li>• This month: USD 1,125 (RM4,500 ÷ 4.00)</li>
+                                            </ul>
+                                            <p class="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                Conclusion: Malaysian goods are now more expensive for foreign buyers.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Currency Depreciation -->
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <div class="flex items-center mb-4">
+                                        <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-4">
+                                            <i class="fas fa-arrow-down text-red-500"></i>
+                                        </div>
+                                        <h4 class="text-lg font-medium">Currency Depreciation</h4>
+                                    </div>
+                                    
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        Currency depreciation occurs when a country's currency falls in value relative to other currencies. This means the country's goods become cheaper for foreign buyers, and foreign goods become more expensive for domestic buyers.
+                                    </p>
+                                    
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            Last month: 1 USD = 4.50 MYR<br>
+                                            This month: 1 USD = 5.00 MYR (MYR has depreciated)
+                                        </p>
+                                        <div class="mt-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                If a US buyer wanted to purchase a Malaysian product that costs RM4,500:
+                                            </p>
+                                            <ul class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                                                <li>• Last month: USD 1,000 (RM4,500 ÷ 4.50)</li>
+                                                <li>• This month: USD 900 (RM4,500 ÷ 5.00)</li>
+                                            </ul>
+                                            <p class="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                Conclusion: Malaysian goods are now cheaper for foreign buyers.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">If the Malaysian Ringgit (MYR) appreciates against the US Dollar (USD), which of the following statements is true?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Malaysian imports become more expensive
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Malaysian exports become more expensive for US buyers
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        US goods become more expensive for Malaysian buyers
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        The exchange rate changes from 1 USD = 4.5 MYR to 1 USD = 5.0 MYR
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Foreign Exchange Transactions Section -->
+        <section id="forex-transactions" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-exchange-alt text-primary-500 mr-3"></i>
+                        Foreign Exchange Transactions
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <p class="mb-6 text-gray-600 dark:text-gray-300">
+                            There are two primary types of foreign exchange transactions: spot transactions and forward transactions. Each serves different purposes in the forex market.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <!-- Spot Transactions -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-bolt text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Spot Transactions</h3>
+                                <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                    Spot foreign exchange transactions involve the immediate exchange of currencies at the current or spot exchange rate. These transactions are typically settled within two business days.
+                                </p>
+                                
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium mb-2">Example:</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                        You are a business owner in Malaysia, and you need to buy goods from a supplier in the United States. The supplier has quoted a price of USD 10,000 for the goods.
+                                    </p>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        The current spot exchange rate is 1 USD = 4.60 MYR.
+                                    </p>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        To pay the USD 10,000, you will convert Malaysian Ringgit (MYR) into US Dollars (USD) at the current spot rate.
+                                    </p>
+                                    <div class="mt-2 p-3 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            Amount in MYR = USD 10,000 × 4.60 MYR/USD = RM46,000
+                                        </p>
+                                    </div>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        The exchange happens immediately, so you receive the USD 10,000 right away and the supplier receives their payment in USD.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Forward Transactions -->
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
+                                <div class="flex justify-center mb-4">
+                                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-calendar-alt text-3xl text-primary-500"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-3">Forward Transactions</h3>
+                                <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                    Forward foreign exchange transactions involve the exchange of currencies at a specified exchange rate (or forward exchange rate) at some specified date in the future. They help manage currency risk from future transactions.
+                                </p>
+                                
+                                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                    <h4 class="font-medium mb-2">Example:</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                        You are a Malaysian company that needs to pay USD 50,000 to a supplier in the United States, but the payment is due in three months.
+                                    </p>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        The current spot exchange rate is 1 USD = 4.60 MYR, but you want to lock in a future exchange rate to avoid uncertainty due to potential currency fluctuations.
+                                    </p>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        The forward exchange rate for a contract to be settled in three months is 1 USD = 4.65 MYR.
+                                    </p>
+                                    <div class="mt-2 p-3 bg-white dark:bg-gray-700 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            Amount in MYR = USD 50,000 × 4.65 MYR/USD = RM232,500
+                                        </p>
+                                    </div>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        When the payment is due in three months, you will exchange RM232,500 for USD 50,000 at the agreed forward rate of 4.65 MYR/USD, regardless of the prevailing spot rate at that time.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Foreign Exchange Risks -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Foreign Exchange Risks</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="text-lg font-medium mb-4 text-primary-500">
+                                            <i class="fas fa-exclamation-triangle mr-2"></i>Primary Risks
+                                        </h4>
+                                        
+                                        <ul class="space-y-4">
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-chart-line text-red-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Exchange Rate Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        The risk that the value of one currency relative to another will change, affecting the value of transactions or investments.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-percentage text-yellow-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Interest Rate Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        Changes in interest rates affect exchange rates and the cost of borrowing in foreign currencies.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-user-shield text-blue-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Credit Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        The risk that the counterparty in a forex transaction might default on their obligations.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-tint-slash text-green-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Liquidity Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        The risk that a participant may not be able to buy or sell a currency quickly enough to prevent or minimize loss.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="text-lg font-medium mb-4 text-primary-500">
+                                            <i class="fas fa-shield-alt mr-2"></i>Additional Risks
+                                        </h4>
+                                        
+                                        <ul class="space-y-4">
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-landmark text-purple-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Political Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        Changes in political conditions or government policies that can impact currency values and stability of the forex market.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-chart-pie text-indigo-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Economic Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        Changes in inflation, economic growth, and trade balances can affect currency values and create volatility.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-cogs text-pink-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Operational Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        Risks arise from failures in internal processes, people, or systems in executing forex transactions.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="flex">
+                                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mr-3">
+                                                    <i class="fas fa-globe text-orange-500"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-medium">Geopolitical Risk</h5>
+                                                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                        Events such as wars, conflicts, or international sanctions can cause significant currency fluctuations.
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- BNM's Role in FX Market -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Bank Negara Malaysia's Role in Forex Market</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="flex flex-col md:flex-row items-center mb-6">
+                                    <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                                        <div class="w-24 h-24 bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center rounded-full shadow-md">
+    <i class="fas fa-landmark text-3xl text-primary-500"></i>
+</div>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-600 dark:text-gray-300">
+                                            Bank Negara Malaysia (BNM) plays a critical role in the Malaysian foreign exchange market. BNM's functions in the forex market include market intervention, exchange rate management, and policy implementation.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                        <h4 class="font-medium mb-3 text-primary-500">Market Intervention</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            BNM intervenes in the forex market to reduce fluctuations and stabilize the ringgit to stem currency movements that are deemed excessive. This helps maintain stability in the financial system and supports economic activities.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                        <h4 class="font-medium mb-3 text-primary-500">Managed Float</h4>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            BNM manages the floating exchange rate to avoid heavy trading that can cause volatility. The central bank closely monitors market conditions and intervenes by buying or selling currencies in the opposite direction of what the market is doing.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                    <h4 class="font-medium mb-3">Exchange Rate Policy Implementation</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                        BNM decides whether to implement policies on forex such as fixed rate or managed floating exchange rate regime depending on economic conditions. During the Asian Financial Crisis of 1997-1998, BNM implemented a fixed exchange rate regime to stabilize the economy.
+                                    </p>
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                                        Currently, Malaysia operates under a managed float regime, where BNM allows market forces to determine the value of the ringgit while intervening when necessary to reduce excessive volatility.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Currency Conversion Calculator -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Currency Converter</h3>
+                            
+                            <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                <div class="forex-calculator">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <!-- Spot Rate Calculator -->
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h4 class="font-medium mb-4 text-center">Spot Rate Calculator</h4>
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                                                    <input type="number" id="spot-amount" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="1000" min="0">
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From Currency</label>
+                                                        <select id="spot-from-currency" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                                                            <option value="USD">USD - US Dollar</option>
+                                                            <option value="MYR">MYR - Malaysian Ringgit</option>
+                                                            <option value="EUR">EUR - Euro</option>
+                                                            <option value="GBP">GBP - British Pound</option>
+                                                            <option value="JPY">JPY - Japanese Yen</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To Currency</label>
+                                                        <select id="spot-to-currency" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                                                            <option value="MYR">MYR - Malaysian Ringgit</option>
+                                                            <option value="USD">USD - US Dollar</option>
+                                                            <option value="EUR">EUR - Euro</option>
+                                                            <option value="GBP">GBP - British Pound</option>
+                                                            <option value="JPY">JPY - Japanese Yen</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exchange Rate (1 From Currency in To Currency)</label>
+                                                    <input type="number" id="spot-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="4.3350" step="0.0001" min="0">
+                                                </div>
+                                                <button id="calculate-spot-conversion" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                                    Calculate
+                                                </button>
+                                                <div id="spot-result" class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                                    1,000.00 USD = <span class="font-medium text-primary-500">4,335.00 MYR</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Forward Rate Calculator -->
+                                        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                                            <h4 class="font-medium mb-4 text-center">Forward Rate Calculator</h4>
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                                                    <input type="number" id="forward-amount" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="50000" min="0">
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From Currency</label>
+                                                        <select id="forward-from-currency" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                                                            <option value="USD">USD - US Dollar</option>
+                                                            <option value="MYR">MYR - Malaysian Ringgit</option>
+                                                            <option value="EUR">EUR - Euro</option>
+                                                            <option value="GBP">GBP - British Pound</option>
+                                                            <option value="JPY">JPY - Japanese Yen</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To Currency</label>
+                                                        <select id="forward-to-currency" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                                                            <option value="MYR">MYR - Malaysian Ringgit</option>
+                                                            <option value="USD">USD - US Dollar</option>
+                                                            <option value="EUR">EUR - Euro</option>
+                                                            <option value="GBP">GBP - British Pound</option>
+                                                            <option value="JPY">JPY - Japanese Yen</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Forward Exchange Rate</label>
+                                                    <input type="number" id="forward-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="4.65" step="0.0001" min="0">
+                                                </div>
+                                                <button id="calculate-forward-conversion" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                                    Calculate
+                                                </button>
+                                                <div id="forward-result" class="p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                                    50,000.00 USD = <span class="font-medium text-primary-500">232,500.00 MYR</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Knowledge Check</h3>
+                        <div class="quiz-container">
+                            <div class="quiz-question">
+                                <p class="font-medium mb-3">Which of the following best describes a forward foreign exchange transaction?</p>
+                                <div class="space-y-3">
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Immediate exchange of currencies at the current market rate
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="true">
+                                        Agreement to exchange currencies at a specified rate on a future date
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Purchase of foreign currency with no specified exchange rate
+                                    </div>
+                                    <div class="quiz-option border border-gray-200 dark:border-gray-600 rounded-lg p-3" data-correct="false">
+                                        Currency swap between central banks
+                                    </div>
+                                </div>
+                                <div class="quiz-feedback mt-4 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Practice Problems Section -->
+        <section id="practice" class="mb-16 pt-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-brain text-primary-500 mr-3"></i>
+                        Practice Problems
+                    </h2>
+                    
+                    <p class="mb-6 text-gray-600 dark:text-gray-300">
+                        Test your understanding by solving these practice problems related to money markets and foreign exchange markets.
+                    </p>
+                    
+                    <!-- Forex Table Reference -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Reference Table for Foreign Exchange Problems</h3>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="forex-table min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>USD</th>
+                                        <th>GBP</th>
+                                        <th>EUR</th>
+                                        <th>JPY100</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Spot rate (Today)</td>
+                                        <td>4.3335</td>
+                                        <td>5.6524</td>
+                                        <td>4.7725</td>
+                                        <td>3.0390</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1-month forward rate</td>
+                                        <td>4.3370</td>
+                                        <td>5.6787</td>
+                                        <td>4.7872</td>
+                                        <td>3.0671</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2-month forward rate</td>
+                                        <td>4.3600</td>
+                                        <td>5.6996</td>
+                                        <td>4.8126</td>
+                                        <td>3.0439</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3-month forward rate</td>
+                                        <td>4.3475</td>
+                                        <td>5.7085</td>
+                                        <td>4.8168</td>
+                                        <td>3.0450</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 1 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 1: T-Bill Discount Yield</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                You would like to purchase an MGS that has a RM10,000 face value and is 68 days from maturity. The current price of the MGS is RM9,875. Calculate the discount yield on this MGS.
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <input type="number" id="problem1-answer" class="w-24 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                    <span class="text-gray-600 dark:text-gray-300">%</span>
+                                    <button id="check-problem1" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem1-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem1-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    We need to use the formula for discount yield and rearrange it:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    T-bills price (Po) = PAR – (iT-bills,d × n/360 × PAR)
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Rearranging to solve for iT-bills,d:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    PAR – Po = iT-bills,d × n/360 × PAR
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    iT-bills,d = (PAR – Po) / (n/360 × PAR)
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    iT-bills,d = (10,000 – 9,875) / (68/360 × 10,000)
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    iT-bills,d = 125 / (0.1889 × 10,000)
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    iT-bills,d = 125 / 1,889
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    iT-bills,d = 0.0662 or 6.62%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 2 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 2: Repo Yield</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Suppose a bank enters a Repo which it agrees to buy MGS from a corresponding bank at a price of RM24,000,000, with a promise to buy them back at a price of RM24,008,000. Calculate the yield of the Repo if it has a 7-day maturity.
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <input type="number" id="problem2-answer" class="w-24 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                    <span class="text-gray-600 dark:text-gray-300">%</span>
+                                    <button id="check-problem2" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem2-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem2-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Using the formula for REPO Yield:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    REPO Yield = [(P₁ - P₀) / P₀] × (360/n) × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Where:
+                                </p>
+                                <ul class="text-gray-600 dark:text-gray-300 mt-1 space-y-1">
+                                    <li>P₀ = Initial purchase price = RM24,000,000</li>
+                                    <li>P₁ = Repurchase price = RM24,008,000</li>
+                                    <li>n = Number of days in the REPO period = 7 days</li>
+                                </ul>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    REPO Yield = [(24,008,000 - 24,000,000) / 24,000,000] × (360/7) × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    REPO Yield = [8,000 / 24,000,000] × 51.43 × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    REPO Yield = 0.000333 × 51.43 × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    REPO Yield = 1.71%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 3 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 3: Forex Conversion</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Referring to the forex rates table above, today, you convert RM500,000 to JPY in the spot foreign exchange market. How much JPY will you receive today?
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <input type="number" id="problem3-answer" class="w-32 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2">
+                                    <span class="text-gray-600 dark:text-gray-300">JPY</span>
+                                    <button id="check-problem3" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem3-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem3-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    According to the table, the spot rate for JPY100/MYR is 3.0390.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    This means that 100 JPY = 3.0390 MYR, or 1 MYR = 100/3.0390 = 32.9055 JPY
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    So to convert RM500,000 to JPY:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    JPY = 500,000 × 32.9055 = 16,452,750 JPY
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 4 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 4: Forward Contract Settlement</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Referring to the forex rates table above, a company in Malaysia borrowed GBP250,000 from a bank in London. The loan is expected to be due in three months' time. How much ringgit will be spent by the company to settle the outstanding loan using a forward contract?
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <p class="font-medium">Your answer:</p>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-gray-600 dark:text-gray-300 mr-2">RM</span>
+                                    <input type="number" id="problem4-answer" class="w-32 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2">
+                                    <button id="check-problem4" class="ml-4 py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Check Answer
+                                    </button>
+                                </div>
+                                <div id="problem4-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem4-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    According to the table, the 3-month forward rate for GBP/MYR is 5.7085.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    This means that 1 GBP = 5.7085 MYR in three months' time.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    So, to settle the GBP250,000 loan using a forward contract:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    RM = 250,000 × 5.7085 = RM1,427,125
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem 5 -->
+                    <div class="mb-8">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Problem 5: Currency Appreciation/Depreciation</h3>
+                            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                Referring to the forex rates table above, assuming that the forward rate given is equal to the future spot rate for the specified date, is the USD appreciating or depreciating relative to MYR in the 3-month period? By how many percent?
+                            </p>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg mb-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <p class="font-medium">USD is:</p>
+                                        <div class="flex space-x-4 mt-2">
+                                            <button class="appreciate-depreciate-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-answer="appreciating">
+                                                Appreciating
+                                            </button>
+                                            <button class="appreciate-depreciate-option py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md" data-answer="depreciating">
+                                                Depreciating
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">By what percentage?</p>
+                                        <div class="flex items-center mt-2">
+                                            <input type="number" id="problem5-percentage" class="w-24 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-2" step="0.01">
+                                            <span class="text-gray-600 dark:text-gray-300">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="check-problem5" class="py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                    Check Answer
+                                </button>
+                                <div id="problem5-feedback" class="mt-3 hidden"></div>
+                            </div>
+                            
+                            <div id="problem5-solution" class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg hidden">
+                                <h4 class="font-medium text-primary-500 mb-2">Solution:</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    According to the table:
+                                </p>
+                                <ul class="text-gray-600 dark:text-gray-300 mt-1 space-y-1">
+                                    <li>Spot rate (today): 1 USD = 4.3335 MYR</li>
+                                    <li>3-month forward rate: 1 USD = 4.3475 MYR</li>
+                                </ul>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Since the 3-month forward rate (4.3475) is higher than the spot rate (4.3335), the USD is appreciating relative to MYR.
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    To calculate the percentage change:
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Percentage change = [(Future rate - Current rate) / Current rate] × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Percentage change = [(4.3475 - 4.3335) / 4.3335] × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Percentage change = [0.014 / 4.3335] × 100%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Percentage change = 0.32%
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300 mt-2">
+                                    Therefore, the USD is appreciating relative to MYR by 0.32% over the 3-month period.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-16 right-4 p-3 rounded-full bg-primary-500 text-white shadow-md hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Check for saved theme preference or use device preference
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Listen for theme toggle click
+        themeToggle.addEventListener('click', function() {
+            // Toggle the dark class on the html element
+            document.documentElement.classList.toggle('dark');
+            
+            // Update local storage
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+            }
+        });
+        
+        // Also listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('color-theme')) {
+                if (event.matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+        for (let link of mobileMenuLinks) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+        
+        // T-bills Calculator
+        const tbillParInput = document.getElementById('tbill-par');
+        const tbillYieldInput = document.getElementById('tbill-yield');
+        const tbillDaysInput = document.getElementById('tbill-days');
+        const calculateTbillPriceBtn = document.getElementById('calculate-tbill-price');
+        const tbillPriceResult = document.getElementById('tbill-price-result');
+        
+        calculateTbillPriceBtn.addEventListener('click', function() {
+            const par = parseFloat(tbillParInput.value) || 0;
+            const yield = (parseFloat(tbillYieldInput.value) || 0) / 100;
+            const days = parseFloat(tbillDaysInput.value) || 0;
+            
+            const price = par - (yield * days/360 * par);
+            
+            tbillPriceResult.innerHTML = `The T-bill price is: <span class="font-medium text-primary-500">RM${price.toFixed(2)}</span>`;
+        });
+        
+        // REPO Calculator
+        const repoInitialInput = document.getElementById('repo-initial');
+        const repoRepurchaseInput = document.getElementById('repo-repurchase');
+        const repoDaysInput = document.getElementById('repo-days');
+        const calculateRepoYieldBtn = document.getElementById('calculate-repo-yield');
+        const repoYieldResult = document.getElementById('repo-yield-result');
+        
+        calculateRepoYieldBtn.addEventListener('click', function() {
+            const initialPrice = parseFloat(repoInitialInput.value) || 0;
+            const repurchasePrice = parseFloat(repoRepurchaseInput.value) || 0;
+            const days = parseFloat(repoDaysInput.value) || 0;
+            
+            if (initialPrice <= 0 || days <= 0) {
+                repoYieldResult.innerHTML = `<span class="text-red-500">Please enter valid values</span>`;
+                return;
+            }
+            
+            const yield = ((repurchasePrice - initialPrice) / initialPrice) * (360/days) * 100;
+            
+            repoYieldResult.innerHTML = `The REPO Yield is: <span class="font-medium text-primary-500">${yield.toFixed(2)}%</span>`;
+        });
+        
+        // Spot Currency Converter
+        const spotAmountInput = document.getElementById('spot-amount');
+        const spotFromCurrencySelect = document.getElementById('spot-from-currency');
+        const spotToCurrencySelect = document.getElementById('spot-to-currency');
+        const spotRateInput = document.getElementById('spot-rate');
+        const calculateSpotConversionBtn = document.getElementById('calculate-spot-conversion');
+        const spotResult = document.getElementById('spot-result');
+        
+        calculateSpotConversionBtn.addEventListener('click', function() {
+            const amount = parseFloat(spotAmountInput.value) || 0;
+            const rate = parseFloat(spotRateInput.value) || 0;
+            const fromCurrency = spotFromCurrencySelect.value;
+            const toCurrency = spotToCurrencySelect.value;
+            
+            const convertedAmount = amount * rate;
+            
+            spotResult.innerHTML = `${amount.toFixed(2)} ${fromCurrency} = <span class="font-medium text-primary-500">${convertedAmount.toFixed(2)} ${toCurrency}</span>`;
+        });
+        
+        // Forward Currency Converter
+        const forwardAmountInput = document.getElementById('forward-amount');
+        const forwardFromCurrencySelect = document.getElementById('forward-from-currency');
+        const forwardToCurrencySelect = document.getElementById('forward-to-currency');
+        const forwardRateInput = document.getElementById('forward-rate');
+        const calculateForwardConversionBtn = document.getElementById('calculate-forward-conversion');
+        const forwardResult = document.getElementById('forward-result');
+        
+        calculateForwardConversionBtn.addEventListener('click', function() {
+            const amount = parseFloat(forwardAmountInput.value) || 0;
+            const rate = parseFloat(forwardRateInput.value) || 0;
+            const fromCurrency = forwardFromCurrencySelect.value;
+            const toCurrency = forwardToCurrencySelect.value;
+            
+            const convertedAmount = amount * rate;
+            
+            forwardResult.innerHTML = `${amount.toFixed(2)} ${fromCurrency} = <span class="font-medium text-primary-500">${convertedAmount.toFixed(2)} ${toCurrency}</span>`;
+        });
+        
+        // Quiz functionality
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Get all options in the same question
+                const questionOptions = this.parentElement.querySelectorAll('.quiz-option');
+                const feedbackEl = this.parentElement.nextElementSibling;
+                
+                // If quiz has already been answered, don't allow more selections
+                if (this.classList.contains('correct') || this.classList.contains('incorrect')) {
+                    return;
+                }
+                
+                // Remove selected class from all options
+                questionOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                // After a short delay, show the result
+                setTimeout(() => {
+                    // Remove selected class
+                    this.classList.remove('selected');
+                    
+                    // Add correct/incorrect class
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! Well done.</div>';
+                    } else {
+                        this.classList.add('incorrect');
+                        
+                        // Find the correct answer and highlight it
+                        questionOptions.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                        
+                        feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. See the correct answer highlighted above.</div>';
+                    }
+                    
+                    // Show feedback
+                    feedbackEl.classList.remove('hidden');
+                }, 500);
+            });
+        });
+        
+        // Practice Problems Functionality
+        // Problem 1
+        document.getElementById('check-problem1').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem1-answer').value);
+            const correctAnswer = 6.62;
+            const feedbackEl = document.getElementById('problem1-feedback');
+            const solutionEl = document.getElementById('problem1-solution');
+            
+            if (Math.abs(userAnswer - correctAnswer) <= 0.05) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The discount yield is 6.62%.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 2
+        document.getElementById('check-problem2').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem2-answer').value);
+            const correctAnswer = 1.71;
+            const feedbackEl = document.getElementById('problem2-feedback');
+            const solutionEl = document.getElementById('problem2-solution');
+            
+            if (Math.abs(userAnswer - correctAnswer) <= 0.05) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The REPO yield is 1.71%.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 3
+        document.getElementById('check-problem3').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem3-answer').value);
+            const correctAnswer = 16452750;
+            const feedbackEl = document.getElementById('problem3-feedback');
+            const solutionEl = document.getElementById('problem3-solution');
+            
+            if (Math.abs(userAnswer - correctAnswer) <= 1000) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! You will receive 16,452,750 JPY.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 4
+        document.getElementById('check-problem4').addEventListener('click', function() {
+            const userAnswer = parseFloat(document.getElementById('problem4-answer').value);
+            const correctAnswer = 1427125;
+            const feedbackEl = document.getElementById('problem4-feedback');
+            const solutionEl = document.getElementById('problem4-solution');
+            
+            if (Math.abs(userAnswer - correctAnswer) <= 100) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! The company will spend RM1,427,125.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Problem 5
+        let selectedAppreciateDepreciate = null;
+        const appreciateDepreciateOptions = document.querySelectorAll('.appreciate-depreciate-option');
+        
+        appreciateDepreciateOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                appreciateDepreciateOptions.forEach(opt => {
+                    opt.classList.remove('bg-primary-100', 'dark:bg-primary-900/30', 'text-primary-500');
+                    opt.classList.add('bg-gray-100', 'dark:bg-gray-800');
+                });
+                
+                this.classList.remove('bg-gray-100', 'dark:bg-gray-800');
+                this.classList.add('bg-primary-100', 'dark:bg-primary-900/30', 'text-primary-500');
+                
+                selectedAppreciateDepreciate = this.getAttribute('data-answer');
+            });
+        });
+        
+        document.getElementById('check-problem5').addEventListener('click', function() {
+            const userPercentage = parseFloat(document.getElementById('problem5-percentage').value);
+            const correctAnswer = "appreciating";
+            const correctPercentage = 0.32;
+            const feedbackEl = document.getElementById('problem5-feedback');
+            const solutionEl = document.getElementById('problem5-solution');
+            
+            if (!selectedAppreciateDepreciate) {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Please select whether USD is appreciating or depreciating.</div>';
+                feedbackEl.classList.remove('hidden');
+                return;
+            }
+            
+            if (selectedAppreciateDepreciate === correctAnswer && Math.abs(userPercentage - correctPercentage) <= 0.05) {
+                feedbackEl.innerHTML = '<div class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>Correct! USD is appreciating by 0.32%.</div>';
+            } else if (selectedAppreciateDepreciate === correctAnswer) {
+                feedbackEl.innerHTML = '<div class="text-yellow-600 dark:text-yellow-400"><i class="fas fa-exclamation-circle mr-2"></i>Partially correct. USD is appreciating, but the percentage is not correct.</div>';
+            } else {
+                feedbackEl.innerHTML = '<div class="text-red-600 dark:text-red-400"><i class="fas fa-times-circle mr-2"></i>Incorrect. Try again or view the solution.</div>';
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            solutionEl.classList.remove('hidden');
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Scroll progress tracker
+        const progressBar = document.getElementById('progress-bar-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            
+            progressBar.style.width = scrollPercentage + '%';
+            progressPercentage.textContent = Math.round(scrollPercentage) + '%';
+        });
+        
+        // Add intersection observer to add animation when elements come into view
+        const animateOnScroll = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        
+        const observer = new IntersectionObserver(animateOnScroll, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('section > div').forEach(section => {
+            section.style.opacity = '0';
+            observer.observe(section);
+        });
+        
+        // Forex rates
+        // This would typically connect to an API, but we'll use static data for the example
+        const forexRates = {
+            "USD/MYR": { rate: 4.3350, change: 0.15, direction: "up" },
+            "EUR/MYR": { rate: 4.7725, change: 0.22, direction: "up" },
+            "GBP/MYR": { rate: 5.6524, change: 0.31, direction: "up" },
+            "JPY100/MYR": { rate: 3.0390, change: 0.18, direction: "down" }
+        };
+    </script>
+</body>
+</html>
