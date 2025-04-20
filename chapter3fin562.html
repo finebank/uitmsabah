@@ -41,6 +41,19 @@
         .pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .spin {
+            animation: spin 1s linear infinite;
+        }
         
         .pattern-card {
             transition: all 0.3s ease;
@@ -54,6 +67,29 @@
         .content-section {
             transition: opacity 0.5s ease;
         }
+
+        /* Quiz progress bar */
+        .quiz-progress {
+            height: 6px;
+            transition: width 0.3s ease;
+        }
+
+        /* Answer feedback styles */
+        .answer-correct {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .answer-incorrect {
+            border-color: #EF4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Accessible focus styles */
+        button:focus-visible, a:focus-visible, input:focus-visible {
+            outline: 2px solid #5D5CDE;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
@@ -66,6 +102,7 @@
         score: 0,
         userAnswers: [],
         showMenu: false,
+        isSubmitting: false,
         initDarkMode() {
             if (this.darkMode) {
                 document.documentElement.classList.add('dark');
@@ -74,6 +111,29 @@
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('darkMode', 'false');
             }
+        },
+        checkAnswers() {
+            // Show loading state
+            this.isSubmitting = true;
+            
+            // Correct answers
+            const correctAnswers = ['B', 'C', 'B', 'B', 'B'];
+            
+            // Calculate score
+            let newScore = 0;
+            for (let i = 0; i < correctAnswers.length; i++) {
+                if (this.userAnswers[i] === correctAnswers[i]) {
+                    newScore++;
+                }
+            }
+            
+            this.score = newScore;
+            
+            // Short delay to show loading state
+            setTimeout(() => {
+                this.quizCompleted = true;
+                this.isSubmitting = false;
+            }, 500);
         }
       }"
       x-init="initDarkMode(); initCharts();">
@@ -897,6 +957,12 @@
                         </button>
                     </div>
                     
+                    <!-- Quiz Progress Bar -->
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full mb-6">
+                        <div class="quiz-progress bg-primary h-full rounded-full" 
+                             :style="`width: ${quizCompleted ? '100' : currentQuestion * 25}%`"></div>
+                    </div>
+                    
                     <!-- Quiz Content -->
                     <div x-show="!quizCompleted">
                         <!-- Question 1 -->
@@ -1062,64 +1128,89 @@
                             <button x-show="currentQuestion < 4" @click="currentQuestion++" :disabled="!userAnswers[currentQuestion]" :class="!userAnswers[currentQuestion] ? 'opacity-50 cursor-not-allowed' : ''" class="px-4 py-2 bg-primary text-white rounded-md">
                                 Next <i class="fas fa-arrow-right ml-2"></i>
                             </button>
-                            <button x-show="currentQuestion === 4" @click="checkAnswers()" :disabled="!userAnswers[currentQuestion]" :class="!userAnswers[currentQuestion] ? 'opacity-50 cursor-not-allowed' : ''" class="px-4 py-2 bg-primary text-white rounded-md">
-                                Submit
+                            <button x-show="currentQuestion === 4" @click="checkAnswers()" :disabled="!userAnswers[currentQuestion] || isSubmitting" :class="!userAnswers[currentQuestion] || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''" class="px-4 py-2 bg-primary text-white rounded-md">
+                                <span x-show="!isSubmitting">Submit</span>
+                                <span x-show="isSubmitting" class="flex items-center">
+                                    <i class="fas fa-circle-notch spin mr-2"></i> Submitting...
+                                </span>
                             </button>
                         </div>
                     </div>
                     
                     <!-- Quiz Results -->
                     <div x-show="quizCompleted">
-                        <h3 x-text="`You scored ${score}/5`" class="text-xl font-bold mb-4"></h3>
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary bg-opacity-10 mb-4">
+                                <span class="text-2xl font-bold text-primary"
+                                    x-text="score"></span>/<span class="text-primary">5</span>
+                            </div>
+                            <h3 class="text-xl font-bold" x-text="score >= 4 ? 'Excellent work!' : score >= 3 ? 'Good job!' : 'Keep studying!'"></h3>
+                            <p class="text-gray-600 dark:text-gray-400" x-text="score === 5 ? 'Perfect score! You\'ve mastered price patterns.' : score >= 4 ? 'Great understanding of price patterns.' : score >= 3 ? 'You\'re on the right track.' : 'Review the material and try again.'"></p>
+                        </div>
                         
                         <div class="space-y-4 mb-6">
-                            <div>
+                            <div class="p-4 rounded-lg" :class="userAnswers[0] === 'B' ? 'answer-correct' : 'answer-incorrect'">
                                 <p class="font-semibold">Question 1: Which of the following is a reversal pattern?</p>
                                 <p class="mt-1" :class="userAnswers[0] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
                                     Your answer: <span x-text="userAnswers[0] === 'A' ? 'Flag pattern' : userAnswers[0] === 'B' ? 'Head and Shoulders' : userAnswers[0] === 'C' ? 'Symmetrical Triangle' : 'Pennant'"></span>
                                 </p>
                                 <p x-show="userAnswers[0] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Head and Shoulders</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" x-show="userAnswers[0] !== 'B'">
+                                    The Head and Shoulders pattern is a reliable reversal pattern that signals a potential change in trend direction.
+                                </p>
                             </div>
                             
-                            <div>
+                            <div class="p-4 rounded-lg" :class="userAnswers[1] === 'C' ? 'answer-correct' : 'answer-incorrect'">
                                 <p class="font-semibold">Question 2: A double bottom pattern is typically a sign of:</p>
                                 <p class="mt-1" :class="userAnswers[1] === 'C' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
                                     Your answer: <span x-text="userAnswers[1] === 'A' ? 'A downtrend continuation' : userAnswers[1] === 'B' ? 'A bearish reversal' : userAnswers[1] === 'C' ? 'A bullish reversal' : 'Market indecision'"></span>
                                 </p>
                                 <p x-show="userAnswers[1] !== 'C'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: A bullish reversal</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" x-show="userAnswers[1] !== 'C'">
+                                    A double bottom forms at the end of a downtrend and signals a potential reversal to the upside.
+                                </p>
                             </div>
                             
-                            <div>
+                            <div class="p-4 rounded-lg" :class="userAnswers[2] === 'B' ? 'answer-correct' : 'answer-incorrect'">
                                 <p class="font-semibold">Question 3: Which of these patterns is classified as a bilateral pattern?</p>
                                 <p class="mt-1" :class="userAnswers[2] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
                                     Your answer: <span x-text="userAnswers[2] === 'A' ? 'Double Top' : userAnswers[2] === 'B' ? 'Symmetrical Triangle' : userAnswers[2] === 'C' ? 'Bullish Flag' : 'Inverted Head and Shoulders'"></span>
                                 </p>
                                 <p x-show="userAnswers[2] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Symmetrical Triangle</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" x-show="userAnswers[2] !== 'B'">
+                                    Symmetrical triangles don't provide a clear directional bias and can break in either direction.
+                                </p>
                             </div>
                             
-                            <div>
+                            <div class="p-4 rounded-lg" :class="userAnswers[3] === 'B' ? 'answer-correct' : 'answer-incorrect'">
                                 <p class="font-semibold">Question 4: A rising wedge in a downtrend typically acts as a:</p>
                                 <p class="mt-1" :class="userAnswers[3] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
                                     Your answer: <span x-text="userAnswers[3] === 'A' ? 'Reversal pattern (bullish)' : userAnswers[3] === 'B' ? 'Continuation pattern (bearish)' : userAnswers[3] === 'C' ? 'Bilateral pattern' : 'Random noise with no predictive value'"></span>
                                 </p>
                                 <p x-show="userAnswers[3] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Continuation pattern (bearish)</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" x-show="userAnswers[3] !== 'B'">
+                                    When a rising wedge forms in a downtrend, it's typically a pause before the downtrend continues.
+                                </p>
                             </div>
                             
-                            <div>
+                            <div class="p-4 rounded-lg" :class="userAnswers[4] === 'B' ? 'answer-correct' : 'answer-incorrect'">
                                 <p class="font-semibold">Question 5: What typically happens to trading volume during the formation of a continuation pattern?</p>
                                 <p class="mt-1" :class="userAnswers[4] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
                                     Your answer: <span x-text="userAnswers[4] === 'A' ? 'It increases significantly' : userAnswers[4] === 'B' ? 'It decreases' : userAnswers[4] === 'C' ? 'It remains constant' : 'It fluctuates randomly'"></span>
                                 </p>
                                 <p x-show="userAnswers[4] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: It decreases</p>
+                                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400" x-show="userAnswers[4] !== 'B'">
+                                    Volume typically decreases during pattern formation and increases on the breakout.
+                                </p>
                             </div>
                         </div>
                         
-                        <div class="mt-6">
+                        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                             <button @click="quizActive = false" class="px-4 py-2 bg-primary text-white rounded-md">
-                                Close
+                                Close Quiz
                             </button>
-                            <button @click="quizCompleted = false; currentQuestion = 0; score = 0; userAnswers = []" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md ml-3">
-                                Retake Quiz
+                            <button @click="quizCompleted = false; currentQuestion = 0; score = 0; userAnswers = []" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md">
+                                <i class="fas fa-redo mr-2"></i> Retake Quiz
                             </button>
                         </div>
                     </div>
@@ -2275,36 +2366,6 @@
                 }
             });
         }
-        
-        function checkAnswers() {
-            // Correct answers
-            const correctAnswers = ['B', 'C', 'B', 'B', 'B'];
-            
-            // Calculate score
-            let newScore = 0;
-            for (let i = 0; i < correctAnswers.length; i++) {
-                if (userAnswers[i] === correctAnswers[i]) {
-                    newScore++;
-                }
-            }
-            
-            score = newScore;
-            quizCompleted = true;
-        }
-        
-        // Initialize Alpine.js data
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('quizData', () => ({
-                userAnswers: [],
-                currentQuestion: 0,
-                quizCompleted: false,
-                score: 0,
-                
-                checkAnswers() {
-                    // Implementation in the main script
-                }
-            }));
-        });
     </script>
 </body>
 </html>
