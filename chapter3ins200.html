@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INS200: Nature of Insurance</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5D5CDE',
+            primaryDark: '#4A49B0',
+            primaryLight: '#7E7DE8'
+          },
+          animation: {
+            'bounce-slow': 'bounce 3s infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+      scroll-behavior: smooth;
+    }
+    .dark {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+    }
+    
+    /* Flip Card Styles */
+    .flip-card {
+      perspective: 1000px;
+      min-height: 200px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+    
+    /* Progress Bar */
+    .progress-bar {
+      height: 8px;
+      background-color: #e5e7eb;
+      border-radius: 8px;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+    .progress {
+      height: 8px;
+      border-radius: 8px;
+      background-color: #5D5CDE;
+      transition: width 0.5s ease-out;
+    }
+    
+    /* Quiz Styles */
+    .quiz-option {
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-option:hover {
+      background-color: #f0f4ff;
+    }
+    .dark .quiz-option:hover {
+      background-color: #2a2a40;
+    }
+    .quiz-option.correct {
+      background-color: rgba(74, 222, 128, 0.2);
+      border-color: rgb(74, 222, 128);
+    }
+    .quiz-option.incorrect {
+      background-color: rgba(248, 113, 113, 0.2);
+      border-color: rgb(248, 113, 113);
+    }
+    .dark .quiz-option.correct {
+      background-color: rgba(74, 222, 128, 0.3);
+    }
+    .dark .quiz-option.incorrect {
+      background-color: rgba(248, 113, 113, 0.3);
+    }
+    
+    /* Animations */
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+    
+    /* Transitions */
+    .section-transition {
+      transition: all 0.3s ease;
+    }
+    .section-transition:hover, .section-transition:focus {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Button Focus States */
+    button:focus, .quiz-option:focus-within {
+      outline: 2px solid #5D5CDE;
+      outline-offset: 2px;
+    }
+    .dark button:focus, .dark .quiz-option:focus-within {
+      outline-color: #7E7DE8;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <i class="fas fa-shield-alt text-primary dark:text-primaryLight text-2xl mr-3"></i>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">INS200: Nature of Insurance</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <span id="progress-text" class="text-sm font-medium hidden md:inline text-gray-600 dark:text-gray-300">Progress: 0%</span>
+          <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none transition-colors" aria-label="Toggle dark mode">
+            <i class="fas fa-moon text-gray-600 dark:text-yellow-300"></i>
+          </button>
+        </div>
+      </div>
+      <div class="container mx-auto px-4">
+        <div class="progress-bar">
+          <div id="progress-indicator" class="progress" style="width: 0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+      <!-- Introduction -->
+      <section id="introduction" class="mb-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+          <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-primaryLight flex items-center">
+            <i class="fas fa-book-open mr-2"></i>Introduction to Insurance
+          </h2>
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+              <p class="text-gray-700 dark:text-gray-300 mb-4">Insurance is an agreement whereby a group of individuals facing similar risks can share the fortuitous losses of the unlucky few by the transfer of such risks to the insurer who agrees to compensate the losses.</p>
+              <p class="text-gray-700 dark:text-gray-300">An insurance contract (policy) is made between a client (policyholder) and an insurance company (insurer). The policyholder pays premiums, and the insurer provides claim payments upon the occurrence of a specific loss.</p>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+              <!-- Programmatically generated SVG illustration instead of external image -->
+              <div class="w-full max-w-sm p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md">
+                <svg class="w-full h-auto" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Background -->
+                  <rect x="0" y="0" width="400" height="200" fill="#f5f7ff" class="dark:fill-gray-800" rx="8" />
+                  
+                  <!-- Umbrella (Insurance Protection Symbol) -->
+                  <path d="M200,40 C150,40 110,90 100,140 L140,140 C140,140 145,120 160,120 C175,120 175,140 175,140 L225,140 C225,140 225,120 240,120 C255,120 260,140 260,140 L300,140 C290,90 250,40 200,40 Z" fill="#5D5CDE" class="dark:fill-primaryLight" />
+                  <rect x="195" y="140" width="10" height="40" fill="#5D5CDE" class="dark:fill-primaryLight" />
+                  
+                  <!-- Shield (Left) -->
+                  <path d="M100,70 C100,100 80,110 80,140 C110,130 120,100 100,70 Z" fill="#FF7E67" class="dark:fill-orange-400" />
+                  
+                  <!-- Shield (Right) -->
+                  <path d="M300,70 C300,100 320,110 320,140 C290,130 280,100 300,70 Z" fill="#FF7E67" class="dark:fill-orange-400" />
+                  
+                  <!-- Document (Policy) -->
+                  <rect x="140" y="90" width="50" height="70" fill="white" class="dark:fill-gray-600" rx="4" />
+                  <line x1="150" y1="105" x2="180" y2="105" stroke="#5D5CDE" class="dark:stroke-primaryLight" stroke-width="2" />
+                  <line x1="150" y1="115" x2="180" y2="115" stroke="#5D5CDE" class="dark:stroke-primaryLight" stroke-width="2" />
+                  <line x1="150" y1="125" x2="170" y2="125" stroke="#5D5CDE" class="dark:stroke-primaryLight" stroke-width="2" />
+                  
+                  <!-- Coins (Premium) -->
+                  <circle cx="240" cy="100" r="15" fill="#FFD166" class="dark:fill-yellow-400" />
+                  <circle cx="240" cy="100" r="10" fill="#FFC44D" class="dark:fill-yellow-500" />
+                  <circle cx="260" cy="110" r="15" fill="#FFD166" class="dark:fill-yellow-400" />
+                  <circle cx="260" cy="110" r="10" fill="#FFC44D" class="dark:fill-yellow-500" />
+                  
+                  <!-- Connection Lines -->
+                  <line x1="160" y1="160" x2="200" y2="170" stroke="#5D5CDE" class="dark:stroke-primaryLight" stroke-width="2" stroke-dasharray="4" />
+                  <line x1="240" y1="160" x2="200" y2="170" stroke="#5D5CDE" class="dark:stroke-primaryLight" stroke-width="2" stroke-dasharray="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Terms Flip Cards -->
+        <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Key Insurance Terms</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Tap or click cards to flip and learn more</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Flip Card 1 -->
+          <div class="flip-card section-transition" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-indigo-100 dark:bg-indigo-900 shadow-md">
+                <h3 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">Insurance Contract</h3>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">Tap to learn more</p>
+                <i class="fas fa-file-contract text-3xl text-indigo-500 dark:text-indigo-400 mt-4"></i>
+              </div>
+              <div class="flip-card-back bg-white dark:bg-gray-800 shadow-md">
+                <p class="text-gray-800 dark:text-gray-200">Also known as a policy, it is a written agreement between an insurer and a client that contains details of both parties, insurance pricing, terms & conditions, and insured perils.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Flip Card 2 -->
+          <div class="flip-card section-transition" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-indigo-100 dark:bg-indigo-900 shadow-md">
+                <h3 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">Insurance Premium</h3>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">Tap to learn more</p>
+                <i class="fas fa-coins text-3xl text-indigo-500 dark:text-indigo-400 mt-4"></i>
+              </div>
+              <div class="flip-card-back bg-white dark:bg-gray-800 shadow-md">
+                <p class="text-gray-800 dark:text-gray-200">An agreed amount of money paid by the insured to the insurer. Paid regularly (yearly or monthly), it's set so that the money received will be enough to pay expected losses.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Flip Card 3 -->
+          <div class="flip-card section-transition" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front bg-indigo-100 dark:bg-indigo-900 shadow-md">
+                <h3 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">Insurance Claim</h3>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">Tap to learn more</p>
+                <i class="fas fa-hand-holding-usd text-3xl text-indigo-500 dark:text-indigo-400 mt-4"></i>
+              </div>
+              <div class="flip-card-back bg-white dark:bg-gray-800 shadow-md">
+                <p class="text-gray-800 dark:text-gray-200">An agreed amount of money paid by the insurer to an insured when an insured peril happens to the insured. It's the financial compensation for a covered loss.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Common Pool & Law of Large Numbers -->
+      <section id="common-pool" class="mb-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-primaryLight flex items-center">
+            <i class="fas fa-users mr-2"></i>Common Pool & Law of Large Numbers
+          </h2>
+          
+          <div class="flex flex-col md:flex-row items-center mb-8">
+            <div class="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+              <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">Concept of Common Pool</h3>
+              <p class="text-gray-700 dark:text-gray-300">Contributions from many policyholders are gathered in a common pool (for similar insured risks). These contributions are used to pay losses suffered by a few. The operation of the common pool is based on the successful application of the law of large numbers.</p>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+              <!-- Programmatically generated SVG illustration for common pool -->
+              <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg w-full">
+                <svg class="w-full h-auto" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Background -->
+                  <rect x="0" y="0" width="400" height="220" rx="10" fill="#EEF2FF" class="dark:fill-indigo-900/20" />
+                  
+                  <!-- Common Pool (Central Circle) -->
+                  <circle cx="200" cy="110" r="60" fill="#5D5CDE" fill-opacity="0.2" class="dark:fill-indigo-600 dark:fill-opacity-0.3" />
+                  <circle cx="200" cy="110" r="50" fill="#5D5CDE" fill-opacity="0.3" class="dark:fill-indigo-600 dark:fill-opacity-0.5" />
+                  <text x="200" y="110" text-anchor="middle" dominant-baseline="middle" fill="#5D5CDE" class="dark:fill-indigo-300" font-weight="bold" font-size="14">COMMON POOL</text>
+                  
+                  <!-- Arrows pointing inward (premiums) -->
+                  <line x1="80" y1="50" x2="150" y2="90" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  <line x1="80" y1="110" x2="140" y2="110" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  <line x1="80" y1="170" x2="150" y2="130" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  <line x1="320" y1="50" x2="250" y2="90" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  <line x1="320" y1="110" x2="260" y2="110" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  <line x1="320" y1="170" x2="250" y2="130" stroke="#5D5CDE" stroke-width="2" marker-end="url(#arrowhead)" class="dark:stroke-indigo-400" />
+                  
+                  <!-- Arrows pointing outward (claims) -->
+                  <line x1="200" y1="40" x2="200" y2="10" stroke="#FF7E67" stroke-width="2" marker-end="url(#arrowhead2)" class="dark:stroke-orange-400" />
+                  <line x1="200" y1="180" x2="200" y2="210" stroke="#FF7E67" stroke-width="2" marker-end="url(#arrowhead2)" class="dark:stroke-orange-400" />
+                  
+                  <!-- People (policyholders) -->
+                  <circle cx="50" cy="50" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  <circle cx="50" cy="110" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  <circle cx="50" cy="170" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  <circle cx="350" cy="50" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  <circle cx="350" cy="110" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  <circle cx="350" cy="170" r="15" fill="#FFD166" class="dark:fill-yellow-500" />
+                  
+                  <!-- People with claims -->
+                  <circle cx="200" cy="20" r="15" fill="#FF7E67" class="dark:fill-orange-500" />
+                  <circle cx="200" cy="200" r="15" fill="#FF7E67" class="dark:fill-orange-500" />
+                  
+                  <!-- Arrow definitions -->
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                    </marker>
+                    <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#FF7E67" class="dark:fill-orange-400" />
+                    </marker>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 order-2 md:order-1 flex justify-center">
+              <!-- Law of Large Numbers visualization -->
+              <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg relative overflow-hidden max-w-sm">
+                <div class="relative">
+                  <h4 class="text-center text-indigo-700 dark:text-indigo-300 font-medium mb-4">Law of Large Numbers</h4>
+                  <div class="h-48 bg-white dark:bg-gray-700 rounded-lg shadow-inner p-3 relative">
+                    <svg width="100%" height="100%" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Grid lines -->
+                      <line x1="30" y1="10" x2="30" y2="130" stroke="#ccc" class="dark:stroke-gray-600" stroke-width="1" />
+                      <line x1="30" y1="130" x2="290" y2="130" stroke="#ccc" class="dark:stroke-gray-600" stroke-width="1" />
+                      
+                      <!-- Y-axis labels -->
+                      <text x="20" y="130" text-anchor="end" fill="#666" class="dark:fill-gray-400" font-size="10">0%</text>
+                      <text x="20" y="90" text-anchor="end" fill="#666" class="dark:fill-gray-400" font-size="10">25%</text>
+                      <text x="20" y="50" text-anchor="end" fill="#666" class="dark:fill-gray-400" font-size="10">50%</text>
+                      <text x="20" y="10" text-anchor="end" fill="#666" class="dark:fill-gray-400" font-size="10">75%</text>
+                      
+                      <!-- X-axis labels -->
+                      <text x="30" y="145" text-anchor="middle" fill="#666" class="dark:fill-gray-400" font-size="10">10</text>
+                      <text x="90" y="145" text-anchor="middle" fill="#666" class="dark:fill-gray-400" font-size="10">100</text>
+                      <text x="150" y="145" text-anchor="middle" fill="#666" class="dark:fill-gray-400" font-size="10">1K</text>
+                      <text x="210" y="145" text-anchor="middle" fill="#666" class="dark:fill-gray-400" font-size="10">10K</text>
+                      <text x="270" y="145" text-anchor="middle" fill="#666" class="dark:fill-gray-400" font-size="10">100K</text>
+                      
+                      <!-- X and Y axis titles -->
+                      <text x="160" y="10" text-anchor="middle" fill="#5D5CDE" class="dark:fill-indigo-400" font-size="11" font-weight="bold">Prediction Accuracy</text>
+                      <text x="290" y="150" text-anchor="end" fill="#5D5CDE" class="dark:fill-indigo-400" font-size="11" font-weight="bold">Number of Cases</text>
+                      
+                      <!-- Fluctuation Line -->
+                      <path d="M30,120 Q40,90 50,110 T70,70 T90,80 T110,60 T130,65 T150,50 T170,55 T190,45 T210,47 T230,42 T250,45 T270,40 T290,38" fill="none" stroke="#FF7E67" class="dark:stroke-orange-400" stroke-width="2" />
+                      
+                      <!-- Trend Line -->
+                      <path d="M30,100 L290,40" fill="none" stroke="#5D5CDE" class="dark:stroke-indigo-400" stroke-width="3" stroke-dasharray="5,5" />
+                      
+                      <!-- Dots on line -->
+                      <circle cx="30" cy="120" r="3" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                      <circle cx="90" cy="80" r="3" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                      <circle cx="150" cy="60" r="3" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                      <circle cx="210" cy="47" r="3" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                      <circle cx="270" cy="40" r="3" fill="#5D5CDE" class="dark:fill-indigo-400" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="md:w-1/2 mb-6 md:mb-0 md:pl-8 order-1 md:order-2">
+              <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">Law of Large Numbers</h3>
+              <p class="text-gray-700 dark:text-gray-300 mb-4">Explains that the greater the number of similar risks, the more accurate the insurer can be in predicting future losses. It allows the insurer to fix premiums to the pool in advance.</p>
+              <p class="text-gray-700 dark:text-gray-300">Insurance companies know that although single events are random and largely unpredictable, the average outcome of many similar events can be predicted with increasing accuracy as the number of events grows.</p>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">Subject Matter</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-indigo-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                <div class="mr-4 mt-1">
+                  <i class="fas fa-house-damage text-2xl text-primary dark:text-primaryLight"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900 dark:text-gray-100">Subject Matter of Insurance</h4>
+                  <p class="text-gray-700 dark:text-gray-300">Refers to what is being protected/insured (e.g., a house, car, or life).</p>
+                </div>
+              </div>
+              <div class="bg-indigo-50 dark:bg-gray-700 p-4 rounded-lg flex items-start">
+                <div class="mr-4 mt-1">
+                  <i class="fas fa-dollar-sign text-2xl text-primary dark:text-primaryLight"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900 dark:text-gray-100">Subject Matter of Contract</h4>
+                  <p class="text-gray-700 dark:text-gray-300">Refers to the insured's financial interest or the insurance value (e.g., insured for $100,000).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Functions of Insurance -->
+      <section id="functions" class="mb-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-primaryLight flex items-center">
+            <i class="fas fa-cogs mr-2"></i>Functions of Insurance
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-indigo-50 dark:bg-gray-700 p-6 rounded-lg section-transition">
+              <h3 class="font-semibold text-lg mb-2 text-indigo-700 dark:text-indigo-300">Primary Functions</h3>
+              <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Risk transfer</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Creation of common pool</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Equitable premium</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="bg-indigo-50 dark:bg-gray-700 p-6 rounded-lg section-transition">
+              <h3 class="font-semibold text-lg mb-2 text-indigo-700 dark:text-indigo-300">Secondary Functions</h3>
+              <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Releasing tied-up funds</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Stimulate business enterprise</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Remove fear and worry</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Reduction of losses</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Savings</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Social benefits</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="bg-indigo-50 dark:bg-gray-700 p-6 rounded-lg section-transition">
+              <h3 class="font-semibold text-lg mb-2 text-indigo-700 dark:text-indigo-300">Indirect Functions</h3>
+              <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Investment of funds</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Invisible exports</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>Sources of employment</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+            <h3 class="font-semibold text-lg mb-3 text-gray-800 dark:text-gray-200">Benefits of Insurance</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-heart text-red-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Peace of mind</span>
+              </div>
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-users text-blue-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Social benefits</span>
+              </div>
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-shield-alt text-green-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Loss control</span>
+              </div>
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-chart-line text-purple-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Investment of funds</span>
+              </div>
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-globe text-teal-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Invisible earnings</span>
+              </div>
+              <div class="bg-white dark:bg-gray-800 p-3 rounded-lg flex items-center transform transition-transform hover:scale-105">
+                <i class="fas fa-piggy-bank text-yellow-500 mr-3"></i>
+                <span class="text-gray-700 dark:text-gray-300">Savings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Characteristics of Insurable Risks -->
+      <section id="insurable-risks" class="mb-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-primaryLight flex items-center">
+            <i class="fas fa-clipboard-check mr-2"></i>Characteristics of Insurable Risks
+          </h2>
+          
+          <p class="text-gray-700 dark:text-gray-300 mb-6">Not all risks are capable of being insured. Risks that are insurable must fulfill certain characteristics:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-dollar-sign text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Financial Value</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">The risk should involve a loss that can be measured financially. Examples: cost of property repairs, court awards, etc.</p>
+              </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-users text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Large Number of Similar Risks</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">There must be a large number of similar exposures to enable accurate prediction of losses based on the law of large numbers.</p>
+              </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-balance-scale text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Pure Risk Only</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">Insurance typically covers pure risks (loss or no loss) rather than speculative risks (potential for profit, loss, or no change).</p>
+              </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-exclamation-triangle text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">No Catastrophic Loss</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">The loss should not be catastrophic, affecting a large number of insured parties simultaneously (e.g., earthquakes, war).</p>
+              </div>
+            </div>
+            
+            <!-- Card 5 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-random text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Fortuitous Loss</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">The loss must be accidental and unintentional. Intentional losses would lead to increased claims and higher premiums.</p>
+              </div>
+            </div>
+            
+            <!-- Card 6 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-file-contract text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Insurable Interest</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">The policyholder must have a legally recognized financial interest in the subject matter of insurance.</p>
+              </div>
+            </div>
+            
+            <!-- Card 7 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-gavel text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Legal & Not Against Public Policy</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">The object of insurance must be legal and not against public policy. Illegal activities cannot be insured.</p>
+              </div>
+            </div>
+            
+            <!-- Card 8 -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm overflow-hidden section-transition h-full">
+              <div class="p-4 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i class="fas fa-coins text-3xl text-primary dark:text-primaryLight"></i>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-200">Reasonable Premium</h3>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">Premium must be reasonable in relation to potential loss. Very high-probability risks may have unreasonably high premiums.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-8 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border-l-4 border-yellow-400 dark:border-yellow-600">
+            <h3 class="font-semibold text-lg mb-2 text-yellow-800 dark:text-yellow-400 flex items-center">
+              <i class="fas fa-lightbulb mr-2"></i>Quick Example
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-white dark:bg-gray-700 p-3 rounded-lg">
+                <h4 class="font-medium mb-2 text-red-600 dark:text-red-400">Not Insurable: Haunted House</h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">Cannot be financially measured, lacks objective criteria for assessment, and doesn't meet the requirement of financial value.</p>
+              </div>
+              <div class="bg-white dark:bg-gray-700 p-3 rounded-lg">
+                <h4 class="font-medium mb-2 text-green-600 dark:text-green-400">Insurable: House on Fire</h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">Has clear financial value, is a pure risk, can be part of a common pool of similar risks, and meets other insurable criteria.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quiz" class="mb-10">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-primary dark:text-primaryLight flex items-center">
+            <i class="fas fa-question-circle mr-2"></i>Test Your Knowledge
+          </h2>
+          
+          <div id="quiz-container">
+            <div id="quiz-progress" class="mb-4 hidden">
+              <div class="flex justify-between items-center mb-1 text-sm text-gray-600 dark:text-gray-400">
+                <span id="quiz-question-indicator">Question 1 of 5</span>
+                <span id="quiz-score-indicator">Score: 0/0</span>
+              </div>
+              <div class="progress-bar">
+                <div id="quiz-progress-bar" class="progress" style="width: 20%"></div>
+              </div>
+            </div>
+            
+            <div id="question-1" class="quiz-question">
+              <p class="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">1. What is the principle that explains that insurance companies can predict losses more accurately when they have a large number of similar risks?</p>
+              <div class="space-y-3">
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" data-correct="true" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q1" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Law of Large Numbers</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q1" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Common Pool Theory</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q1" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Risk Distribution Principle</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q1" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Probability Theory</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div id="question-2" class="quiz-question mt-8 hidden">
+              <p class="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">2. Which of the following is NOT a primary function of insurance?</p>
+              <div class="space-y-3">
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q2" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Risk transfer</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q2" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Creation of common pool</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" data-correct="true" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q2" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Investment of funds</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q2" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Equitable premium</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div id="question-3" class="quiz-question mt-8 hidden">
+              <p class="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">3. Which of the following is a characteristic of an insurable risk?</p>
+              <div class="space-y-3">
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q3" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">It must be a speculative risk</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q3" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">It must be certain to occur</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" data-correct="true" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q3" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">The loss must be fortuitous (accidental)</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q3" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">It must affect a large number of people simultaneously</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div id="question-4" class="quiz-question mt-8 hidden">
+              <p class="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">4. What does the term "subject matter of insurance" refer to?</p>
+              <div class="space-y-3">
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" data-correct="true" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q4" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">The life, property, or rights being protected by insurance</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q4" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">The amount of money being insured</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q4" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">The insurance contract itself</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q4" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">The premium paid by the insured</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div id="question-5" class="quiz-question mt-8 hidden">
+              <p class="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">5. The purpose of common pool in insurance is to:</p>
+              <div class="space-y-3">
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q5" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Generate profits for insurance companies</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" data-correct="true" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q5" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Pay losses suffered by a few using contributions from many</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q5" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Reduce insurance premiums for all policyholders</span>
+                  </label>
+                </div>
+                <div class="quiz-option bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-transparent transition" tabindex="0">
+                  <label class="flex items-center w-full cursor-pointer">
+                    <input type="radio" name="q5" class="mr-3 h-4 w-4 text-primary focus:ring-primary">
+                    <span class="text-gray-700 dark:text-gray-300">Invest in secure financial instruments</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div id="quiz-result" class="mt-8 hidden">
+              <div class="bg-indigo-50 dark:bg-indigo-900/30 p-6 rounded-lg text-center">
+                <h3 class="text-xl font-semibold text-indigo-700 dark:text-indigo-300 mb-4">Quiz Result</h3>
+                <div class="mb-6 flex justify-center">
+                  <div id="result-circle" class="w-32 h-32 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-md">
+                    <div>
+                      <p class="text-3xl font-bold text-primary dark:text-primaryLight"><span id="score">0</span>/5</p>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">correct</p>
+                    </div>
+                  </div>
+                </div>
+                <p id="result-message" class="text-gray-600 dark:text-gray-400 mb-6"></p>
+                <button id="restart-quiz" class="bg-primary hover:bg-primaryDark text-white font-medium py-2 px-6 rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-primaryLight focus:ring-opacity-50">
+                  Restart Quiz
+                </button>
+              </div>
+            </div>
+            
+            <div class="mt-6 flex justify-between">
+              <button id="prev-question" class="hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+                <i class="fas fa-arrow-left mr-2"></i>Previous
+              </button>
+              <button id="next-question" class="bg-primary hover:bg-primaryDark text-white font-medium py-2 px-6 rounded transition duration-200 focus:outline-none focus:ring-2 focus:ring-primaryLight focus:ring-opacity-50">
+                Next<i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 py-6 shadow-inner">
+      <div class="container mx-auto px-4">
+        <div class="text-center text-gray-600 dark:text-gray-400">
+          <p>INS200: Risk and Insurance - Chapter 3: Nature of Insurance</p>
+          <p class="mt-2">© 2023 Insurance Learning Platform</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+    
+    // Check user preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      htmlElement.classList.add('dark');
+      updateThemeToggleIcon(true);
+    }
+    
+    // Listen for changes in user preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      const isDark = event.matches;
+      htmlElement.classList.toggle('dark', isDark);
+      updateThemeToggleIcon(isDark);
+    });
+    
+    themeToggle.addEventListener('click', () => {
+      const isDark = htmlElement.classList.toggle('dark');
+      updateThemeToggleIcon(isDark);
+    });
+    
+    function updateThemeToggleIcon(isDark) {
+      const icon = themeToggle.querySelector('i');
+      if (isDark) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    }
+    
+    // Flip cards (click/tap functionality instead of just hover)
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', function() {
+        this.classList.toggle('flipped');
+      });
+      
+      // Also handle keyboard interactions for accessibility
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.classList.toggle('flipped');
+        }
+      });
+    });
+    
+    // Progress tracking - smoother implementation
+    let progress = 0;
+    const progressIndicator = document.getElementById('progress-indicator');
+    const progressText = document.getElementById('progress-text');
+    
+    // Throttle function to limit how often a function runs
+    function throttle(fn, delay) {
+      let lastCall = 0;
+      return function(...args) {
+        const now = new Date().getTime();
+        if (now - lastCall < delay) {
+          return;
+        }
+        lastCall = now;
+        return fn(...args);
+      }
+    }
+    
+    // Update progress as user scrolls
+    const updateProgress = throttle(() => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollableHeight = documentHeight - windowHeight;
+      
+      progress = Math.min(Math.round((scrollPosition / scrollableHeight) * 100), 100);
+      progressIndicator.style.width = `${progress}%`;
+      progressText.textContent = `Progress: ${progress}%`;
+    }, 100);
+    
+    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
+    // Initial call to set progress
+    updateProgress();
+    
+    // Quiz functionality - improved
+    const quizContainer = document.getElementById('quiz-container');
+    const quizProgress = document.getElementById('quiz-progress');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const quizQuestionIndicator = document.getElementById('quiz-question-indicator');
+    const quizScoreIndicator = document.getElementById('quiz-score-indicator');
+    const questions = document.querySelectorAll('.quiz-question');
+    const resultDiv = document.getElementById('quiz-result');
+    const scoreSpan = document.getElementById('score');
+    const resultMessage = document.getElementById('result-message');
+    const resultCircle = document.getElementById('result-circle');
+    const nextBtn = document.getElementById('next-question');
+    const prevBtn = document.getElementById('prev-question');
+    const restartBtn = document.getElementById('restart-quiz');
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let attempted = 0;
+    
+    // Show quiz progress
+    function updateQuizProgress() {
+      quizProgress.classList.remove('hidden');
+      quizQuestionIndicator.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      quizScoreIndicator.textContent = `Score: ${score}/${attempted}`;
+      const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
+      quizProgressBar.style.width = `${progressPercentage}%`;
+    }
+    
+    // Show current question
+    function showQuestion(index) {
+      questions.forEach((question, i) => {
+        question.style.display = i === index ? 'block' : 'none';
+      });
+      
+      updateQuizProgress();
+      
+      // Update buttons
+      prevBtn.style.display = index === 0 ? 'none' : 'block';
+      if (index === questions.length - 1) {
+        nextBtn.innerHTML = 'Finish';
+      } else {
+        nextBtn.innerHTML = 'Next<i class="fas fa-arrow-right ml-2"></i>';
+      }
+    }
+    
+    // Function to show immediate feedback on quiz options
+    function showAnswerFeedback(questionIndex, selectedOption) {
+      const question = questions[questionIndex];
+      const options = question.querySelectorAll('.quiz-option');
+      const correctOption = question.querySelector('[data-correct="true"]');
+      
+      options.forEach(option => {
+        if (option === correctOption) {
+          option.classList.add('correct');
+        } else if (option === selectedOption) {
+          option.classList.add('incorrect');
+        }
+        
+        // Disable all options after selection
+        option.style.pointerEvents = 'none';
+        const radio = option.querySelector('input[type="radio"]');
+        radio.disabled = true;
+      });
+    }
+    
+    // Initialize quiz
+    updateQuizProgress();
+    showQuestion(currentQuestion);
+    
+    // Next question button
+    nextBtn.addEventListener('click', () => {
+      const selectedOption = document.querySelector(`input[name="q${currentQuestion + 1}"]:checked`);
+      
+      if (!selectedOption) {
+        // Show toast notification instead of alert
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-50 animate-bounce';
+        toast.textContent = 'Please select an answer before proceeding.';
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+        
+        return;
+      }
+      
+      attempted++;
+      
+      // Check if answer is correct
+      const selectedOptionDiv = selectedOption.closest('.quiz-option');
+      const correctOption = questions[currentQuestion].querySelector('[data-correct="true"]');
+      
+      if (selectedOptionDiv === correctOption) {
+        score++;
+      }
+      
+      // Show feedback
+      showAnswerFeedback(currentQuestion, selectedOptionDiv);
+      
+      // Update score indicator
+      quizScoreIndicator.textContent = `Score: ${score}/${attempted}`;
+      
+      // Wait a moment to show the feedback before moving on
+      setTimeout(() => {
+        // Move to next question or show results
+        if (currentQuestion < questions.length - 1) {
+          currentQuestion++;
+          showQuestion(currentQuestion);
+        } else {
+          // Show results
+          questions.forEach(q => q.style.display = 'none');
+          resultDiv.style.display = 'block';
+          quizProgress.classList.add('hidden');
+          scoreSpan.textContent = score;
+          
+          // Update result circle color based on score
+          if (score === 5) {
+            resultCircle.classList.add('bg-green-50', 'dark:bg-green-900/20');
+            resultCircle.classList.remove('bg-white', 'dark:bg-gray-800');
+            resultMessage.textContent = 'Excellent! You have a perfect understanding of insurance concepts.';
+            resultMessage.className = 'text-green-600 dark:text-green-400 mb-6';
+          } else if (score >= 3) {
+            resultCircle.classList.add('bg-blue-50', 'dark:bg-blue-900/20');
+            resultCircle.classList.remove('bg-white', 'dark:bg-gray-800');
+            resultMessage.textContent = 'Good job! You have a solid grasp of most insurance concepts.';
+            resultMessage.className = 'text-blue-600 dark:text-blue-400 mb-6';
+          } else {
+            resultCircle.classList.add('bg-yellow-50', 'dark:bg-yellow-900/20');
+            resultCircle.classList.remove('bg-white', 'dark:bg-gray-800');
+            resultMessage.textContent = 'You might want to review the material again to strengthen your understanding.';
+            resultMessage.className = 'text-yellow-600 dark:text-yellow-400 mb-6';
+          }
+          
+          nextBtn.style.display = 'none';
+          prevBtn.style.display = 'none';
+        }
+      }, 1000);
+    });
+    
+    // Previous question button
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion(currentQuestion);
+      }
+    });
+    
+    // Restart quiz button
+    restartBtn.addEventListener('click', () => {
+      // Reset all selections and feedback
+      document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+      });
+      
+      document.querySelectorAll('.quiz-option').forEach(option => {
+        option.classList.remove('correct', 'incorrect');
+        option.style.pointerEvents = '';
+      });
+      
+      // Reset score and question
+      score = 0;
+      attempted = 0;
+      currentQuestion = 0;
+      
+      // Reset result circle
+      resultCircle.classList.remove('bg-green-50', 'bg-blue-50', 'bg-yellow-50', 'dark:bg-green-900/20', 'dark:bg-blue-900/20', 'dark:bg-yellow-900/20');
+      resultCircle.classList.add('bg-white', 'dark:bg-gray-800');
+      
+      // Show first question again
+      resultDiv.style.display = 'none';
+      showQuestion(currentQuestion);
+      nextBtn.style.display = 'block';
+    });
+    
+    // Make quiz options clickable on the entire div, not just the radio button
+    document.querySelectorAll('.quiz-option').forEach(option => {
+      option.addEventListener('click', () => {
+        const radio = option.querySelector('input[type="radio"]');
+        if (!radio.disabled) {
+          radio.checked = true;
+        }
+      });
+      
+      // Keyboard accessibility
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const radio = option.querySelector('input[type="radio"]');
+          if (!radio.disabled) {
+            radio.checked = true;
+          }
+        }
+      });
+    });
+    
+    // Smooth scroll functionality
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
