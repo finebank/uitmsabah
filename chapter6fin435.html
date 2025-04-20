@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6 - Offshore Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#6366F1',
+                        darkbg: '#181818',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s;
+        }
+        
+        .dark .dark-invert {
+            filter: invert(1);
+        }
+        
+        .timeline-item {
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 1.15rem;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #5D5CDE;
+        }
+        
+        .timeline-item:last-child::before {
+            height: 50%;
+        }
+        
+        .timeline-item:first-child::before {
+            top: 50%;
+            height: 50%;
+        }
+        
+        .animate-bounce-soft {
+            animation: bounceSoft 2s infinite;
+        }
+        
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tax-calculator-result {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+        
+        .tax-calculator-result.show {
+            height: auto;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-primary text-white py-4 px-6 shadow-md">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-globe-americas text-2xl mr-3"></i>
+                    <h1 class="text-xl md:text-2xl font-bold">Offshore Market</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm hidden md:inline">Toggle Dark Mode</span>
+                        <button id="darkModeToggle" class="p-2 rounded-full bg-gray-700 text-white">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm">Chapter 6</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main tabs navigation -->
+        <div class="bg-gray-100 dark:bg-gray-800 shadow-sm">
+            <div class="container mx-auto">
+                <div class="flex overflow-x-auto py-2 px-4 md:px-0 no-scrollbar">
+                    <button class="tab-btn whitespace-nowrap active px-4 py-2 mx-1 rounded-md bg-primary text-white font-medium" data-tab="intro">
+                        <i class="fas fa-info-circle mr-1"></i> Introduction
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="labuan-ibfc">
+                        <i class="fas fa-building mr-1"></i> Labuan IBFC
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="labuan-fsa">
+                        <i class="fas fa-landmark mr-1"></i> Labuan FSA
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="tax-structure">
+                        <i class="fas fa-file-invoice-dollar mr-1"></i> Tax Structure
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="business-activities">
+                        <i class="fas fa-briefcase mr-1"></i> Business Activities
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="practice">
+                        <i class="fas fa-tasks mr-1"></i> Practice
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <main class="flex-grow container mx-auto px-4 py-6 md:py-8">
+            <!-- Introduction Tab -->
+            <div id="intro" class="tab-content active animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">What is an Offshore Market?</h2>
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">An <strong>offshore market</strong> is a location where financial products and services are offered by offshore companies that meet the needs of financial market participants in a low tax regime and moderately or lightly regulated jurisdictions.</p>
+                            <p class="mb-3">Funds move actively between market participants (surplus and deficit units) in these markets.</p>
+                            <p>According to the IMF, some of the leading offshore financial centers include the Bahamas, Bermuda, British Virgin Islands, Cayman Islands, Gibraltar, Luxembourg, Jersey, and Panama. Other notable centers are Switzerland, Hong Kong, Singapore, Japan, and the United States.</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="w-56 h-56 relative">
+                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                    <circle cx="100" cy="100" r="80" fill="#5D5CDE" fill-opacity="0.2"/>
+                                    <g transform="translate(60, 50)">
+                                        <rect x="0" y="0" width="80" height="60" rx="5" fill="#5D5CDE"/>
+                                        <rect x="10" y="10" width="60" height="10" rx="2" fill="white"/>
+                                        <rect x="10" y="25" width="60" height="10" rx="2" fill="white"/>
+                                        <rect x="10" y="40" width="60" height="10" rx="2" fill="white"/>
+                                    </g>
+                                    <g transform="translate(100, 70)">
+                                        <circle cx="20" cy="20" r="15" fill="#4F46E5"/>
+                                        <path d="M20 10 L20 30 M10 20 L30 20" stroke="white" stroke-width="3"/>
+                                    </g>
+                                    <g transform="translate(120, 120)">
+                                        <circle cx="0" cy="0" r="15" fill="#4F46E5"/>
+                                        <path d="M-5 -5 L5 5 M-5 5 L5 -5" stroke="white" stroke-width="3"/>
+                                    </g>
+                                    <g transform="translate(40, 120)">
+                                        <circle cx="0" cy="0" r="15" fill="#4F46E5"/>
+                                        <path d="M-7 0 L7 0 M0 -5 L0 5" stroke="white" stroke-width="3"/>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Key Characteristics of Offshore Financial Centers</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <h4 class="font-semibold">Low Tax Environment</h4>
+                            </div>
+                            <p class="text-sm">Offshore centers offer favorable tax rates, tax exemptions, or tax incentives to attract foreign investments and businesses.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <h4 class="font-semibold">Minimum Exchange Control</h4>
+                            </div>
+                            <p class="text-sm">Few restrictions on currency exchange and capital movements, allowing for free flow of funds across borders.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <h4 class="font-semibold">Many Financial Institutions</h4>
+                            </div>
+                            <p class="text-sm">High concentration of banks, insurance companies, and other financial service providers relative to the size of the local economy.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <h4 class="font-semibold">Maximum Confidentiality</h4>
+                            </div>
+                            <p class="text-sm">Strong privacy laws and banking secrecy provisions, though increasingly balanced with international transparency requirements.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-network-wired"></i>
+                                </div>
+                                <h4 class="font-semibold">Excellent Infrastructure</h4>
+                            </div>
+                            <p class="text-sm">Well-developed physical and digital infrastructure to support efficient financial operations and transactions.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <h4 class="font-semibold">Stable Legal Framework</h4>
+                            </div>
+                            <p class="text-sm">Clear and stable business-friendly legal systems with professional services to support business activities.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Leading Offshore Financial Centers</h3>
+                    <div class="relative h-56 md:h-80 rounded-lg overflow-hidden mb-4">
+                        <div class="absolute inset-0 bg-blue-900 dark:bg-blue-800">
+                            <div id="worldMap" class="w-full h-full"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs p-2">
+                            <div class="flex items-center justify-center space-x-4">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full bg-red-500 mr-1"></div>
+                                    <span>Major Centers</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500 mr-1"></div>
+                                    <span>Secondary Centers</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
+                                    <span>Emerging Centers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-center text-gray-600 dark:text-gray-400 mb-4">
+                        * Interactive world map showing major offshore financial centers (use touch/mouse to explore)
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-info-circle mr-2 text-primary"></i>
+                            Malaysia's Offshore Market
+                        </h4>
+                        <p class="text-sm">Malaysia has established the <strong>Labuan International Business and Financial Center (Labuan IBFC)</strong> as its offshore financial center. Regulated by the Labuan Financial Services Authority (Labuan FSA), it offers a wide range of financial services with attractive tax incentives.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Labuan IBFC Tab -->
+            <div id="labuan-ibfc" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Labuan International Business and Financial Center (IBFC)</h2>
+                    
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">The <strong>Labuan International Business and Financial Center (IBFC)</strong> is Malaysia's offshore financial center established to provide a wide spectrum of financial services and products for corporations and individuals.</p>
+                            <p class="mb-3">Located on Labuan Island off the coast of Borneo in East Malaysia, it was established in 1990 as part of Malaysia's efforts to develop a regional financial hub.</p>
+                            <p>Labuan IBFC offers a dual financial system, combining both conventional banking and Islamic finance services, making it unique among offshore centers.</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="relative w-full h-48 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+                                <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                                    <i class="fas fa-map-marker-alt text-red-500 text-3xl mb-2"></i>
+                                    <div class="text-center">
+                                        <div class="font-semibold">Labuan Island</div>
+                                        <div class="text-xs">Federal Territory of Malaysia</div>
+                                        <div class="text-xs mt-2">Geographic coordinates:</div>
+                                        <div class="text-xs">5.2833° N, 115.2500° E</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Key Features of Labuan IBFC</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <h4 class="font-semibold">Wide Range of Services</h4>
+                            </div>
+                            <p class="text-sm">Provides a large spectrum of financial services and products for corporations and individuals, including banking, insurance, wealth management, and more.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-star-and-crescent"></i>
+                                </div>
+                                <h4 class="font-semibold">Dual Financial System</h4>
+                            </div>
+                            <p class="text-sm">Offers both conventional banking and Islamic finance, catering to diverse client needs and preferences.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <h4 class="font-semibold">Home to 50+ Banks</h4>
+                            </div>
+                            <p class="text-sm">Houses more than 50 banks offering commercial and investment banking products, most belonging to international banking groups from the Asia Pacific region.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-digital-tachograph"></i>
+                                </div>
+                                <h4 class="font-semibold">Digital Financial Services</h4>
+                            </div>
+                            <p class="text-sm">Caters to emerging digital financial services, including digital banking and fintech solutions.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg mb-6">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-info-circle text-blue-600 dark:text-blue-400 text-xl mr-2"></i>
+                            <h4 class="font-semibold">No Cash Transactions</h4>
+                        </div>
+                        <p class="text-sm">An important distinction of Labuan IBFC is that there are no cash transactions permitted in the center. All financial activities are conducted through electronic transfers and digital means.</p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Banking Operations in Labuan IBFC</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Structure</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Can operate as a branch or subsidiary</li>
+                                <li>Can establish offices in other parts of Malaysia</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Services</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Project and infrastructure funding</li>
+                                <li>Structured borrowings</li>
+                                <li>Trade and export financing</li>
+                                <li>Treasury services</li>
+                                <li>Financial advisory</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Currency</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Transactions in any currency</li>
+                                <li>Malaysian Ringgit transactions permitted with Bank Negara Malaysia approval</li>
+                                <li>Predominantly non-Ringgit business</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Labuan IBFC vs. Domestic Market</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="py-3 px-4 text-left font-semibold border-b border-gray-200 dark:border-gray-600">Feature</th>
+                                    <th class="py-3 px-4 text-left font-semibold border-b border-gray-200 dark:border-gray-600">Labuan IBFC</th>
+                                    <th class="py-3 px-4 text-left font-semibold border-b border-gray-200 dark:border-gray-600">Malaysia Domestic Market</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Legislation</td>
+                                    <td class="py-3 px-4">Independent legal and tax framework</td>
+                                    <td class="py-3 px-4">Domestic law</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Clientele</td>
+                                    <td class="py-3 px-4">Mainly non-residents</td>
+                                    <td class="py-3 px-4">Mainly residents</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Currency denomination</td>
+                                    <td class="py-3 px-4">Predominantly non-ringgit</td>
+                                    <td class="py-3 px-4">Ringgit</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Business scope</td>
+                                    <td class="py-3 px-4">Mainly wholesale</td>
+                                    <td class="py-3 px-4">Mainly retail</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Exchange control</td>
+                                    <td class="py-3 px-4">No exchange control</td>
+                                    <td class="py-3 px-4">BNM's foreign exchange administration</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Regulatory authority</td>
+                                    <td class="py-3 px-4">Labuan Financial Services Authority (FSA)</td>
+                                    <td class="py-3 px-4">Domestic authorities – BNM, SC, SSM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold mb-3 text-primary">Characteristics of Labuan IBFC</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Regulation</h4>
+                                <ul class="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Regulated by Labuan Financial Services Authority (Labuan FSA)</li>
+                                    <li>Globally recognized regulatory structure</li>
+                                    <li>Adheres to worldwide standards in financial services & supervision</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Location</h4>
+                                <ul class="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Labuan (independent state with its own laws)</li>
+                                    <li>At national boundaries</li>
+                                    <li>At sea – some distance from the shores</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Government control</h4>
+                                <ul class="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Little or no intervention</li>
+                                    <li>No foreign exchange control</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Tax regime</h4>
+                                <ul class="list-disc pl-5 space-y-1 text-sm">
+                                    <li>Favorable (low tax with maximum of RM20,000 / $5,000)</li>
+                                    <li>No income tax, no stamp duties, no withholding tax, no dividend tax, no service charges, etc.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Labuan FSA Tab -->
+            <div id="labuan-fsa" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Labuan Financial Services Authority (FSA)</h2>
+                    
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">The <strong>Labuan Financial Services Authority (Labuan FSA)</strong> was established on February 15, 1996, under the Labuan Financial Services Authority Act 1996.</p>
+                            <p class="mb-3">It is the statutory body responsible for the development and administration of the Labuan International Business and Financial Centre (Labuan IBFC).</p>
+                            <p>Labuan FSA ensures that the Labuan IBFC adheres to international standards and best practices, particularly those set by the Organization of Economic Cooperation and Development (OECD).</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-white text-4xl animate-bounce-soft">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col space-y-2 mb-6">
+                        <div class="bg-blue-50 dark:bg-blue-900 p-3 rounded-lg">
+                            <h3 class="font-semibold text-blue-800 dark:text-blue-200">Establishment Timeline</h3>
+                            <div class="pl-4 pt-2">
+                                <div class="flex">
+                                    <div class="flex flex-col items-center mr-4">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                        <div class="h-full border-l-2 border-primary ml-4 my-1"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-medium">1990</h4>
+                                        <p class="text-xs mb-3">Labuan was established as an International Offshore Financial Centre (IOFC) with the enactment of tax and company laws.</p>
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div class="flex flex-col items-center mr-4">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="h-full border-l-2 border-primary ml-4 my-1"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-medium">February 15, 1996</h4>
+                                        <p class="text-xs mb-3">Labuan Financial Services Authority (Labuan FSA) was established under the Labuan Financial Services Authority Act 1996.</p>
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div class="flex flex-col items-center mr-4">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </div>
+                                        <div class="h-full border-l-2 border-primary ml-4 my-1"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-medium">2008</h4>
+                                        <p class="text-xs mb-3">Rebranding from Labuan IOFC to Labuan International Business and Financial Centre (Labuan IBFC).</p>
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div class="flex flex-col items-center mr-4">
+                                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-medium">2010</h4>
+                                        <p class="text-xs">New legislation framework was introduced to modernize and streamline the legal provisions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Objectives of Labuan FSA</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <h4 class="font-semibold">Promotion & Development</h4>
+                            </div>
+                            <p class="text-sm">Promote and develop Labuan as an international center for business and financial services.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-sitemap"></i>
+                                </div>
+                                <h4 class="font-semibold">Policy Development</h4>
+                            </div>
+                            <p class="text-sm">Develop national objectives, policies, and priorities for orderly development and administration of international business and financial services in Labuan.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <h4 class="font-semibold">Central Regulation</h4>
+                            </div>
+                            <p class="text-sm">Act as a central regulator, supervisory and enforcement authority of the international business and financial services in Labuan.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Roles of Labuan FSA</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white text-xl mb-3 mx-auto">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <h4 class="font-medium text-center mb-2">Licensing & Regulation</h4>
+                            <p class="text-sm text-center">Licenses and regulates licensed entities operating within Labuan IBFC.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white text-xl mb-3 mx-auto">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h4 class="font-medium text-center mb-2">Compliance Oversight</h4>
+                            <p class="text-sm text-center">Ensures all entities comply with the internal and international best standards adopted by the jurisdiction.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white text-xl mb-3 mx-auto">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <h4 class="font-medium text-center mb-2">Policy Development</h4>
+                            <p class="text-sm text-center">Develops policies for orderly conduct of business and financial services in Labuan IBFC.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Prudential Supervision</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h4 class="font-semibold">Anti-Money Laundering</h4>
+                            </div>
+                            <p class="text-sm">Implements strict measures to prevent money laundering activities and ensure the integrity of the financial system.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-ban"></i>
+                                </div>
+                                <h4 class="font-semibold">Combating Terrorism Financing</h4>
+                            </div>
+                            <p class="text-sm">Takes active measures to prevent terrorism financing activities in line with international standards and requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tax Structure Tab -->
+            <div id="tax-structure" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Labuan Tax Structure</h2>
+                    
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">The tax system in Labuan is designed to be competitive and attractive for international businesses, while also complying with international standards and regulations.</p>
+                            <p class="mb-3">Companies registered in Labuan can benefit from doing business in a low-cost and low-tax environment, making it an attractive jurisdiction for various business activities.</p>
+                            <p>The tax framework is primarily governed by the <strong>Labuan Business Activity Tax Act 1990 (LBATA)</strong>, which has undergone various amendments to stay current with international tax standards, including those set by the Organization for Economic Co-operation and Development (OECD).</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="w-32 h-32 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-4xl animate-bounce-soft">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Categories of Tax Treatment</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16">
+                                <div class="absolute transform rotate-45 bg-blue-600 text-white text-xs font-bold text-center py-1 right-[-35px] top-[32px] w-[170px]">
+                                    3% Tax Rate
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold">Offshore Trading Activities</h4>
+                            </div>
+                            <p class="mb-3 text-sm">Includes banking, insurance, trading, management, licensing and other active business operations.</p>
+                            
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm mb-3">
+                                <h5 class="font-medium mb-1 text-sm">Examples of Trading Activities:</h5>
+                                <ul class="list-disc pl-5 space-y-1 text-xs">
+                                    <li>Banking services</li>
+                                    <li>Insurance operations</li>
+                                    <li>Trading activities</li>
+                                    <li>Management services</li>
+                                    <li>Licensing of intellectual property</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <h5 class="font-medium mb-1 text-sm">Tax Rate:</h5>
+                                <p class="text-sm">3% of audited net profits, provided the entity complies with tax substantial activity requirements.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16">
+                                <div class="absolute transform rotate-45 bg-green-600 text-white text-xs font-bold text-center py-1 right-[-35px] top-[32px] w-[170px]">
+                                    0% Tax Rate
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold">Offshore Non-Trading Activities</h4>
+                            </div>
+                            <p class="mb-3 text-sm">Refers to activities related to holding investments in securities, stocks, shares, loans, deposits, and immovable properties by an offshore company on its own behalf.</p>
+                            
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm mb-3">
+                                <h5 class="font-medium mb-1 text-sm">Examples of Non-Trading Activities:</h5>
+                                <ul class="list-disc pl-5 space-y-1 text-xs">
+                                    <li>Holding investments in securities</li>
+                                    <li>Holding shares in other companies</li>
+                                    <li>Maintaining loans and deposits</li>
+                                    <li>Owning immovable properties</li>
+                                    <li>Passive investment holding</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <h5 class="font-medium mb-1 text-sm">Tax Rate:</h5>
+                                <p class="text-sm">0% (tax exempt), provided the entity complies with tax substantial activity requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg mb-6">
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-info-circle mr-2 text-blue-600 dark:text-blue-400"></i>
+                            2019 Tax Regime Changes
+                        </h4>
+                        <p class="text-sm mb-2">The Labuan tax regime underwent significant changes effective January 1, 2019, to align with new international tax standards set by the OECD:</p>
+                        <ul class="list-disc pl-6 space-y-1 text-sm">
+                            <li>Abolished the flat tax rate of RM20,000 that was previously an option</li>
+                            <li>Introduced the 3% rate on net profits for trading activities</li>
+                            <li>Maintained tax exemption for non-trading activities</li>
+                            <li>Introduced the requirement for "substantial activities" to qualify for tax benefits</li>
+                        </ul>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Tax Restrictions on Payments to Labuan Entities</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="py-3 px-4 text-left font-semibold border-b border-gray-200 dark:border-gray-600">Payment Types</th>
+                                    <th class="py-3 px-4 text-left font-semibold border-b border-gray-200 dark:border-gray-600">Maximum Amount Deductible</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-3 px-4">Interest Payment</td>
+                                    <td class="py-3 px-4">67%</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Lease Rental</td>
+                                    <td class="py-3 px-4">67%</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Other Payments</td>
+                                    <td class="py-3 px-4">3%</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">General Reinsurance Premium</td>
+                                    <td class="py-3 px-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg mb-6">
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-2 text-yellow-600 dark:text-yellow-400"></i>
+                            Important Note on Business with Malaysia
+                        </h4>
+                        <p class="text-sm">Prior to 2019 changes, Malaysian residents could claim full tax deductions on payments to Labuan entities. Now, restrictions apply as detailed in the table above. This affects the tax-efficiency of certain transactions between Malaysian entities and Labuan companies.</p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Personal Income Tax Exemptions</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-green-600 dark:text-green-400">Current Exemptions (Until 2025)</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>100% exemption on non-Malaysian director's fees</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2 text-red-600 dark:text-red-400">Discontinued Exemptions</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>50% exemption of gross income for non-citizen individuals employed in managerial positions</li>
+                                <li>50% exemption of gross housing allowances and gross Labuan territory allowance</li>
+                                <li>65% exemption of statutory income derived from provision of qualifying professional services</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-3">Tax Calculator for Labuan Entities</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Business Activity Type</label>
+                                <select id="activityType" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base">
+                                    <option value="trading">Trading Activity</option>
+                                    <option value="nontrading">Non-Trading Activity</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Net Profit (RM)</label>
+                                <input type="number" id="netProfit" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter net profit amount">
+                            </div>
+                        </div>
+                        
+                        <button id="calculateTax" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                            Calculate Tax
+                        </button>
+                        
+                        <div id="taxResult" class="tax-calculator-result mt-4 bg-gray-100 dark:bg-gray-700 rounded-md text-sm">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Activities Tab -->
+            <div id="business-activities" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Labuan Business Activities</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <p class="mb-3">Labuan IBFC offers a diverse range of business activities and financial services, catering to both conventional and Islamic financial needs.</p>
+                            <p>All business activities in Labuan are governed by a comprehensive legal framework that ensures stability, transparency, and compliance with international standards.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Key Business Activities:</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex items-center">
+                                    <i class="fas fa-university text-primary mr-2"></i>
+                                    <span class="text-sm">Banking</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-shield-alt text-primary mr-2"></i>
+                                    <span class="text-sm">Insurance</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-handshake text-primary mr-2"></i>
+                                    <span class="text-sm">Trust Companies</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-coins text-primary mr-2"></i>
+                                    <span class="text-sm">Wealth Management</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-building text-primary mr-2"></i>
+                                    <span class="text-sm">Labuan Companies</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-chart-line text-primary mr-2"></i>
+                                    <span class="text-sm">Capital Markets</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-star-and-crescent text-primary mr-2"></i>
+                                    <span class="text-sm">Islamic Business</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-briefcase text-primary mr-2"></i>
+                                    <span class="text-sm">Other Business</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-3 text-primary">Regulatory Framework</h3>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <p class="text-sm mb-3">All business activities in Labuan are bound by a set of acts as follows:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Financial Services and Securities Act 2010 (Act 704)</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Financial Services Authority Act 1996</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Business Activity Tax Act 1990</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Companies Act 1990</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Trust Act 1996</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Foundations Act 2010 (Act 706)</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Islamic Financial Services And Securities Act 2010 (Act 705)</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Labuan Limited Partnerships and Limited Liability Partnership Act 2010 (Act 707)</span>
+                                </div>
+                                <div class="flex items-start bg-white dark:bg-gray-800 p-2 rounded-md shadow-sm col-span-1 md:col-span-2">
+                                    <i class="fas fa-file-alt text-primary mt-1 mr-2"></i>
+                                    <span class="text-xs">Anti-Money Laundering, Anti-Terrorism Financing and Proceeds of Unlawful Activities Act 2001 (Act 613)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mb-6">
+                        <!-- Banking Section -->
+                        <div class="accordion-item bg-gray-50 dark:bg-gray-700 mb-3 rounded-lg overflow-hidden">
+                            <div class="accordion-header cursor-pointer p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-3">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <h3 class="font-semibold">Offshore Banking</h3>
+                                </div>
+                                <i class="fas fa-chevron-down text-primary accordion-icon transition-transform duration-300 transform"></i>
+                            </div>
+                            <div class="accordion-content px-4 pb-4 pt-0 hidden">
+                                <div class="border-t border-gray-200 dark:border-gray-600 pt-3">
+                                    <p class="text-sm mb-3">Labuan banking means the business of receiving deposits on current accounts, deposit accounts, savings accounts, and includes investment banking business, Labuan financial business, Islamic banking business and other transactions specified by Labuan FSA.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Key Features:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Transactions can be done in any currency including Malaysian Ringgit where permitted by Bank Negara Malaysia</li>
+                                                <li>Dual financial system offering both conventional banking and Islamic finance</li>
+                                                <li>No cash transactions allowed in Labuan IBFC</li>
+                                                <li>Labuan investment banks are not allowed to accept deposits</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Banking Services:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Project and infrastructure funding</li>
+                                                <li>Structured borrowings</li>
+                                                <li>Trade and export financing</li>
+                                                <li>Treasury services</li>
+                                                <li>Financial advisory</li>
+                                                <li>Digital banking services</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 dark:bg-blue-900 p-3 rounded-md">
+                                        <p class="text-xs"><strong>Note:</strong> Banks can operate as a branch or subsidiary and can establish offices in other parts of Malaysia to facilitate their businesses. More than 50 banks operate in Labuan IBFC, with the majority belonging to international banking groups from the Asia Pacific region.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Insurance Section -->
+                        <div class="accordion-item bg-gray-50 dark:bg-gray-700 mb-3 rounded-lg overflow-hidden">
+                            <div class="accordion-header cursor-pointer p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-3">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h3 class="font-semibold">Offshore Insurance and Reinsurance</h3>
+                                </div>
+                                <i class="fas fa-chevron-down text-primary accordion-icon transition-transform duration-300 transform"></i>
+                            </div>
+                            <div class="accordion-content px-4 pb-4 pt-0 hidden">
+                                <div class="border-t border-gray-200 dark:border-gray-600 pt-3">
+                                    <p class="text-sm mb-3">An insurance business transacted in foreign currency including life, general, reinsurance, captive insurance, insurance manager, underwriting manager and insurance broking, but does not include domestic insurance business.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Regulatory Framework:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Regulated under the Labuan Financial Services and Securities Act 2010</li>
+                                                <li>License required from the Ministry of Finance</li>
+                                                <li>Governed by Labuan laws including Labuan Islamic Financial Services and Securities Act 2010 for Islamic insurance</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Types of Insurance Business:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Life insurance</li>
+                                                <li>General insurance</li>
+                                                <li>Reinsurance</li>
+                                                <li>Captive insurance</li>
+                                                <li>Insurance management</li>
+                                                <li>Underwriting management</li>
+                                                <li>Insurance broking</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 dark:bg-blue-900 p-3 rounded-md">
+                                        <p class="text-xs"><strong>Note:</strong> Offshore insurance business may be operated by a branch/subsidiary of foreign insurers or Malaysian insurers with a license obtained from the Ministry of Finance. All transactions must be conducted in foreign currency.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trust Companies Section -->
+                        <div class="accordion-item bg-gray-50 dark:bg-gray-700 mb-3 rounded-lg overflow-hidden">
+                            <div class="accordion-header cursor-pointer p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white mr-3">
+                                        <i class="fas fa-handshake"></i>
+                                    </div>
+                                    <h3 class="font-semibold">Offshore Trust Companies</h3>
+                                </div>
+                                <i class="fas fa-chevron-down text-primary accordion-icon transition-transform duration-300 transform"></i>
+                            </div>
+                            <div class="accordion-content px-4 pb-4 pt-0 hidden">
+                                <div class="border-t border-gray-200 dark:border-gray-600 pt-3">
+                                    <p class="text-sm mb-3">Trust companies play an important role in facilitating investors to incorporate or register their companies/business in Labuan IBFC and provide a diverse range of trust and corporate secretarial services.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Services Provided:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Company secretarial services</li>
+                                                <li>Resident directorships</li>
+                                                <li>Audit and accounting services</li>
+                                                <li>Company administration</li>
+                                                <li>Trusteeship for foreign denominated bond issuances</li>
+                                                <li>Administrative services for mutual funds</li>
+                                                <li>Administrative services for non-Labuan IBFC entities</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Governing Legislation:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Labuan Financial Services and Securities Act 2010</li>
+                                                <li>Labuan Islamic Financial Services and Securities Act 2010</li>
+                                                <li>Labuan Companies Act 1990</li>
+                                                <li>Labuan Business Activity Tax Act 1990</li>
+                                                <li>Labuan Trust Act 1996</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 dark:bg-blue-900 p-3 rounded-md">
+                                        <p class="text-xs"><strong>Note:</strong> Companies are registered under the Labuan Companies Act 1990. Trust companies must obtain the necessary licenses to operate and are subject to the oversight of Labuan FSA.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fund Management Section -->
+                        <div class="accordion-item bg-gray-50 dark:bg-gray-700 mb-3 rounded-lg overflow-hidden">
+                            <div class="accordion-header cursor-pointer p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white mr-3">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <h3 class="font-semibold">Offshore Fund/Asset Management</h3>
+                                </div>
+                                <i class="fas fa-chevron-down text-primary accordion-icon transition-transform duration-300 transform"></i>
+                            </div>
+                            <div class="accordion-content px-4 pb-4 pt-0 hidden">
+                                <div class="border-t border-gray-200 dark:border-gray-600 pt-3">
+                                    <p class="text-sm mb-3">Labuan IBFC provides a wide array of private wealth management services that are especially suitable for family offices and wealth managers in facilitating dynamic wealth transfer, dynastic planning, and inheritance management.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Types of Funds:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li><strong>Private funds:</strong> Shares not offered to the general public, owned by not more than 100 investors</li>
+                                                <li><strong>Public funds:</strong> Funds offered to the general public with no restriction on the number of investors</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                            <h4 class="font-medium mb-2 text-sm">Key Features:</h4>
+                                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                                <li>Available through conventional or Islamic structures</li>
+                                                <li>Competitive fee structure</li>
+                                                <li>Flexible investment policies</li>
+                                                <li>Strong legal protection</li>
+                                                <li>Variety of fund structures available</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 dark:bg-blue-900 p-3 rounded-md">
+                                        <p class="text-xs"><strong>Note:</strong> Asset management structures can be undertaken either via conventional or Islamic means, providing flexibility to meet various cultural and religious preferences of investors.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-3 text-primary">General Requirements for Business Activities</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-sm">Companies carrying out lawful business in, from, or through Labuan must use currencies other than Malaysian Ringgit (RM), unless specifically permitted by Bank Negara Malaysia.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-sm">License is required for companies that intend to involve in specific businesses such as banking, insurance, fund management, leasing, factoring, and company management.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-sm">Companies must comply with anti-money laundering and counter-terrorism financing regulations.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                    <i class="fas fa-check text-sm"></i>
+                                </div>
+                                <p class="text-sm">Annual reporting and audit requirements must be fulfilled as per the regulations set by Labuan FSA.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Tab -->
+            <div id="practice" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Test Your Knowledge</h2>
+                    
+                    <div id="quizContainer" class="space-y-6">
+                        <!-- Question 1 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">1. Which of the following best describes an offshore financial center?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>A location where financial products and services are offered in a low tax regime and moderately regulated jurisdictions.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>A physical location situated far from the mainland where banking is conducted.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>A market where only corporate clients can participate in financial activities.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>A place where illegal financial transactions are conducted without oversight.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! An offshore financial center is a location where financial products and services are offered in a low tax regime and moderately or lightly regulated jurisdictions.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. An offshore financial center is a location where financial products and services are offered in a low tax regime and moderately or lightly regulated jurisdictions.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 2 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">2. When was Labuan Financial Services Authority (FSA) established?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>January 1, 1990</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>February 15, 1996</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>March 10, 2000</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>April 5, 2010</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Labuan FSA was established on February 15, 1996, under the Labuan Financial Services Authority Act 1996.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Labuan FSA was established on February 15, 1996, under the Labuan Financial Services Authority Act 1996.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 3 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">3. What is the current tax rate for offshore trading activities in Labuan?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q3" class="mt-1 mr-2">
+                                        <span>0%</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q3" class="mt-1 mr-2">
+                                        <span>3% of audited net profits</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q3" class="mt-1 mr-2">
+                                        <span>5% of gross income</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q3" class="mt-1 mr-2">
+                                        <span>10% of total revenue</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! The current tax rate for offshore trading activities in Labuan is 3% of audited net profits, following the 2019 tax regime changes.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. The current tax rate for offshore trading activities in Labuan is 3% of audited net profits, following the 2019 tax regime changes.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 4 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">4. Which of the following is NOT a characteristic of the Labuan IBFC?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>Offers a dual financial system with conventional and Islamic finance</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>Predominantly conducts business in non-ringgit currencies</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>Allows cash transactions in all banking activities</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>Has its own independent legal and tax framework</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Labuan IBFC does NOT allow cash transactions in its banking activities. All financial operations must be conducted through electronic transfers and digital means.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Labuan IBFC does NOT allow cash transactions in its banking activities. All financial operations must be conducted through electronic transfers and digital means.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button id="checkAnswers" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                            Check Answers
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">True or False Questions</h2>
+                    
+                    <div id="trueFalseContainer" class="space-y-4">
+                        <!-- T/F Question 1 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">1. Labuan IBFC offers only conventional banking services and not Islamic financial services.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf1" value="true" class="mr-2">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf1" value="false" class="mr-2" data-correct="true">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Labuan IBFC offers a dual financial system comprising both conventional banking and Islamic finance.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Labuan IBFC offers a dual financial system comprising both conventional banking and Islamic finance.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- T/F Question 2 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">2. The tax rate for offshore non-trading activities in Labuan is 0%.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf2" value="true" class="mr-2" data-correct="true">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf2" value="false" class="mr-2">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Offshore non-trading activities in Labuan are taxed at 0% (tax exempt), provided the entity complies with tax substantial activity requirements.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Offshore non-trading activities in Labuan are taxed at 0% (tax exempt), provided the entity complies with tax substantial activity requirements.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- T/F Question 3 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">3. Labuan FSA is responsible for the development and administration of the Labuan International Business and Financial Centre.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf3" value="true" class="mr-2" data-correct="true">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf3" value="false" class="mr-2">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Labuan FSA is indeed responsible for the development and administration of the Labuan International Business and Financial Centre.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Labuan FSA is indeed responsible for the development and administration of the Labuan International Business and Financial Centre.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- T/F Question 4 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">4. After the 2019 tax changes, Malaysian residents can still claim 100% tax deductions on all payments made to Labuan entities.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf4" value="true" class="mr-2">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf4" value="false" class="mr-2" data-correct="true">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! After the 2019 tax changes, restrictions were imposed on tax deductions for payments to Labuan entities (e.g., interest payments - 67%, lease rental - 67%, other payments - 3%, etc.).
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. After the 2019 tax changes, restrictions were imposed on tax deductions for payments to Labuan entities (e.g., interest payments - 67%, lease rental - 67%, other payments - 3%, etc.).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button id="checkTrueFalse" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                            Check Answers
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Case Study: Offshore Banking Services</h2>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h3 class="font-semibold mb-3">Scenario</h3>
+                        <p class="mb-4 text-sm">ABC International Ltd, a multinational corporation based in Singapore, is considering setting up operations in Labuan IBFC to manage its regional treasury functions. The company plans to conduct various banking transactions and needs to understand the regulatory and tax implications.</p>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm mb-4">
+                            <h4 class="font-medium mb-2 text-sm">Key Considerations:</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                <li>ABC International wants to conduct transactions in various currencies</li>
+                                <li>The company wants to minimize its tax liability</li>
+                                <li>They need to understand the regulatory requirements in Labuan</li>
+                                <li>They plan to have some transactions with Malaysian companies</li>
+                            </ul>
+                        </div>
+                        
+                        <h4 class="font-medium mb-2">Questions:</h4>
+                        <div class="space-y-4">
+                            <div class="case-question">
+                                <h5 class="text-sm font-medium mb-2">1. What type of banking license would be most appropriate for ABC International, and what are the key regulatory requirements they would need to comply with?</h5>
+                                <div class="mt-2 hidden case-answer bg-blue-50 dark:bg-blue-900 p-2 rounded-md text-sm">
+                                    <strong>Answer:</strong> ABC International would likely need a Labuan investment banking license as they primarily deal with treasury functions rather than retail banking. They would need to comply with the Labuan Financial Services and Securities Act 2010, anti-money laundering regulations, and maintain proper accounting records. They must also ensure they have adequate capital based on Labuan FSA requirements and appoint qualified directors and management.
+                                </div>
+                            </div>
+                            
+                            <div class="case-question">
+                                <h5 class="text-sm font-medium mb-2">2. What would be the tax implications for ABC International's operations in Labuan, and how would transactions with Malaysian entities be treated?</h5>
+                                <div class="mt-2 hidden case-answer bg-blue-50 dark:bg-blue-900 p-2 rounded-md text-sm">
+                                    <strong>Answer:</strong> ABC International would be subject to a 3% tax on its audited net profits for trading activities, provided it meets substantial activity requirements. For transactions with Malaysian entities, there are restrictions on tax deductions: interest payments (67% deductible), lease rentals (67% deductible), other payments (3% deductible). This means Malaysian companies dealing with ABC International would have limited tax deductions for payments made to them.
+                                </div>
+                            </div>
+                            
+                            <div class="case-question">
+                                <h5 class="text-sm font-medium mb-2">3. What are the key advantages and potential limitations of establishing in Labuan IBFC versus another offshore financial center?</h5>
+                                <div class="mt-2 hidden case-answer bg-blue-50 dark:bg-blue-900 p-2 rounded-md text-sm">
+                                    <strong>Answer:</strong> <br><strong>Advantages:</strong> Favorable tax regime, dual financial system (conventional and Islamic), strategic location in Asia-Pacific, well-regulated environment adhering to international standards, and access to ASEAN markets.<br><strong>Limitations:</strong> Restrictions on tax deductions for Malaysian entities, no cash transactions permitted, primarily non-ringgit transactions, and the need to comply with substantial activity requirements to benefit from the tax incentives.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="show-case-answers px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                                Show Answers
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 dark:bg-gray-800 py-4 px-6">
+            <div class="container mx-auto text-center text-sm">
+                <p>&copy; 2025 Financial Markets & Banking Services Course</p>
+                <p class="mt-1">Chapter 6 - Offshore Market</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Detect dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.remove('bg-primary');
+                    btn.classList.remove('text-white');
+                    btn.classList.add('bg-gray-200');
+                    btn.classList.add('dark:bg-gray-700');
+                });
+                
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                button.classList.add('bg-primary');
+                button.classList.add('text-white');
+                button.classList.remove('bg-gray-200');
+                button.classList.remove('dark:bg-gray-700');
+                
+                document.getElementById(tabId).classList.add('active');
+                
+                // Initialize world map when switching to intro tab
+                if (tabId === 'intro') {
+                    initializeWorldMap();
+                }
+            });
+        });
+        
+        // World Map visualization
+        function initializeWorldMap() {
+            const worldMap = document.getElementById('worldMap');
+            
+            // Create a simple world map visualization
+            const mapWidth = worldMap.clientWidth;
+            const mapHeight = worldMap.clientHeight;
+            
+            // Clear previous content
+            worldMap.innerHTML = '';
+            
+            // Create SVG
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+            svg.setAttribute("viewBox", "0 0 1000 500");
+            
+            // Add world map outline (simplified)
+            const mapPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            mapPath.setAttribute("d", "M150,250 Q300,200 450,250 T750,250 Q850,300 900,250 T1000,250 V500 H0 V250 Q75,300 150,250 Z");
+            mapPath.setAttribute("fill", "#305d8a");
+            mapPath.setAttribute("stroke", "#3c7eb9");
+            mapPath.setAttribute("stroke-width", "2");
+            svg.appendChild(mapPath);
+            
+            // Add locations
+            const locations = [
+                { name: "Luxembourg", x: 485, y: 190, type: "major" },
+                { name: "Switzerland", x: 490, y: 210, type: "major" },
+                { name: "Cayman Islands", x: 280, y: 280, type: "major" },
+                { name: "Bahamas", x: 290, y: 260, type: "major" },
+                { name: "British Virgin Islands", x: 300, y: 270, type: "major" },
+                { name: "Jersey", x: 470, y: 180, type: "major" },
+                { name: "Singapore", x: 750, y: 320, type: "major" },
+                { name: "Hong Kong", x: 780, y: 280, type: "major" },
+                { name: "Panama", x: 270, y: 300, type: "secondary" },
+                { name: "Bermuda", x: 320, y: 240, type: "secondary" },
+                { name: "Gibraltar", x: 460, y: 240, type: "secondary" },
+                { name: "Mauritius", x: 600, y: 350, type: "secondary" },
+                { name: "Labuan (Malaysia)", x: 740, y: 310, type: "secondary" },
+                { name: "Dubai", x: 600, y: 280, type: "emerging" },
+                { name: "Seychelles", x: 610, y: 330, type: "emerging" },
+                { name: "Belize", x: 250, y: 280, type: "emerging" }
+            ];
+            
+            // Add points for each location
+            locations.forEach(location => {
+                const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                point.setAttribute("cx", location.x);
+                point.setAttribute("cy", location.y);
+                point.setAttribute("r", "5");
+                
+                if (location.type === "major") {
+                    point.setAttribute("fill", "#ef4444"); // red
+                } else if (location.type === "secondary") {
+                    point.setAttribute("fill", "#eab308"); // yellow
+                } else {
+                    point.setAttribute("fill", "#22c55e"); // green
+                }
+                
+                // Add tooltip
+                const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                title.textContent = location.name;
+                point.appendChild(title);
+                
+                // Add pulse animation
+                const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                pulse.setAttribute("cx", location.x);
+                pulse.setAttribute("cy", location.y);
+                pulse.setAttribute("r", "5");
+                pulse.setAttribute("fill", "none");
+                pulse.setAttribute("stroke", location.type === "major" ? "#ef4444" : location.type === "secondary" ? "#eab308" : "#22c55e");
+                pulse.setAttribute("stroke-width", "2");
+                pulse.setAttribute("opacity", "0.7");
+                
+                const animateRadius = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+                animateRadius.setAttribute("attributeName", "r");
+                animateRadius.setAttribute("from", "5");
+                animateRadius.setAttribute("to", "15");
+                animateRadius.setAttribute("dur", "2s");
+                animateRadius.setAttribute("repeatCount", "indefinite");
+                pulse.appendChild(animateRadius);
+                
+                const animateOpacity = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+                animateOpacity.setAttribute("attributeName", "opacity");
+                animateOpacity.setAttribute("from", "0.7");
+                animateOpacity.setAttribute("to", "0");
+                animateOpacity.setAttribute("dur", "2s");
+                animateOpacity.setAttribute("repeatCount", "indefinite");
+                pulse.appendChild(animateOpacity);
+                
+                svg.appendChild(pulse);
+                svg.appendChild(point);
+            });
+            
+            worldMap.appendChild(svg);
+        }
+        
+        // Initialize world map on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Only initialize world map if intro tab is active
+            if (document.getElementById('intro').classList.contains('active')) {
+                initializeWorldMap();
+            }
+            
+            // Accordion functionality for business activities
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon');
+                    
+                    // Toggle content visibility
+                    content.classList.toggle('hidden');
+                    
+                    // Rotate icon
+                    if (content.classList.contains('hidden')) {
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+        
+        // Tax Calculator
+        document.getElementById('calculateTax').addEventListener('click', () => {
+            const activityType = document.getElementById('activityType').value;
+            const netProfit = parseFloat(document.getElementById('netProfit').value);
+            
+            // Validate input
+            if (isNaN(netProfit)) {
+                alert('Please enter a valid net profit amount');
+                return;
+            }
+            
+            // Calculate tax
+            let taxAmount = 0;
+            let effectiveTaxRate = 0;
+            
+            if (activityType === 'trading') {
+                taxAmount = netProfit * 0.03; // 3% of net profit
+                effectiveTaxRate = 3;
+            } else {
+                taxAmount = 0; // 0% for non-trading activities
+                effectiveTaxRate = 0;
+            }
+            
+            // Display results
+            const resultElement = document.getElementById('taxResult');
+            resultElement.innerHTML = `
+                <h3 class="font-semibold mb-2">Tax Calculation Results:</h3>
+                <p><strong>Business Activity Type:</strong> ${activityType === 'trading' ? 'Trading Activity' : 'Non-Trading Activity'}</p>
+                <p><strong>Net Profit:</strong> RM ${netProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p><strong>Tax Rate:</strong> ${effectiveTaxRate}%</p>
+                <p><strong>Tax Payable:</strong> RM ${taxAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p><strong>After-Tax Profit:</strong> RM ${(netProfit - taxAmount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                
+                <div class="mt-3 p-2 bg-${effectiveTaxRate === 0 ? 'green' : 'blue'}-100 dark:bg-${effectiveTaxRate === 0 ? 'green' : 'blue'}-900 rounded-md">
+                    <p class="text-xs"><strong>Note:</strong> ${activityType === 'trading' 
+                        ? 'Trading activities are subject to a 3% tax on audited net profits, provided the entity complies with substantial activity requirements.' 
+                        : 'Non-trading activities are tax exempt (0% tax rate), provided the entity complies with substantial activity requirements.'}
+                    </p>
+                </div>
+            `;
+            
+            resultElement.classList.add('show');
+        });
+        
+        // Quiz functionality
+        document.getElementById('checkAnswers').addEventListener('click', () => {
+            const questions = document.querySelectorAll('.quiz-question');
+            
+            questions.forEach((question) => {
+                const options = question.querySelectorAll('.quiz-option');
+                const feedback = question.querySelector('.feedback');
+                const correctFeedback = question.querySelector('.correct-feedback');
+                const incorrectFeedback = question.querySelector('.incorrect-feedback');
+                
+                let answered = false;
+                let isCorrect = false;
+                
+                options.forEach((option) => {
+                    const radio = option.querySelector('input[type="radio"]');
+                    if (radio.checked) {
+                        answered = true;
+                        if (option.getAttribute('data-correct') === 'true') {
+                            isCorrect = true;
+                            option.classList.add('bg-green-100');
+                            option.classList.add('dark:bg-green-900');
+                        } else {
+                            option.classList.add('bg-red-100');
+                            option.classList.add('dark:bg-red-900');
+                        }
+                    }
+                });
+                
+                if (answered) {
+                    feedback.classList.remove('hidden');
+                    if (isCorrect) {
+                        correctFeedback.classList.remove('hidden');
+                    } else {
+                        incorrectFeedback.classList.remove('hidden');
+                        
+                        // Highlight the correct answer
+                        options.forEach((option) => {
+                            if (option.getAttribute('data-correct') === 'true') {
+                                option.classList.add('bg-green-100');
+                                option.classList.add('dark:bg-green-900');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        // True/False questions
+        document.getElementById('checkTrueFalse').addEventListener('click', () => {
+            const questions = document.querySelectorAll('.tf-question');
+            
+            questions.forEach((question) => {
+                const options = question.querySelectorAll('.tf-option');
+                const feedback = question.querySelector('.tf-feedback');
+                const correctFeedback = question.querySelector('.tf-correct-feedback');
+                const incorrectFeedback = question.querySelector('.tf-incorrect-feedback');
+                
+                let answered = false;
+                let isCorrect = false;
+                
+                options.forEach((option) => {
+                    const radio = option.querySelector('input[type="radio"]');
+                    if (radio.checked) {
+                        answered = true;
+                        if (radio.getAttribute('data-correct') === 'true') {
+                            isCorrect = true;
+                            option.classList.add('bg-green-100');
+                            option.classList.add('dark:bg-green-900');
+                            option.classList.add('p-1');
+                            option.classList.add('rounded');
+                        } else {
+                            option.classList.add('bg-red-100');
+                            option.classList.add('dark:bg-red-900');
+                            option.classList.add('p-1');
+                            option.classList.add('rounded');
+                        }
+                    }
+                });
+                
+                if (answered) {
+                    feedback.classList.remove('hidden');
+                    if (isCorrect) {
+                        correctFeedback.classList.remove('hidden');
+                    } else {
+                        incorrectFeedback.classList.remove('hidden');
+                        
+                        // Highlight the correct answer
+                        options.forEach((option) => {
+                            const radio = option.querySelector('input[type="radio"]');
+                            if (radio.getAttribute('data-correct') === 'true') {
+                                option.classList.add('bg-green-100');
+                                option.classList.add('dark:bg-green-900');
+                                option.classList.add('p-1');
+                                option.classList.add('rounded');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Case study
+        document.querySelector('.show-case-answers').addEventListener('click', () => {
+            const answers = document.querySelectorAll('.case-answer');
+            
+            answers.forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
