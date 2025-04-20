@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Analysis - Price Patterns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#3F3D56',
+                    }
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
+    <script src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .pattern-card {
+            transition: all 0.3s ease;
+        }
+        
+        .pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .content-section {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
+      x-data="{ 
+        darkMode: localStorage.getItem('darkMode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches,
+        activeTab: 'introduction',
+        quizActive: false,
+        quizCompleted: false,
+        currentQuestion: 0,
+        score: 0,
+        userAnswers: [],
+        showMenu: false,
+        initDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+      }"
+      x-init="initDarkMode(); initCharts();">
+
+    <!-- Header Section -->
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-chart-line text-primary text-2xl"></i>
+                    <h1 class="text-xl md:text-2xl font-bold">Technical Analysis</h1>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="showMenu = !showMenu" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary focus:outline-none">
+                        <i class="fas" :class="showMenu ? 'fa-times' : 'fa-bars'"></i>
+                    </button>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-4">
+                    <button @click="darkMode = !darkMode; initDarkMode()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+                    </button>
+                    <button @click="quizActive = true; currentQuestion = 0; score = 0; userAnswers = []" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                        Test Your Knowledge
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div x-show="showMenu" @click.away="showMenu = false" class="md:hidden mt-3 pb-3" x-transition>
+                <button @click="darkMode = !darkMode; initDarkMode()" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+                    <span class="ml-2">Toggle Dark Mode</span>
+                </button>
+                <button @click="quizActive = true; currentQuestion = 0; score = 0; userAnswers = []; showMenu = false" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="ml-2">Test Your Knowledge</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Chapter Info -->
+    <div class="bg-primary bg-opacity-10 dark:bg-opacity-20 py-6">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-primary mb-2">Chapter 3: Price Patterns</h2>
+            <p class="text-lg mb-4">Technical Analysis of Financial Markets</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Learning Objectives</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Describe various price patterns including continuation, reversal, and bilateral price patterns.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Apply real-time financial charts in identifying both continuation and reversal price patterns to make informed trading decisions.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Evaluate the effectiveness of different price patterns in predicting market behavior.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Offer recommendations for enhancing trading methods using trend analysis.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-lightbulb text-yellow-500 text-2xl mr-3"></i>
+                            <h4 class="text-lg font-semibold">What are Price Patterns?</h4>
+                        </div>
+                        <p class="mb-3">Price patterns refer to distinctive formations observed on financial charts that provide insight into market sentiment and potential future price movements.</p>
+                        <p>Traders use these patterns to identify potential trading opportunities and to set strategic entry and exit points.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white dark:bg-gray-800 shadow">
+        <div class="container mx-auto px-4">
+            <div class="overflow-x-auto scrollbar-hide">
+                <div class="flex space-x-2 py-2">
+                    <button @click="activeTab = 'introduction'" :class="activeTab === 'introduction' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'" class="px-4 py-2 rounded-md font-medium whitespace-nowrap transition-colors">
+                        Introduction
+                    </button>
+                    <button @click="activeTab = 'reversal'" :class="activeTab === 'reversal' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'" class="px-4 py-2 rounded-md font-medium whitespace-nowrap transition-colors">
+                        Reversal Patterns
+                    </button>
+                    <button @click="activeTab = 'continuation'" :class="activeTab === 'continuation' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'" class="px-4 py-2 rounded-md font-medium whitespace-nowrap transition-colors">
+                        Continuation Patterns
+                    </button>
+                    <button @click="activeTab = 'bilateral'" :class="activeTab === 'bilateral' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'" class="px-4 py-2 rounded-md font-medium whitespace-nowrap transition-colors">
+                        Bilateral Patterns
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Introduction Section -->
+        <div x-show="activeTab === 'introduction'" class="content-section">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 pattern-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                            <i class="fas fa-exchange-alt text-red-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Reversal Patterns</h3>
+                    <p class="text-center">Signal a potential change in the current price trend direction. These can indicate buying or selling opportunities.</p>
+                    <div class="mt-4 flex justify-center">
+                        <button @click="activeTab = 'reversal'" class="text-primary hover:underline font-medium">
+                            Learn More <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 pattern-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                            <i class="fas fa-long-arrow-alt-right text-green-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Continuation Patterns</h3>
+                    <p class="text-center">Suggest that the current trend will continue after a brief pause or consolidation period.</p>
+                    <div class="mt-4 flex justify-center">
+                        <button @click="activeTab = 'continuation'" class="text-primary hover:underline font-medium">
+                            Learn More <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 pattern-card">
+                    <div class="flex justify-center mb-4">
+                        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                            <i class="fas fa-compress-arrows-alt text-blue-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Bilateral Patterns</h3>
+                    <p class="text-center">Characterized by consolidation, these patterns don't provide a clear directional indication and show market indecision.</p>
+                    <div class="mt-4 flex justify-center">
+                        <button @click="activeTab = 'bilateral'" class="text-primary hover:underline font-medium">
+                            Learn More <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-2xl font-bold mb-4">The Importance of Price Patterns</h3>
+                <p class="mb-4">Price patterns are an essential component of technical analysis that help traders and investors make informed decisions about market movements.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-chart-line text-primary text-xl mr-3"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Predictive Value</h4>
+                            <p>Price patterns can indicate potential future price movements based on historical market behavior and trader psychology.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-search-dollar text-primary text-xl mr-3"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Entry and Exit Points</h4>
+                            <p>Patterns help traders determine optimal points to enter or exit trades, potentially maximizing profits and minimizing losses.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-brain text-primary text-xl mr-3"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Market Psychology</h4>
+                            <p>Patterns reflect the collective psychology of market participants, showing the balance between buying and selling pressure.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-shield-alt text-primary text-xl mr-3"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Risk Management</h4>
+                            <p>By identifying key support and resistance levels within patterns, traders can set appropriate stop-loss and take-profit levels.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-primary bg-opacity-10 dark:bg-opacity-20 rounded-lg p-6">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-primary text-2xl mt-1 mr-4"></i>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Learning Approach</h3>
+                        <p class="mb-3">This module will guide you through different price patterns, their characteristics, and how to identify them on charts. You'll learn how to apply this knowledge to make trading decisions.</p>
+                        <p>Navigate through the tabs above to explore each category of price patterns in detail. Complete the knowledge check at the end to test your understanding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reversal Patterns Section -->
+        <div x-show="activeTab === 'reversal'" class="content-section">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Reversal Patterns</h2>
+                <p class="mb-4">Reversal patterns signify a potential change in the direction of a price trend. When these patterns form during an uptrend, they suggest that the trend will reverse downward. Conversely, when they form during a downtrend, they indicate a potential upward movement.</p>
+                <p>These patterns are particularly valuable for identifying potential buying or selling opportunities at the end of established trends.</p>
+            </div>
+            
+            <!-- Double Tops Pattern -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-red-500 mr-2"></i>
+                    Double Tops
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">A double top is a reversal pattern that forms after an extended upward move. It consists of two peaks at approximately the same price level, with a moderate trough in between.</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms after an extended uptrend</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Two peaks form at a resistance level that can't be broken</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Price bounces off this level twice</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>A break below the trough between the two tops confirms the pattern</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>Double tops signal a potential shorting opportunity. Traders usually enter a short position after the price breaks below the trough between the two peaks.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="doubleTopChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: Set stop-loss orders slightly above the second peak to manage risk when trading double tops.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Double Bottoms Pattern -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-500 mr-2"></i>
+                    Double Bottoms
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">A double bottom is a reversal pattern that forms after an extended downward move. It's essentially the inverse of a double top, consisting of two troughs at approximately the same price level.</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms after an extended downtrend</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Two valleys form at a support level</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Price bounces off this level twice</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>A break above the peak between the two bottoms confirms the pattern</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>Double bottoms signal a potential buying opportunity. Traders usually enter a long position after the price breaks above the peak between the two troughs.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="doubleBottomChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: The distance between the lowest point of the pattern and the neckline can be used to estimate the potential price target after breakout.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Head and Shoulders Pattern -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-red-500 mr-2"></i>
+                    Head and Shoulders
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">The head and shoulders pattern is one of the most reliable reversal patterns. It consists of three peaks, with the middle peak (head) being higher than the two outer peaks (shoulders).</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms after an uptrend</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>The first and third peaks (shoulders) are lower than the middle peak (head)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>All three peaks fall back to the same support level, called the "neckline"</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>A break below the neckline after the third peak confirms the pattern</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>Once the pattern is confirmed, it typically signals a bearish downtrend. The target for the downside move is often equal to the height from the head to the neckline, measured from the breakpoint.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="headAndShouldersChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: Watch for confirmation of the pattern through increased volume on the neckline breakdown, as this strengthens the signal's reliability.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inverted Head and Shoulders Pattern -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-500 mr-2"></i>
+                    Inverted Head and Shoulders
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">The inverted head and shoulders is a mirror image of the regular head and shoulders pattern. It consists of three troughs, with the middle trough (head) being deeper than the two outer troughs (shoulders).</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms after a downtrend</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>The first and third troughs (shoulders) are higher than the middle trough (head)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>All three troughs rise to the same resistance level, called the "neckline"</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>A break above the neckline after the third trough confirms the pattern</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>Once the pattern is confirmed, it typically signals a bullish uptrend. The target for the upside move is often equal to the height from the head to the neckline, measured from the breakpoint.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="invertedHeadAndShouldersChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: The inverted head and shoulders pattern often signals a stronger reversal when it follows a prolonged downtrend, making it a valuable pattern for identifying major bottoms.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rising and Falling Wedges -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Rising and Falling Wedges as Reversal Patterns</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Rising Wedge -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-down text-red-500 mr-2"></i>
+                            Rising Wedge (Bearish)
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="risingWedgeChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms with two ascending trendlines that converge</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Upper trendline has a lesser slope than the lower one</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Typically has at least five reversals (three for one trend line, two for the other)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed in an uptrend, signals a potential reversal to the downside</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Falling Wedge -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-up text-green-500 mr-2"></i>
+                            Falling Wedge (Bullish)
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="fallingWedgeChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms with two descending trendlines that converge</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Lower trendline has a steeper slope than the upper one</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Typically has at least five reversals (two for one trend line, three for the other)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed in a downtrend, signals a potential reversal to the upside</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                    <p class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                        <span>Note: While wedges are discussed here as reversal patterns, they can also function as continuation patterns depending on the trend context. Check the continuation patterns section for more details.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Continuation Patterns Section -->
+        <div x-show="activeTab === 'continuation'" class="content-section">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Continuation Patterns</h2>
+                <p class="mb-4">Continuation patterns suggest that the current trend will continue after a brief pause or consolidation period. These patterns are characterized by decreasing volume and volatility as the market prepares to resume its previous direction.</p>
+                <p>Traders use these patterns to identify potential entry points to join an existing trend.</p>
+            </div>
+            
+            <!-- Wedges as Continuation Patterns -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Wedges as Continuation Patterns</h3>
+                <p class="mb-4">Wedges can act as either reversal or continuation patterns depending on the context of the trend in which they form.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                    <!-- Rising Wedge / Bearish Pennant -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-down text-red-500 mr-2"></i>
+                            Rising Wedge / Bearish Pennant
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="risingWedgeContinuationChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed during a downtrend, suggests continuation of the down move</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Price eventually breaks down through the lower support line</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Bearish pennants appear similar but are significantly smaller in size</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Falling Wedge / Bullish Pennant -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-up text-green-500 mr-2"></i>
+                            Falling Wedge / Bullish Pennant
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="fallingWedgeContinuationChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed during an uptrend, suggests continuation of the up move</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Price eventually breaks up through the upper resistance line</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Bullish pennants appear similar but are significantly smaller in size</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                    <p class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                        <span><strong>Trading Tip:</strong> A good price target after a wedge breakout is often the height of the wedge formation, measured from the breakout point.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Rectangle / Flags Patterns -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Rectangle / Flags Patterns</h3>
+                <p class="mb-4">Rectangles and flags are consolidation patterns that form when the price moves sideways between parallel support and resistance levels.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                    <!-- Bullish Rectangle / Flags -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-up text-green-500 mr-2"></i>
+                            Bullish Rectangle / Flags
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="bullishRectangleChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms when price is contained between horizontal support and resistance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed during an uptrend, suggests continuation after breakout</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Entry signal occurs at the breakout above resistance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Profit target is typically the height of the rectangle added to the breakout point</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Bearish Rectangle / Flags -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-chevron-down text-red-500 mr-2"></i>
+                            Bearish Rectangle / Flags
+                        </h4>
+                        <div class="chart-container mb-4">
+                            <canvas id="bearishRectangleChart"></canvas>
+                        </div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms when price is contained between horizontal support and resistance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>When formed during a downtrend, suggests continuation after breakout</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Entry signal occurs at the breakout below support</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Profit target is typically the height of the rectangle subtracted from the breakout point</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                    <p class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                        <span><strong>Note:</strong> Flags are similar to rectangles but are typically smaller and may have a slight tilt. Both patterns represent a pause in the trend before continuation.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Distinguishing Characteristics of Continuation Patterns</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-hourglass-half text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Duration</h4>
+                        </div>
+                        <p class="text-sm">Continuation patterns typically form over shorter time periods compared to reversal patterns. They represent brief pauses or consolidations in the existing trend.</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-chart-bar text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Volume</h4>
+                        </div>
+                        <p class="text-sm">Volume typically decreases during the formation of the pattern and increases significantly during the breakout in the direction of the prevailing trend.</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-ruler-combined text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Size</h4>
+                        </div>
+                        <p class="text-sm">Continuation patterns are often smaller in proportion to the trend they are continuing. Flags and pennants in particular tend to be compact compared to the preceding trend move.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bilateral Patterns Section -->
+        <div x-show="activeTab === 'bilateral'" class="content-section">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Bilateral Patterns</h2>
+                <p class="mb-4">Bilateral price patterns are characterized by a period of consolidation where the price oscillates between levels of support and resistance. These patterns don't provide a clear indication of the future price direction and can be seen as periods of market indecision.</p>
+                <p>Traders typically wait for a breakout from these patterns to determine the direction of their trades.</p>
+            </div>
+            
+            <!-- Symmetrical Triangle -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-compress-alt text-purple-500 mr-2"></i>
+                    Symmetrical Triangle
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">A symmetrical triangle is a chart formation where the slope of the price's highs and the slope of the price's lows converge to a point where it forms a triangle. It represents a period of consolidation before the price continues a prior trend or reverses into a new trend.</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Forms with converging trendlines of equal slope</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Price makes lower highs and higher lows</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Represents market indecision</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Breakout can occur in either direction</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>Symmetrical triangles indicate that both buyers and sellers are equally strong, creating a balance that will eventually break in one direction. The breakout direction typically determines whether the pattern is bullish or bearish.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="symmetricalTriangleChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: Most traders wait for a confirmation of the breakout direction before entering a position. This is typically accompanied by increased volume to validate the breakout.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ascending Triangle -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-compress-alt text-blue-500 mr-2"></i>
+                    Ascending Triangle
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <p class="mb-4">An ascending triangle is a chart pattern characterized by a flat upper trendline and an upward-sloping lower trendline. It is formed when the price hits a resistance level but creates higher lows with each subsequent move.</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Horizontal resistance line at the top</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Upward sloping support line from the bottom</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Indicates buying pressure is increasing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-caret-right text-primary mt-1 mr-2"></i>
+                                <span>Usually considered a continuation pattern, but can break in either direction</span>
+                            </li>
+                        </ul>
+                        <div class="p-3 bg-yellow-50 dark:bg-yellow-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                                <span>In an ascending triangle, buyers are becoming more aggressive as they make higher lows, putting pressure on the resistance level. This often leads to a breakout to the upside, but traders should still wait for confirmation.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <canvas id="ascendingTriangleChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 rounded-lg">
+                            <p class="flex items-start text-sm">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Trading tip: The height of the triangle at its widest point can be used to estimate the price target once a breakout occurs.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Bilateral Patterns Notes -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Key Characteristics of Bilateral Patterns</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-users text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Market Psychology</h4>
+                        </div>
+                        <p>Bilateral patterns represent periods of relative equilibrium between buying and selling forces in the market. Neither bulls nor bears have clear control, resulting in a narrowing price range.</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-chart-line text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Breakout Importance</h4>
+                        </div>
+                        <p>The direction of the eventual breakout from a bilateral pattern is crucial for determining the next significant price move. The longer the pattern forms, the more significant the breakout tends to be.</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-chart-bar text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Volume Behavior</h4>
+                        </div>
+                        <p>Volume typically decreases as the bilateral pattern forms and prices converge. A significant increase in volume during a breakout helps confirm the validity of the move and its potential strength.</p>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-ruler text-primary text-xl mr-2"></i>
+                            <h4 class="font-semibold">Price Targets</h4>
+                        </div>
+                        <p>The height of the pattern at its widest point is often used to project price targets after a breakout. This height is added to the breakout point for upside moves or subtracted for downside moves.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Knowledge Check Quiz -->
+        <div x-show="quizActive" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold">Knowledge Check</h3>
+                        <button @click="quizActive = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Quiz Content -->
+                    <div x-show="!quizCompleted">
+                        <!-- Question 1 -->
+                        <div x-show="currentQuestion === 0">
+                            <h4 class="text-lg font-semibold mb-4">Question 1: Which of the following is a reversal pattern?</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q1" value="A" class="mt-1 mr-3" @change="userAnswers[0] = 'A'">
+                                    <div>
+                                        <span class="font-medium">A. Flag pattern</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q1" value="B" class="mt-1 mr-3" @change="userAnswers[0] = 'B'">
+                                    <div>
+                                        <span class="font-medium">B. Head and Shoulders</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q1" value="C" class="mt-1 mr-3" @change="userAnswers[0] = 'C'">
+                                    <div>
+                                        <span class="font-medium">C. Symmetrical Triangle</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q1" value="D" class="mt-1 mr-3" @change="userAnswers[0] = 'D'">
+                                    <div>
+                                        <span class="font-medium">D. Pennant</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 2 -->
+                        <div x-show="currentQuestion === 1">
+                            <h4 class="text-lg font-semibold mb-4">Question 2: A double bottom pattern is typically a sign of:</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q2" value="A" class="mt-1 mr-3" @change="userAnswers[1] = 'A'">
+                                    <div>
+                                        <span class="font-medium">A. A downtrend continuation</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q2" value="B" class="mt-1 mr-3" @change="userAnswers[1] = 'B'">
+                                    <div>
+                                        <span class="font-medium">B. A bearish reversal</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q2" value="C" class="mt-1 mr-3" @change="userAnswers[1] = 'C'">
+                                    <div>
+                                        <span class="font-medium">C. A bullish reversal</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q2" value="D" class="mt-1 mr-3" @change="userAnswers[1] = 'D'">
+                                    <div>
+                                        <span class="font-medium">D. Market indecision</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 3 -->
+                        <div x-show="currentQuestion === 2">
+                            <h4 class="text-lg font-semibold mb-4">Question 3: Which of these patterns is classified as a bilateral pattern?</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q3" value="A" class="mt-1 mr-3" @change="userAnswers[2] = 'A'">
+                                    <div>
+                                        <span class="font-medium">A. Double Top</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q3" value="B" class="mt-1 mr-3" @change="userAnswers[2] = 'B'">
+                                    <div>
+                                        <span class="font-medium">B. Symmetrical Triangle</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q3" value="C" class="mt-1 mr-3" @change="userAnswers[2] = 'C'">
+                                    <div>
+                                        <span class="font-medium">C. Bullish Flag</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q3" value="D" class="mt-1 mr-3" @change="userAnswers[2] = 'D'">
+                                    <div>
+                                        <span class="font-medium">D. Inverted Head and Shoulders</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 4 -->
+                        <div x-show="currentQuestion === 3">
+                            <h4 class="text-lg font-semibold mb-4">Question 4: A rising wedge in a downtrend typically acts as a:</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q4" value="A" class="mt-1 mr-3" @change="userAnswers[3] = 'A'">
+                                    <div>
+                                        <span class="font-medium">A. Reversal pattern (bullish)</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q4" value="B" class="mt-1 mr-3" @change="userAnswers[3] = 'B'">
+                                    <div>
+                                        <span class="font-medium">B. Continuation pattern (bearish)</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q4" value="C" class="mt-1 mr-3" @change="userAnswers[3] = 'C'">
+                                    <div>
+                                        <span class="font-medium">C. Bilateral pattern</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q4" value="D" class="mt-1 mr-3" @change="userAnswers[3] = 'D'">
+                                    <div>
+                                        <span class="font-medium">D. Random noise with no predictive value</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 5 -->
+                        <div x-show="currentQuestion === 4">
+                            <h4 class="text-lg font-semibold mb-4">Question 5: What typically happens to trading volume during the formation of a continuation pattern?</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q5" value="A" class="mt-1 mr-3" @change="userAnswers[4] = 'A'">
+                                    <div>
+                                        <span class="font-medium">A. It increases significantly</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q5" value="B" class="mt-1 mr-3" @change="userAnswers[4] = 'B'">
+                                    <div>
+                                        <span class="font-medium">B. It decreases</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q5" value="C" class="mt-1 mr-3" @change="userAnswers[4] = 'C'">
+                                    <div>
+                                        <span class="font-medium">C. It remains constant</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <input type="radio" name="q5" value="D" class="mt-1 mr-3" @change="userAnswers[4] = 'D'">
+                                    <div>
+                                        <span class="font-medium">D. It fluctuates randomly</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-8">
+                            <button x-show="currentQuestion > 0" @click="currentQuestion--" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md">
+                                <i class="fas fa-arrow-left mr-2"></i> Previous
+                            </button>
+                            <div></div>
+                            <button x-show="currentQuestion < 4" @click="currentQuestion++" :disabled="!userAnswers[currentQuestion]" :class="!userAnswers[currentQuestion] ? 'opacity-50 cursor-not-allowed' : ''" class="px-4 py-2 bg-primary text-white rounded-md">
+                                Next <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                            <button x-show="currentQuestion === 4" @click="checkAnswers()" :disabled="!userAnswers[currentQuestion]" :class="!userAnswers[currentQuestion] ? 'opacity-50 cursor-not-allowed' : ''" class="px-4 py-2 bg-primary text-white rounded-md">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Results -->
+                    <div x-show="quizCompleted">
+                        <h3 x-text="`You scored ${score}/5`" class="text-xl font-bold mb-4"></h3>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <p class="font-semibold">Question 1: Which of the following is a reversal pattern?</p>
+                                <p class="mt-1" :class="userAnswers[0] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Your answer: <span x-text="userAnswers[0] === 'A' ? 'Flag pattern' : userAnswers[0] === 'B' ? 'Head and Shoulders' : userAnswers[0] === 'C' ? 'Symmetrical Triangle' : 'Pennant'"></span>
+                                </p>
+                                <p x-show="userAnswers[0] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Head and Shoulders</p>
+                            </div>
+                            
+                            <div>
+                                <p class="font-semibold">Question 2: A double bottom pattern is typically a sign of:</p>
+                                <p class="mt-1" :class="userAnswers[1] === 'C' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Your answer: <span x-text="userAnswers[1] === 'A' ? 'A downtrend continuation' : userAnswers[1] === 'B' ? 'A bearish reversal' : userAnswers[1] === 'C' ? 'A bullish reversal' : 'Market indecision'"></span>
+                                </p>
+                                <p x-show="userAnswers[1] !== 'C'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: A bullish reversal</p>
+                            </div>
+                            
+                            <div>
+                                <p class="font-semibold">Question 3: Which of these patterns is classified as a bilateral pattern?</p>
+                                <p class="mt-1" :class="userAnswers[2] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Your answer: <span x-text="userAnswers[2] === 'A' ? 'Double Top' : userAnswers[2] === 'B' ? 'Symmetrical Triangle' : userAnswers[2] === 'C' ? 'Bullish Flag' : 'Inverted Head and Shoulders'"></span>
+                                </p>
+                                <p x-show="userAnswers[2] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Symmetrical Triangle</p>
+                            </div>
+                            
+                            <div>
+                                <p class="font-semibold">Question 4: A rising wedge in a downtrend typically acts as a:</p>
+                                <p class="mt-1" :class="userAnswers[3] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Your answer: <span x-text="userAnswers[3] === 'A' ? 'Reversal pattern (bullish)' : userAnswers[3] === 'B' ? 'Continuation pattern (bearish)' : userAnswers[3] === 'C' ? 'Bilateral pattern' : 'Random noise with no predictive value'"></span>
+                                </p>
+                                <p x-show="userAnswers[3] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: Continuation pattern (bearish)</p>
+                            </div>
+                            
+                            <div>
+                                <p class="font-semibold">Question 5: What typically happens to trading volume during the formation of a continuation pattern?</p>
+                                <p class="mt-1" :class="userAnswers[4] === 'B' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Your answer: <span x-text="userAnswers[4] === 'A' ? 'It increases significantly' : userAnswers[4] === 'B' ? 'It decreases' : userAnswers[4] === 'C' ? 'It remains constant' : 'It fluctuates randomly'"></span>
+                                </p>
+                                <p x-show="userAnswers[4] !== 'B'" class="mt-1 text-green-600 dark:text-green-400">Correct answer: It decreases</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button @click="quizActive = false" class="px-4 py-2 bg-primary text-white rounded-md">
+                                Close
+                            </button>
+                            <button @click="quizCompleted = false; currentQuestion = 0; score = 0; userAnswers = []" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md ml-3">
+                                Retake Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow-md mt-10">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-center md:text-left">Technical Analysis of Financial Markets - Chapter 3</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left">© Ahmad Fauze Abdul Hamit</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function initCharts() {
+            // Helper function to create gradient
+            const createGradient = (ctx, startColor, endColor) => {
+                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, startColor);
+                gradient.addColorStop(1, endColor);
+                return gradient;
+            };
+            
+            // Load charts only when the tab is active to improve performance
+            
+            // Double Top Chart
+            const doubleTopCtx = document.getElementById('doubleTopChart')?.getContext('2d');
+            if (doubleTopCtx) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                new Chart(doubleTopCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 30}, (_, i) => i+1),
+                        datasets: [{
+                            label: 'Price',
+                            data: [
+                                40, 42, 45, 48, 52, 55, 58, 60, 57, 54, 52,
+                                55, 57, 59, 60, 59, 57, 54, 52, 50, 48, 45, 42, 40, 37, 35, 32, 30, 28, 25
+                            ],
+                            borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    doubleTop1: {
+                                        type: 'line',
+                                        yMin: 60,
+                                        yMax: 60,
+                                        xMin: 8,
+                                        xMax: 15,
+                                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    neckline: {
+                                        type: 'line',
+                                        yMin: 52,
+                                        yMax: 52,
+                                        xMin: 1,
+                                        xMax: 30,
+                                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    breakout: {
+                                        type: 'point',
+                                        xValue: 20,
+                                        yValue: 52,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                        radius: 5
+                                    },
+                                    topText1: {
+                                        type: 'label',
+                                        xValue: 8,
+                                        yValue: 63,
+                                        content: 'Top 1',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    topText2: {
+                                        type: 'label',
+                                        xValue: 15,
+                                        yValue: 63,
+                                        content: 'Top 2',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    necklineText: {
+                                        type: 'label',
+                                        xValue: 1,
+                                        yValue: 49,
+                                        content: 'Neckline',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    breakoutText: {
+                                        type: 'label',
+                                        xValue: 20,
+                                        yValue: 47,
+                                        content: 'Breakout',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: gridColor,
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: gridColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Double Bottom Chart
+            const doubleBottomCtx = document.getElementById('doubleBottomChart')?.getContext('2d');
+            if (doubleBottomCtx) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                new Chart(doubleBottomCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 30}, (_, i) => i+1),
+                        datasets: [{
+                            label: 'Price',
+                            data: [
+                                60, 58, 55, 52, 48, 45, 42, 40, 43, 46, 48,
+                                45, 43, 41, 40, 41, 43, 46, 48, 50, 52, 55, 58, 60, 63, 65, 68, 70, 72, 75
+                            ],
+                            borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    doubleBottom1: {
+                                        type: 'line',
+                                        yMin: 40,
+                                        yMax: 40,
+                                        xMin: 8,
+                                        xMax: 15,
+                                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    neckline: {
+                                        type: 'line',
+                                        yMin: 48,
+                                        yMax: 48,
+                                        xMin: 1,
+                                        xMax: 30,
+                                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    breakout: {
+                                        type: 'point',
+                                        xValue: 20,
+                                        yValue: 48,
+                                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                        radius: 5
+                                    },
+                                    bottomText1: {
+                                        type: 'label',
+                                        xValue: 8,
+                                        yValue: 37,
+                                        content: 'Bottom 1',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    bottomText2: {
+                                        type: 'label',
+                                        xValue: 15,
+                                        yValue: 37,
+                                        content: 'Bottom 2',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    necklineText: {
+                                        type: 'label',
+                                        xValue: 1,
+                                        yValue: 51,
+                                        content: 'Neckline',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    breakoutText: {
+                                        type: 'label',
+                                        xValue: 20,
+                                        yValue: 53,
+                                        content: 'Breakout',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: gridColor,
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: gridColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Head and Shoulders Chart
+            const headAndShouldersCtx = document.getElementById('headAndShouldersChart')?.getContext('2d');
+            if (headAndShouldersCtx) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                new Chart(headAndShouldersCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 40}, (_, i) => i+1),
+                        datasets: [{
+                            label: 'Price',
+                            data: [
+                                40, 42, 44, 47, 50, 53, 55, 52, 49, 47, 50, 
+                                54, 58, 62, 65, 63, 60, 57, 55, 58, 62, 66, 
+                                68, 65, 62, 60, 56, 52, 48, 44, 40, 36, 32, 28, 
+                                25, 24, 22, 20, 18, 15
+                            ],
+                            borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    leftShoulder: {
+                                        type: 'point',
+                                        xValue: 7,
+                                        yValue: 55,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                        radius: 5
+                                    },
+                                    head: {
+                                        type: 'point',
+                                        xValue: 22,
+                                        yValue: 68,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                        radius: 5
+                                    },
+                                    rightShoulder: {
+                                        type: 'point',
+                                        xValue: 30,
+                                        yValue: 56,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                        radius: 5
+                                    },
+                                    neckline: {
+                                        type: 'line',
+                                        yMin: 47,
+                                        yMax: 47,
+                                        xMin: 1,
+                                        xMax: 40,
+                                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    breakout: {
+                                        type: 'point',
+                                        xValue: 32,
+                                        yValue: 47,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                        radius: 5
+                                    },
+                                    shoulderText1: {
+                                        type: 'label',
+                                        xValue: 7,
+                                        yValue: 60,
+                                        content: 'Left Shoulder',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    headText: {
+                                        type: 'label',
+                                        xValue: 22,
+                                        yValue: 73,
+                                        content: 'Head',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    shoulderText2: {
+                                        type: 'label',
+                                        xValue: 30,
+                                        yValue: 61,
+                                        content: 'Right Shoulder',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    necklineText: {
+                                        type: 'label',
+                                        xValue: 1,
+                                        yValue: 43,
+                                        content: 'Neckline',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    breakoutText: {
+                                        type: 'label',
+                                        xValue: 32,
+                                        yValue: 42,
+                                        content: 'Breakout',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: gridColor,
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: gridColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Inverted Head and Shoulders Chart
+            const invertedHeadAndShouldersCtx = document.getElementById('invertedHeadAndShouldersChart')?.getContext('2d');
+            if (invertedHeadAndShouldersCtx) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                
+                new Chart(invertedHeadAndShouldersCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 40}, (_, i) => i+1),
+                        datasets: [{
+                            label: 'Price',
+                            data: [
+                                60, 58, 56, 53, 50, 47, 45, 48, 51, 53, 50, 
+                                46, 42, 38, 35, 37, 40, 43, 45, 42, 38, 34, 
+                                32, 35, 38, 40, 44, 48, 52, 56, 60, 64, 68, 72, 
+                                75, 76, 78, 80, 82, 85
+                            ],
+                            borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    leftShoulder: {
+                                        type: 'point',
+                                        xValue: 7,
+                                        yValue: 45,
+                                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                        radius: 5
+                                    },
+                                    head: {
+                                        type: 'point',
+                                        xValue: 22,
+                                        yValue: 32,
+                                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                        radius: 5
+                                    },
+                                    rightShoulder: {
+                                        type: 'point',
+                                        xValue: 30,
+                                        yValue: 44,
+                                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                        radius: 5
+                                    },
+                                    neckline: {
+                                        type: 'line',
+                                        yMin: 53,
+                                        yMax: 53,
+                                        xMin: 1,
+                                        xMax: 40,
+                                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                    },
+                                    breakout: {
+                                        type: 'point',
+                                        xValue: 32,
+                                        yValue: 53,
+                                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                        radius: 5
+                                    },
+                                    shoulderText1: {
+                                        type: 'label',
+                                        xValue: 7,
+                                        yValue: 40,
+                                        content: 'Left Shoulder',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    headText: {
+                                        type: 'label',
+                                        xValue: 22,
+                                        yValue: 27,
+                                        content: 'Head',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    shoulderText2: {
+                                        type: 'label',
+                                        xValue: 30,
+                                        yValue: 39,
+                                        content: 'Right Shoulder',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    necklineText: {
+                                        type: 'label',
+                                        xValue: 1,
+                                        yValue: 57,
+                                        content: 'Neckline',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    },
+                                    breakoutText: {
+                                        type: 'label',
+                                        xValue: 32,
+                                        yValue: 58,
+                                        content: 'Breakout',
+                                        backgroundColor: 'rgba(0,0,0,0)',
+                                        color: isDark ? 'white' : 'black',
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: gridColor,
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: gridColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Initialize more charts as needed
+            // Rising Wedge Chart (Reversal)
+            createWedgeChart('risingWedgeChart', 'rising', 'reversal');
+            
+            // Falling Wedge Chart (Reversal)
+            createWedgeChart('fallingWedgeChart', 'falling', 'reversal');
+            
+            // Rising Wedge Chart (Continuation)
+            createWedgeChart('risingWedgeContinuationChart', 'rising', 'continuation');
+            
+            // Falling Wedge Chart (Continuation)
+            createWedgeChart('fallingWedgeContinuationChart', 'falling', 'continuation');
+            
+            // Bullish Rectangle Chart
+            createRectangleChart('bullishRectangleChart', 'bullish');
+            
+            // Bearish Rectangle Chart
+            createRectangleChart('bearishRectangleChart', 'bearish');
+            
+            // Symmetrical Triangle Chart
+            createTriangleChart('symmetricalTriangleChart', 'symmetrical');
+            
+            // Ascending Triangle Chart
+            createTriangleChart('ascendingTriangleChart', 'ascending');
+        }
+        
+        function createWedgeChart(canvasId, type, patternType) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            
+            // Data points for rising and falling wedges
+            let data;
+            let annotations = {};
+            
+            if (type === 'rising') {
+                if (patternType === 'reversal') {
+                    // Rising wedge as reversal (uptrend to downtrend)
+                    data = [
+                        30, 32, 35, 38, 42, 45, 48, 46, 49, 47, 50, 48, 
+                        51, 49, 52, 50, 48, 45, 42, 39, 35, 30, 25, 20
+                    ];
+                    
+                    annotations = {
+                        upperTrendline: {
+                            type: 'line',
+                            xMin: 1,
+                            yMin: 30,
+                            xMax: 16,
+                            yMax: 52,
+                            borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        lowerTrendline: {
+                            type: 'line',
+                            xMin: 1,
+                            yMin: 30,
+                            xMax: 16,
+                            yMax: 48,
+                            borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        breakout: {
+                            type: 'point',
+                            xValue: 16,
+                            yValue: 50,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            radius: 5
+                        },
+                        breakoutText: {
+                            type: 'label',
+                            xValue: 16,
+                            yValue: 45,
+                            content: 'Breakout',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            color: isDark ? 'white' : 'black',
+                        }
+                    };
+                } else {
+                    // Rising wedge as continuation (downtrend continuation)
+                    data = [
+                        70, 65, 60, 55, 50, 52, 48, 51, 47, 50, 46, 49, 
+                        45, 48, 44, 42, 38, 35, 32, 28, 25, 20, 15, 10
+                    ];
+                    
+                    annotations = {
+                        upperTrendline: {
+                            type: 'line',
+                            xMin: 5,
+                            yMin: 52,
+                            xMax: 15,
+                            yMax: 48,
+                            borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        lowerTrendline: {
+                            type: 'line',
+                            xMin: 5,
+                            yMin: 48,
+                            xMax: 15,
+                            yMax: 44,
+                            borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        breakout: {
+                            type: 'point',
+                            xValue: 15,
+                            yValue: 44,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            radius: 5
+                        },
+                        breakoutText: {
+                            type: 'label',
+                            xValue: 15,
+                            yValue: 39,
+                            content: 'Breakout',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            color: isDark ? 'white' : 'black',
+                        }
+                    };
+                }
+            } else {
+                if (patternType === 'reversal') {
+                    // Falling wedge as reversal (downtrend to uptrend)
+                    data = [
+                        70, 68, 65, 62, 58, 55, 52, 54, 51, 53, 50, 52, 
+                        49, 51, 48, 50, 52, 55, 58, 61, 65, 70, 75, 80
+                    ];
+                    
+                    annotations = {
+                        upperTrendline: {
+                            type: 'line',
+                            xMin: 1,
+                            yMin: 70,
+                            xMax: 16,
+                            yMax: 50,
+                            borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        lowerTrendline: {
+                            type: 'line',
+                            xMin: 1,
+                            yMin: 70,
+                            xMax: 16,
+                            yMax: 48,
+                            borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        breakout: {
+                            type: 'point',
+                            xValue: 16,
+                            yValue: 50,
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            radius: 5
+                        },
+                        breakoutText: {
+                            type: 'label',
+                            xValue: 16,
+                            yValue: 55,
+                            content: 'Breakout',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            color: isDark ? 'white' : 'black',
+                        }
+                    };
+                } else {
+                    // Falling wedge as continuation (uptrend continuation)
+                    data = [
+                        30, 35, 40, 45, 50, 48, 52, 49, 53, 50, 54, 51, 
+                        55, 52, 56, 58, 62, 65, 68, 72, 75, 80, 85, 90
+                    ];
+                    
+                    annotations = {
+                        upperTrendline: {
+                            type: 'line',
+                            xMin: 5,
+                            yMin: 52,
+                            xMax: 15,
+                            yMax: 56,
+                            borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        lowerTrendline: {
+                            type: 'line',
+                            xMin: 5,
+                            yMin: 48,
+                            xMax: 15,
+                            yMax: 52,
+                            borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                        },
+                        breakout: {
+                            type: 'point',
+                            xValue: 15,
+                            yValue: 56,
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            radius: 5
+                        },
+                        breakoutText: {
+                            type: 'label',
+                            xValue: 15,
+                            yValue: 61,
+                            content: 'Breakout',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            color: isDark ? 'white' : 'black',
+                        }
+                    };
+                }
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: data.length}, (_, i) => i+1),
+                    datasets: [{
+                        label: 'Price',
+                        data: data,
+                        borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        annotation: {
+                            annotations: annotations
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColor,
+                                display: false
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createRectangleChart(canvasId, type) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            
+            // Data points for rectangles
+            let data;
+            let annotations = {};
+            
+            if (type === 'bullish') {
+                // Bullish rectangle (continues uptrend)
+                data = [
+                    30, 35, 40, 45, 50, 53, 51, 54, 52, 55, 53, 56, 
+                    54, 56, 54, 57, 60, 65, 70, 75, 80, 85, 90
+                ];
+                
+                annotations = {
+                    resistance: {
+                        type: 'line',
+                        xMin: 5,
+                        xMax: 17,
+                        yMin: 56,
+                        yMax: 56,
+                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    support: {
+                        type: 'line',
+                        xMin: 5,
+                        xMax: 17,
+                        yMin: 52,
+                        yMax: 52,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    breakout: {
+                        type: 'point',
+                        xValue: 17,
+                        yValue: 57,
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        radius: 5
+                    },
+                    resistanceText: {
+                        type: 'label',
+                        xValue: 5,
+                        yValue: 60,
+                        content: 'Resistance',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    supportText: {
+                        type: 'label',
+                        xValue: 5,
+                        yValue: 48,
+                        content: 'Support',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    breakoutText: {
+                        type: 'label',
+                        xValue: 17,
+                        yValue: 62,
+                        content: 'Breakout',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    }
+                };
+            } else {
+                // Bearish rectangle (continues downtrend)
+                data = [
+                    90, 85, 80, 75, 70, 67, 69, 66, 68, 65, 67, 64, 
+                    66, 64, 66, 63, 60, 55, 50, 45, 40, 35, 30
+                ];
+                
+                annotations = {
+                    resistance: {
+                        type: 'line',
+                        xMin: 5,
+                        xMax: 17,
+                        yMin: 68,
+                        yMax: 68,
+                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    support: {
+                        type: 'line',
+                        xMin: 5,
+                        xMax: 17,
+                        yMin: 64,
+                        yMax: 64,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    breakout: {
+                        type: 'point',
+                        xValue: 17,
+                        yValue: 63,
+                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                        radius: 5
+                    },
+                    resistanceText: {
+                        type: 'label',
+                        xValue: 5,
+                        yValue: 72,
+                        content: 'Resistance',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    supportText: {
+                        type: 'label',
+                        xValue: 5,
+                        yValue: 60,
+                        content: 'Support',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    breakoutText: {
+                        type: 'label',
+                        xValue: 17,
+                        yValue: 58,
+                        content: 'Breakout',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    }
+                };
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: data.length}, (_, i) => i+1),
+                    datasets: [{
+                        label: 'Price',
+                        data: data,
+                        borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        annotation: {
+                            annotations: annotations
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColor,
+                                display: false
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createTriangleChart(canvasId, type) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            
+            // Data points for triangles
+            let data;
+            let annotations = {};
+            
+            if (type === 'symmetrical') {
+                // Symmetrical triangle
+                data = [
+                    60, 65, 62, 64, 61, 63, 60, 62, 59, 61, 58, 60, 
+                    57, 59, 56, 58, 61, 64, 68, 72, 76, 80
+                ];
+                
+                annotations = {
+                    upperTrendline: {
+                        type: 'line',
+                        xMin: 1,
+                        yMin: 65,
+                        xMax: 15,
+                        yMax: 58,
+                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    lowerTrendline: {
+                        type: 'line',
+                        xMin: 2,
+                        yMin: 60,
+                        xMax: 15,
+                        yMax: 56,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    breakout: {
+                        type: 'point',
+                        xValue: 16,
+                        yValue: 58,
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        radius: 5
+                    },
+                    convergenceText: {
+                        type: 'label',
+                        xValue: 16,
+                        yValue: 57,
+                        content: 'Convergence Point',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    breakoutText: {
+                        type: 'label',
+                        xValue: 16,
+                        yValue: 63,
+                        content: 'Breakout',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    }
+                };
+            } else if (type === 'ascending') {
+                // Ascending triangle
+                data = [
+                    50, 54, 52, 55, 53, 56, 54, 56, 54, 56, 54, 56, 
+                    54, 56, 54, 56, 58, 60, 63, 66, 70, 74
+                ];
+                
+                annotations = {
+                    resistance: {
+                        type: 'line',
+                        xMin: 1,
+                        yMin: 56,
+                        xMax: 16,
+                        yMax: 56,
+                        borderColor: isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    support: {
+                        type: 'line',
+                        xMin: 1,
+                        yMin: 50,
+                        xMax: 15,
+                        yMax: 54,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                    },
+                    breakout: {
+                        type: 'point',
+                        xValue: 16,
+                        yValue: 57,
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        radius: 5
+                    },
+                    resistanceText: {
+                        type: 'label',
+                        xValue: 1,
+                        yValue: 60,
+                        content: 'Resistance',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    supportText: {
+                        type: 'label',
+                        xValue: 1,
+                        yValue: 46,
+                        content: 'Rising Support',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    },
+                    breakoutText: {
+                        type: 'label',
+                        xValue: 16,
+                        yValue: 62,
+                        content: 'Breakout',
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        color: isDark ? 'white' : 'black',
+                    }
+                };
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: data.length}, (_, i) => i+1),
+                    datasets: [{
+                        label: 'Price',
+                        data: data,
+                        borderColor: isDark ? '#5D5CDE' : '#5D5CDE',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        annotation: {
+                            annotations: annotations
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColor,
+                                display: false
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function checkAnswers() {
+            // Correct answers
+            const correctAnswers = ['B', 'C', 'B', 'B', 'B'];
+            
+            // Calculate score
+            let newScore = 0;
+            for (let i = 0; i < correctAnswers.length; i++) {
+                if (userAnswers[i] === correctAnswers[i]) {
+                    newScore++;
+                }
+            }
+            
+            score = newScore;
+            quizCompleted = true;
+        }
+        
+        // Initialize Alpine.js data
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('quizData', () => ({
+                userAnswers: [],
+                currentQuestion: 0,
+                quizCompleted: false,
+                score: 0,
+                
+                checkAnswers() {
+                    // Implementation in the main script
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
