@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 10 - Banking Regulation and Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#6366F1',
+                        banking: {
+                            blue: '#1e40af',
+                            green: '#15803d',
+                            red: '#b91c1c',
+                            orange: '#c2410c',
+                            purple: '#7e22ce'
+                        },
+                        darkbg: '#181818',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .quiz-option { cursor: pointer; }
+        .quiz-option.selected { border: 2px solid #5D5CDE; }
+        .animated-card { transition: all 0.3s ease; }
+        .animated-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .calculator input:focus { outline: none; border-color: #5D5CDE; box-shadow: 0 0 0 2px rgba(93,92,222,0.2); }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { backface-visibility: hidden; }
+        .flip-card-back { transform: rotateY(180deg); }
+        .progress-bar { transition: width 0.6s ease; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+    </style>
+</head>
+<body class="bg-white dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header and Navigation -->
+    <header class="bg-white dark:bg-gray-900 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-university text-3xl text-primary mr-3"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Banking Regulation and Management</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-200">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="text-sm text-gray-600 dark:text-gray-300">FIN435 - Chapter 10</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap overflow-x-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base active bg-primary text-white" data-tab="overview">Overview</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="capital">Capital Adequacy</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="calculator">CAR Calculator</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="liquidity">Liquidity</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="performance">Performance</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="quiz">Knowledge Check</button>
+            <button class="tab-btn px-4 py-3 font-medium text-sm md:text-base text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-tab="casestudy">Case Study</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Banking Regulation and Management</h2>
+                    <p class="mb-4">This chapter covers key aspects of banking operations and regulatory frameworks that ensure stability and efficiency in the banking sector.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200">Key Topics Covered:</h3>
+                    <ul class="space-y-2 mb-6 list-disc pl-5">
+                        <li>Capital adequacy framework and Basel Accords</li>
+                        <li>Liquidity management strategies</li>
+                        <li>Asset and liability management</li>
+                        <li>Bank credit process and loan management</li>
+                        <li>Problem loan detection and recovery techniques</li>
+                        <li>Performance evaluation metrics for banks</li>
+                    </ul>
+                    
+                    <div class="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg mb-6">
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-info-circle text-banking-blue mr-2"></i>
+                            Bank Manager's Primary Concerns
+                        </h4>
+                        <ol class="list-decimal pl-5 space-y-1">
+                            <li>Sufficient cash or liquid assets to meet deposit outflows (liquidity management)</li>
+                            <li>Acquiring assets with low risk of default and for diversification (asset management)</li>
+                            <li>Acquire funds by accepting deposits at low cost (liability management)</li>
+                            <li>Maintaining right level of capital protection against risk (capital adequacy management)</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 shadow-sm mb-6">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-balance-scale text-banking-purple mr-2"></i>
+                            Bank Balance Sheet Structure
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold mb-2 text-banking-blue dark:text-blue-400">Assets (Uses of Funds)</h4>
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Cash and cash equivalents</li>
+                                    <li>• Loans and advances</li>
+                                    <li>• Securities</li>
+                                    <li>• Interbank loans</li>
+                                    <li>• Placements with other banks</li>
+                                    <li>• Fixed assets</li>
+                                    <li>• Derivatives and trading assets</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2 text-banking-green dark:text-green-400">Liabilities (Sources of Funds)</h4>
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Deposits from customers</li>
+                                    <li>• Interbank deposits</li>
+                                    <li>• Obligations on securities</li>
+                                    <li>• Bills and acceptance payable</li>
+                                    <li>• Other liabilities</li>
+                                    <li class="mt-2 font-medium">Equity</li>
+                                    <li>• Share capital</li>
+                                    <li>• Reserves</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="flip-card animated-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden h-48">
+                            <div class="flip-card-inner w-full h-full">
+                                <div class="flip-card-front w-full h-full flex flex-col justify-center items-center p-4">
+                                    <i class="fas fa-chart-pie text-3xl text-banking-blue mb-3"></i>
+                                    <h3 class="font-semibold text-center">Risk Management</h3>
+                                    <p class="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">Hover to learn more</p>
+                                </div>
+                                <div class="flip-card-back w-full h-full p-4 bg-primary text-white flex flex-col justify-center">
+                                    <h3 class="font-semibold text-center mb-2">Risk Management</h3>
+                                    <p class="text-sm text-center">Identifying, measuring, monitoring and controlling risks in banking operations.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flip-card animated-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden h-48">
+                            <div class="flip-card-inner w-full h-full">
+                                <div class="flip-card-front w-full h-full flex flex-col justify-center items-center p-4">
+                                    <i class="fas fa-shield-alt text-3xl text-banking-green mb-3"></i>
+                                    <h3 class="font-semibold text-center">Basel Accords</h3>
+                                    <p class="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">Hover to learn more</p>
+                                </div>
+                                <div class="flip-card-back w-full h-full p-4 bg-secondary text-white flex flex-col justify-center">
+                                    <h3 class="font-semibold text-center mb-2">Basel Accords</h3>
+                                    <p class="text-sm text-center">Global standards for bank regulation focusing on capital requirements, stress testing, and market liquidity risk.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flip-card animated-card bg-white dark:bg-gray-800 rounded-lg overflow-hidden h-48">
+                            <div class="flip-card-inner w-full h-full">
+                                <div class="flip-card-front w-full h-full flex flex-col justify-center items-center p-4">
+                                    <i class="fas fa-search-dollar text-3xl text-banking-purple mb-3"></i>
+                                    <h3 class="font-semibold text-center">Key Metrics</h3>
+                                    <p class="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">Hover to learn more</p>
+                                </div>
+                                <div class="flip-card-back w-full h-full p-4 bg-banking-purple text-white flex flex-col justify-center">
+                                    <h3 class="font-semibold text-center mb-2">Key Metrics</h3>
+                                    <p class="text-sm text-center">ROA, ROE, NIM, CET1, Tier 1 Ratio, and other metrics to measure bank performance and health.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <button class="tab-btn-redirect px-5 py-2 bg-primary text-white rounded-lg font-medium hover:bg-opacity-90 transition-all" data-tab="capital">
+                    Continue to Capital Adequacy <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Capital Adequacy Tab -->
+        <div id="capital" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Capital Adequacy Framework</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="col-span-2">
+                    <p class="mb-4">Capital adequacy refers to the amount of capital a bank or financial institution needs to hold as required by its financial regulator. These requirements are put in place to ensure that these institutions do not take on excessive leverage and become insolvent.</p>
+                    
+                    <div class="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg mb-4">
+                        <h3 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 dark:text-yellow-500 mr-2"></i>
+                            BNM's Objectives on Capital Ratio
+                        </h3>
+                        <ol class="list-decimal pl-5">
+                            <li>To protect depositors and their deposits</li>
+                            <li>To ensure a stable financial system</li>
+                            <li>To ensure a proper structure in the financial system</li>
+                        </ol>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-3">Basel Accords Development</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">Accord</th>
+                                    <th class="py-3 px-4 text-left">Year</th>
+                                    <th class="py-3 px-4 text-left">Key Focus</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Basel I</td>
+                                    <td class="py-3 px-4">1988</td>
+                                    <td class="py-3 px-4">Minimum capital requirements focused primarily on credit risk</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Basel II</td>
+                                    <td class="py-3 px-4">2004</td>
+                                    <td class="py-3 px-4">Expanded to include operational risk and market risk; introduced three pillars approach</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Basel III</td>
+                                    <td class="py-3 px-4">2010</td>
+                                    <td class="py-3 px-4">Strengthened capital requirements, introduced leverage ratio and liquidity requirements</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-5">
+                        <h3 class="text-lg font-semibold mb-4">Risk Weightings on Assets</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">0% Risk Weight</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 5%"></div>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">Gov't securities, cash</p>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">10% Risk Weight</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-400 h-2 rounded-full" style="width: 10%"></div>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">Cagamas securities</p>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">20% Risk Weight</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 20%"></div>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">Claims on financial institutions</p>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">50% Risk Weight</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 50%"></div>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">Residential mortgages</p>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">100% Risk Weight</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-600 dark:text-gray-400">Corporate loans, other assets</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">Capital Requirements under Basel III</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-banking-blue dark:text-blue-400 flex items-center">
+                            <i class="fas fa-layer-group mr-2"></i>
+                            CET1 Capital Ratio
+                        </h4>
+                        <div class="text-3xl font-bold mb-2">4.5%</div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Common Equity Tier 1 includes common shares, retained earnings and other reserves</p>
+                    </div>
+                    
+                    <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-banking-purple dark:text-purple-400 flex items-center">
+                            <i class="fas fa-chess-rook mr-2"></i>
+                            Tier 1 Capital Ratio
+                        </h4>
+                        <div class="text-3xl font-bold mb-2">6.0%</div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">CET1 plus Additional Tier 1 Capital which includes preferred shares and certain hybrid securities</p>
+                    </div>
+                    
+                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                        <h4 class="font-medium mb-2 text-banking-green dark:text-green-400 flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            Total Capital Ratio
+                        </h4>
+                        <div class="text-3xl font-bold mb-2">8.0%</div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Tier 1 plus Tier 2 Capital which includes subordinated debt and general provisions</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <div class="flex items-center mb-2">
+                        <div class="w-3 h-3 bg-indigo-500 mr-2"></div>
+                        <span class="text-sm">Capital Conservation Buffer: 2.5% (additional)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-purple-500 mr-2"></div>
+                        <span class="text-sm">Countercyclical Buffer: 0-2.5% (varies based on economic conditions)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <button class="tab-btn-redirect px-5 py-2 bg-primary text-white rounded-lg font-medium hover:bg-opacity-90 transition-all" data-tab="calculator">
+                    Try CAR Calculator <i class="fas fa-calculator ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Calculator Tab -->
+        <div id="calculator" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Capital Adequacy Ratio Calculator</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Capital Components</h3>
+                    <div class="space-y-4 calculator">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Tier 1 Capital (RM)</label>
+                            <input id="tier1" type="number" placeholder="Enter Tier 1 capital" 
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="3000000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Tier 2 Capital (RM)</label>
+                            <input id="tier2" type="number" placeholder="Enter Tier 2 capital"
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="1000000">
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-4 mt-6">Risk-Weighted Assets</h3>
+                    <div class="space-y-4 calculator">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">0% Risk Weight Assets (RM)</label>
+                            <input id="asset1" type="number" placeholder="Enter amount" 
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="4000000">
+                            <p class="text-xs mt-1 text-gray-500">Government securities, cash</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">10% Risk Weight Assets (RM)</label>
+                            <input id="asset2" type="number" placeholder="Enter amount"
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="9000000">
+                            <p class="text-xs mt-1 text-gray-500">Cagamas debt securities</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">50% Risk Weight Assets (RM)</label>
+                            <input id="asset3" type="number" placeholder="Enter amount"
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="30000000">
+                            <p class="text-xs mt-1 text-gray-500">Residential mortgages</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">100% Risk Weight Assets (RM)</label>
+                            <input id="asset4" type="number" placeholder="Enter amount"
+                                class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-base" value="0">
+                            <p class="text-xs mt-1 text-gray-500">Corporate loans, other assets</p>
+                        </div>
+                    </div>
+                    
+                    <button id="calculateCAR" class="w-full mt-6 px-5 py-3 bg-primary text-white rounded-lg font-medium hover:bg-opacity-90 transition-all">
+                        Calculate Ratios
+                    </button>
+                </div>
+                
+                <div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">Risk-Weighted Assets Calculation</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">Total RWA:</span>
+                            <span id="rwaResult" class="font-bold text-lg">RM0</span>
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm">
+                            <p>RWA = (0% × 0% Risk Assets) + (10% × 10% Risk Assets) + (50% × 50% Risk Assets) + (100% × 100% Risk Assets)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Capital Adequacy Results</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-medium">CET1 Ratio:</span>
+                                    <span id="cet1Result" class="font-bold">0.00%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+                                    <div id="cet1Progress" class="bg-banking-green h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>0%</span>
+                                    <span class="text-banking-green dark:text-green-400">Min: 4.5%</span>
+                                    <span>10%</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-medium">Tier 1 Ratio:</span>
+                                    <span id="tier1Result" class="font-bold">0.00%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+                                    <div id="tier1Progress" class="bg-banking-blue h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>0%</span>
+                                    <span class="text-banking-blue dark:text-blue-400">Min: 6.0%</span>
+                                    <span>10%</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-medium">Total Capital Ratio:</span>
+                                    <span id="totalCapitalResult" class="font-bold">0.00%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+                                    <div id="totalCapitalProgress" class="bg-primary h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>0%</span>
+                                    <span class="text-primary">Min: 8.0%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="carAnalysis" class="mt-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div class="flex items-center justify-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-calculator mr-2"></i>
+                                <span>Click "Calculate Ratios" to see analysis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liquidity Tab -->
+        <div id="liquidity" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Liquidity Management</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="col-span-2">
+                    <p class="mb-4">Liquidity management refers to a bank's ability to generate cash quickly to meet financial obligations. Banks need sufficient liquid assets to meet deposit withdrawals and other financial commitments.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-3">Sources of Liquidity</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm animated-card">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 dark:bg-blue-900/40 rounded-full p-2 mr-3">
+                                    <i class="fas fa-piggy-bank text-banking-blue"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">New Deposits</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Customer deposits provide a primary source of liquidity for banks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm animated-card">
+                            <div class="flex items-start">
+                                <div class="bg-green-100 dark:bg-green-900/40 rounded-full p-2 mr-3">
+                                    <i class="fas fa-chart-line text-banking-green"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Sale of Assets</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Selling short-term securities to generate immediate cash.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm animated-card">
+                            <div class="flex items-start">
+                                <div class="bg-purple-100 dark:bg-purple-900/40 rounded-full p-2 mr-3">
+                                    <i class="fas fa-calendar-check text-banking-purple"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Maturity of Assets</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Cash flows from maturing loans and investments provide liquidity.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm animated-card">
+                            <div class="flex items-start">
+                                <div class="bg-orange-100 dark:bg-orange-900/40 rounded-full p-2 mr-3">
+                                    <i class="fas fa-hand-holding-usd text-banking-orange"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Borrowed Funds</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Borrowing from other institutions or central banks for liquidity needs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm mb-6">
+                        <h3 class="text-xl font-semibold mb-3">Basel III Liquidity Requirements</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold flex items-center">
+                                    <i class="fas fa-tint text-blue-500 mr-2"></i>
+                                    Liquidity Coverage Ratio (LCR)
+                                </h4>
+                                <p class="text-sm mt-1">Ensures banks have enough high-quality liquid assets to survive a 30-day stress scenario. The ratio must be at least 100%.</p>
+                                <div class="mt-2 flex items-center">
+                                    <div class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm">
+                                        LCR = High Quality Liquid Assets / Total Net Cash Outflows over 30 days ≥ 100%
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold flex items-center">
+                                    <i class="fas fa-project-diagram text-green-500 mr-2"></i>
+                                    Net Stable Funding Ratio (NSFR)
+                                </h4>
+                                <p class="text-sm mt-1">Promotes longer-term funding stability by requiring banks to fund their activities with sufficiently stable sources of funding. The ratio must be at least 100%.</p>
+                                <div class="mt-2 flex items-center">
+                                    <div class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm">
+                                        NSFR = Available Stable Funding / Required Stable Funding ≥ 100%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Strategies for Liquidity Management</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <div>
+                                    <h4 class="font-medium">Holding Liquid Assets</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Maintain a portfolio of high-quality liquid assets that can be easily sold.</p>
+                                </div>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <div>
+                                    <h4 class="font-medium">Stable Liabilities</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Acquire large volume of stable deposits and longer-term funding.</p>
+                                </div>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <div>
+                                    <h4 class="font-medium">Credit Lines</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Maintain lines of credit with other financial institutions for emergency liquidity.</p>
+                                </div>
+                            </li>
+                            
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <div>
+                                    <h4 class="font-medium">Market Risk Monitoring</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Track interest rate changes that could affect earnings and asset values.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2">Liquidity Stress Testing</h3>
+                        <p class="text-sm">Banks conduct regular stress tests to assess their resilience to liquidity shocks. These tests simulate scenarios such as:</p>
+                        <ul class="mt-2 space-y-1 text-sm">
+                            <li>• Significant deposit outflows</li>
+                            <li>• Market-wide liquidity crisis</li>
+                            <li>• Credit rating downgrade</li>
+                            <li>• Loss of wholesale funding access</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-semibold mb-4">Liquidity Ratios for Performance Evaluation</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Loans to Total Assets</h4>
+                            <div class="font-mono bg-white dark:bg-gray-800 px-3 py-2 rounded text-sm mb-2">
+                                Total Loans / Total Assets
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Measures the percentage of a bank's assets tied up in loans. Higher ratios indicate lower liquidity.</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Liquid Assets to Total Assets</h4>
+                            <div class="font-mono bg-white dark:bg-gray-800 px-3 py-2 rounded text-sm mb-2">
+                                Cash and Short-Term Securities / Total Assets
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Indicates the proportion of assets that can be quickly converted to cash. Higher ratios indicate better liquidity.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="font-medium mb-2">Malaysian Banking Industry Liquidity Metrics (2022-2023)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">Metric</th>
+                                    <th class="py-3 px-4 text-right">2022</th>
+                                    <th class="py-3 px-4 text-right">2023</th>
+                                    <th class="py-3 px-4 text-left">Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-3 px-4">Loans to Total Assets (%)</td>
+                                    <td class="py-3 px-4 text-right">67.30</td>
+                                    <td class="py-3 px-4 text-right">66.47</td>
+                                    <td class="py-3 px-4 text-green-500"><i class="fas fa-arrow-down"></i> Improved</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Liquid Assets to Total Assets (%)</td>
+                                    <td class="py-3 px-4 text-right">4.32</td>
+                                    <td class="py-3 px-4 text-right">3.95</td>
+                                    <td class="py-3 px-4 text-red-500"><i class="fas fa-arrow-down"></i> Declined</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Loan to Deposit (%)</td>
+                                    <td class="py-3 px-4 text-right">76.09</td>
+                                    <td class="py-3 px-4 text-right">76.25</td>
+                                    <td class="py-3 px-4 text-yellow-500"><i class="fas fa-arrow-up"></i> Slight increase</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Performance Evaluation of Banks</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="col-span-2">
+                    <p class="mb-4">Bank performance evaluation involves analyzing financial statements and calculating various financial ratios to assess profitability, liquidity, asset quality, capital adequacy, and management soundness.</p>
+                    
+                    <div class="chart-container mb-6">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                            <h3 class="font-semibold mb-3 flex items-center">
+                                <i class="fas fa-chart-line text-banking-green mr-2"></i>
+                                Profitability Ratios
+                            </h3>
+                            <ul class="space-y-2 text-sm">
+                                <li><span class="font-medium">Return on Assets (ROA):</span> Net profit / Total assets</li>
+                                <li><span class="font-medium">Return on Equity (ROE):</span> Net profit / Shareholders' equity</li>
+                                <li><span class="font-medium">Spread:</span> Interest rate on loans - Interest rate on deposits</li>
+                                <li><span class="font-medium">Net Interest Margin:</span> (Interest income - Interest expenses) / Earning assets</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                            <h3 class="font-semibold mb-3 flex items-center">
+                                <i class="fas fa-tint text-banking-blue mr-2"></i>
+                                Liquidity Ratios
+                            </h3>
+                            <ul class="space-y-2 text-sm">
+                                <li><span class="font-medium">Loans to Total Assets:</span> Total loans / Total assets</li>
+                                <li><span class="font-medium">Liquid Assets to Total Assets:</span> Cash and short-term securities / Total assets</li>
+                                <li><span class="font-medium">Loan to Deposit:</span> Gross loan / Total customer deposits</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                            <h3 class="font-semibold mb-3 flex items-center">
+                                <i class="fas fa-gem text-banking-purple mr-2"></i>
+                                Asset Quality Ratios
+                            </h3>
+                            <ul class="space-y-2 text-sm">
+                                <li><span class="font-medium">NPL Ratio:</span> Non-performing loans / Net loans</li>
+                                <li><span class="font-medium">Deposit to Shareholder Fund:</span> Customer deposits / Shareholder equity</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                            <h3 class="font-semibold mb-3 flex items-center">
+                                <i class="fas fa-shield-alt text-banking-orange mr-2"></i>
+                                Capital Adequacy Ratios
+                            </h3>
+                            <ul class="space-y-2 text-sm">
+                                <li><span class="font-medium">Capital-to-Risk Weighted Assets:</span> (Tier 1 + Tier 2) / Risk-weighted assets</li>
+                                <li><span class="font-medium">Core Capital Ratio:</span> Tier 1 capital / Risk-weighted assets</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Banking Industry Performance (2023)</h3>
+                        
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">Return on Asset</span>
+                                    <span class="text-sm">1.20%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-banking-green h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">Return on Equity</span>
+                                    <span class="text-sm">10.97%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-banking-blue h-2 rounded-full" style="width: 55%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">Net Interest Margin</span>
+                                    <span class="text-sm">2.07%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-banking-purple h-2 rounded-full" style="width: 40%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">NPL to Net Loans</span>
+                                    <span class="text-sm">1.22%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 12%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium">Capital Adequacy Ratio</span>
+                                    <span class="text-sm">17.83%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 89%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2">Key Performance Indicators</h3>
+                        <p class="text-sm mb-3">Strong bank performance typically shows:</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>ROA above 1%</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>ROE above 10%</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>NPL ratio below 2%</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>CAR above 15%</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Cost-to-income ratio below 50%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-semibold mb-4">Bank Performance Comparison</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Metric</th>
+                                <th class="py-3 px-4 text-right">Industry Average</th>
+                                <th class="py-3 px-4 text-right">Bank A</th>
+                                <th class="py-3 px-4 text-right">Bank B</th>
+                                <th class="py-3 px-4 text-right">Bank C</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="py-3 px-4">ROA (%)</td>
+                                <td class="py-3 px-4 text-right">1.20</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">1.32</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">0.95</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">1.25</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">ROE (%)</td>
+                                <td class="py-3 px-4 text-right">10.97</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">12.55</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">11.20</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">9.85</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">NIM (%)</td>
+                                <td class="py-3 px-4 text-right">2.07</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">1.85</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">2.12</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">2.25</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">Cost-to-Income (%)</td>
+                                <td class="py-3 px-4 text-right">45.60</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">48.50</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">42.30</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">47.80</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">NPL Ratio (%)</td>
+                                <td class="py-3 px-4 text-right">1.22</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">1.05</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">1.75</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">0.95</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">CAR (%)</td>
+                                <td class="py-3 px-4 text-right">17.83</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">18.50</td>
+                                <td class="py-3 px-4 text-right font-medium text-green-500">19.25</td>
+                                <td class="py-3 px-4 text-right font-medium text-red-500">16.85</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                    <p>Note: Green indicates performance better than industry average, red indicates below industry average.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div id="quiz" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Knowledge Check</h2>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <div class="space-y-6">
+                    <div class="quiz-question">
+                        <p class="font-medium mb-3">1. What is the minimum CET1 ratio under Basel III?</p>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">6.0%</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="correct">4.5%</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">8.0%</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">10.0%</div>
+                    </div>
+                    
+                    <div class="quiz-question">
+                        <p class="font-medium mb-3">2. Which of these assets would typically have a 0% risk weight?</p>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Corporate loans</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Residential mortgages</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="correct">Federal Government of Malaysia securities</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Claims on financial institutions in Malaysia</div>
+                    </div>
+                    
+                    <div class="quiz-question">
+                        <p class="font-medium mb-3">3. Which ratio is calculated as (Interest income - Interest expenses) / Earning assets?</p>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Return on Assets</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Spread</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="correct">Net Interest Margin</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Return on Equity</div>
+                    </div>
+                    
+                    <div class="quiz-question">
+                        <p class="font-medium mb-3">4. Which Basel Accord introduced the Liquidity Coverage Ratio (LCR) and Net Stable Funding Ratio (NSFR)?</p>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Basel I</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Basel II</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="correct">Basel III</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">None of the above</div>
+                    </div>
+                    
+                    <div class="quiz-question">
+                        <p class="font-medium mb-3">5. What does NPL stand for in banking terminology?</p>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">New Profit Leverage</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">Net Private Lending</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg mb-2 hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="correct">Non-Performing Loan</div>
+                        <div class="quiz-option p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700" data-answer="wrong">National Payment License</div>
+                    </div>
+                    
+                    <button id="submitQuiz" class="w-full px-5 py-3 bg-primary text-white rounded-lg font-medium hover:bg-opacity-90 transition-all">
+                        Submit Answers
+                    </button>
+                    
+                    <div id="quizResults" class="mt-4 p-4 text-center font-medium hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Study Tab -->
+        <div id="casestudy" class="tab-content animate-fade-in">
+            <h2 class="text-2xl font-bold mb-4 text-primary">Case Study: Evaluating Bank Performance</h2>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4">KKBC Bank Performance Analysis</h3>
+                
+                <div class="mb-6">
+                    <p class="mb-4">KKBC Bank is a mid-sized financial institution operating in Malaysia. The bank has recently published its financial statements for the year ended 2024. As a financial analyst, your task is to evaluate the bank's performance using the provided financial information.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div>
+                            <h4 class="font-semibold mb-3">Statement of Financial Position</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                                    <thead class="bg-gray-100 dark:bg-gray-800">
+                                        <tr>
+                                            <th class="py-2 px-3 text-left text-sm">Assets</th>
+                                            <th class="py-2 px-3 text-right text-sm">RM ('000)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                                        <tr>
+                                            <td class="py-2 px-3">Cash and short-term funds</td>
+                                            <td class="py-2 px-3 text-right">50,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Securities</td>
+                                            <td class="py-2 px-3 text-right">100,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Loans and advances</td>
+                                            <td class="py-2 px-3 text-right">500,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Fixed assets</td>
+                                            <td class="py-2 px-3 text-right">150,000</td>
+                                        </tr>
+                                        <tr class="font-medium">
+                                            <td class="py-2 px-3">Total Assets</td>
+                                            <td class="py-2 px-3 text-right">800,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="overflow-x-auto mt-4">
+                                <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                                    <thead class="bg-gray-100 dark:bg-gray-800">
+                                        <tr>
+                                            <th class="py-2 px-3 text-left text-sm">Liabilities & Equity</th>
+                                            <th class="py-2 px-3 text-right text-sm">RM ('000)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                                        <tr>
+                                            <td class="py-2 px-3">Deposits</td>
+                                            <td class="py-2 px-3 text-right">600,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Other liabilities</td>
+                                            <td class="py-2 px-3 text-right">100,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Shareholders' equity</td>
+                                            <td class="py-2 px-3 text-right">100,000</td>
+                                        </tr>
+                                        <tr class="font-medium">
+                                            <td class="py-2 px-3">Total Liabilities & Equity</td>
+                                            <td class="py-2 px-3 text-right">800,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold mb-3">Income Statement</h4>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                                    <thead class="bg-gray-100 dark:bg-gray-800">
+                                        <tr>
+                                            <th class="py-2 px-3 text-left text-sm">Item</th>
+                                            <th class="py-2 px-3 text-right text-sm">RM ('000)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                                        <tr>
+                                            <td class="py-2 px-3">Interest income</td>
+                                            <td class="py-2 px-3 text-right">40,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Interest expense</td>
+                                            <td class="py-2 px-3 text-right">15,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Net interest income</td>
+                                            <td class="py-2 px-3 text-right">25,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Non-interest income</td>
+                                            <td class="py-2 px-3 text-right">10,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Admin expenses</td>
+                                            <td class="py-2 px-3 text-right">8,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Loan loss provisions</td>
+                                            <td class="py-2 px-3 text-right">5,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Profit before tax</td>
+                                            <td class="py-2 px-3 text-right">22,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-3">Tax</td>
+                                            <td class="py-2 px-3 text-right">5,000</td>
+                                        </tr>
+                                        <tr class="font-medium">
+                                            <td class="py-2 px-3">Net profit</td>
+                                            <td class="py-2 px-3 text-right">17,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h4 class="font-semibold mb-2">Additional Information</h4>
+                                <ul class="space-y-1 text-sm">
+                                    <li>• Non-performing loans: RM 2,000,000</li>
+                                    <li>• Risk-weighted assets: RM 350,000,000</li>
+                                    <li>• Tier 1 capital: RM 40,000,000</li>
+                                    <li>• Tier 2 capital: RM 20,000,000</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-3">Performance Analysis Results</h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                            <h5 class="text-sm font-medium mb-1">Profitability</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>ROA:</span>
+                                    <span class="font-medium">2.1%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>ROE:</span>
+                                    <span class="font-medium">16.8%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Net Interest Margin:</span>
+                                    <span class="font-medium">3.85%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                            <h5 class="text-sm font-medium mb-1">Liquidity & Asset Quality</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Loans to Assets:</span>
+                                    <span class="font-medium">62.5%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Liquid Assets Ratio:</span>
+                                    <span class="font-medium">6.25%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>NPL Ratio:</span>
+                                    <span class="font-medium">0.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                            <h5 class="text-sm font-medium mb-1">Capital & Management</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>CAR:</span>
+                                    <span class="font-medium">17.14%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Core Capital Ratio:</span>
+                                    <span class="font-medium">11.43%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Admin/Total Exp:</span>
+                                    <span class="font-medium">18.18%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-semibold mb-4">Analysis Interpretation</h3>
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                        <h4 class="font-semibold flex items-center mb-2">
+                            <i class="fas fa-thumbs-up text-green-500 mr-2"></i>
+                            Strengths
+                        </h4>
+                        <ul class="space-y-1 pl-6 list-disc">
+                            <li>Strong profitability with ROA (2.1%) significantly above industry average (1.2%)</li>
+                            <li>Excellent ROE at 16.8%, well above the industry average of 10.97%</li>
+                            <li>Very low NPL ratio of 0.4%, indicating high asset quality</li>
+                            <li>Strong capital adequacy ratio of 17.14%, exceeding regulatory requirements</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                        <h4 class="font-semibold flex items-center mb-2">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                            Areas to Monitor
+                        </h4>
+                        <ul class="space-y-1 pl-6 list-disc">
+                            <li>Loan-to-deposit ratio at 83.33% indicates the bank is lending a high proportion of its deposits</li>
+                            <li>Deposit to shareholders' fund ratio at 6.00 times shows moderate leverage</li>
+                            <li>Administrative expenses represent 18.18% of total expenditures, which should be monitored</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                        <h4 class="font-semibold flex items-center mb-2">
+                            <i class="fas fa-lightbulb text-indigo-500 mr-2"></i>
+                            Recommendations
+                        </h4>
+                        <ul class="space-y-1 pl-6 list-disc">
+                            <li>Maintain the strong asset quality practices that have resulted in low NPL ratio</li>
+                            <li>Consider strategies to improve deposit growth to support future loan expansion</li>
+                            <li>Monitor administrative expenses to ensure operational efficiency</li>
+                            <li>Continue prudent capital management to maintain strong capital adequacy ratios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-gray-900 mt-8 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>FIN435 - Banking Regulation and Management | Interactive Learning Module</p>
+        </div>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script>
+        // Check for dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const icon = darkModeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Tab Navigation
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active', 'bg-primary', 'text-white'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active', 'bg-primary', 'text-white');
+                document.getElementById(btn.dataset.tab).classList.add('active', 'animate-fade-in');
+            });
+        });
+        document.querySelectorAll('.tab-btn-redirect').forEach(btn => btn.addEventListener('click', () => {
+            document.querySelector(`.tab-btn[data-tab="${btn.dataset.tab}"]`).click();
+        }));
+
+        // Calculator Functionality
+        document.getElementById('calculateCAR').addEventListener('click', () => {
+            const t1 = +document.getElementById('tier1').value;
+            const t2 = +document.getElementById('tier2').value;
+            const a1 = +document.getElementById('asset1').value;
+            const a2 = +document.getElementById('asset2').value;
+            const a3 = +document.getElementById('asset3').value;
+            const a4 = +document.getElementById('asset4').value;
+            const rwa = a1*0 + a2*0.1 + a3*0.5 + a4*1;
+            document.getElementById('rwaResult').textContent = `RM${rwa.toLocaleString()}`;
+            const cet1 = (t1 / rwa) * 100;
+            const tier1Ratio = (t1 / rwa) * 100;
+            const totalRatio = ((t1 + t2) / rwa) * 100;
+            document.getElementById('cet1Result').textContent = `${cet1.toFixed(2)}%`;
+            document.getElementById('tier1Result').textContent = `${tier1Ratio.toFixed(2)}%`;
+            document.getElementById('totalCapitalResult').textContent = `${totalRatio.toFixed(2)}%`;
+            document.getElementById('cet1Progress').style.width = `${Math.min(cet1*10,100)}%`;
+            document.getElementById('tier1Progress').style.width = `${Math.min(tier1Ratio*10,100)}%`;
+            document.getElementById('totalCapitalProgress').style.width = `${Math.min(totalRatio*5,100)}%`;
+            const analysisEl = document.getElementById('carAnalysis');
+            
+            let analysisContent = '';
+            if (totalRatio < 8) {
+                analysisContent = `
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                            <h5 class="text-sm font-medium">Critical Issue</h5>
+                            <p class="text-xs mt-1">Your total ratio (${totalRatio.toFixed(2)}%) is below the minimum requirement of 8%. Immediate capital injection is needed.</p>
+                        </div>
+                    </div>`;
+            } else if (cet1 < 4.5) {
+                analysisContent = `
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-orange-500 mt-1 mr-2"></i>
+                        <div>
+                            <h5 class="text-sm font-medium">CET1 Warning</h5>
+                            <p class="text-xs mt-1">Your CET1 ratio (${cet1.toFixed(2)}%) is below the minimum requirement of 4.5%. Consider strengthening your core capital.</p>
+                        </div>
+                    </div>`;
+            } else if (tier1Ratio < 6) {
+                analysisContent = `
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2"></i>
+                        <div>
+                            <h5 class="text-sm font-medium">Tier 1 Warning</h5>
+                            <p class="text-xs mt-1">Your Tier 1 ratio (${tier1Ratio.toFixed(2)}%) is below the minimum requirement of 6.0%. Additional Tier 1 capital is needed.</p>
+                        </div>
+                    </div>`;
+            } else if (totalRatio >= 16) {
+                analysisContent = `
+                    <div class="flex items-start">
+                        <i class="fas fa-award text-green-500 mt-1 mr-2"></i>
+                        <div>
+                            <h5 class="text-sm font-medium">Excellent Capital Position</h5>
+                            <p class="text-xs mt-1">Your capital ratios are significantly above regulatory minimums. This strong capital buffer provides excellent protection against risks.</p>
+                        </div>
+                    </div>`;
+            } else {
+                analysisContent = `
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <div>
+                            <h5 class="text-sm font-medium">Adequate Capital Position</h5>
+                            <p class="text-xs mt-1">Your ratios exceed regulatory minimums. CET1: ${cet1.toFixed(2)}% (min 4.5%), Tier 1: ${tier1Ratio.toFixed(2)}% (min 6.0%), Total: ${totalRatio.toFixed(2)}% (min 8.0%).</p>
+                        </div>
+                    </div>`;
+            }
+            
+            analysisEl.innerHTML = analysisContent;
+        });
+
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        let performanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['ROA (%)', 'ROE (%)', 'NIM (%)', 'Cost-to-Income (%)', 'NPL Ratio (%)'],
+                datasets: [
+                    {
+                        label: 'Industry Average',
+                        data: [1.2, 10.97, 2.07, 45.6, 1.22],
+                        backgroundColor: 'rgba(93, 92, 222, 0.7)'
+                    },
+                    {
+                        label: 'Bank A',
+                        data: [1.32, 12.55, 1.85, 48.5, 1.05],
+                        backgroundColor: 'rgba(22, 163, 74, 0.7)'
+                    },
+                    {
+                        label: 'Bank B',
+                        data: [0.95, 11.2, 2.12, 42.3, 1.75],
+                        backgroundColor: 'rgba(37, 99, 235, 0.7)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 12,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed.y.toFixed(2);
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 50,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Quiz Interaction
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                // Find all options in the same question
+                const questionDiv = opt.closest('.quiz-question');
+                const options = questionDiv.querySelectorAll('.quiz-option');
+                
+                // Toggle selection for the clicked option
+                opt.classList.toggle('selected');
+                
+                // If this is a single-choice question, deselect other options
+                // Uncomment the following code for single-choice questions
+                /*
+                options.forEach(other => {
+                    if (other !== opt) {
+                        other.classList.remove('selected');
+                    }
+                });
+                */
+            });
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', () => {
+            let correct = 0, total = 0;
+            const questions = document.querySelectorAll('.quiz-question');
+            
+            questions.forEach(question => {
+                let questionCorrect = true;
+                const options = question.querySelectorAll('.quiz-option');
+                
+                options.forEach(opt => {
+                    const isSelected = opt.classList.contains('selected');
+                    const shouldBeSelected = opt.dataset.answer === 'correct';
+                    
+                    // Mark correct and incorrect answers visually
+                    if (isSelected) {
+                        if (shouldBeSelected) {
+                            opt.classList.add('bg-green-100', 'dark:bg-green-900/30', 'border-green-500');
+                        } else {
+                            opt.classList.add('bg-red-100', 'dark:bg-red-900/30', 'border-red-500');
+                            questionCorrect = false;
+                        }
+                    } else if (shouldBeSelected) {
+                        opt.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'border-yellow-500');
+                        questionCorrect = false;
+                    }
+                });
+                
+                if (questionCorrect) correct++;
+                total++;
+            });
+            
+            const resultsEl = document.getElementById('quizResults');
+            let feedbackClass, feedbackIcon;
+            
+            if (correct === total) {
+                feedbackClass = 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200';
+                feedbackIcon = '<i class="fas fa-trophy text-yellow-500 mr-2"></i>';
+            } else if (correct >= total * 0.7) {
+                feedbackClass = 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200';
+                feedbackIcon = '<i class="fas fa-thumbs-up text-blue-500 mr-2"></i>';
+            } else {
+                feedbackClass = 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200';
+                feedbackIcon = '<i class="fas fa-redo text-yellow-500 mr-2"></i>';
+            }
+            
+            resultsEl.className = `mt-4 p-4 rounded-lg font-medium flex items-center justify-center ${feedbackClass}`;
+            
+            let message;
+            if (correct === total) {
+                message = 'Excellent! You got all questions right!';
+            } else if (correct >= total * 0.7) {
+                message = `Good job! You scored ${correct} out of ${total}.`;
+            } else {
+                message = `You scored ${correct} out of ${total}. Keep studying!`;
+            }
+            
+            resultsEl.innerHTML = `${feedbackIcon} ${message}`;
+            resultsEl.classList.remove('hidden');
+            
+            // Scroll to results
+            resultsEl.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        });
+    </script>
+</body>
+</html>
