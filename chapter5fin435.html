@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5 - Derivatives Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#6366F1',
+                        darkbg: '#181818',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s;
+        }
+        
+        .calculator-result {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+        
+        .calculator-result.show {
+            height: auto;
+            padding: 1rem;
+        }
+        
+        .dark .dark-invert {
+            filter: invert(1);
+        }
+        
+        .timeline-item {
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 1.15rem;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #5D5CDE;
+        }
+        
+        .timeline-item:last-child::before {
+            height: 50%;
+        }
+        
+        .timeline-item:first-child::before {
+            top: 50%;
+            height: 50%;
+        }
+        
+        .animate-bounce-soft {
+            animation: bounceSoft 2s infinite;
+        }
+        
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-primary text-white py-4 px-6 shadow-md">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-chart-line text-2xl mr-3"></i>
+                    <h1 class="text-xl md:text-2xl font-bold">Derivatives Market</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm hidden md:inline">Toggle Dark Mode</span>
+                        <button id="darkModeToggle" class="p-2 rounded-full bg-gray-700 text-white">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm">Chapter 5</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main tabs navigation -->
+        <div class="bg-gray-100 dark:bg-gray-800 shadow-sm">
+            <div class="container mx-auto">
+                <div class="flex overflow-x-auto py-2 px-4 md:px-0 no-scrollbar">
+                    <button class="tab-btn whitespace-nowrap active px-4 py-2 mx-1 rounded-md bg-primary text-white font-medium" data-tab="intro">
+                        <i class="fas fa-info-circle mr-1"></i> Introduction
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="futures">
+                        <i class="fas fa-handshake mr-1"></i> Futures
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="options">
+                        <i class="fas fa-exchange-alt mr-1"></i> Options
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="calculators">
+                        <i class="fas fa-calculator mr-1"></i> Calculators
+                    </button>
+                    <button class="tab-btn whitespace-nowrap px-4 py-2 mx-1 rounded-md bg-gray-200 dark:bg-gray-700 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-tab="practice">
+                        <i class="fas fa-tasks mr-1"></i> Practice
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <main class="flex-grow container mx-auto px-4 py-6 md:py-8">
+            <!-- Introduction Tab -->
+            <div id="intro" class="tab-content active animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">What are Derivatives?</h2>
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-1/2 mb-4 md:mb-0">
+                            <p class="mb-3">A <strong>derivative</strong> is a financial security whose payoff is linked to another security (the underlying asset).</p>
+                            <p class="mb-3">Derivative securities generally involve an agreement between two parties to exchange a standard quantity of an asset or cash flow at a pre-determined price and at a specified date in the future.</p>
+                            <p>If the value of underlying security changes, the value of the derivative security will change too.</p>
+                        </div>
+                        <div class="md:w-1/2 flex justify-center items-center">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg w-full">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white text-3xl">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                </div>
+                                <p class="text-center text-sm">Derivatives <strong>derive</strong> their value from the performance of an underlying entity</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Types of Derivatives in Malaysia</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-building-columns mr-2 text-primary"></i>
+                                Exchange-traded derivatives (ETD)
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Contracts traded on derivatives exchanges</li>
+                                <li>Standardized contracts</li>
+                                <li>Exchange acts as the counterparty to all contracts</li>
+                                <li>Includes options and futures contracts</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-handshake mr-2 text-primary"></i>
+                                Over-the-counter derivatives (OTC)
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Privately negotiated contracts between two parties</li>
+                                <li>Flexible terms that can be customized</li>
+                                <li>Meet specific needs of parties involved</li>
+                                <li>Not traded on a formal exchange</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Underlying Assets</h3>
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="md:w-1/2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-money-bill-trend-up mr-2 text-primary"></i>
+                                Financial Derivatives
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Bonds, government bonds (3-, 5-, and 10-year bonds)</li>
+                                <li>Short-term interest rate instruments on money market</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-wheat-awn mr-2 text-primary"></i>
+                                Commodity Derivatives
+                            </h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Agricultural items (crude palm oil)</li>
+                                <li>Precious metals (gold)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Futures vs Options: Key Differences</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="py-3 px-4 text-left font-semibold">Feature</th>
+                                    <th class="py-3 px-4 text-left font-semibold">Futures</th>
+                                    <th class="py-3 px-4 text-left font-semibold">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Obligation</td>
+                                    <td class="py-3 px-4">Both parties must fulfill the contract</td>
+                                    <td class="py-3 px-4">Buyer has the right but not obligation to exercise</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Upfront Payment</td>
+                                    <td class="py-3 px-4">Initial margin deposit</td>
+                                    <td class="py-3 px-4">Premium paid by buyer to seller</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Risk</td>
+                                    <td class="py-3 px-4">Unlimited for both parties</td>
+                                    <td class="py-3 px-4">Limited to premium for buyer; unlimited for seller</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Settlement</td>
+                                    <td class="py-3 px-4">Daily settlement (mark-to-market)</td>
+                                    <td class="py-3 px-4">At exercise or expiration</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Standardization</td>
+                                    <td class="py-3 px-4">Highly standardized</td>
+                                    <td class="py-3 px-4">Standardized for exchange-traded options</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Futures Tab -->
+            <div id="futures" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Futures Contracts</h2>
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">A <strong>futures contract</strong> is an agreement to transact involving the future exchange of a set amount of assets for a price that is settled daily.</p>
+                            <p class="mb-3">Futures contracts are traded on a regulated exchange (Bursa Malaysia Derivatives), making them standardized and more transparent.</p>
+                            <p>Futures contracts have lower counterparty risk, as the exchange and a clearinghouse act as intermediaries, ensuring both parties meet their obligations.</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-white text-4xl animate-bounce-soft">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h3 class="font-bold mb-2 text-lg">Key Features of Futures Contracts</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-file-contract text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Standardized</h4>
+                                </div>
+                                <p class="text-sm">Standard contract specifications (size, expiry date, settlement, contract month)</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-balance-scale text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Obligation</h4>
+                                </div>
+                                <p class="text-sm">Both buyers and sellers have an obligation to fulfill the contract terms</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-sync-alt text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Mark-to-Market</h4>
+                                </div>
+                                <p class="text-sm">Daily settlement of profits and losses based on market price changes</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-exchange-alt text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Settlement</h4>
+                                </div>
+                                <p class="text-sm">Can be settled physically (delivery of asset) or with cash (price difference)</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-coins text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Leverage</h4>
+                                </div>
+                                <p class="text-sm">Allows traders to control a large position with a small margin deposit</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                                        <i class="fas fa-building text-sm"></i>
+                                    </div>
+                                    <h4 class="font-semibold">Exchange Traded</h4>
+                                </div>
+                                <p class="text-sm">Traded on an organized exchange with standardized terms</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">The Clearinghouse Function</h3>
+                    <div class="mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-6 w-full max-w-md">
+                                    <div class="relative flex items-center justify-between">
+                                        <div class="w-24 text-center">
+                                            <div class="w-12 h-12 mx-auto rounded-full bg-blue-600 flex items-center justify-center text-white">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <p class="mt-1 font-medium">Buyer</p>
+                                        </div>
+                                        <div class="flex-grow border-t-2 border-dashed border-gray-400 mx-2"></div>
+                                        <div class="w-24 text-center">
+                                            <div class="w-12 h-12 mx-auto rounded-full bg-red-600 flex items-center justify-center text-white">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <p class="mt-1 font-medium">Seller</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-16 h-16 flex items-center justify-center">
+                                    <i class="fas fa-arrow-down text-primary text-2xl"></i>
+                                </div>
+                                <div class="w-full max-w-md mb-2">
+                                    <div class="w-32 h-32 mx-auto rounded-lg bg-green-600 flex flex-col items-center justify-center text-white">
+                                        <i class="fas fa-building-columns text-3xl mb-2"></i>
+                                        <p class="font-medium text-center">Clearinghouse</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-3 mt-3 shadow-sm max-w-md">
+                                    <p class="text-sm">The clearinghouse becomes the buyer for every seller and the seller for every buyer, guaranteeing all transactions and reducing counterparty risk.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Margin Requirements</h3>
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <div class="md:w-1/2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-money-bill mr-2 text-primary"></i>
+                                Initial Margin
+                            </h4>
+                            <p class="text-sm mb-2">Initial deposit required to open a futures position:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>FKLI: Around RM4,200–RM5,000 per contract</li>
+                                <li>FCPO: Around RM4,000–RM5,000 per contract</li>
+                                <li>Set by Bursa Malaysia Derivatives Clearing</li>
+                                <li>May be adjusted based on market volatility</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2 text-primary"></i>
+                                Maintenance Margin
+                            </h4>
+                            <p class="text-sm mb-2">Minimum account balance that must be maintained:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>If account falls below maintenance margin, investor receives margin call</li>
+                                <li>Must deposit additional funds to bring balance back to initial margin</li>
+                                <li>If margin is not maintained, broker closes out position</li>
+                                <li>Typically set at 75-80% of the initial margin</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Futures Quote Example</h3>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="min-w-full border border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Contract</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Month</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Open</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Bid</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Ask</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Last</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">High</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Low</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Volume</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Open Int.</th>
+                                    <th class="py-2 px-3 text-left text-xs font-medium">Settle</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="py-2 px-3 text-xs font-medium">FCPO</td>
+                                    <td class="py-2 px-3 text-xs">JUL 24</td>
+                                    <td class="py-2 px-3 text-xs">3,405</td>
+                                    <td class="py-2 px-3 text-xs">3,400</td>
+                                    <td class="py-2 px-3 text-xs">3,410</td>
+                                    <td class="py-2 px-3 text-xs">3,408</td>
+                                    <td class="py-2 px-3 text-xs">3,420</td>
+                                    <td class="py-2 px-3 text-xs">3,380</td>
+                                    <td class="py-2 px-3 text-xs">4,567</td>
+                                    <td class="py-2 px-3 text-xs">12,345</td>
+                                    <td class="py-2 px-3 text-xs">3,408</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 text-xs font-medium">FCPO</td>
+                                    <td class="py-2 px-3 text-xs">AUG 24</td>
+                                    <td class="py-2 px-3 text-xs">3,420</td>
+                                    <td class="py-2 px-3 text-xs">3,415</td>
+                                    <td class="py-2 px-3 text-xs">3,425</td>
+                                    <td class="py-2 px-3 text-xs">3,422</td>
+                                    <td class="py-2 px-3 text-xs">3,430</td>
+                                    <td class="py-2 px-3 text-xs">3,410</td>
+                                    <td class="py-2 px-3 text-xs">3,125</td>
+                                    <td class="py-2 px-3 text-xs">9,876</td>
+                                    <td class="py-2 px-3 text-xs">3,422</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Contract:</span> The futures contract being traded (FCPO = Crude Palm Oil Futures)
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Month:</span> Delivery or expiry month of the contract
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Open:</span> Price at the start of the trading session
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Bid/Ask:</span> Highest buyer price / Lowest seller price
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Last:</span> Most recent traded price
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">High/Low:</span> Highest and lowest prices during the session
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Volume:</span> Number of contracts traded in the session
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Open Int.:</span> Number of outstanding contracts
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 rounded-md p-2 text-xs">
+                            <span class="font-bold">Settle:</span> Official closing price used for margin calculations
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Types of Traders</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h4 class="font-semibold">Speculators</h4>
+                            </div>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Buy hoping prices will rise</li>
+                                <li>Sell hoping prices will fall</li>
+                                <li>Aim to profit from price movements</li>
+                                <li>Don't intend to take delivery</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h4 class="font-semibold">Hedgers</h4>
+                            </div>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Buy to protect against rising prices</li>
+                                <li>Sell to protect against falling prices</li>
+                                <li>Aim to reduce risk</li>
+                                <li>Often have exposure to the underlying asset</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <h4 class="font-semibold">Arbitrageurs</h4>
+                            </div>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Take positions in multiple markets</li>
+                                <li>Exploit price discrepancies</li>
+                                <li>Low risk, low return strategy</li>
+                                <li>Help maintain efficient markets</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Options Tab -->
+            <div id="options" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Options Contracts</h2>
+                    <div class="flex flex-col md:flex-row md:space-x-6 mb-6">
+                        <div class="md:w-2/3 mb-4 md:mb-0">
+                            <p class="mb-3">An <strong>option</strong> is a contract that gives the holder the right, but not the obligation, to buy or sell an underlying asset at a pre-specified price for a specified time period.</p>
+                            <p class="mb-3">Options can be classified as either call options or put options.</p>
+                            <p>The premium limits the buyer's potential loss in the options market to the amount of the premium paid.</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center items-center">
+                            <div class="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-white text-4xl animate-bounce-soft">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Call vs. Put Options</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold">Call Option</h4>
+                            </div>
+                            <p class="mb-3">A call option gives the buyer (holder) the right to <strong>buy</strong> an underlying asset at a specified price within a specific time period.</p>
+                            
+                            <div class="flex flex-col sm:flex-row sm:space-x-4">
+                                <div class="mb-2 sm:mb-0">
+                                    <h5 class="font-medium mb-1 text-sm">Call Option Buyer:</h5>
+                                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                                        <li>Pays premium</li>
+                                        <li>Has the right to buy</li>
+                                        <li>Expects price to rise</li>
+                                        <li>Limited risk (premium)</li>
+                                        <li>Unlimited potential gain</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-1 text-sm">Call Option Seller:</h5>
+                                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                                        <li>Receives premium</li>
+                                        <li>Has obligation to sell</li>
+                                        <li>Expects price to fall or stay flat</li>
+                                        <li>Limited potential gain (premium)</li>
+                                        <li>Unlimited potential risk</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <div class="aspect-w-16 aspect-h-9 mb-2">
+                                        <canvas id="callOptionChart" width="400" height="200"></canvas>
+                                    </div>
+                                    <p class="text-xs text-center">Call Option Payoff Diagram</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold">Put Option</h4>
+                            </div>
+                            <p class="mb-3">A put option gives the buyer (holder) the right to <strong>sell</strong> an underlying asset at a specified price within a specific time period.</p>
+                            
+                            <div class="flex flex-col sm:flex-row sm:space-x-4">
+                                <div class="mb-2 sm:mb-0">
+                                    <h5 class="font-medium mb-1 text-sm">Put Option Buyer:</h5>
+                                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                                        <li>Pays premium</li>
+                                        <li>Has the right to sell</li>
+                                        <li>Expects price to fall</li>
+                                        <li>Limited risk (premium)</li>
+                                        <li>Potential gain limited to strike price</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-1 text-sm">Put Option Seller:</h5>
+                                    <ul class="list-disc pl-5 space-y-1 text-xs">
+                                        <li>Receives premium</li>
+                                        <li>Has obligation to buy</li>
+                                        <li>Expects price to rise or stay flat</li>
+                                        <li>Limited potential gain (premium)</li>
+                                        <li>High potential risk if price falls to zero</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <div class="aspect-w-16 aspect-h-9 mb-2">
+                                        <canvas id="putOptionChart" width="400" height="200"></canvas>
+                                    </div>
+                                    <p class="text-xs text-center">Put Option Payoff Diagram</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Option Styles</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-flag-usa text-sm"></i>
+                                </div>
+                                <h4 class="font-semibold">American Option</h4>
+                            </div>
+                            <p class="text-sm">Can be exercised at any time from the date of purchase up until (and including) the expiry date.</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-euro-sign text-sm"></i>
+                                </div>
+                                <h4 class="font-semibold">European Option</h4>
+                            </div>
+                            <p class="text-sm">Can be exercised only on the specified expiry date.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Option Status</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-arrow-up text-sm"></i>
+                                </div>
+                                <h4 class="font-semibold">In-the-money</h4>
+                            </div>
+                            <p class="text-sm mb-2">Option has intrinsic value:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                <li>Call option: Market price > Strike price</li>
+                                <li>Put option: Market price < Strike price</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-equals text-sm"></i>
+                                </div>
+                                <h4 class="font-semibold">At-the-money</h4>
+                            </div>
+                            <p class="text-sm mb-2">Option has no intrinsic value:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                <li>Market price = Strike price</li>
+                                <li>For both call and put options</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <div class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white mr-2">
+                                    <i class="fas fa-arrow-down text-sm"></i>
+                                </div>
+                                <h4 class="font-semibold">Out-of-the-money</h4>
+                            </div>
+                            <p class="text-sm mb-2">Option has no intrinsic value:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-xs">
+                                <li>Call option: Market price < Strike price</li>
+                                <li>Put option: Market price > Strike price</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-primary">Option Premium Components</h3>
+                    <div class="flex flex-col md:flex-row md:space-x-4 mb-4">
+                        <div class="md:w-1/2 mb-4 md:mb-0 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Intrinsic Value</h4>
+                            <p class="text-sm mb-2">The amount by which an option is in-the-money:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Call option: Max(0, Market price - Strike price)</li>
+                                <li>Put option: Max(0, Strike price - Market price)</li>
+                                <li>Represents the profit if exercised immediately</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Time Value</h4>
+                            <p class="text-sm mb-2">The additional value beyond intrinsic value:</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Time value = Option premium - Intrinsic value</li>
+                                <li>Represents the possibility of becoming more profitable before expiration</li>
+                                <li>Decreases as expiration approaches (time decay)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-3">Option Premium Formula:</h4>
+                        <div class="bg-white dark:bg-gray-800 p-3 rounded-md text-center">
+                            <p class="font-mono text-lg">Option Premium = Intrinsic Value + Time Value</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Examples & Illustrations</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-3">Call Option Example</h3>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <p class="mb-3">You have purchased a European call option contract on J&J common stock with the following details:</p>
+                            <ul class="list-disc pl-8 space-y-1 mb-4">
+                                <li>Exercise price: RM89</li>
+                                <li>Current stock price: RM90.43</li>
+                                <li>Option premium: RM2.17 per contract</li>
+                            </ul>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <h4 class="font-medium mb-2">Scenario 1: Stock rises to RM94</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p>Payoff = Stock price - Strike price</p>
+                                        <p>Payoff = RM94 - RM89 = RM5</p>
+                                        <p>Net Profit = Payoff - Premium</p>
+                                        <p>Net Profit = RM5 - RM2.17 = RM2.83</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <h4 class="font-medium mb-2">Scenario 2: Stock falls to RM89.50</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p>If exercised:</p>
+                                        <p>Net profit = RM89.50 - RM89 - RM2.17 = -RM1.67</p>
+                                        <p>If not exercised:</p>
+                                        <p>Net profit = -RM2.17 (premium paid)</p>
+                                        <p>Result: Better to exercise (-RM1.67 > -RM2.17)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3">Put Option Example</h3>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <p class="mb-3">You have purchased a European put option contract on KK common stock with the following details:</p>
+                            <ul class="list-disc pl-8 space-y-1 mb-4">
+                                <li>Exercise price: RM95</li>
+                                <li>Current stock price: RM96.18</li>
+                                <li>Option premium: RM1.25 per contract</li>
+                            </ul>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <h4 class="font-medium mb-2">Scenario 1: Stock falls to RM93</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p>Payoff = Strike price - Stock price</p>
+                                        <p>Payoff = RM95 - RM93 = RM2</p>
+                                        <p>Net Profit = Payoff - Premium</p>
+                                        <p>Net Profit = RM2 - RM1.25 = RM0.75</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                                    <h4 class="font-medium mb-2">Scenario 2: Stock price doesn't change</h4>
+                                    <div class="space-y-1 text-sm">
+                                        <p>If exercised:</p>
+                                        <p>Net profit = RM95 - RM96.18 - RM1.25 = -RM2.43</p>
+                                        <p>If not exercised:</p>
+                                        <p>Net profit = -RM1.25 (premium paid)</p>
+                                        <p>Result: Better not to exercise (-RM1.25 > -RM2.43)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculators Tab -->
+            <div id="calculators" class="tab-content animate-fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Futures Calculator -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-primary flex items-center">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Futures Calculator
+                        </h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Contract Type</label>
+                            <select id="futuresType" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base">
+                                <option value="FKLI">FKLI (FTSE KLCI Futures)</option>
+                                <option value="FCPO">FCPO (Crude Palm Oil Futures)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Position Type</label>
+                            <select id="futuresPosition" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base">
+                                <option value="long">Long (Buy)</option>
+                                <option value="short">Short (Sell)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Entry Price</label>
+                            <input type="number" id="futuresEntryPrice" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter entry price">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Exit Price</label>
+                            <input type="number" id="futuresExitPrice" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter exit price">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Number of Contracts</label>
+                            <input type="number" id="futuresContracts" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" value="1" min="1">
+                        </div>
+                        
+                        <button id="calculateFutures" class="w-full bg-primary hover:bg-opacity-90 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                            Calculate Profit/Loss
+                        </button>
+                        
+                        <div id="futuresResult" class="calculator-result mt-4 bg-gray-100 dark:bg-gray-700 rounded-md text-sm">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Options Calculator -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-primary flex items-center">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Options Calculator
+                        </h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Option Type</label>
+                            <select id="optionType" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base">
+                                <option value="call">Call Option</option>
+                                <option value="put">Put Option</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Position</label>
+                            <select id="optionPosition" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base">
+                                <option value="buy">Buy (Long)</option>
+                                <option value="sell">Sell (Write)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Strike Price</label>
+                            <input type="number" id="strikePrice" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter strike price">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Stock Price at Expiration</label>
+                            <input type="number" id="stockPrice" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter stock price">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Option Premium</label>
+                            <input type="number" id="optionPremium" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter premium">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Number of Contracts</label>
+                            <input type="number" id="optionContracts" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" value="1" min="1">
+                        </div>
+                        
+                        <button id="calculateOptions" class="w-full bg-primary hover:bg-opacity-90 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                            Calculate Profit/Loss
+                        </button>
+                        
+                        <div id="optionsResult" class="calculator-result mt-4 bg-gray-100 dark:bg-gray-700 rounded-md text-sm">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Tab -->
+            <div id="practice" class="tab-content animate-fade-in">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Concept Check</h2>
+                    
+                    <div id="quizContainer" class="space-y-6">
+                        <!-- Question 1 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">1. What does a futures contract allow a buyer to do?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>Buy or sell an asset at a future date at a price agreed upon today.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>Purchase an asset at its current market price without any future commitment.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>Receive a fixed amount of money in the future regardless of market conditions.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q1" class="mt-1 mr-2">
+                                        <span>Sell an asset immediately and receive cash payment.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! A futures contract is an agreement between two parties to buy or sell an asset at a predetermined price on a specified future date.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. A futures contract allows the buyer to buy or sell an asset at a future date at a price agreed upon today.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 2 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">2. What is meant by margin in a futures contract?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>It is the total cost of the asset being traded.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>It is the amount of money required to open and maintain a futures position.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>It is the profit made from trading the futures contract.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q2" class="mt-1 mr-2">
+                                        <span>It is the difference between the current and future price of the asset.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Margin is the amount of money required to open and maintain a futures position, serving as a good faith deposit to ensure contract obligations are met.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Margin is the amount of money required to open and maintain a futures position.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 4 -->
+                        <div class="quiz-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-3">3. What is a call option?</h3>
+                            <div class="space-y-2">
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>A contract that gives the holder the right to sell an asset at a specified price before a certain date.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all" data-correct="true">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>A contract that gives the holder the right to buy an asset at a specified price before a certain date.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>A type of bond issued by a company.</span>
+                                    </label>
+                                </div>
+                                <div class="quiz-option bg-white dark:bg-gray-800 p-3 rounded-md cursor-pointer hover:shadow-md transition-all">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="radio" name="q4" class="mt-1 mr-2">
+                                        <span>A type of insurance policy for financial assets.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3 hidden feedback">
+                                <div class="correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! A call option gives the holder the right, but not the obligation, to buy an underlying asset at a specified price within a specific time period.
+                                </div>
+                                <div class="incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. A call option gives the holder the right to buy an asset at a specified price before a certain date.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button id="checkAnswers" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                            Check Answers
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">True/False Questions</h2>
+                    
+                    <div id="trueFalseContainer" class="space-y-4">
+                        <!-- T/F Question 1 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">1. Derivatives are financial contracts whose value is derived from the value of an underlying asset.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf1" value="true" class="mr-2" data-correct="true">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf1" value="false" class="mr-2">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! Derivatives derive their value from an underlying asset.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. Derivatives do derive their value from an underlying asset.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- T/F Question 2 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">2. A call option gives the holder the right to buy an asset at a specified price before the option expires.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf2" value="true" class="mr-2" data-correct="true">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf2" value="false" class="mr-2">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! A call option gives the holder the right to buy an asset at a specified price.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. A call option does give the holder the right to buy an asset at a specified price.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- T/F Question 3 -->
+                        <div class="tf-question bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">3. The premium paid for an options contract is refunded if the option is not exercised.</h3>
+                            <div class="flex space-x-4">
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf3" value="true" class="mr-2">
+                                        <span>True</span>
+                                    </label>
+                                </div>
+                                <div class="tf-option">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="tf3" value="false" class="mr-2" data-correct="true">
+                                        <span>False</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2 hidden tf-feedback">
+                                <div class="tf-correct-feedback bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm hidden">
+                                    Correct! The premium is not refunded if the option is not exercised. It's the price paid for the right to exercise the option.
+                                </div>
+                                <div class="tf-incorrect-feedback bg-red-100 dark:bg-red-900 p-2 rounded-md text-sm hidden">
+                                    Incorrect. The premium is not refunded if the option is not exercised.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button id="checkTrueFalse" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                            Check Answers
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">Problem-Based Question</h2>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h3 class="font-semibold mb-3">FKLI Futures Problem</h3>
+                        <p class="mb-4">You plan to long one FKLI futures contract with the following details:</p>
+                        <ul class="list-disc pl-8 mb-4 space-y-1">
+                            <li>Current FKLI Index Price: 1,600</li>
+                            <li>Futures Contract Price: 1,610</li>
+                            <li>Contract Size: 50</li>
+                            <li>Initial Margin Requirement: RM5,000</li>
+                            <li>Maintenance Margin Requirement: RM3,000</li>
+                        </ul>
+                        
+                        <div class="space-y-4">
+                            <div class="problem-question">
+                                <h4 class="font-medium mb-2">a. Calculate the total value of the futures contract at the current futures price.</h4>
+                                <div>
+                                    <input type="number" class="problem-answer w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter your answer">
+                                    <div class="mt-2 hidden problem-feedback">
+                                        <div class="problem-hint bg-blue-100 dark:bg-blue-900 p-2 rounded-md text-sm">
+                                            Hint: Multiply the Futures Contract Price by the Contract Size.
+                                        </div>
+                                        <div class="problem-solution bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm mt-2 hidden">
+                                            Solution: Total Value = Futures Contract Price × Contract Size = 1,610 × 50 = RM80,500
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-question">
+                                <h4 class="font-medium mb-2">b. If the FKLI index price drops to 1,580 at the contract expiration, calculate the payoff from the futures contract.</h4>
+                                <div>
+                                    <input type="number" class="problem-answer w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 text-base" placeholder="Enter your answer">
+                                    <div class="mt-2 hidden problem-feedback">
+                                        <div class="problem-hint bg-blue-100 dark:bg-blue-900 p-2 rounded-md text-sm">
+                                            Hint: For a long position, the payoff is (Final Price - Entry Price) × Contract Size.
+                                        </div>
+                                        <div class="problem-solution bg-green-100 dark:bg-green-900 p-2 rounded-md text-sm mt-2 hidden">
+                                            Solution: Payoff = (Final Price - Entry Price) × Contract Size = (1,580 - 1,610) × 50 = -30 × 50 = -RM1,500
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="show-hints px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                                Show Hints
+                            </button>
+                            <button class="show-solutions ml-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                                Show Solutions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 dark:bg-gray-800 py-4 px-6">
+            <div class="container mx-auto text-center text-sm">
+                <p>&copy; 2025 Financial Markets & Banking Services Course</p>
+                <p class="mt-1">Chapter 5 - Derivatives Market</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Detect dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            
+            // Update charts when dark mode changes
+            updateCharts();
+        });
+
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            updateCharts();
+        });
+
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.remove('bg-primary');
+                    btn.classList.remove('text-white');
+                    btn.classList.add('bg-gray-200');
+                    btn.classList.add('dark:bg-gray-700');
+                });
+                
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                button.classList.add('bg-primary');
+                button.classList.add('text-white');
+                button.classList.remove('bg-gray-200');
+                button.classList.remove('dark:bg-gray-700');
+                
+                document.getElementById(tabId).classList.add('active');
+                
+                // Initialize or update charts when switching to options tab
+                if (tabId === 'options') {
+                    initializeCharts();
+                }
+            });
+        });
+
+        // Option payoff charts
+        let callChart, putChart;
+        
+        function initializeCharts() {
+            // Create or update call option chart
+            const callCtx = document.getElementById('callOptionChart').getContext('2d');
+            if (callChart) {
+                callChart.destroy();
+            }
+            
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            const textColor = isDarkMode ? '#e5e7eb' : '#1f2937';
+            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            
+            // Create data for call option payoff chart
+            const strikePrice = 100;
+            const premium = 5;
+            const stockPrices = Array.from({length: 21}, (_, i) => 90 + i);
+            
+            const callBuyerPayoff = stockPrices.map(price => Math.max(0, price - strikePrice) - premium);
+            const callSellerPayoff = stockPrices.map(price => premium - Math.max(0, price - strikePrice));
+            
+            callChart = new Chart(callCtx, {
+                type: 'line',
+                data: {
+                    labels: stockPrices,
+                    datasets: [
+                        {
+                            label: 'Call Buyer',
+                            data: callBuyerPayoff,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            tension: 0.1,
+                            fill: {
+                                target: 'origin',
+                                above: 'rgba(16, 185, 129, 0.2)',
+                                below: 'rgba(239, 68, 68, 0.2)'
+                            }
+                        },
+                        {
+                            label: 'Call Seller',
+                            data: callSellerPayoff,
+                            borderColor: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            tension: 0.1,
+                            fill: {
+                                target: 'origin',
+                                above: 'rgba(16, 185, 129, 0.2)',
+                                below: 'rgba(239, 68, 68, 0.2)'
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: textColor
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Stock Price',
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Profit/Loss',
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Create or update put option chart
+            const putCtx = document.getElementById('putOptionChart').getContext('2d');
+            if (putChart) {
+                putChart.destroy();
+            }
+            
+            // Create data for put option payoff chart
+            const putBuyerPayoff = stockPrices.map(price => Math.max(0, strikePrice - price) - premium);
+            const putSellerPayoff = stockPrices.map(price => premium - Math.max(0, strikePrice - price));
+            
+            putChart = new Chart(putCtx, {
+                type: 'line',
+                data: {
+                    labels: stockPrices,
+                    datasets: [
+                        {
+                            label: 'Put Buyer',
+                            data: putBuyerPayoff,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            tension: 0.1,
+                            fill: {
+                                target: 'origin',
+                                above: 'rgba(16, 185, 129, 0.2)',
+                                below: 'rgba(239, 68, 68, 0.2)'
+                            }
+                        },
+                        {
+                            label: 'Put Seller',
+                            data: putSellerPayoff,
+                            borderColor: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            tension: 0.1,
+                            fill: {
+                                target: 'origin',
+                                above: 'rgba(16, 185, 129, 0.2)',
+                                below: 'rgba(239, 68, 68, 0.2)'
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: textColor
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Stock Price',
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Profit/Loss',
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateCharts() {
+            if (document.getElementById('options').classList.contains('active')) {
+                initializeCharts();
+            }
+        }
+
+        // Futures Calculator
+        document.getElementById('calculateFutures').addEventListener('click', () => {
+            const contractType = document.getElementById('futuresType').value;
+            const positionType = document.getElementById('futuresPosition').value;
+            const entryPrice = parseFloat(document.getElementById('futuresEntryPrice').value);
+            const exitPrice = parseFloat(document.getElementById('futuresExitPrice').value);
+            const contracts = parseInt(document.getElementById('futuresContracts').value);
+            
+            // Validate inputs
+            if (isNaN(entryPrice) || isNaN(exitPrice) || isNaN(contracts)) {
+                alert('Please enter valid numbers for all fields');
+                return;
+            }
+            
+            // Calculate profit/loss
+            let priceDifference = exitPrice - entryPrice;
+            if (positionType === 'short') {
+                priceDifference = -priceDifference;
+            }
+            
+            let contractSize = 50;  // Default for FKLI
+            if (contractType === 'FCPO') {
+                contractSize = 25;  // For FCPO
+            }
+            
+            const totalProfitLoss = priceDifference * contractSize * contracts;
+            
+            // Display results
+            const resultElement = document.getElementById('futuresResult');
+            resultElement.innerHTML = `
+                <h3 class="font-semibold mb-2">Results:</h3>
+                <p><strong>Contract Type:</strong> ${contractType}</p>
+                <p><strong>Position:</strong> ${positionType === 'long' ? 'Long (Buy)' : 'Short (Sell)'}</p>
+                <p><strong>Price Movement:</strong> ${Math.abs(priceDifference).toFixed(2)} points ${priceDifference > 0 ? 'up' : 'down'}</p>
+                <p><strong>Value per Point:</strong> RM${contractSize.toFixed(2)}</p>
+                <p><strong>Total Profit/Loss:</strong> <span class="${totalProfitLoss >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">${totalProfitLoss >= 0 ? '+' : ''}RM${totalProfitLoss.toFixed(2)}</span></p>
+            `;
+            
+            resultElement.classList.add('show');
+        });
+        
+        // Options Calculator
+        document.getElementById('calculateOptions').addEventListener('click', () => {
+            const optionType = document.getElementById('optionType').value;
+            const position = document.getElementById('optionPosition').value;
+            const strikePrice = parseFloat(document.getElementById('strikePrice').value);
+            const stockPrice = parseFloat(document.getElementById('stockPrice').value);
+            const premium = parseFloat(document.getElementById('optionPremium').value);
+            const contracts = parseInt(document.getElementById('optionContracts').value);
+            
+            // Validate inputs
+            if (isNaN(strikePrice) || isNaN(stockPrice) || isNaN(premium) || isNaN(contracts)) {
+                alert('Please enter valid numbers for all fields');
+                return;
+            }
+            
+            // Calculate profit/loss
+            let payoff = 0;
+            let isExercised = false;
+            
+            if (optionType === 'call') {
+                isExercised = stockPrice > strikePrice;
+                
+                if (position === 'buy') {
+                    // Call buyer
+                    payoff = isExercised ? stockPrice - strikePrice - premium : -premium;
+                } else {
+                    // Call seller/writer
+                    payoff = isExercised ? premium - (stockPrice - strikePrice) : premium;
+                }
+            } else {
+                // Put option
+                isExercised = stockPrice < strikePrice;
+                
+                if (position === 'buy') {
+                    // Put buyer
+                    payoff = isExercised ? strikePrice - stockPrice - premium : -premium;
+                } else {
+                    // Put seller/writer
+                    payoff = isExercised ? premium - (strikePrice - stockPrice) : premium;
+                }
+            }
+            
+            const totalPayoff = payoff * contracts;
+            
+            // Display results
+            const resultElement = document.getElementById('optionsResult');
+            resultElement.innerHTML = `
+                <h3 class="font-semibold mb-2">Results:</h3>
+                <p><strong>Option Type:</strong> ${optionType === 'call' ? 'Call Option' : 'Put Option'}</p>
+                <p><strong>Position:</strong> ${position === 'buy' ? 'Buy (Long)' : 'Sell (Write)'}</p>
+                <p><strong>Outcome:</strong> ${isExercised ? 'Option exercised' : 'Option not exercised'}</p>
+                <p><strong>Profit/Loss per Contract:</strong> <span class="${payoff >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">${payoff >= 0 ? '+' : ''}RM${payoff.toFixed(2)}</span></p>
+                <p><strong>Total Profit/Loss:</strong> <span class="${totalPayoff >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">${totalPayoff >= 0 ? '+' : ''}RM${totalPayoff.toFixed(2)}</span></p>
+            `;
+            
+            resultElement.classList.add('show');
+        });
+        
+        // Quiz functionality
+        document.getElementById('checkAnswers').addEventListener('click', () => {
+            const questions = document.querySelectorAll('.quiz-question');
+            
+            questions.forEach((question) => {
+                const options = question.querySelectorAll('.quiz-option');
+                const feedback = question.querySelector('.feedback');
+                const correctFeedback = question.querySelector('.correct-feedback');
+                const incorrectFeedback = question.querySelector('.incorrect-feedback');
+                
+                let answered = false;
+                let isCorrect = false;
+                
+                options.forEach((option) => {
+                    const radio = option.querySelector('input[type="radio"]');
+                    if (radio.checked) {
+                        answered = true;
+                        if (option.getAttribute('data-correct') === 'true') {
+                            isCorrect = true;
+                            option.classList.add('bg-green-100');
+                            option.classList.add('dark:bg-green-900');
+                        } else {
+                            option.classList.add('bg-red-100');
+                            option.classList.add('dark:bg-red-900');
+                        }
+                    }
+                });
+                
+                if (answered) {
+                    feedback.classList.remove('hidden');
+                    if (isCorrect) {
+                        correctFeedback.classList.remove('hidden');
+                    } else {
+                        incorrectFeedback.classList.remove('hidden');
+                        
+                        // Highlight the correct answer
+                        options.forEach((option) => {
+                            if (option.getAttribute('data-correct') === 'true') {
+                                option.classList.add('bg-green-100');
+                                option.classList.add('dark:bg-green-900');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        // True/False functionality
+        document.getElementById('checkTrueFalse').addEventListener('click', () => {
+            const questions = document.querySelectorAll('.tf-question');
+            
+            questions.forEach((question) => {
+                const options = question.querySelectorAll('.tf-option');
+                const feedback = question.querySelector('.tf-feedback');
+                const correctFeedback = question.querySelector('.tf-correct-feedback');
+                const incorrectFeedback = question.querySelector('.tf-incorrect-feedback');
+                
+                let answered = false;
+                let isCorrect = false;
+                
+                options.forEach((option) => {
+                    const radio = option.querySelector('input[type="radio"]');
+                    if (radio.checked) {
+                        answered = true;
+                        if (radio.getAttribute('data-correct') === 'true') {
+                            isCorrect = true;
+                            option.classList.add('bg-green-100');
+                            option.classList.add('dark:bg-green-900');
+                            option.classList.add('p-1');
+                            option.classList.add('rounded');
+                        } else {
+                            option.classList.add('bg-red-100');
+                            option.classList.add('dark:bg-red-900');
+                            option.classList.add('p-1');
+                            option.classList.add('rounded');
+                        }
+                    }
+                });
+                
+                if (answered) {
+                    feedback.classList.remove('hidden');
+                    if (isCorrect) {
+                        correctFeedback.classList.remove('hidden');
+                    } else {
+                        incorrectFeedback.classList.remove('hidden');
+                        
+                        // Highlight the correct answer
+                        options.forEach((option) => {
+                            const radio = option.querySelector('input[type="radio"]');
+                            if (radio.getAttribute('data-correct') === 'true') {
+                                option.classList.add('bg-green-100');
+                                option.classList.add('dark:bg-green-900');
+                                option.classList.add('p-1');
+                                option.classList.add('rounded');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Problem-based questions
+        document.querySelector('.show-hints').addEventListener('click', () => {
+            const hints = document.querySelectorAll('.problem-hint');
+            const feedbacks = document.querySelectorAll('.problem-feedback');
+            
+            feedbacks.forEach(feedback => {
+                feedback.classList.remove('hidden');
+            });
+        });
+        
+        document.querySelector('.show-solutions').addEventListener('click', () => {
+            const solutions = document.querySelectorAll('.problem-solution');
+            const feedbacks = document.querySelectorAll('.problem-feedback');
+            
+            feedbacks.forEach(feedback => {
+                feedback.classList.remove('hidden');
+            });
+            
+            solutions.forEach(solution => {
+                solution.classList.remove('hidden');
+            });
+        });
+        
+        // Initialize the options charts when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // We'll initialize the charts only when the options tab is active
+            if (document.getElementById('options').classList.contains('active')) {
+                initializeCharts();
+            }
+        });
+    </script>
+</body>
+</html>
