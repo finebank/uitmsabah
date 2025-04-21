@@ -1125,113 +1125,342 @@
                             </div>
                         </div>
                         
-                        <!-- Other Money Market Instruments -->
+                        <!-- Commercial Paper -->
                         <div class="mb-8">
-                            <h3 class="text-xl font-semibold mb-4">Other Money Market Instruments</h3>
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-file-invoice text-primary-500 mr-2"></i>
+                                Commercial Paper (CP)
+                            </h3>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <!-- Commercial Paper -->
-                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
-                                    <div class="flex justify-center mb-4">
-                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-file-invoice text-2xl text-primary-500"></i>
-                                        </div>
-                                    </div>
-                                    <h4 class="text-lg font-medium text-center mb-3">Commercial Paper (CP)</h4>
-                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 col-span-1 md:col-span-2">
+                                    <h4 class="font-medium text-lg mb-3">Characteristics</h4>
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        Commercial Paper is an unsecured short-term promissory note issued by a company to raise short-term cash, often used to finance working capital requirements.
+                                    </p>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Unsecured short-term promissory note issued by a company</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Generally held by investors from the time of issue until maturity</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Used to finance working capital requirements</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Maturity ranges from 1 to 270 days (in the U.S., typically under 270 days to avoid SEC registration)</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Generally held by investors from issue until maturity</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>The credit rating is important because CP is not actively traded and it is an unsecured debt</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Maturities range from 1 to 270 days</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Issued at a discount to face value (similar to T-bills)</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Credit rating is important as CP is unsecured and not actively traded</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Usually issued by large corporations with excellent credit ratings</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Provides a lower-cost alternative to short-term bank loans for issuers</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>No formal secondary market exists, but dealers may repurchase CP before maturity</span>
                                         </li>
                                     </ul>
                                 </div>
                                 
-                                <!-- Negotiable CDs -->
-                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
-                                    <div class="flex justify-center mb-4">
-                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-certificate text-2xl text-primary-500"></i>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="font-medium text-lg mb-3">CP Discount Yield Formula</h4>
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                        <p class="text-center font-medium">
+                                            Discount Yield = [(FV - PP) / FV] × [360 / n] × 100%
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                            Where:
+                                        </p>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 mt-1">
+                                            <li>FV = Face value (par value)</li>
+                                            <li>PP = Purchase price</li>
+                                            <li>n = Number of days to maturity</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2 text-primary-500">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            A corporation issues a commercial paper with a face value of RM1,000,000 at a price of RM982,500 with a maturity of 90 days.
+                                        </p>
+                                        <div class="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                Discount Yield = [(1,000,000 - 982,500) / 1,000,000] × [360 / 90] × 100%<br>
+                                                = [17,500 / 1,000,000] × 4 × 100%<br>
+                                                = 0.0175 × 4 × 100%<br>
+                                                = <strong>7.00%</strong>
+                                            </p>
                                         </div>
                                     </div>
-                                    <h4 class="text-lg font-medium text-center mb-3">Negotiable Certificates of Deposit (CD)</h4>
-                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                </div>
+                            </div>
+                            
+                            <!-- CP Calculator -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                <h4 class="font-medium mb-4 text-center">Commercial Paper Discount Yield Calculator</h4>
+                                <div class="max-w-lg mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Face Value (RM)</label>
+                                            <input type="number" id="cp-face-value" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="1000000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Purchase Price (RM)</label>
+                                            <input type="number" id="cp-purchase-price" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="982500" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Days to Maturity</label>
+                                            <input type="number" id="cp-days" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="90" min="1">
+                                        </div>
+                                    </div>
+                                    <button id="calculate-cp-yield" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Calculate CP Discount Yield
+                                    </button>
+                                    <div id="cp-yield-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                        The Commercial Paper Discount Yield is: <span class="font-medium text-primary-500">7.00%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Negotiable Certificates of Deposit -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-certificate text-primary-500 mr-2"></i>
+                                Negotiable Certificates of Deposit (CD)
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 col-span-1 md:col-span-2">
+                                    <h4 class="font-medium text-lg mb-3">Characteristics</h4>
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        A Negotiable Certificate of Deposit is a bank-issued time deposit that specifies an interest rate and maturity date, and is negotiable (i.e., saleable) in the secondary market.
+                                    </p>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Bank-issued time deposit with specified interest rate and maturity date</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Whoever holds the CD when it matures receives the principal and interest (bearer instrument)</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Negotiable (can be sold) in the secondary market</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Whoever holds the CD at maturity receives the principal and interest</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
                                             <span>Maturities up to 5 years for retail investors</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Generally offers higher interest rates compared to fixed deposits</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Generally offers higher interest rates and returns compared with fixed deposits</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Negotiable CDs can be traded any number of times in the secondary market</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>The original buyer is not necessarily the owner at maturity</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Selling price depends on the market interest rates - if rates rise, the market value of the CD falls, and vice versa</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
                                             <span>In Malaysia, known as Negotiable Instrument of Deposits (NIDs)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Unlike regular CDs, negotiable CDs can be sold without penalty before maturity</span>
                                         </li>
                                     </ul>
                                 </div>
                                 
-                                <!-- Banker's Acceptances -->
-                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 hover-card">
-                                    <div class="flex justify-center mb-4">
-                                        <div class="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-handshake text-2xl text-primary-500"></i>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="font-medium text-lg mb-3">CD Market Value Formula</h4>
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                        <p class="text-center font-medium">
+                                            MV = FV / (1 + i<sub>m</sub> × n/360)
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                            Where:
+                                        </p>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 mt-1">
+                                            <li>MV = Market value (selling price)</li>
+                                            <li>FV = Face value including interest</li>
+                                            <li>i<sub>m</sub> = Current market interest rate</li>
+                                            <li>n = Number of days to maturity</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2 text-primary-500">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            A 180-day CD was issued at face value of RM500,000 with an interest rate of 6% per annum. After 60 days, the market interest rate rises to 7%. What is the market value of the CD?
+                                        </p>
+                                        <div class="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                Calculate the face value with interest first:<br>
+                                                FV with interest = RM500,000 × (1 + 0.06 × 180/360)<br>
+                                                = RM500,000 × 1.03 = RM515,000<br><br>
+                                                
+                                                Market Value = RM515,000 / (1 + 0.07 × 120/360)<br>
+                                                = RM515,000 / 1.023333<br>
+                                                = <strong>RM503,225.81</strong>
+                                            </p>
                                         </div>
                                     </div>
-                                    <h4 class="text-lg font-medium text-center mb-3">Banker's Acceptances (BA)</h4>
-                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                                </div>
+                            </div>
+                            
+                            <!-- CD Calculator -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                <h4 class="font-medium mb-4 text-center">Negotiable CD Market Value Calculator</h4>
+                                <div class="max-w-lg mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Original Face Value (RM)</label>
+                                            <input type="number" id="cd-face-value" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="500000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Original Interest Rate (%)</label>
+                                            <input type="number" id="cd-interest-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="6" min="0" step="0.1">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Original Term (Days)</label>
+                                            <input type="number" id="cd-original-term" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="180" min="1">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Days Elapsed</label>
+                                            <input type="number" id="cd-days-elapsed" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="60" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Market Rate (%)</label>
+                                            <input type="number" id="cd-market-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="7" min="0" step="0.1">
+                                        </div>
+                                    </div>
+                                    <button id="calculate-cd-value" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Calculate CD Market Value
+                                    </button>
+                                    <div id="cd-value-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                        The CD Market Value is: <span class="font-medium text-primary-500">RM503,225.81</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Banker's Acceptances -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-handshake text-primary-500 mr-2"></i>
+                                Banker's Acceptances (BA)
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6 col-span-1 md:col-span-2">
+                                    <h4 class="font-medium text-lg mb-3">Characteristics</h4>
+                                    <p class="mb-4 text-gray-600 dark:text-gray-300">
+                                        A Banker's Acceptance is a time draft payable to a seller of goods, with payment guaranteed by a bank. BAs are primarily used to facilitate international trade transactions.
+                                    </p>
+                                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Time draft payable to a seller of goods, with payment guaranteed by a bank</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Many BAs arise from international trade transactions</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Many arise from international trade transactions</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Include Letters of Credit (L/C) or time drafts used to finance trade in goods that have yet to be shipped from foreign exporters to domestic importers</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Includes Letters of Credit (L/C) used to finance trade in goods</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Foreign exporters often prefer banks as guarantors for payment before they send goods to domestic importers</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Foreign exporters often prefer banks as guarantors before shipping goods</span>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Can be traded in secondary markets because it is payable to the bearer at maturity</span>
                                         </li>
                                         <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                                            <span>Can be traded in secondary markets (payable to bearer at maturity)</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
                                             <span>Sold at a discount from face value</span>
                                         </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Typically have maturities of 30, 60, 90, or 180 days</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Lower risk compared to Commercial Paper because they are guaranteed by banks</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                            <span>Have become a popular investment for money market funds and corporate treasurers</span>
+                                        </li>
                                     </ul>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-6">
+                                    <h4 class="font-medium text-lg mb-3">BA Trading Process</h4>
+                                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+                                        <h5 class="font-medium mb-2">How BAs Work:</h5>
+                                        <ol class="list-decimal pl-5 text-sm text-gray-600 dark:text-gray-300 space-y-2">
+                                            <li>An importer requests a letter of credit from their bank for a purchase.</li>
+                                            <li>Bank issues a letter of credit to the exporter's bank.</li>
+                                            <li>Exporter ships goods and presents shipping documents to their bank.</li>
+                                            <li>Bank creates a time draft which is sent to the importer's bank.</li>
+                                            <li>Importer's bank "accepts" the draft, creating a banker's acceptance.</li>
+                                            <li>The BA can be held until maturity or sold at a discount in the secondary market.</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <div class="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2 text-primary-500">Example:</h5>
+                                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                            A 90-day BA with a face value of RM200,000 is sold at a discount rate of 5.25%. Calculate the purchase price and the dollar return.
+                                        </p>
+                                        <div class="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                                                Purchase Price = FV × (1 - (r × t/360))<br>
+                                                = RM200,000 × (1 - (0.0525 × 90/360))<br>
+                                                = RM200,000 × (1 - 0.013125)<br>
+                                                = RM200,000 × 0.986875<br>
+                                                = <strong>RM197,375.00</strong><br><br>
+                                                
+                                                Dollar Return = RM200,000 - RM197,375.00 = <strong>RM2,625.00</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- BA Calculator -->
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+                                <h4 class="font-medium mb-4 text-center">Banker's Acceptance Calculator</h4>
+                                <div class="max-w-lg mx-auto">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Face Value (RM)</label>
+                                            <input type="number" id="ba-face-value" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="200000" min="0">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Discount Rate (%)</label>
+                                            <input type="number" id="ba-discount-rate" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="5.25" min="0" step="0.01">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Days to Maturity</label>
+                                            <input type="number" id="ba-days" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" value="90" min="1">
+                                        </div>
+                                    </div>
+                                    <button id="calculate-ba-price" class="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-md transition-colors">
+                                        Calculate BA Purchase Price
+                                    </button>
+                                    <div id="ba-price-result" class="mt-4 p-3 bg-white dark:bg-gray-700 rounded-lg text-center">
+                                        <div>Purchase Price: <span class="font-medium text-primary-500">RM197,375.00</span></div>
+                                        <div>Dollar Return: <span class="font-medium text-primary-500">RM2,625.00</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2329,6 +2558,68 @@
             const yield = ((repurchasePrice - initialPrice) / initialPrice) * (360/days) * 100;
             
             repoYieldResult.innerHTML = `The REPO Yield is: <span class="font-medium text-primary-500">${yield.toFixed(2)}%</span>`;
+        });
+        
+        // Commercial Paper Calculator
+        document.getElementById('calculate-cp-yield').addEventListener('click', function() {
+            const faceValue = parseFloat(document.getElementById('cp-face-value').value) || 0;
+            const purchasePrice = parseFloat(document.getElementById('cp-purchase-price').value) || 0;
+            const days = parseFloat(document.getElementById('cp-days').value) || 0;
+            
+            if (faceValue <= 0 || days <= 0) {
+                document.getElementById('cp-yield-result').innerHTML = `<span class="text-red-500">Please enter valid values</span>`;
+                return;
+            }
+            
+            // Using correct discount yield formula
+            const discountYield = ((faceValue - purchasePrice) / faceValue) * (360 / days) * 100;
+            
+            document.getElementById('cp-yield-result').innerHTML = `The Commercial Paper Discount Yield is: <span class="font-medium text-primary-500">${discountYield.toFixed(2)}%</span>`;
+        });
+
+        // Negotiable CD Calculator
+        document.getElementById('calculate-cd-value').addEventListener('click', function() {
+            const faceValue = parseFloat(document.getElementById('cd-face-value').value) || 0;
+            const interestRate = (parseFloat(document.getElementById('cd-interest-rate').value) || 0) / 100;
+            const originalTerm = parseFloat(document.getElementById('cd-original-term').value) || 0;
+            const daysElapsed = parseFloat(document.getElementById('cd-days-elapsed').value) || 0;
+            const marketRate = (parseFloat(document.getElementById('cd-market-rate').value) || 0) / 100;
+            
+            if (faceValue <= 0 || originalTerm <= 0 || daysElapsed >= originalTerm) {
+                document.getElementById('cd-value-result').innerHTML = `<span class="text-red-500">Please enter valid values</span>`;
+                return;
+            }
+            
+            // Calculate face value with interest
+            const fvWithInterest = faceValue * (1 + interestRate * originalTerm/360);
+            // Calculate remaining days
+            const daysRemaining = originalTerm - daysElapsed;
+            // Calculate market value
+            const marketValue = fvWithInterest / (1 + marketRate * daysRemaining/360);
+            
+            document.getElementById('cd-value-result').innerHTML = `The CD Market Value is: <span class="font-medium text-primary-500">RM${marketValue.toFixed(2)}</span>`;
+        });
+
+        // Banker's Acceptance Calculator
+        document.getElementById('calculate-ba-price').addEventListener('click', function() {
+            const faceValue = parseFloat(document.getElementById('ba-face-value').value) || 0;
+            const discountRate = (parseFloat(document.getElementById('ba-discount-rate').value) || 0) / 100;
+            const days = parseFloat(document.getElementById('ba-days').value) || 0;
+            
+            if (faceValue <= 0 || days <= 0) {
+                document.getElementById('ba-price-result').innerHTML = `<span class="text-red-500">Please enter valid values</span>`;
+                return;
+            }
+            
+            // Calculate purchase price
+            const purchasePrice = faceValue * (1 - (discountRate * days/360));
+            // Calculate dollar return
+            const dollarReturn = faceValue - purchasePrice;
+            
+            document.getElementById('ba-price-result').innerHTML = `
+                <div>Purchase Price: <span class="font-medium text-primary-500">RM${purchasePrice.toFixed(2)}</span></div>
+                <div>Dollar Return: <span class="font-medium text-primary-500">RM${dollarReturn.toFixed(2)}</span></div>
+            `;
         });
         
         // Spot Currency Converter
