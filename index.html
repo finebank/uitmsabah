@@ -28,7 +28,7 @@
         .header {
             background: linear-gradient(135deg, var(--secondary-color), #2d333b);
             color: white;
-            padding: 4rem 2rem;
+            padding: 4rem 2rem 2rem;
             text-align: center;
         }
 
@@ -42,7 +42,30 @@
             font-size: 1.2rem;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .container {
@@ -64,6 +87,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         .feature-card:hover {
@@ -81,26 +105,26 @@
             color: var(--secondary-color);
         }
 
+        .feature-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .feature-link:hover {
+            background: #2c974b;
+        }
+
         .cta-section {
             background: var(--light-bg);
             padding: 4rem 2rem;
             text-align: center;
             margin-top: 4rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: background 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background: #2c974b;
         }
 
         .footer {
@@ -131,6 +155,11 @@
                 font-size: 1rem;
             }
             
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
             .container {
                 padding: 1rem;
             }
@@ -145,43 +174,59 @@
     <header class="header">
         <h1>UiTM Sabah Repository</h1>
         <p>Welcome to our innovative platform for knowledge sharing and collaboration</p>
+        
+        <nav class="nav-menu">
+            <a href="https://github.com/finebank/uitmsabah/wiki" class="nav-link">
+                <i class="fas fa-book"></i> Wiki
+            </a>
+            <a href="https://github.com/finebank/uitmsabah/discussions/1" class="nav-link">
+                <i class="fas fa-comments"></i> Discussions
+            </a>
+            <a href="https://github.com/users/finebank/projects/1" class="nav-link">
+                <i class="fas fa-tasks"></i> Projects
+            </a>
+            <a href="https://github.com/finebank/uitmsabah" class="nav-link">
+                <i class="fab fa-github"></i> Repository
+            </a>
+        </nav>
     </header>
 
     <div class="container">
         <section class="features">
             <div class="feature-card">
-                <i class="fas fa-book-open"></i>
-                <h3>Resources</h3>
-                <p>Access comprehensive educational materials, research papers, and academic resources.</p>
+                <i class="fas fa-book"></i>
+                <h3>Wiki Documentation</h3>
+                <p>Access comprehensive documentation, guides, and resources in our detailed wiki.</p>
+                <a href="https://github.com/finebank/uitmsabah/wiki" class="feature-link">
+                    Visit Wiki
+                </a>
             </div>
             <div class="feature-card">
-                <i class="fas fa-users"></i>
-                <h3>Community</h3>
-                <p>Join our vibrant community of students, educators, and researchers.</p>
+                <i class="fas fa-comments"></i>
+                <h3>Community Discussions</h3>
+                <p>Join conversations, share ideas, and collaborate with other community members.</p>
+                <a href="https://github.com/finebank/uitmsabah/discussions/1" class="feature-link">
+                    Join Discussion
+                </a>
             </div>
             <div class="feature-card">
-                <i class="fas fa-laptop-code"></i>
-                <h3>Projects</h3>
-                <p>Explore innovative projects and collaborate with fellow students.</p>
+                <i class="fas fa-tasks"></i>
+                <h3>Project Board</h3>
+                <p>Track ongoing projects, contribute to development, and stay updated on progress.</p>
+                <a href="https://github.com/users/finebank/projects/1" class="feature-link">
+                    View Projects
+                </a>
             </div>
-        </section>
-
-        <section class="cta-section">
-            <h2>Get Started Today</h2>
-            <p>Join our community and start exploring the resources</p>
-            <a href="https://github.com/finebank/uitmsabah" class="cta-button">
-                <i class="fab fa-github"></i> View on GitHub
-            </a>
         </section>
     </div>
 
     <footer class="footer">
-        <p>Last updated: 2025-04-22 | Created with ❤️ for UiTM Sabah</p>
-        <p>
-            <a href="https://github.com/finebank/uitmsabah" style="color: white; text-decoration: none; margin: 0 10px;">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-        </p>
+        <p>Last updated: 2025-04-22 18:39:28 UTC</p>
+        <div class="nav-menu" style="margin-top: 1rem;">
+            <a href="https://github.com/finebank/uitmsabah/wiki" class="nav-link">Wiki</a>
+            <a href="https://github.com/finebank/uitmsabah/discussions/1" class="nav-link">Discussions</a>
+            <a href="https://github.com/users/finebank/projects/1" class="nav-link">Projects</a>
+        </div>
     </footer>
 </body>
 </html>
