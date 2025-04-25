@@ -3,2854 +3,1275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#5D5CDE">
     <title>DADUit Game</title>
-    <!-- Add FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #5D5CDE;
-            --primary-hover: #4949c4;
-            --success-color: #10B981;
-            --warning-color: #F59E0B;
-            --danger-color: #EF4444;
-            --neutral-color: #6B7280;
-            --bg-light: #FFFFFF;
-            --text-light: #333333;
-            --border-light: #E2E8F0;
-            --bg-dark: #181818;
-            --text-dark: #F3F4F6;
-            --border-dark: #374151;
+            --primary: #5D5CDE;
+            --secondary: #FF6B6B;
+            --accent: #FFD166;
+            --background: #FFFFFF;
+            --card-bg: #F8F9FA;
+            --text: #333333;
+            --muted-text: #6C757D;
         }
 
         .dark {
-            --bg-color: var(--bg-dark);
-            --text-color: var(--text-dark);
-            --border-color: var(--border-dark);
+            --primary: #6E6DFF;
+            --secondary: #FF8080;
+            --accent: #FFE066;
+            --background: #181818;
             --card-bg: #242424;
-            --input-bg: #333333;
-        }
-
-        :root:not(.dark) {
-            --bg-color: var(--bg-light);
-            --text-color: var(--text-light);
-            --border-color: var(--border-light);
-            --card-bg: #FFFFFF;
-            --input-bg: #F3F4F6;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s, color 0.3s;
+            --text: #F8F9FA;
+            --muted-text: #ADB5BD;
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .fancy-title {
-            font-family: 'Segoe Script', cursive;
-            font-size: 2.5rem;
-            text-align: center;
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            background: linear-gradient(45deg, var(--primary-color), #93c5fd);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .game-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .game-board {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            padding: 20px;
+        .card {
+            background-color: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .month-switcher {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .month-tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 8px 8px 0 0;
-            font-weight: bold;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
+        button {
+            transition: transform 0.2s, background-color 0.3s;
         }
 
-        .month-tab.active {
-            background: var(--primary-color);
-            color: white;
-            border-bottom: 3px solid var(--primary-hover);
-            box-shadow: 0 -3px 5px rgba(0,0,0,0.1);
-        }
-
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .month-container {
-            display: none;
-        }
-
-        .month-container.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        .day {
-            aspect-ratio: 1;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px;
-            position: relative;
-            cursor: pointer;
-            background: var(--card-bg);
-            transition: all 0.3s;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-        }
-
-        .day.current {
-            background: var(--primary-color);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(93, 92, 222, 0.4);
-        }
-
-        .day.payday {
-            border-color: var(--success-color);
-            border-width: 2px;
-        }
-        
-        .day.expense {
-            border-color: var(--danger-color);
-            border-width: 2px;
-        }
-        
-        .day.special {
-            border-color: var(--warning-color);
-            border-width: 2px;
-        }
-
-        .day.final-day {
-            border-color: gold;
-            border-width: 3px;
-            box-shadow: 0 0 10px gold;
-        }
-
-        .day-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-
-        .player {
-            width: 24px;
-            height: 24px;
-            background: var(--primary-color);
-            border: 2px solid white;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .controls {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        button:hover {
+            transform: translateY(-2px);
         }
 
         .dice-container {
-            display: flex;
-            justify-content: center;
-            perspective: 600px;
-            margin: 20px 0;
+            perspective: 1000px;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin: 0 auto;
         }
 
         .dice {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border: 2px solid var(--primary-color);
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.5s ease-out;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             border-radius: 10%;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform-style: preserve-3d;
         }
 
-        .dice:hover {
-            transform: scale(1.05) rotateX(5deg) rotateY(5deg);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        .dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
 
-        .dice.rolling {
-            animation: rolling 0.8s ease-out;
+        /* Front face - 1 */
+        .dice-face:nth-child(1) {
+            transform: translateZ(50px);
+        }
+        .dice-face:nth-child(1) .dot {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        @keyframes rolling {
-            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
-            25% { transform: rotateX(90deg) rotateY(180deg) rotateZ(45deg); }
-            50% { transform: rotateX(270deg) rotateY(90deg) rotateZ(90deg); }
-            75% { transform: rotateX(180deg) rotateY(270deg) rotateZ(135deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+        /* Back face - 6 */
+        .dice-face:nth-child(2) {
+            transform: rotateY(180deg) translateZ(50px);
+        }
+        .dice-face:nth-child(2) .dot:nth-child(1) {
+            top: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(2) .dot:nth-child(2) {
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dice-face:nth-child(2) .dot:nth-child(3) {
+            top: 25%;
+            right: 25%;
+        }
+        .dice-face:nth-child(2) .dot:nth-child(4) {
+            bottom: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(2) .dot:nth-child(5) {
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dice-face:nth-child(2) .dot:nth-child(6) {
+            bottom: 25%;
+            right: 25%;
         }
 
-        .stats {
-            margin: 10px 0;
-            padding: 15px;
-            background: var(--input-bg);
-            border-radius: 8px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        /* Right face - 3 */
+        .dice-face:nth-child(3) {
+            transform: rotateY(90deg) translateZ(50px);
+        }
+        .dice-face:nth-child(3) .dot:nth-child(1) {
+            top: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(3) .dot:nth-child(2) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dice-face:nth-child(3) .dot:nth-child(3) {
+            bottom: 25%;
+            right: 25%;
         }
 
-        .stats h3 {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: var(--primary-color);
+        /* Left face - 4 */
+        .dice-face:nth-child(4) {
+            transform: rotateY(-90deg) translateZ(50px);
+        }
+        .dice-face:nth-child(4) .dot:nth-child(1) {
+            top: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(4) .dot:nth-child(2) {
+            top: 25%;
+            right: 25%;
+        }
+        .dice-face:nth-child(4) .dot:nth-child(3) {
+            bottom: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(4) .dot:nth-child(4) {
+            bottom: 25%;
+            right: 25%;
         }
 
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
+        /* Top face - 5 */
+        .dice-face:nth-child(5) {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+        .dice-face:nth-child(5) .dot:nth-child(1) {
+            top: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(5) .dot:nth-child(2) {
+            top: 25%;
+            right: 25%;
+        }
+        .dice-face:nth-child(5) .dot:nth-child(3) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dice-face:nth-child(5) .dot:nth-child(4) {
+            bottom: 25%;
+            left: 25%;
+        }
+        .dice-face:nth-child(5) .dot:nth-child(5) {
+            bottom: 25%;
+            right: 25%;
         }
 
-        .progress-bar-container {
-            height: 6px;
-            background: var(--border-color);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 5px;
+        /* Bottom face - 2 */
+        .dice-face:nth-child(6) {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+        .dice-face:nth-child(6) .dot:nth-child(1) {
+            top: 25%;
+            right: 25%;
+        }
+        .dice-face:nth-child(6) .dot:nth-child(2) {
+            bottom: 25%;
+            left: 25%;
         }
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
-            width: 0;
-            transition: width 0.5s;
-        }
-
-        .skill-container {
-            margin-top: 10px;
-        }
-
-        .skill {
-            margin: 8px 0;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .skill-progress {
-            height: 8px;
-            background: var(--border-color);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .skill-bar {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.5s;
-        }
-
-        .modal {
-            display: none;
+        /* Modal styles */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(4px);
             opacity: 0;
-            transition: opacity 0.3s;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .modal.active {
+        .modal-overlay.active {
             opacity: 1;
+            visibility: visible;
         }
 
-        .modal-content {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            font-size: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            transform: translateY(20px);
-            transition: transform 0.3s;
-            color: var(--text-color);
+            transform: translateY(-50px);
+            transition: transform 0.5s;
         }
 
-        .modal.active .modal-content {
+        .modal-overlay.active .modal {
             transform: translateY(0);
         }
 
-        .button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 1rem;
-            word-wrap: break-word;
-            white-space: normal;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.2s;
+        /* Progress bars */
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(93, 92, 222, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar .progress {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.5s ease-out;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 0.75rem;
             font-weight: 600;
-        }
-
-        .button:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .button:active {
-            transform: translateY(0);
-        }
-
-        .button.disabled {
-            background: var(--neutral-color);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .button.disabled:hover {
-            transform: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .achievements-container {
-            margin-top: 20px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .achievements-container h3 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .achievement {
-            background: var(--input-bg);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 8px 0;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: left;
-            transition: all 0.3s;
-        }
-
-        .achievement.unlocked {
-            background: rgba(16, 185, 129, 0.2);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
-        }
-
-        .achievement-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            background: var(--card-bg);
-            padding: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .achievement-icon::before {
-            content: "🏆";
-            font-size: 1.8rem;
-        }
-
-        .achievement.unlocked .achievement-icon::before {
-            animation: bounce 1s;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-15px);}
-            60% {transform: translateY(-7px);}
-        }
-
-        .achievement-content {
-            flex-grow: 1;
-        }
-
-        .achievement-content div:first-child {
-            font-weight: bold;
-            margin-bottom: 4px;
-            color: var(--text-color);
-        }
-
-        .intro-modal {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
-
-        .intro-content {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.5s ease-out;
-            color: var(--text-color);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .intro-title {
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            line-height: 1;
             text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 50rem;
+            background-color: var(--accent);
+            color: var(--text);
+            transition: background-color 0.3s;
         }
 
-        .intro-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .intro-list {
-            margin: 15px 0;
-            padding-left: 20px;
-        }
-
-        .intro-list li {
-            margin: 10px 0;
-            color: var(--text-color);
-        }
-
-        .start-button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: block;
-            margin: 20px auto 0;
-            transition: all 0.2s;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(93, 92, 222, 0.4);
-        }
-
-        .start-button:hover {
-            transform: scale(1.05);
-            background: var(--primary-hover);
-            box-shadow: 0 6px 12px rgba(93, 92, 222, 0.5);
-        }
-
-        .intro-emoji {
-            font-size: 2.5rem;
-            text-align: center;
-            margin: 10px 0;
-            animation: spin 10s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .challenge-tag {
-            background: var(--warning-color);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-            vertical-align: middle;
-            font-weight: normal;
-        }
-
-        .transaction-container {
-            max-height: 150px;
-            overflow-y: auto;
-            background: var(--input-bg);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
+        /* Transaction history */
         .transaction {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0 4px 4px 0;
         }
 
-        .positive {
-            color: var(--success-color);
+        .transaction.positive {
+            border-left-color: #28a745;
         }
 
-        .negative {
-            color: var(--danger-color);
+        .transaction.negative {
+            border-left-color: #dc3545;
         }
 
-        .neutral {
-            color: var(--neutral-color);
+        /* Animation for dice roll */
+        @keyframes diceRoll {
+            0% {
+                transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            25% {
+                transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg);
+            }
+            50% {
+                transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg);
+            }
+            75% {
+                transform: rotateX(1080deg) rotateY(540deg) rotateZ(270deg);
+            }
+            100% {
+                transform: var(--final-transform);
+            }
         }
 
-        .toast {
+        .rolling {
+            animation: diceRoll 1.5s ease-out forwards;
+        }
+
+        /* Toast notification */
+        .toast-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: var(--card-bg);
-            color: var(--text-color);
-            padding: 12px 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background-color: var(--card-bg);
+            color: var(--text);
+            padding: 1rem;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 1rem;
-            z-index: 3000;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s, transform 0.3s;
-            max-width: 300px;
+            transition: transform 0.5s, opacity 0.5s;
         }
 
         .toast.show {
+            transform: translateX(0);
             opacity: 1;
-            transform: translateY(0);
         }
 
-        .toast.success {
-            border-left: 4px solid var(--success-color);
-        }
-
-        .toast.warning {
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger-color);
-        }
-
-        .toast-title {
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .money-change {
-            position: fixed;
-            font-size: 1.5rem;
-            font-weight: bold;
-            pointer-events: none;
-            z-index: 9999;
-            animation: flyUp 1.5s forwards;
-        }
-
-        @keyframes flyUp {
+        /* Coin animation */
+        @keyframes coinFall {
             0% {
+                transform: translateY(-20px) rotate(0deg);
                 opacity: 0;
-                transform: translateY(0);
             }
             10% {
                 opacity: 1;
             }
-            90% {
-                opacity: 1;
-            }
             100% {
-                opacity: 0;
-                transform: translateY(-100px);
-            }
-        }
-
-        .tab-container {
-            margin-top: 15px;
-        }
-
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-
-        .tab.active {
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 15px 0;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .month-transition-modal {
-            text-align: center;
-        }
-
-        .month-transition-modal h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .month-transition-modal .stats-summary {
-            background: var(--input-bg);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .month-transition-modal .milestone {
-            font-size: 1.1rem;
-            padding: 10px 0;
-            font-weight: bold;
-        }
-
-        /* Share buttons styles */
-        .share-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 15px 0;
-        }
-
-        .share-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .share-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-        }
-
-        .share-button i {
-            font-size: 1.2rem;
-        }
-
-        .share-facebook {
-            background: #1877F2;
-        }
-
-        .share-facebook:hover {
-            background: #0e6bdb;
-        }
-
-        .share-whatsapp {
-            background: #25D366;
-        }
-
-        .share-whatsapp:hover {
-            background: #1fba57;
-        }
-
-        /* Game over share prompt */
-        .share-prompt {
-            margin-top: 20px;
-            text-align: center;
-            padding: 12px;
-            background: var(--input-bg);
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        /* Game Complete Modal */
-        .game-complete-modal {
-            text-align: center;
-        }
-
-        .game-complete-modal h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .game-complete-modal p {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-        }
-
-        .results-summary {
-            background: var(--input-bg);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-label {
-            font-weight: bold;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            animation: confetti-fall linear forwards;
-            z-index: 9999;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(80px) rotate(360deg);
                 opacity: 0;
             }
         }
-        
-        /* Day completion banner */
-        .goal-notice {
+
+        .coin {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--warning-color);
-            color: white;
-            text-align: center;
-            padding: 5px;
-            font-weight: bold;
-            border-radius: 12px 12px 0 0;
-            animation: fadeIn 0.5s;
-            display: none;
-        }
-        
-        .goal-notice.show {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .game-container {
-                flex-direction: column;
-            }
-
-            .game-board, .controls {
-                width: 100%;
-            }
-
-            .calendar {
-                grid-template-columns: repeat(7, minmax(60px, 1fr));
-            }
-
-            .dice {
-                width: 80px;
-                height: 80px;
-                font-size: 1.5em;
-            }
-
-            .button {
-                font-size: 0.9rem;
-                padding: 10px 15px;
-            }
-
-            .modal-content {
-                font-size: 0.9rem;
-                padding: 20px;
-            }
-
-            #challengeTitle {
-                font-size: 1.3rem;
-            }
-
-            #challengeDescription {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            .game-board, .controls {
-                padding: 15px;
-            }
-
-            .calendar {
-                grid-template-columns: repeat(7, minmax(50px, 1fr));
-            }
-
-            .dice {
-                width: 70px;
-                height: 70px;
-                font-size: 1.2em;
-            }
-
-            .button {
-                font-size: 0.8rem;
-                padding: 8px 12px;
-                width: 100%;
-                text-align: center;
-                white-space: nowrap;
-            }
-
-            .modal-content {
-                padding: 15px;
-                font-size: 0.9rem;
-            }
-
-            .intro-content {
-                padding: 20px;
-            }
-            
-            .intro-title {
-                font-size: 1.5rem;
-            }
-            
-            .intro-text {
-                font-size: 1rem;
-            }
-            
-            .start-button {
-                padding: 10px 20px;
-                font-size: 1rem;
-            }
-
-            #challengeTitle {
-                font-size: 1.2rem;
-            }
-
-            #challengeDescription {
-                font-size: 0.9rem;
-                line-height: 1.3;
-            }
-
-            .challenge-tag {
-                font-size: 0.7rem;
-                padding: 3px 6px;
-            }
-
-            .achievement {
-                padding: 8px;
-            }
-
-            .achievement-icon {
-                width: 40px;
-                height: 40px;
-                margin-right: 10px;
-            }
-
-            .achievement-icon::before {
-                font-size: 1.4rem;
-            }
-
-            .stat-item {
-                font-size: 0.95rem;
-            }
-
-            .transaction {
-                font-size: 0.8rem;
-            }
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            word-wrap: break-word;
-        }
-
-        #toastContainer {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: none;
-        }
-
-        /* Theme switch */
-        .theme-switch {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 100;
-            transition: all 0.3s;
-        }
-
-        .theme-switch:hover {
-            transform: scale(1.1);
-        }
-
-        .difficulty-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .difficulty-option {
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .difficulty-option.active {
-            border-color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .difficulty-option.easy {
-            background: rgba(16, 185, 129, 0.2);
-        }
-
-        .difficulty-option.normal {
-            background: rgba(245, 158, 11, 0.2);
-        }
-
-        .difficulty-option.hard {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        /* Month 2 styles */
-        .month-badge {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
             width: 20px;
             height: 20px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .month2-theme {
-            background: linear-gradient(90deg, var(--primary-color), #4c1d95);
-        }
-        
-        .investment-item {
-            background: var(--input-bg);
-            border-radius: 8px;
-            padding: 10px;
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .investment-return {
-            font-weight: bold;
-            color: var(--success-color);
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            animation: coinFall 1s forwards;
         }
     </style>
 </head>
-<body>
-    <div class="theme-switch" id="themeToggle">
-        <span id="themeIcon">🌙</span>
-    </div>
-    
-    <div class="intro-modal" id="introModal">
-        <div class="intro-content">
-            <div class="intro-emoji">🎲💰</div>
-            <h2 class="intro-title">Welcome to DADUit Game</h2>
-            <div class="intro-text">
-                Get ready to embark on an exciting 2-month financial journey! In this game, you'll navigate through real-life financial scenarios while managing your money wisely.
-                
-                <ul class="intro-list">
-                    <li><strong>Starting Balance:</strong> RM5,000</li>
-                    <li><strong>Month 1 Goal:</strong> Reach RM10,000 by day 30</li>
-                    <li><strong>Month 2 Goal:</strong> Grow your wealth to RM20,000 by day 60</li>
-                    <li><strong>Gameplay:</strong> Roll the dice to move through days</li>
-                    <li><strong>Challenges:</strong> Face random financial decisions</li>
-                    <li><strong>New Feature:</strong> Unlock investments in Month 2!</li>
-                </ul>
-
-                <p>Watch out for special events, paydays, and expenses as you progress through your financial journey!</p>
-
-                <div class="difficulty-selector">
-                    <div class="difficulty-option easy active" data-difficulty="easy">Easy</div>
-                    <div class="difficulty-option normal" data-difficulty="normal">Normal</div>
-                    <div class="difficulty-option hard" data-difficulty="hard">Hard</div>
-                </div>
-            </div>
-            <button class="start-button" onclick="startGame()">Let's Begin!</button>
-            
-            <!-- Share buttons -->
-            <div class="share-container">
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                   target="_blank" 
-                   class="share-button share-facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Share</span>
-                </a>
-                <a href="https://api.whatsapp.com/send?text=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                   target="_blank" 
-                   class="share-button share-whatsapp">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>Share</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <h1 class="fancy-title">DADUit Game</h1>
-        <div class="game-container">
-            <div class="game-board">
-                <div class="goal-notice" id="goalNotice">Final Day Reached! Check Your Results</div>
-                
-                <div class="month-switcher">
-                    <div class="month-tab active" data-month="1" id="month1Tab">Month 1</div>
-                    <div class="month-tab" data-month="2" id="month2Tab">Month 2</div>
-                </div>
-                
-                <div class="month-container active" id="month1Container">
-                    <div class="calendar" id="calendar1"></div>
-                </div>
-                
-                <div class="month-container" id="month2Container">
-                    <div class="calendar" id="calendar2"></div>
-                </div>
-                
-                <!-- Goal progress bar -->
-                <div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span>Financial Goal:</span>
-                        <span id="goalText">RM10,000</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goalProgressBar"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="controls">
-                <div class="dice-container">
-                    <div class="dice" id="dice">1</div>
-                </div>
-                <button class="button" id="rollDice">Roll Dice</button>
-                <button class="button" id="finishGameButton" style="display: none;">Finish Game</button>
-                
-                <div class="stats">
-                    <h3>Player Stats</h3>
-                    <div class="stat-item">
-                        <span>Money:</span>
-                        <span id="money">RM5,000</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Current Day:</span>
-                        <span id="currentDay">1</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Month:</span>
-                        <span id="currentMonth">1</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Difficulty:</span>
-                        <span id="difficultyDisplay">Easy</span>
-                    </div>
-                    
-                    <div class="skill-container">
-                        <div class="skill">
-                            <div class="skill-name">
-                                <span>Financial Literacy</span>
-                                <span id="financialLiteracyLevel">1</span>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="skill-bar" id="financialLiteracyBar" style="width: 20%"></div>
-                            </div>
-                        </div>
-                        <div class="skill">
-                            <div class="skill-name">
-                                <span>Entrepreneurship</span>
-                                <span id="entrepreneurshipLevel">1</span>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="skill-bar" id="entrepreneurshipBar" style="width: 20%"></div>
-                            </div>
-                        </div>
-                        <div class="skill">
-                            <div class="skill-name">
-                                <span>Education</span>
-                                <span id="educationLevel">1</span>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="skill-bar" id="educationBar" style="width: 20%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tab-container">
-                    <div class="tabs">
-                        <div class="tab active" data-tab="transactions">Transactions</div>
-                        <div class="tab" data-tab="achievements">Achievements</div>
-                        <div class="tab" data-tab="investments" id="investmentsTab">Investments</div>
-                    </div>
-                    
-                    <div class="tab-content active" id="transactionsTab">
-                        <h3>Recent Transactions</h3>
-                        <div class="transaction-container" id="transactionHistory">
-                            <div class="transaction">
-                                <span>Starting Balance</span>
-                                <span class="positive">+RM5,000</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="achievementsTab">
-                        <div id="achievementsContainer">
-                            <h3>Achievements</h3>
-                            <!-- Achievements will be added here -->
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="investmentsTab">
-                        <h3>Investment Portfolio</h3>
-                        <div id="investmentsContainer">
-                            <p id="investmentMessage">Investments will be unlocked in Month 2!</p>
-                            <div id="investmentsList" style="display: none;"></div>
-                            
-                            <button class="button" id="investButton" style="display: none; margin-top: 10px;">Make New Investment</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Share buttons in the controls section -->
-                <div class="share-container">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                       target="_blank" 
-                       class="share-button share-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>Share on Facebook</span>
-                    </a>
-                    <a href="https://api.whatsapp.com/send?text=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                       target="_blank" 
-                       class="share-button share-whatsapp">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>Share on WhatsApp</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="challengeModal">
-        <div class="modal-content">
-            <h2 id="challengeTitle">Financial Challenge</h2>
-            <p id="challengeDescription"></p>
-            <div id="challengeOptions"></div>
-        </div>
-    </div>
-    
-    <div class="modal" id="investmentModal">
-        <div class="modal-content">
-            <h2>Investment Opportunities</h2>
-            <p>Choose an investment to grow your wealth:</p>
-            <div id="investmentOptions"></div>
-        </div>
-    </div>
-    
-    <div class="modal" id="monthTransitionModal">
-        <div class="modal-content month-transition-modal">
-            <h2>Month 1 Completed!</h2>
-            <p>Congratulations on completing your first month of financial management!</p>
-            
-            <div class="stats-summary">
-                <div class="milestone">Money: <span id="month1Money">RM0</span></div>
-                <div class="milestone">Skills Developed: <span id="month1Skills">0</span></div>
-                <div class="milestone">Achievements: <span id="month1Achievements">0</span></div>
-            </div>
-            
-            <p>Month 2 brings new opportunities!</p>
-            <ul style="text-align: left; margin: 20px 0;">
-                <li>Investment opportunities unlocked</li>
-                <li>Higher salary potential</li>
-                <li>New financial challenges</li>
-                <li>New goal: Reach RM20,000 by day 60</li>
-            </ul>
-            
-            <button class="button" id="startMonth2Button">Start Month 2</button>
-        </div>
-    </div>
-    
-    <div class="modal" id="gameCompleteModal">
-        <div class="modal-content game-complete-modal">
-            <h2 id="gameCompleteTitle">Financial Journey Complete!</h2>
-            <p id="gameCompleteMessage">You've reached the end of your 60-day financial journey.</p>
-            
-            <div class="results-summary">
-                <div class="result-item">
-                    <span class="result-label">Final Balance:</span>
-                    <span id="finalMoney">RM0</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Financial Goal:</span>
-                    <span id="goalResult">Not Achieved</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Skills Developed:</span>
-                    <span id="finalSkills">0</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Achievements:</span>
-                    <span id="finalAchievements">0</span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Active Investments:</span>
-                    <span id="finalInvestments">0</span>
-                </div>
-            </div>
-            
-            <div class="share-prompt">Share your DADUit Game result with friends!</div>
-            <div class="share-container">
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                   target="_blank" 
-                   class="share-button share-facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Share on Facebook</span>
-                </a>
-                <a href="https://api.whatsapp.com/send?text=" 
-                   target="_blank" 
-                   class="share-button share-whatsapp" id="whatsappShareFinal">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>Share on WhatsApp</span>
-                </a>
-            </div>
-            
-            <button class="button" onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
-        </div>
-    </div>
-
-    <div id="toastContainer"></div>
-
+<body class="min-h-screen flex flex-col">
+    <!-- Dark mode detection -->
     <script>
-        // Check for dark mode preference
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
-            document.getElementById('themeIcon').textContent = '☀️';
         }
-        
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             if (event.matches) {
                 document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').textContent = '☀️';
             } else {
                 document.documentElement.classList.remove('dark');
-                document.getElementById('themeIcon').textContent = '🌙';
             }
         });
-        
-        // Theme toggle
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('themeIcon').textContent = '🌙';
-            } else {
-                document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').textContent = '☀️';
-            }
-        });
+    </script>
 
-        // Game data for Month 1
-        const month1Challenges = [
-            {
-                title: "🎉 Hari Raya Spending Dilemma",
-                description: "The festive season is here! Will you splurge on celebrations or keep it simple?",
-                tag: "Festival",
-                options: [
-                    { text: "Budget RM800 for modest celebrations", effect: -800, consequence: "Good balance between celebration and financial responsibility!" },
-                    { text: "Go all out with RM2000", effect: -2000, consequence: "Create unforgettable memories but feel the pinch in savings." },
-                    { text: "Keep it simple with RM400", effect: -400, consequence: "Practical choice but might miss out on festive cheer." }
-                ]
-            },
-            {
-                title: "🍛 Mamak Stall Investment",
-                description: "Your friend wants you to join a mamak stall business. Should you invest?",
-                tag: "Business",
-                options: [
-                    { text: "Invest RM1500 as active partner", effect: -1500, consequence: "High risk but could yield substantial returns!", onSelect: () => saveInvestmentForMonth2("Mamak Stall", 1500, 0.4) },
-                    { text: "Invest RM500 as silent partner", effect: -500, consequence: "Moderate risk with potential passive income.", onSelect: () => saveInvestmentForMonth2("Mamak Stall", 500, 0.2) },
-                    { text: "Decline the offer", effect: 0, consequence: "Play it safe but miss a potential opportunity." }
-                ]
-            },
-            {
-                title: "💻 Side Hustle Opportunity",
-                description: "You have a chance to start a freelance web development side hustle. What will you do?",
-                tag: "Career",
-                options: [
-                    { text: "Invest RM300 in equipment and marketing", effect: -300, consequence: "Initial investment paid off! You gained a new income stream.", onSelect: () => addSkill('entrepreneurship', 1) },
-                    { text: "Use existing resources", effect: 0, consequence: "Limited growth but no initial costs." },
-                    { text: "Take an online course first (RM200)", effect: -200, consequence: "Good foundation for future success.", onSelect: () => addSkill('education', 1) }
-                ]
-            },
-            {
-                title: "🏠 Rental Increase",
-                description: "Your landlord has informed you of a rental increase. How will you respond?",
-                tag: "Housing",
-                options: [
-                    { text: "Negotiate a smaller increase", effect: -150, consequence: "Partial success in negotiation - saved some money!" },
-                    { text: "Accept the full increase", effect: -300, consequence: "Avoided conflict but it impacts your budget." },
-                    { text: "Find a more affordable place", effect: -500, consequence: "Moving costs money now but saves in the long run." }
-                ]
-            },
-            {
-                title: "💼 Job Offer",
-                description: "You received a job offer with higher pay but longer hours. What's your decision?",
-                tag: "Career",
-                options: [
-                    { text: "Accept the offer", effect: 800, consequence: "More income but less free time.", onSelect: () => increaseSalary(200) },
-                    { text: "Stay at current job", effect: 0, consequence: "Maintain work-life balance with current income." },
-                    { text: "Negotiate better terms", effect: 500, consequence: "Compromise reached with moderate pay increase.", onSelect: () => increaseSalary(100) }
-                ]
-            }
-        ];
-        
-        // Game data for Month 2
-        const month2Challenges = [
-            {
-                title: "🏗️ Real Estate Investment Trust",
-                description: "A new REIT is accepting small investors. Would you like to participate?",
-                tag: "Investment",
-                options: [
-                    { text: "Invest RM2000 in the REIT", effect: -2000, consequence: "Diversified your investment portfolio with property exposure.", onSelect: () => makeInvestment("Real Estate Trust", 2000, 0.15) },
-                    { text: "Invest RM1000 in the REIT", effect: -1000, consequence: "Started small in real estate investment.", onSelect: () => makeInvestment("Real Estate Trust", 1000, 0.12) },
-                    { text: "Skip this opportunity", effect: 0, consequence: "Decided to wait for other investment options." }
-                ]
-            },
-            {
-                title: "💹 Stock Market Opportunity",
-                description: "You've identified a promising stock. How would you approach this investment?",
-                tag: "Stocks",
-                options: [
-                    { text: "Invest aggressively (RM3000)", effect: -3000, consequence: "Bold move with higher potential returns!", onSelect: () => makeInvestment("Growth Stocks", 3000, 0.25) },
-                    { text: "Make a moderate investment (RM1500)", effect: -1500, consequence: "Balanced approach to stock market investing.", onSelect: () => makeInvestment("Balanced Stocks", 1500, 0.18) },
-                    { text: "Make a safe, small investment (RM500)", effect: -500, consequence: "Cautious entry into the stock market.", onSelect: () => makeInvestment("Conservative Stocks", 500, 0.10) }
-                ]
-            },
-            {
-                title: "🎓 Advanced Education",
-                description: "There's an opportunity to take a financial management course. Are you interested?",
-                tag: "Education",
-                options: [
-                    { text: "Enroll in premium course (RM1200)", effect: -1200, consequence: "Comprehensive knowledge gained; significantly improved your financial skills.", onSelect: () => addSkill('financialLiteracy', 2) },
-                    { text: "Take a basic course (RM500)", effect: -500, consequence: "Useful fundamental knowledge acquired.", onSelect: () => addSkill('financialLiteracy', 1) },
-                    { text: "Self-study online for free", effect: 0, consequence: "Saving money, but learning takes longer and is less structured." }
-                ]
-            },
-            {
-                title: "💡 Business Expansion",
-                description: "Your side hustle is doing well. How would you like to develop it further?",
-                tag: "Business",
-                options: [
-                    { text: "Major expansion (RM2500)", effect: -2500, consequence: "Significant investment to scale your business.", onSelect: () => { addSkill('entrepreneurship', 2); increaseSalary(300); } },
-                    { text: "Moderate growth (RM1200)", effect: -1200, consequence: "Sustainable expansion of your side hustle.", onSelect: () => { addSkill('entrepreneurship', 1); increaseSalary(150); } },
-                    { text: "Maintain current operations", effect: 0, consequence: "No additional investment, continuing as before." }
-                ]
-            },
-            {
-                title: "🏦 Fixed Deposit Opportunity",
-                description: "Your bank is offering a special fixed deposit rate. Would you like to lock some money?",
-                tag: "Banking",
-                options: [
-                    { text: "Large deposit (RM5000)", effect: -5000, consequence: "Significant sum placed in secure investment.", onSelect: () => makeInvestment("Fixed Deposit", 5000, 0.08) },
-                    { text: "Medium deposit (RM2500)", effect: -2500, consequence: "Reasonable amount in safe keeping.", onSelect: () => makeInvestment("Fixed Deposit", 2500, 0.08) },
-                    { text: "Small deposit (RM1000)", effect: -1000, consequence: "Token amount saved securely.", onSelect: () => makeInvestment("Fixed Deposit", 1000, 0.08) }
-                ]
-            },
-            {
-                title: "🏠 Home Renovation Project",
-                description: "Your home could use some upgrades. How would you approach this?",
-                tag: "Housing",
-                options: [
-                    { text: "Major renovation (RM8000)", effect: -8000, consequence: "Comprehensive home improvement - increases property value significantly." },
-                    { text: "Essential repairs only (RM3000)", effect: -3000, consequence: "Necessary fixes completed while keeping costs manageable." },
-                    { text: "DIY small improvements (RM1000)", effect: -1000, consequence: "Hands-on approach saves money but takes personal time and effort." }
-                ]
-            },
-            {
-                title: "🎁 Family Inheritance",
-                description: "You've received an unexpected inheritance from a distant relative!",
-                tag: "Windfall",
-                options: [
-                    { text: "Invest the entire inheritance", effect: 3000, consequence: "Wise long-term decision to grow your wealth.", onSelect: () => makeInvestment("Inheritance Fund", 3000, 0.15) },
-                    { text: "Save half, spend half", effect: 3000, consequence: "Balanced approach between enjoying now and saving for later." },
-                    { text: "Use it to pay off debts", effect: 3000, consequence: "Practical approach to improve your financial situation." }
-                ]
-            },
-            {
-                title: "💼 Career Development Seminar",
-                description: "An exclusive career development seminar is being held next week. Would you attend?",
-                tag: "Career",
-                options: [
-                    { text: "Attend VIP session (RM1500)", effect: -1500, consequence: "Premium networking and learning opportunity.", onSelect: () => { addSkill('education', 2); increaseSalary(250); } },
-                    { text: "Attend standard session (RM700)", effect: -700, consequence: "Good value for professional development.", onSelect: () => { addSkill('education', 1); increaseSalary(100); } },
-                    { text: "Skip this seminar", effect: 0, consequence: "Save money but miss potential career advancement." }
-                ]
-            }
-        ];
+    <!-- Welcome screen -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 p-4">
+        <div class="text-center max-w-md w-full">
+            <div class="mb-4">
+                <h1 class="text-4xl font-bold mb-2">DADUit Game</h1>
+                <div class="flex justify-center space-x-2 mb-2">
+                    <span class="text-2xl">🌙</span>
+                    <span class="text-2xl">🎲💰</span>
+                </div>
+                <h2 class="text-2xl font-semibold mb-4">Welcome to DADUit Game!</h2>
+                <p class="mb-6">Get ready to embark on an exciting financial journey! In this game, you'll navigate through real-life financial scenarios while managing your money wisely.</p>
+            </div>
 
-        // Special events
-        const month1SpecialEvents = [
-            {
-                title: "🏦 Bank Error in Your Favor",
-                description: "The bank made an error and deposited extra money in your account. They haven't noticed yet.",
-                options: [
-                    { text: "Report the error to the bank", effect: -100, consequence: "You did the right thing ethically. Small fee for processing.", onSelect: () => addSkill('financialLiteracy', 2) },
-                    { text: "Keep the money and stay quiet", effect: 500, consequence: "You got lucky this time, but this could have consequences later." }
-                ]
-            },
-            {
-                title: "📊 Market Crash",
-                description: "The stock market has crashed! This affects everyone's finances.",
-                options: [
-                    { text: "Panic and withdraw all investments", effect: -500, consequence: "You sold at the bottom and locked in your losses." },
-                    { text: "Stay calm and hold your position", effect: -200, consequence: "Short-term loss, but better long-term strategy.", onSelect: () => addSkill('financialLiteracy', 1) },
-                    { text: "Invest more while prices are low", effect: -300, consequence: "Bold move that could pay off later.", onSelect: () => addSkill('financialLiteracy', 2) }
-                ]
-            },
-            {
-                title: "💧 Water Bill Shock",
-                description: "You received an unusually high water bill this month due to a leak.",
-                options: [
-                    { text: "Pay the full amount (RM400)", effect: -400, consequence: "Painful but resolves the issue immediately." },
-                    { text: "Contest the bill and fix the leak (RM200)", effect: -200, consequence: "Saved money by addressing the root cause.", onSelect: () => addSkill('financialLiteracy', 1) },
-                    { text: "Ignore it for now", effect: 0, consequence: "The problem will only get worse with late fees and more leakage." }
-                ]
-            }
-        ];
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="card p-4">
+                    <h3 class="font-semibold mb-2">Starting Balance:</h3>
+                    <p class="text-xl font-bold text-green-600 dark:text-green-400">RM5,000</p>
+                </div>
+                <div class="card p-4">
+                    <h3 class="font-semibold mb-2">Goal:</h3>
+                    <p>Reach RM10,000 by day 30</p>
+                </div>
+            </div>
 
-        const month2SpecialEvents = [
-            {
-                title: "🏅 Recognition Award",
-                description: "Your financial management skills have been recognized with a community award!",
-                options: [
-                    { text: "Accept the award and network", effect: 0, consequence: "Gained valuable connections for future opportunities.", onSelect: () => { addSkill('entrepreneurship', 1); increaseSalary(150); } },
-                    { text: "Accept the award quietly", effect: 500, consequence: "Received a cash prize with the recognition." }
-                ]
-            },
-            {
-                title: "🌏 Economic Boom",
-                description: "The economy is experiencing unexpected growth, creating new opportunities!",
-                options: [
-                    { text: "Invest in expanding markets", effect: -1000, consequence: "Positioned yourself to benefit from economic growth.", onSelect: () => makeInvestment("Growth Market Fund", 1000, 0.30) },
-                    { text: "Take a new job opportunity", effect: 1200, consequence: "Signing bonus received, with better earning potential.", onSelect: () => increaseSalary(300) },
-                    { text: "Start a new side business", effect: -800, consequence: "Launched a timely venture during favorable conditions.", onSelect: () => addSkill('entrepreneurship', 2) }
-                ]
-            },
-            {
-                title: "🎓 Scholarship Opportunity",
-                description: "You've been offered a partial scholarship for professional development!",
-                options: [
-                    { text: "Accept and pay remainder (RM1000)", effect: -1000, consequence: "Invested in your career growth at a discount.", onSelect: () => { addSkill('education', 2); addSkill('financialLiteracy', 1); } },
-                    { text: "Decline the offer", effect: 0, consequence: "Saved money but missed a subsidized opportunity for growth." }
-                ]
-            },
-            {
-                title: "💰 Past Investment Payout",
-                description: "An investment you made in Month 1 has matured with returns!",
-                monthOneInvestmentRequired: true,
-                options: [
-                    { text: "Reinvest the returns", effect: 0, consequence: "Compound your growth for future returns.", 
-                      onSelect: () => multiplyInvestmentReturn(1.5) },
-                    { text: "Take the profits", effect: 0, consequence: "Enjoy the returns of your wise investment.", 
-                      onSelect: () => collectInvestmentReturns() }
-                ]
-            }
-        ];
+            <div class="card p-5 mb-6">
+                <h3 class="font-semibold mb-2">Gameplay:</h3>
+                <ul class="text-left space-y-2">
+                    <li class="flex items-start">
+                        <span class="mr-2">🎲</span>
+                        <span>Roll the dice to move through days</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">💼</span>
+                        <span>Face random financial decisions</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">📊</span>
+                        <span>Make smart choices to grow your money</span>
+                    </li>
+                </ul>
+                <p class="mt-3 text-sm italic">Watch out for special events, paydays, and expenses as you progress!</p>
+            </div>
 
-        const achievements = [
-            {
-                id: 'firstDay',
-                title: 'First Day',
-                description: 'Complete the first day of the financial journey',
-                check: () => currentPosition >= 1,
-                unlocked: false
-            },
-            {
-                id: 'week1',
-                title: 'One Week In',
-                description: 'Reach day 7 of your financial journey',
-                check: () => currentPosition >= 7,
-                unlocked: false
-            },
-            {
-                id: 'halfMonth1',
-                title: 'Halfway There',
-                description: 'Reach the middle of your first month',
-                check: () => currentPosition >= 15,
-                unlocked: false
-            },
-            {
-                id: 'month1Complete',
-                title: 'Month 1 Complete',
-                description: 'Complete the first month of your financial journey',
-                check: () => currentPosition >= 30,
-                unlocked: false
-            },
-            {
-                id: 'week5',
-                title: 'Second Month Begins',
-                description: 'Start your second month of financial planning',
-                check: () => currentPosition >= 31,
-                unlocked: false
-            },
-            {
-                id: 'month2Halfway',
-                title: 'Month 2 Halfway',
-                description: 'Reach day 45 of your financial journey',
-                check: () => currentPosition >= 45,
-                unlocked: false
-            },
-            {
-                id: 'fullJourney',
-                title: 'Financial Master',
-                description: 'Complete the full 60-day financial journey',
-                check: () => currentPosition >= 60,
-                unlocked: false
-            },
-            {
-                id: 'moneyUp',
-                title: 'Money Smart',
-                description: 'Increase your money by 10%',
-                check: () => money > 5500,
-                unlocked: false
-            },
-            {
-                id: 'money10k',
-                title: 'First Milestone',
-                description: 'Accumulate RM10,000 in your financial journey',
-                check: () => money >= 10000,
-                unlocked: false
-            },
-            {
-                id: 'money15k',
-                title: 'Growing Wealth',
-                description: 'Accumulate RM15,000 in your financial journey',
-                check: () => money >= 15000,
-                unlocked: false
-            },
-            {
-                id: 'money20k',
-                title: 'Wealth Builder',
-                description: 'Accumulate RM20,000 in your financial journey',
-                check: () => money >= 20000,
-                unlocked: false
-            },
-            {
-                id: 'skillMaster',
-                title: 'Skill Master',
-                description: 'Reach level 3 in any skill',
-                check: () => skills.financialLiteracy >= 3 || skills.entrepreneurship >= 3 || skills.education >= 3,
-                unlocked: false
-            },
-            {
-                id: 'allSkills',
-                title: 'Jack of All Trades',
-                description: 'Improve all skills to at least level 2',
-                check: () => skills.financialLiteracy >= 2 && skills.entrepreneurship >= 2 && skills.education >= 2,
-                unlocked: false
-            },
-            {
-                id: 'investor',
-                title: 'Novice Investor',
-                description: 'Make your first investment',
-                check: () => investments.length >= 1,
-                unlocked: false
-            },
-            {
-                id: 'portfolioBuilder',
-                title: 'Portfolio Builder',
-                description: 'Have 3 or more active investments',
-                check: () => investments.length >= 3,
-                unlocked: false
-            }
-        ];
+            <div class="mb-6">
+                <h3 class="font-semibold mb-3">Select Difficulty:</h3>
+                <div class="flex justify-center space-x-4">
+                    <button data-difficulty="Easy" class="difficulty-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Easy</button>
+                    <button data-difficulty="Normal" class="difficulty-btn bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">Normal</button>
+                    <button data-difficulty="Hard" class="difficulty-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Hard</button>
+                </div>
+            </div>
 
-        // Investment options for Month 2
-        const investmentOptions = [
-            {
-                name: "Stock Market Index Fund",
-                minAmount: 1000,
-                returnRate: 0.12,
-                description: "Diversified market exposure with moderate risk and returns."
-            },
-            {
-                name: "Fixed Deposit",
-                minAmount: 500,
-                returnRate: 0.08,
-                description: "Safe and secure investment with guaranteed returns."
-            },
-            {
-                name: "Corporate Bonds",
-                minAmount: 2000,
-                returnRate: 0.10,
-                description: "Lend to established companies for regular interest payments."
-            },
-            {
-                name: "REIT (Real Estate)",
-                minAmount: 1500,
-                returnRate: 0.15,
-                description: "Invest in real estate properties without direct ownership."
-            },
-            {
-                name: "Tech Startup",
-                minAmount: 3000,
-                returnRate: 0.25,
-                description: "High risk, high potential return investment in emerging technology."
-            }
-        ];
+            <button id="start-game" class="bg-primary text-white rounded-lg px-6 py-3 font-bold text-lg hover:bg-opacity-90 transition-all">Let's Begin!</button>
+        </div>
+    </div>
 
-        // Game variables
-        let currentPosition = 1;
-        let money = 5000;
-        const daysInMonth = 30;
-        const totalDays = 60;
-        let isGameOver = false;
-        let gameStarted = false;
-        let difficulty = "easy";
-        let currentMonth = 1;
-        let monthCompleted = false;
-        let baseSalary = 1000;
-        let investments = [];
-        let pendingMonth1Investments = [];
-        let finalDayReached = false;
-        
-        let skills = {
-            financialLiteracy: 1,
-            entrepreneurship: 1,
-            education: 1
-        };
-        
-        let transactions = [
-            { day: 0, description: "Starting Balance", amount: 5000 }
-        ];
-        
-        let difficultyMultipliers = {
-            easy: { income: 1.2, expense: 0.8 },
-            normal: { income: 1.0, expense: 1.0 },
-            hard: { income: 0.8, expense: 1.2 }
-        };
-        
-        // Special days (payday, bills, etc.)
-        let specialDays = {
-            // Paydays (default: every 7 days)
-            paydays: [7, 14, 21, 28, 37, 44, 51, 58],
-            // Regular expenses (rent, utilities, etc.)
-            expenses: [5, 15, 25, 35, 45, 55],
-            // Special event days
-            events: [9, 19, 29, 39, 49, 59]
-        };
-        
-        // Initialize game board for both months
-        function createBoard() {
-            createMonthCalendar(1, 'calendar1');
-            createMonthCalendar(2, 'calendar2');
-            updateMonthTabs();
-        }
-        
-        function createMonthCalendar(month, calendarId) {
-            const calendar = document.getElementById(calendarId);
-            calendar.innerHTML = '';
-            const startDay = (month - 1) * daysInMonth + 1;
-            const endDay = month * daysInMonth;
-            
-            for (let i = startDay; i <= endDay; i++) {
-                const day = document.createElement('div');
-                day.className = 'day';
-                
-                // Day number - show day within the month
-                const dayNumber = document.createElement('span');
-                dayNumber.textContent = i - (month - 1) * daysInMonth;
-                day.appendChild(dayNumber);
-                
-                // Add month badge for visual distinction
-                const monthBadge = document.createElement('div');
-                monthBadge.className = 'month-badge';
-                monthBadge.textContent = month;
-                day.appendChild(monthBadge);
-                
-                // Add icon based on special day
-                const dayIcon = document.createElement('div');
-                dayIcon.className = 'day-icon';
-                
-                if (specialDays.paydays.includes(i)) {
-                    dayIcon.textContent = '💰';
-                    day.classList.add('payday');
-                } else if (specialDays.expenses.includes(i)) {
-                    dayIcon.textContent = '💸';
-                    day.classList.add('expense');
-                } else if (specialDays.events.includes(i)) {
-                    dayIcon.textContent = '⭐';
-                    day.classList.add('special');
-                }
-                
-                // Mark final day
-                if (i === totalDays) {
-                    day.classList.add('final-day');
-                    dayIcon.textContent = '🏁';
-                }
-                
-                day.insertBefore(dayIcon, dayNumber);
-                
-                if (i === currentPosition) {
-                    day.className += ' current';
-                    const player = document.createElement('div');
-                    player.className = 'player';
-                    day.appendChild(player);
-                }
-                calendar.appendChild(day);
-            }
-        }
+    <!-- Main game screen -->
+    <header class="bg-primary text-white p-4">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold mb-2 sm:mb-0">DADUit Game</h1>
+            <div class="flex items-center space-x-2">
+                <span id="day-display" class="text-xl font-bold">1</span>
+                <button id="share-btn" class="bg-white text-primary rounded-full p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-        // Update calendar display based on current position
-        function updateBoard() {
-            updateCurrentMonthDisplay();
-            updateMonthContainers();
-            
-            // Update player position and current day styling
-            const monthCalendarId = currentMonth === 1 ? 'calendar1' : 'calendar2';
-            const dayPositionInMonth = currentPosition - ((currentMonth - 1) * daysInMonth);
-            
-            const days = document.querySelectorAll(`#${monthCalendarId} .day`);
-            days.forEach((day, index) => {
-                day.classList.remove('current');
-                
-                // Remove any existing player marker
-                const existingPlayer = day.querySelector('.player');
-                if (existingPlayer) {
-                    day.removeChild(existingPlayer);
-                }
-                
-                if (index + 1 === dayPositionInMonth) {
-                    day.classList.add('current');
-                    const player = document.createElement('div');
-                    player.className = 'player';
-                    day.appendChild(player);
-                }
-            });
-            
-            document.getElementById('currentDay').textContent = currentPosition;
-            document.getElementById('currentMonth').textContent = currentMonth;
-            document.getElementById('money').textContent = `RM${money.toLocaleString()}`;
-            
-            // Update goal progress bar
-            updateGoalProgress();
-            
-            // Check for special days
-            checkSpecialDays();
-            checkMonthTransition();
-            checkFinalDay();
-            checkGameOver();
-            updateAchievements();
-            updateSkillDisplay();
-            updateInvestments();
-        }
-        
-        // Check if we've reached the final day
-        function checkFinalDay() {
-            // If we're at day 60 (the final day), show the finish button
-            if (currentPosition >= totalDays && !finalDayReached) {
-                finalDayReached = true;
-                
-                // Show notice
-                document.getElementById('goalNotice').classList.add('show');
-                
-                // Show finish game button and disable roll dice button
-                document.getElementById('rollDice').classList.add('disabled');
-                document.getElementById('finishGameButton').style.display = 'block';
-                
-                showToast("Final Day Reached!", "You've reached the end of your financial journey. Check your results!", "success");
-            }
-        }
-        
-        // Update which month container is displayed
-        function updateMonthContainers() {
-            document.getElementById('month1Container').classList.toggle('active', currentMonth === 1);
-            document.getElementById('month2Container').classList.toggle('active', currentMonth === 2);
-        }
-        
-        // Update month tabs to show active month
-        function updateMonthTabs() {
-            document.getElementById('month1Tab').classList.toggle('active', currentMonth === 1);
-            document.getElementById('month2Tab').classList.toggle('active', currentMonth === 2);
-            
-            // Add click event for month tabs if not already added
-            const monthTabs = document.querySelectorAll('.month-tab');
-            monthTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    if (!tab.classList.contains('active')) {
-                        const monthToShow = parseInt(tab.dataset.month);
-                        showMonth(monthToShow);
-                    }
-                });
-            });
-        }
-        
-        // Switch month display without changing game state
-        function showMonth(month) {
-            if (month <= currentMonth) {
-                document.querySelectorAll('.month-tab').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                
-                document.getElementById(`month${month}Tab`).classList.add('active');
-                
-                document.querySelectorAll('.month-container').forEach(container => {
-                    container.classList.remove('active');
-                });
-                
-                document.getElementById(`month${month}Container`).classList.add('active');
-            }
-        }
-        
-        // Update current month based on player position
-        function updateCurrentMonthDisplay() {
-            currentMonth = Math.ceil(currentPosition / daysInMonth);
-            document.getElementById('currentMonth').textContent = currentMonth;
-            
-            // Update goal display
-            document.getElementById('goalText').textContent = currentMonth === 1 ? 'RM10,000' : 'RM20,000';
-        }
-        
-        // Update goal progress bar
-        function updateGoalProgress() {
-            const goalElement = document.getElementById('goalProgressBar');
-            const goalAmount = currentMonth === 1 ? 10000 : 20000;
-            const startAmount = currentMonth === 1 ? 5000 : 10000;
-            
-            let progress = Math.min(100, Math.max(0, (money - startAmount) / (goalAmount - startAmount) * 100));
-            goalElement.style.width = `${progress}%`;
-        }
-        
-        // Check if player is transitioning from month 1 to month 2
-        function checkMonthTransition() {
-            if (currentPosition === 30 && !monthCompleted) {
-                monthCompleted = true;
-                showMonthTransitionModal();
-            }
-        }
-        
-        // Show month transition modal
-        function showMonthTransitionModal() {
-            const modal = document.getElementById('monthTransitionModal');
-            
-            // Update stats
-            document.getElementById('month1Money').textContent = `RM${money.toLocaleString()}`;
-            
-            const totalSkills = skills.financialLiteracy + skills.entrepreneurship + skills.education - 3;
-            document.getElementById('month1Skills').textContent = totalSkills;
-            
-            const unlockedAchievements = achievements.filter(a => a.unlocked).length;
-            document.getElementById('month1Achievements').textContent = unlockedAchievements;
-            
-            // Process any investments from month 1
-            processPendingMonth1Investments();
-            
-            openModal(modal);
-            
-            // Add event listener to start Month 2 button
-            document.getElementById('startMonth2Button').onclick = function() {
-                closeModal(modal);
-                
-                // Show month 2 features
-                document.getElementById('investmentMessage').style.display = 'none';
-                document.getElementById('investmentsList').style.display = 'block';
-                document.getElementById('investButton').style.display = 'block';
-                
-                showMonth(2);
-                showToast("Month 2 Started!", "Welcome to your second month of financial management!", "success");
-            };
-        }
-        
-        // Process any investments made in month 1 that will affect month 2
-        function processPendingMonth1Investments() {
-            pendingMonth1Investments.forEach(inv => {
-                const returnAmount = Math.round(inv.amount * (1 + inv.returnRate));
-                showToast("Investment Return!", `Your ${inv.name} investment has matured with a return of RM${returnAmount - inv.amount}`, "success");
-                
-                // Add this to the regular investments list
-                investments.push({
-                    name: inv.name,
-                    amount: inv.amount,
-                    returnRate: inv.returnRate,
-                    maturityDay: currentPosition + 15, // Matures in 15 days
-                    returnAmount: returnAmount
-                });
-            });
-            
-            updateInvestments();
-        }
-        
-        // Save an investment from Month 1 to be processed at the start of Month 2
-        function saveInvestmentForMonth2(name, amount, returnRate) {
-            pendingMonth1Investments.push({
-                name: name,
-                amount: amount,
-                returnRate: returnRate
-            });
-        }
-        
-        // Make a new investment during Month 2
-        function makeInvestment(name, amount, returnRate) {
-            if (currentMonth >= 2) {
-                const maturityDay = currentPosition + Math.floor(Math.random() * 10) + 5; // Random maturity in 5-15 days
-                const returnAmount = Math.round(amount * (1 + returnRate));
-                
-                investments.push({
-                    name: name,
-                    amount: amount,
-                    returnRate: returnRate,
-                    maturityDay: maturityDay > totalDays ? totalDays : maturityDay,
-                    returnAmount: returnAmount
-                });
-                
-                updateInvestments();
-                addSkill('financialLiteracy', 1);
-            }
-        }
-        
-        // Show investment dialog
-        function showInvestmentDialog() {
-            if (currentMonth < 2) {
-                showToast("Investments Locked", "Investments will be available in Month 2!", "warning");
-                return;
-            }
-            
-            if (finalDayReached || isGameOver) {
-                showToast("Game Ending", "You can't make new investments at the end of the game.", "warning");
-                return;
-            }
-            
-            const modal = document.getElementById('investmentModal');
-            const options = document.getElementById('investmentOptions');
-            options.innerHTML = '';
-            
-            investmentOptions.forEach(option => {
-                if (money >= option.minAmount) {
-                    const investmentDiv = document.createElement('div');
-                    investmentDiv.className = 'investment-item';
-                    
-                    const infoDiv = document.createElement('div');
-                    infoDiv.innerHTML = `
-                        <strong>${option.name}</strong> (Min: RM${option.minAmount})
-                        <div>${option.description}</div>
-                        <div>Expected Return: ${Math.round(option.returnRate * 100)}%</div>
-                    `;
-                    
-                    const investButton = document.createElement('button');
-                    investButton.className = 'button';
-                    investButton.textContent = 'Invest';
-                    investButton.onclick = () => {
-                        // Show investment amount dialog
-                        let amount = prompt(`How much would you like to invest in ${option.name}? (Minimum: RM${option.minAmount})`);
-                        amount = parseInt(amount);
-                        
-                        if (isNaN(amount) || amount < option.minAmount) {
-                            showToast("Invalid Amount", `Please enter at least RM${option.minAmount} to invest.`, "error");
-                            return;
-                        }
-                        
-                        if (amount > money) {
-                            showToast("Insufficient Funds", "You don't have enough money for this investment.", "error");
-                            return;
-                        }
-                        
-                        makeInvestment(option.name, amount, option.returnRate);
-                        addMoney(-amount, `Investment in ${option.name}`);
-                        showToast("Investment Made", `You invested RM${amount} in ${option.name}!`, "success");
-                        closeModal(modal);
-                    };
-                    
-                    investmentDiv.appendChild(infoDiv);
-                    investmentDiv.appendChild(investButton);
-                    options.appendChild(investmentDiv);
-                }
-            });
-            
-            // Add a message if no investments are affordable
-            if (options.children.length === 0) {
-                const noOptionDiv = document.createElement('div');
-                noOptionDiv.textContent = "You don't have enough money for any investments right now.";
-                options.appendChild(noOptionDiv);
-            }
-            
-            openModal(modal);
-        }
-        
-        // Update investments display
-        function updateInvestments() {
-            const container = document.getElementById('investmentsList');
-            
-            if (container) {
-                container.innerHTML = '';
-                
-                // Check if there are any active investments
-                if (investments.length === 0) {
-                    container.innerHTML = '<p>You have no active investments.</p>';
-                    return;
-                }
-                
-                // Check for matured investments
-                let hasMatured = false;
-                investments.forEach((inv, index) => {
-                    if (inv.maturityDay <= currentPosition && !inv.collected) {
-                        hasMatured = true;
-                        const returnProfit = inv.returnAmount - inv.amount;
-                        addMoney(inv.returnAmount, `Return from ${inv.name} investment`);
-                        showToast("Investment Matured!", `Your ${inv.name} investment returned RM${returnProfit} profit!`, "success");
-                        investments[index].collected = true;
-                    }
-                });
-                
-                // Filter out collected investments
-                investments = investments.filter(inv => !inv.collected);
-                
-                // Display active investments
-                investments.forEach(inv => {
-                    const investmentItem = document.createElement('div');
-                    investmentItem.className = 'investment-item';
-                    
-                    const daysToMaturity = inv.maturityDay - currentPosition;
-                    const status = daysToMaturity > 0 ? `Matures in ${daysToMaturity} days` : 'Ready to collect';
-                    
-                    investmentItem.innerHTML = `
-                        <div>
-                            <strong>${inv.name}</strong>
-                            <div>Invested: RM${inv.amount.toLocaleString()}</div>
-                            <div>Expected Return: RM${inv.returnAmount.toLocaleString()}</div>
-                            <div>${status}</div>
+    <main class="container mx-auto flex-grow p-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left column: Dice and Player Stats -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Dice section -->
+                <section class="card p-6 text-center">
+                    <h2 class="text-xl font-semibold mb-6">Roll Dice to Progress</h2>
+                    <div class="dice-container mb-6">
+                        <div class="dice" id="dice">
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <div class="dice-face">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
                         </div>
-                        <div class="investment-return">+${Math.round(inv.returnRate * 100)}%</div>
-                    `;
-                    
-                    container.appendChild(investmentItem);
-                });
+                    </div>
+                    <button id="roll-dice" class="bg-primary hover:bg-opacity-90 text-white rounded-lg px-6 py-3 font-bold transition-all">
+                        Roll Dice
+                    </button>
+                </section>
+
+                <!-- Player stats section -->
+                <section class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Player Stats</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Money:</span>
+                                <span id="money-display" class="font-bold text-green-600 dark:text-green-400">RM5,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="money-progress" class="progress" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Current Day:</span>
+                                <span id="current-day-display" class="font-bold">1</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="day-progress" class="progress" style="width: 3.33%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between">
+                                <span>Difficulty:</span>
+                                <span id="difficulty-display" class="font-bold text-green-600 dark:text-green-400">Easy</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Middle column: Skills and Transactions -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Skills section -->
+                <section class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Skills</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Financial Literacy</span>
+                                <span id="financial-literacy-level" class="font-bold">1</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="financial-literacy-progress" class="progress" style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Entrepreneurship</span>
+                                <span id="entrepreneurship-level" class="font-bold">1</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="entrepreneurship-progress" class="progress" style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Education</span>
+                                <span id="education-level" class="font-bold">1</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="education-progress" class="progress" style="width: 10%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions section -->
+                <section class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Recent Transactions</h2>
+                    <div id="transactions-container" class="space-y-2 max-h-60 overflow-y-auto">
+                        <div class="transaction positive">
+                            <div class="flex justify-between">
+                                <span>Starting Balance</span>
+                                <span class="font-semibold text-green-600 dark:text-green-400">+RM5,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right column: Achievements -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Achievements section -->
+                <section class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Achievements</h2>
+                    <div id="achievements-container" class="grid grid-cols-2 gap-3">
+                        <!-- Achievements will be added here -->
+                    </div>
+                </section>
+
+                <!-- Share section -->
+                <section class="card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Share</h2>
+                    <div class="flex flex-col space-y-3">
+                        <button id="share-fb" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Share on Facebook
+                        </button>
+                        <button id="share-wa" class="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            Share on WhatsApp
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Financial Challenge Modal -->
+    <div id="challenge-modal" class="modal-overlay">
+        <div class="modal">
+            <h2 id="challenge-title" class="text-2xl font-bold mb-4">Financial Challenge</h2>
+            <p id="challenge-description" class="mb-6"></p>
+            <div id="challenge-options" class="space-y-3 mb-6">
+                <!-- Options will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+
+    <script>
+        // Game state
+        const gameState = {
+            money: 5000,
+            currentDay: 1,
+            difficulty: 'Easy',
+            skills: {
+                financialLiteracy: { level: 1, progress: 0 },
+                entrepreneurship: { level: 1, progress: 0 },
+                education: { level: 1, progress: 0 }
+            },
+            transactions: [
+                { description: 'Starting Balance', amount: 5000, type: 'positive' }
+            ],
+            achievements: [],
+            goalMoney: 10000,
+            maxDays: 30,
+            isRolling: false
+        };
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const startGameBtn = document.getElementById('start-game');
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const rollDiceBtn = document.getElementById('roll-dice');
+        const dice = document.getElementById('dice');
+        const moneyDisplay = document.getElementById('money-display');
+        const moneyProgress = document.getElementById('money-progress');
+        const currentDayDisplay = document.getElementById('current-day-display');
+        const dayDisplay = document.getElementById('day-display');
+        const dayProgress = document.getElementById('day-progress');
+        const difficultyDisplay = document.getElementById('difficulty-display');
+        const financialLiteracyLevel = document.getElementById('financial-literacy-level');
+        const financialLiteracyProgress = document.getElementById('financial-literacy-progress');
+        const entrepreneurshipLevel = document.getElementById('entrepreneurship-level');
+        const entrepreneurshipProgress = document.getElementById('entrepreneurship-progress');
+        const educationLevel = document.getElementById('education-level');
+        const educationProgress = document.getElementById('education-progress');
+        const transactionsContainer = document.getElementById('transactions-container');
+        const achievementsContainer = document.getElementById('achievements-container');
+        const challengeModal = document.getElementById('challenge-modal');
+        const challengeTitle = document.getElementById('challenge-title');
+        const challengeDescription = document.getElementById('challenge-description');
+        const challengeOptions = document.getElementById('challenge-options');
+        const shareFbBtn = document.getElementById('share-fb');
+        const shareWaBtn = document.getElementById('share-wa');
+        const shareBtn = document.getElementById('share-btn');
+
+        // Financial challenges data
+        const challenges = [
+            {
+                title: 'Unexpected Medical Bill',
+                description: 'You have a medical emergency and need to pay for treatment.',
+                options: [
+                    { text: 'Pay from savings (RM500)', effect: { money: -500, skills: { financialLiteracy: 5 } } },
+                    { text: 'Use credit card with high interest (RM700)', effect: { money: -700, skills: { financialLiteracy: -5 } } },
+                    { text: 'Ignore and hope it resolves itself', effect: { money: -1000, skills: { financialLiteracy: -10 } } }
+                ]
+            },
+            {
+                title: 'Investment Opportunity',
+                description: 'A friend offers you an investment opportunity in a startup.',
+                options: [
+                    { text: 'Invest RM1000', effect: { money: getRandom(-500, 2000), skills: { entrepreneurship: 10 } } },
+                    { text: 'Invest RM500', effect: { money: getRandom(-200, 900), skills: { entrepreneurship: 5 } } },
+                    { text: 'Decline the offer', effect: { skills: { financialLiteracy: 2 } } }
+                ]
+            },
+            {
+                title: 'Education Course',
+                description: 'You found an online course that could enhance your skills.',
+                options: [
+                    { text: 'Pay for premium course (RM800)', effect: { money: -800, skills: { education: 15, financialLiteracy: 5 } } },
+                    { text: 'Choose basic course (RM300)', effect: { money: -300, skills: { education: 8 } } },
+                    { text: 'Find free resources online', effect: { skills: { education: 3 } } }
+                ]
+            },
+            {
+                title: 'Car Trouble',
+                description: 'Your car breaks down and needs repairs.',
+                options: [
+                    { text: 'Fix it at certified workshop (RM1200)', effect: { money: -1200, skills: { financialLiteracy: 2 } } },
+                    { text: 'Find affordable mechanic (RM600)', effect: { money: -600, skills: { financialLiteracy: 5 } } },
+                    { text: 'Try DIY repair', effect: { money: getRandom(-300, -100), skills: { education: 8 } } }
+                ]
+            },
+            {
+                title: 'Side Hustle Opportunity',
+                description: 'You have a chance to start a small side business.',
+                options: [
+                    { text: 'Invest time and RM500', effect: { money: getRandom(300, 1500), skills: { entrepreneurship: 15 } } },
+                    { text: 'Invest time only', effect: { money: getRandom(100, 500), skills: { entrepreneurship: 8 } } },
+                    { text: 'Decline and focus on current job', effect: { money: getRandom(200, 400), skills: { financialLiteracy: 3 } } }
+                ]
             }
-        }
-        
-        // Multiply returns for reinvestment choice
-        function multiplyInvestmentReturn(multiplier) {
-            let totalAdditionalReturn = 0;
-            
-            investments.forEach((inv, index) => {
-                if (!inv.collected) {
-                    const originalReturn = inv.returnAmount - inv.amount;
-                    const additionalReturn = Math.round(originalReturn * (multiplier - 1));
-                    investments[index].returnAmount += additionalReturn;
-                    totalAdditionalReturn += additionalReturn;
-                }
-            });
-            
-            if (totalAdditionalReturn > 0) {
-                showToast("Reinvestment Bonus", `You've increased your future returns by approximately RM${totalAdditionalReturn}!`, "success");
-            }
-        }
-        
-        // Collect returns from investments now (for immediate cash option)
-        function collectInvestmentReturns() {
-            let totalCollected = 0;
-            
-            investments.forEach((inv, index) => {
-                if (!inv.collected) {
-                    totalCollected += inv.returnAmount;
-                    investments[index].collected = true;
-                }
-            });
-            
-            if (totalCollected > 0) {
-                addMoney(totalCollected, "Investment returns collected");
-                showToast("Returns Collected", `You've collected RM${totalCollected} from your investments!`, "success");
-                investments = [];
-            }
-            
-            updateInvestments();
-        }
-        
-        // Increase base salary
-        function increaseSalary(amount) {
-            baseSalary += amount;
-            showToast("Salary Increased!", `Your base salary has increased by RM${amount} per payday.`, "success");
-        }
-        
-        // Check if the current position is a special day
-        function checkSpecialDays() {
-            if (specialDays.paydays.includes(currentPosition)) {
-                handlePayday();
-            }
-            
-            if (specialDays.expenses.includes(currentPosition)) {
-                handleExpenses();
-            }
-            
-            if (specialDays.events.includes(currentPosition)) {
-                setTimeout(() => showSpecialEvent(), 800);
-            }
-        }
-        
-        // Handle payday event
-        function handlePayday() {
-            // Skills affect salary
-            let entrepreneurBonus = skills.entrepreneurship * 100;
-            let educationBonus = skills.education * 150;
-            
-            // Month 2 has higher base salary
-            let monthBonus = currentMonth === 2 ? 500 : 0;
-            
-            // Apply difficulty multiplier
-            let totalSalary = Math.round((baseSalary + entrepreneurBonus + educationBonus + monthBonus) * difficultyMultipliers[difficulty].income);
-            
-            // Add money and transaction
-            addMoney(totalSalary, "Salary Payment");
-            
-            // Show notification
-            showToast("Payday!", `You received RM${totalSalary.toLocaleString()} as your salary.`, "success");
-        }
-        
-        // Handle regular expenses
-        function handleExpenses() {
-            // Base expenses (rent, utilities, etc.)
-            let baseExpense = 600;
-            
-            // Month 2 has higher expenses
-            let monthMultiplier = currentMonth === 2 ? 1.2 : 1.0;
-            
-            // Financial literacy reduces expenses
-            let reduction = skills.financialLiteracy * 50;
-            
-            // Apply difficulty multiplier
-            let totalExpense = Math.round((baseExpense * monthMultiplier - reduction) * difficultyMultipliers[difficulty].expense);
-            
-            // Remove money and add transaction
-            addMoney(-totalExpense, "Regular Expenses");
-            
-            // Show notification
-            showToast("Expenses Paid", `You paid RM${totalExpense.toLocaleString()} for regular expenses.`, "warning");
-        }
-        
-        // Add money and create transaction record
-        function addMoney(amount, description) {
-            const oldMoney = money;
-            money += amount;
-            
-            // Add transaction to history
-            transactions.push({ 
-                day: currentPosition, 
-                description: description, 
-                amount: amount 
-            });
-            
-            // Update transaction display
-            updateTransactionHistory();
-            
-            // Visual money change indicator
-            showMoneyChange(amount);
-            
-            // Update goal progress
-            updateGoalProgress();
-        }
-        
-        // Show money change animation
-        function showMoneyChange(amount) {
-            const moneyElement = document.getElementById('money');
-            const rect = moneyElement.getBoundingClientRect();
-            
-            const changeElement = document.createElement('div');
-            changeElement.className = 'money-change';
-            changeElement.textContent = amount > 0 ? `+RM${amount.toLocaleString()}` : `-RM${Math.abs(amount).toLocaleString()}`;
-            changeElement.style.color = amount > 0 ? 'var(--success-color)' : 'var(--danger-color)';
-            changeElement.style.left = `${rect.left}px`;
-            changeElement.style.top = `${rect.top}px`;
-            
-            document.body.appendChild(changeElement);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                if (document.body.contains(changeElement)) {
-                    document.body.removeChild(changeElement);
-                }
-            }, 1500);
-        }
-        
-        // Show toast notification
-        function showToast(title, message, type = "neutral") {
-            const toastContainer = document.getElementById('toastContainer');
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            toast.innerHTML = `
-                <div class="toast-title">${title}</div>
-                <div>${message}</div>
-            `;
-            
-            toastContainer.appendChild(toast);
-            
-            // Trigger reflow for animation
-            toast.offsetHeight;
-            toast.classList.add('show');
-            
-            // Remove after some time
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (toastContainer.contains(toast)) {
-                        toastContainer.removeChild(toast);
-                    }
-                }, 300);
-            }, 3000);
-        }
-        
-        // Update transaction history display
-        function updateTransactionHistory() {
-            const container = document.getElementById('transactionHistory');
-            container.innerHTML = '';
-            
-            // Get last 10 transactions (or all if less than 10)
-            const recentTransactions = transactions.slice(-10).reverse();
-            
-            recentTransactions.forEach(transaction => {
-                const element = document.createElement('div');
-                element.className = 'transaction';
-                
-                const description = document.createElement('span');
-                description.textContent = `Day ${transaction.day}: ${transaction.description}`;
-                
-                const amount = document.createElement('span');
-                amount.textContent = transaction.amount > 0 
-                    ? `+RM${transaction.amount.toLocaleString()}` 
-                    : `-RM${Math.abs(transaction.amount).toLocaleString()}`;
-                amount.className = transaction.amount > 0 ? 'positive' : 'negative';
-                
-                element.appendChild(description);
-                element.appendChild(amount);
-                container.appendChild(element);
-            });
-        }
-        
-        // Add skill points and update display
-        function addSkill(skillName, points) {
-            if (skills.hasOwnProperty(skillName)) {
-                skills[skillName] += points;
-                showToast("Skill Improved", `Your ${skillName} skill increased by ${points}!`, "success");
-                updateSkillDisplay();
-            }
-        }
-        
-        // Update skill display
-        function updateSkillDisplay() {
-            for (const skill in skills) {
-                const levelElement = document.getElementById(`${skill}Level`);
-                const barElement = document.getElementById(`${skill}Bar`);
-                
-                if (levelElement && barElement) {
-                    levelElement.textContent = skills[skill];
-                    
-                    // Set width based on level (max level 5)
-                    const percent = (skills[skill] / 5) * 100;
-                    barElement.style.width = `${percent}%`;
-                }
-            }
-        }
-        
-        // Show special event
-        function showSpecialEvent() {
-            if (finalDayReached || isGameOver) return;
-            
-            // Select events based on current month
-            const eventPool = currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
-            
-            // Filter out events that require month 1 investment if player has none
-            const eligibleEvents = eventPool.filter(event => 
-                !event.monthOneInvestmentRequired || pendingMonth1Investments.length > 0
-            );
-            
-            if (eligibleEvents.length === 0) {
-                // Fallback to a generic event if no eligible events
-                const fallbackEvent = {
-                    title: "Random Lucky Day",
-                    description: "You're feeling particularly lucky today!",
-                    options: [
-                        { text: "Try your luck", effect: Math.floor(Math.random() * 600) + 100, consequence: "Sometimes good things just happen!" }
-                    ]
-                };
-                showChallenge(fallbackEvent);
-                return;
-            }
-            
-            const event = eligibleEvents[Math.floor(Math.random() * eligibleEvents.length)];
-            showChallenge(event);
+        ];
+
+        // Achievements data
+        const achievementsData = [
+            { id: 'first_roll', title: 'First Steps', description: 'Roll the dice for the first time', icon: '🎲' },
+            { id: 'money_5000', title: 'Saver', description: 'Save RM5,000', icon: '💰' },
+            { id: 'money_7500', title: 'Investor', description: 'Reach RM7,500', icon: '📈' },
+            { id: 'money_10000', title: 'Financial Freedom', description: 'Reach RM10,000', icon: '💸' },
+            { id: 'financial_literacy_3', title: 'Money Smart', description: 'Reach Financial Literacy level 3', icon: '📚' },
+            { id: 'entrepreneurship_3', title: 'Entrepreneur', description: 'Reach Entrepreneurship level 3', icon: '🚀' },
+            { id: 'education_3', title: 'Scholar', description: 'Reach Education level 3', icon: '🎓' },
+            { id: 'all_skills_2', title: 'Jack of All Trades', description: 'Get all skills to level 2', icon: '🔧' }
+        ];
+
+        // Initialize the game
+        function initGame() {
+            updateUI();
+            hideWelcomeScreen();
         }
 
-        // Start the game
-        function startGame() {
-            // Get selected difficulty
-            const difficultyOptions = document.querySelectorAll('.difficulty-option');
-            difficultyOptions.forEach(option => {
-                if (option.classList.contains('active')) {
-                    difficulty = option.dataset.difficulty;
+        // Event Listeners
+        startGameBtn.addEventListener('click', initGame);
+
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                difficultyBtns.forEach(b => b.classList.remove('ring-4', 'ring-white', 'ring-opacity-50'));
+                // Add active class to clicked button
+                btn.classList.add('ring-4', 'ring-white', 'ring-opacity-50');
+                // Set difficulty
+                gameState.difficulty = btn.dataset.difficulty;
+                
+                // Update UI to reflect difficulty
+                difficultyDisplay.textContent = gameState.difficulty;
+                
+                // Adjust game parameters based on difficulty
+                if (gameState.difficulty === 'Easy') {
+                    difficultyDisplay.className = 'font-bold text-green-600 dark:text-green-400';
+                } else if (gameState.difficulty === 'Normal') {
+                    difficultyDisplay.className = 'font-bold text-yellow-600 dark:text-yellow-400';
+                } else {
+                    difficultyDisplay.className = 'font-bold text-red-600 dark:text-red-400';
                 }
             });
-            
-            document.getElementById('difficultyDisplay').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-            
-            const introModal = document.getElementById('introModal');
-            introModal.style.opacity = '0';
+        });
+
+        rollDiceBtn.addEventListener('click', rollDice);
+        shareFbBtn.addEventListener('click', shareOnFacebook);
+        shareWaBtn.addEventListener('click', shareOnWhatsApp);
+        shareBtn.addEventListener('click', showShareOptions);
+
+        function hideWelcomeScreen() {
+            welcomeScreen.style.opacity = '0';
+            welcomeScreen.style.transition = 'opacity 0.5s ease-out';
             setTimeout(() => {
-                introModal.style.display = 'none';
-                gameStarted = true;
+                welcomeScreen.style.display = 'none';
             }, 500);
         }
 
-        // Roll the dice
         function rollDice() {
-            if (!gameStarted) {
-                showToast("Game Not Started", "Please click 'Let's Begin!' to start the game first!", "error");
-                return;
+            if (gameState.isRolling) return;
+            
+            gameState.isRolling = true;
+            rollDiceBtn.disabled = true;
+            rollDiceBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Check for first roll achievement
+            if (!gameState.achievements.includes('first_roll')) {
+                unlockAchievement('first_roll');
             }
             
-            if (isGameOver) return;
-            
-            if (finalDayReached) {
-                showToast("Final Day Reached", "You've reached day 60! Click 'Finish Game' to see your results.", "warning");
-                return;
-            }
-
-            const dice = document.getElementById('dice');
+            // Random dice value (1-6)
             const roll = Math.floor(Math.random() * 6) + 1;
             
-            dice.className = 'dice rolling';
-            dice.textContent = '';
+            // Define final transforms for each dice face
+            const transforms = [
+                'rotateX(0deg) rotateY(0deg) rotateZ(0deg)',      // 1
+                'rotateX(0deg) rotateY(180deg) rotateZ(0deg)',    // 6
+                'rotateX(0deg) rotateY(-90deg) rotateZ(0deg)',    // 4
+                'rotateX(0deg) rotateY(90deg) rotateZ(0deg)',     // 3
+                'rotateX(-90deg) rotateY(0deg) rotateZ(0deg)',    // 2
+                'rotateX(90deg) rotateY(0deg) rotateZ(0deg)'      // 5
+            ];
             
+            // Set final transform based on roll value
+            dice.style.setProperty('--final-transform', transforms[roll - 1]);
+            
+            // Add rolling animation
+            dice.classList.add('rolling');
+            
+            // Wait for animation to complete
             setTimeout(() => {
-                dice.className = 'dice';
-                dice.textContent = roll;
+                // Handle dice roll result
+                handleDiceRoll(roll);
                 
-                const newPosition = Math.min(currentPosition + roll, totalDays);
-                const wasLastMove = newPosition >= totalDays; // Flag if this roll reaches the final day
-                currentPosition = newPosition;
-                
-                // Show month 2 if we've moved to it
-                if (currentPosition > 30 && currentMonth === 1) {
-                    currentMonth = 2;
-                    
-                    // If not shown month transition yet
-                    if (!monthCompleted) {
-                        monthCompleted = true;
-                        setTimeout(() => showMonthTransitionModal(), 500);
-                    }
-                }
-                
-                updateBoard();
-                
-                // We only show challenges if this move didn't end the game
-                if (!wasLastMove && !isGameOver) {
-                    // Challenge probability
-                    const challengeProbability = (difficulty === 'easy') ? 0.4 : (difficulty === 'normal' ? 0.5 : 0.6);
-                    
-                    if (Math.random() < challengeProbability && !specialDays.events.includes(currentPosition)) {
-                        setTimeout(showRandomChallenge, 800);
-                    }
-                }
-            }, 800);
-        }
-        
-        // Show a random challenge
-        function showRandomChallenge() {
-            if (finalDayReached || isGameOver) return;
-            
-            // Select challenges based on current month
-            const challengePool = currentMonth === 1 ? month1Challenges : month2Challenges;
-            const challenge = challengePool[Math.floor(Math.random() * challengePool.length)];
-            showChallenge(challenge);
+                // Reset dice
+                dice.classList.remove('rolling');
+                gameState.isRolling = false;
+                rollDiceBtn.disabled = false;
+                rollDiceBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }, 1500);
         }
 
-        // Check if game is over (bankruptcy)
-        function checkGameOver() {
-            if (!isGameOver && money <= 0) {
-                showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
-                isGameOver = true;
+        function handleDiceRoll(roll) {
+            // Advance day by roll amount
+            gameState.currentDay += roll;
+            
+            // Cap at max days
+            if (gameState.currentDay > gameState.maxDays) {
+                gameState.currentDay = gameState.maxDays;
+                endGame();
+                return;
             }
-        }
-
-        // Show game over and completion screens
-        function showGameOver(status, title, message) {
-            // Don't show if we're at the final day - we'll use showGameComplete instead
-            if (finalDayReached) return;
             
-            const modal = document.getElementById('challengeModal');
-            const titleElement = document.getElementById('challengeTitle');
-            const description = document.getElementById('challengeDescription');
-            const options = document.getElementById('challengeOptions');
+            // Add some coins animation
+            addCoins(roll);
             
-            titleElement.textContent = title;
-            description.textContent = message;
+            // Handle payday (every 7 days)
+            if (gameState.currentDay % 7 === 0) {
+                const payAmount = 1000 + (gameState.skills.education.level * 200);
+                gameState.money += payAmount;
+                addTransaction(`Payday Salary`, payAmount, 'positive');
+                showToast(`Payday! Received RM${payAmount}`, 'success');
+            }
             
-            // Add share prompt and buttons in the game over screen
-            let shareText = '';
-            if (status === 'win') {
-                shareText = `I mastered the DADUit Game and finished with RM${money.toLocaleString()}! Can you beat my score?`;
-            } else if (status === 'partial') {
-                shareText = `I played DADUit Game and finished with RM${money.toLocaleString()}. Try to beat my score!`;
+            // Random money fluctuation based on roll and difficulty
+            let randomMoney = 0;
+            if (gameState.difficulty === 'Easy') {
+                randomMoney = getRandom(50, 200) * roll;
+            } else if (gameState.difficulty === 'Normal') {
+                randomMoney = getRandom(-100, 200) * roll;
             } else {
-                shareText = `I played DADUit Game and managed RM${money.toLocaleString()}. Think you can do better?`;
+                randomMoney = getRandom(-200, 150) * roll;
             }
             
-            const encodedShareText = encodeURIComponent(shareText);
-            
-            options.innerHTML = `
-                <div class="share-prompt">Share your DADUit Game experience with friends!</div>
-                <div class="share-container">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                       target="_blank" 
-                       class="share-button share-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>Share on Facebook</span>
-                    </a>
-                    <a href="https://api.whatsapp.com/send?text=${encodedShareText}%20https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html" 
-                       target="_blank" 
-                       class="share-button share-whatsapp">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>Share on WhatsApp</span>
-                    </a>
-                </div>
-                <button class="button" onclick="location.reload()" style="margin-top: 15px;">Play Again</button>
-            `;
-            
-            openModal(modal);
-        }
-        
-        // Game completion summary
-        function showGameComplete() {
-            if (isGameOver) return; // Don't show if already bankrupt
-            
-            // Collect all active investments before showing results
-            collectAllInvestments();
-            
-            const modal = document.getElementById('gameCompleteModal');
-            const titleElement = document.getElementById('gameCompleteTitle');
-            const message = document.getElementById('gameCompleteMessage');
-            
-            // Set result texts
-            document.getElementById('finalMoney').textContent = `RM${money.toLocaleString()}`;
-            
-            let goalStatus = '';
-            let statusClass = '';
-            let title = '';
-            
-            if (money >= 20000) {
-                goalStatus = 'Achieved - Financial Master!';
-                statusClass = 'positive';
-                title = 'Financial Master!';
-                message.textContent = 'Congratulations! You've successfully completed your 2-month financial journey!';
-                // Show confetti for winning
-                createConfetti();
-            } else if (money >= 10000) {
-                goalStatus = 'Partially Achieved - Month 1 goal only';
-                statusClass = 'neutral';
-                title = 'Modest Success';
-                message.textContent = 'You completed the 2-month journey and met the Month 1 goal, but fell short of the final RM20,000 target.';
-            } else {
-                goalStatus = 'Not Achieved';
-                statusClass = 'negative';
-                title = 'Financial Struggle';
-                message.textContent = 'You completed the 2-month journey but ended below both of your financial goals.';
-            }
-            
-            titleElement.textContent = title;
-            document.getElementById('goalResult').textContent = goalStatus;
-            document.getElementById('goalResult').className = statusClass;
-            
-            // Other stats
-            const totalSkills = skills.financialLiteracy + skills.entrepreneurship + skills.education - 3;
-            document.getElementById('finalSkills').textContent = totalSkills;
-            
-            const unlockedAchievements = achievements.filter(a => a.unlocked).length;
-            document.getElementById('finalAchievements').textContent = unlockedAchievements;
-            
-            document.getElementById('finalInvestments').textContent = investments.length;
-            
-            // Update share link
-            const shareText = `I finished DADUit Game with RM${money.toLocaleString()}! ${money >= 20000 ? "I'm a financial master!" : "Can you do better?"}`;
-            document.getElementById('whatsappShareFinal').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}%20https%3A%2F%2Ffinebank.github.io%2Fuitmsabah%2Fdaduitgame.html`;
-            
-            openModal(modal);
-            isGameOver = true; // Mark game as over
-        }
-        
-        // Collect all investments for final calculation
-        function collectAllInvestments() {
-            let totalCollected = 0;
-            
-            investments.forEach((inv, index) => {
-                if (!inv.collected) {
-                    totalCollected += inv.returnAmount;
-                    investments[index].collected = true;
+            if (randomMoney !== 0) {
+                gameState.money += randomMoney;
+                if (randomMoney > 0) {
+                    addTransaction(`Daily Earnings`, randomMoney, 'positive');
+                } else {
+                    addTransaction(`Daily Expenses`, randomMoney, 'negative');
                 }
-            });
-            
-            if (totalCollected > 0) {
-                addMoney(totalCollected, "Final investment returns");
-                showToast("Investments Matured", `You've collected RM${totalCollected} from your remaining investments!`, "success");
-                investments = [];
             }
             
-            updateInvestments();
-        }
-
-        // Check and update achievements
-        function updateAchievements() {
-            achievements.forEach(achievement => {
-                if (!achievement.unlocked && achievement.check()) {
-                    achievement.unlocked = true;
-                    showAchievementNotification(achievement);
-                }
-            });
-            updateAchievementsDisplay();
-        }
-
-        // Show achievement notification
-        function showAchievementNotification(achievement) {
-            showToast("Achievement Unlocked!", `${achievement.title}: ${achievement.description}`, "success");
-        }
-
-        // Update achievements display
-        function updateAchievementsDisplay() {
-            const container = document.getElementById('achievementsContainer');
-            container.innerHTML = '<h3>Achievements</h3>';
-            
-            achievements.forEach(achievement => {
-                const element = document.createElement('div');
-                element.className = `achievement ${achievement.unlocked ? 'unlocked' : ''}`;
-                
-                const icon = document.createElement('div');
-                icon.className = 'achievement-icon';
-                
-                const content = document.createElement('div');
-                content.className = 'achievement-content';
-                content.innerHTML = `
-                    <div>${achievement.title}</div>
-                    <div>${achievement.description}</div>
-                `;
-                
-                element.appendChild(icon);
-                element.appendChild(content);
-                container.appendChild(element);
-            });
-        }
-
-        // Show challenge modal
-        function showChallenge(challenge) {
-            if (finalDayReached || isGameOver) return;
-            
-            const modal = document.getElementById('challengeModal');
-            const title = document.getElementById('challengeTitle');
-            const description = document.getElementById('challengeDescription');
-            const options = document.getElementById('challengeOptions');
-            
-            title.textContent = challenge.title;
-            
-            if (challenge.tag) {
-                title.innerHTML += `<span class="challenge-tag">${challenge.tag}</span>`;
+            // Trigger random challenges (30% chance)
+            if (Math.random() < 0.3) {
+                showChallenge();
             }
             
-            description.textContent = challenge.description;
-            options.innerHTML = '';
+            // Check achievements
+            checkAchievements();
             
-            challenge.options.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'button';
-                button.textContent = option.text;
-                button.onclick = () => {
-                    let effect = option.effect;
-                    
-                    // If effect is a range, generate a random value
-                    if (typeof effect === 'object' && effect.min !== undefined && effect.max !== undefined) {
-                        effect = Math.floor(Math.random() * (effect.max - effect.min + 1)) + effect.min;
-                    }
-                    
-                    // Apply financial literacy bonus to positive effects
-                    if (effect > 0) {
-                        effect = Math.round(effect * (1 + (skills.financialLiteracy - 1) * 0.1));
-                    }
-                    
-                    // Add money and create transaction
-                    if (effect !== 0) {
-                        addMoney(effect, challenge.title);
-                    }
-                    
-                    // Show consequence
-                    showToast("Decision Made", option.consequence, effect > 0 ? "success" : "warning");
-                    
-                    // Call onSelect callback if exists
-                    if (typeof option.onSelect === 'function') {
-                        option.onSelect();
-                    }
-                    
-                    // Add small financial literacy boost for all decisions
-                    if (Math.random() < 0.3) {
-                        addSkill('financialLiteracy', 1);
-                    }
-                    
-                    closeModal(modal);
-                    
-                    // Check if bankrupt after the decision
-                    if (money <= 0) {
-                        setTimeout(() => {
-                            showGameOver('lose', 'Bankrupt!', "You've run out of money! Game Over.");
-                            isGameOver = true;
-                        }, 1000);
-                    }
-                };
-                options.appendChild(button);
-            });
-            
-            openModal(modal);
+            // Update UI
+            updateUI();
         }
-        
-        // Create confetti animation for winning
-        function createConfetti() {
-            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+        function addCoins(count) {
+            const diceContainer = document.querySelector('.dice-container');
+            const rect = diceContainer.getBoundingClientRect();
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < count; i++) {
+                const coin = document.createElement('div');
+                coin.classList.add('coin');
+                
+                // Random position around the dice
+                const randomX = Math.floor(Math.random() * 100) - 50;
+                coin.style.left = `calc(50% + ${randomX}px)`;
+                
+                // Random delay for natural effect
+                const delay = Math.random() * 0.5;
+                coin.style.animationDelay = `${delay}s`;
+                
+                diceContainer.appendChild(coin);
+                
+                // Remove after animation
                 setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = `${Math.random() * 100}vw`;
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = `${Math.random() * 10 + 5}px`;
-                    confetti.style.height = `${Math.random() * 10 + 5}px`;
-                    confetti.style.opacity = Math.random();
-                    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                    
-                    document.body.appendChild(confetti);
-                    
-                    // Remove after animation
-                    setTimeout(() => {
-                        if (document.body.contains(confetti)) {
-                            document.body.removeChild(confetti);
-                        }
-                    }, 5000);
-                }, i * 50);
+                    coin.remove();
+                }, 1500);
             }
         }
-        
-        // Open modal with animation
-        function openModal(modal) {
-            modal.style.display = 'flex';
-            
-            // Trigger reflow for animation
-            modal.offsetHeight;
-            modal.classList.add('active');
-        }
-        
-        // Close modal with animation
-        function closeModal(modal) {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        }
 
-        // Event listeners
-        document.getElementById('rollDice').addEventListener('click', rollDice);
-        document.getElementById('finishGameButton').addEventListener('click', showGameComplete);
-        document.getElementById('investButton').addEventListener('click', showInvestmentDialog);
-        
-        // Tab switching
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
+        function showChallenge() {
+            // Select random challenge
+            const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+            
+            // Set challenge content
+            challengeTitle.textContent = challenge.title;
+            challengeDescription.textContent = challenge.description;
+            
+            // Clear previous options
+            challengeOptions.innerHTML = '';
+            
+            // Add options
+            challenge.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full bg-primary hover:bg-opacity-90 text-white rounded-lg px-4 py-2 transition-all';
+                btn.textContent = option.text;
                 
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Hide all tab content
-                const tabContents = document.querySelectorAll('.tab-content');
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
+                btn.addEventListener('click', () => {
+                    handleChallengeChoice(option.effect);
+                    hideChallenge();
                 });
                 
-                // Show selected tab content
-                const selectedTab = tab.dataset.tab;
-                document.getElementById(`${selectedTab}Tab`).classList.add('active');
+                challengeOptions.appendChild(btn);
             });
-        });
-        
-        // Difficulty selection in intro modal
-        const difficultyOptions = document.querySelectorAll('.difficulty-option');
-        difficultyOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Remove active class from all options
-                difficultyOptions.forEach(opt => opt.classList.remove('active'));
+            
+            // Show modal
+            challengeModal.classList.add('active');
+        }
+
+        function hideChallenge() {
+            challengeModal.classList.remove('active');
+        }
+
+        function handleChallengeChoice(effect) {
+            // Apply money effect
+            if (effect.money) {
+                gameState.money += effect.money;
+                if (effect.money > 0) {
+                    addTransaction('Challenge Reward', effect.money, 'positive');
+                } else {
+                    addTransaction('Challenge Cost', effect.money, 'negative');
+                }
+            }
+            
+            // Apply skill effects
+            if (effect.skills) {
+                for (const [skill, points] of Object.entries(effect.skills)) {
+                    if (skill === 'financialLiteracy') {
+                        addSkillPoints('financialLiteracy', points);
+                    } else if (skill === 'entrepreneurship') {
+                        addSkillPoints('entrepreneurship', points);
+                    } else if (skill === 'education') {
+                        addSkillPoints('education', points);
+                    }
+                }
+            }
+            
+            // Check achievements
+            checkAchievements();
+            
+            // Update UI
+            updateUI();
+        }
+
+        function addSkillPoints(skill, points) {
+            gameState.skills[skill].progress += points;
+            
+            // Check for level up
+            if (gameState.skills[skill].progress >= 100) {
+                gameState.skills[skill].level += 1;
+                gameState.skills[skill].progress = gameState.skills[skill].progress - 100;
+                showToast(`${formatSkillName(skill)} increased to level ${gameState.skills[skill].level}!`, 'success');
+            }
+        }
+
+        function formatSkillName(skill) {
+            if (skill === 'financialLiteracy') return 'Financial Literacy';
+            if (skill === 'entrepreneurship') return 'Entrepreneurship';
+            if (skill === 'education') return 'Education';
+            return skill;
+        }
+
+        function addTransaction(description, amount, type) {
+            gameState.transactions.unshift({
+                description,
+                amount,
+                type
+            });
+            
+            // Keep only the last 10 transactions
+            if (gameState.transactions.length > 10) {
+                gameState.transactions.pop();
+            }
+        }
+
+        function unlockAchievement(id) {
+            if (!gameState.achievements.includes(id)) {
+                gameState.achievements.push(id);
                 
-                // Add active class to clicked option
-                option.classList.add('active');
+                const achievement = achievementsData.find(a => a.id === id);
+                if (achievement) {
+                    showToast(`Achievement Unlocked: ${achievement.title}`, 'achievement');
+                }
+            }
+        }
+
+        function checkAchievements() {
+            // Money achievements
+            if (gameState.money >= 5000 && !gameState.achievements.includes('money_5000')) {
+                unlockAchievement('money_5000');
+            }
+            if (gameState.money >= 7500 && !gameState.achievements.includes('money_7500')) {
+                unlockAchievement('money_7500');
+            }
+            if (gameState.money >= 10000 && !gameState.achievements.includes('money_10000')) {
+                unlockAchievement('money_10000');
+                
+                // Win condition
+                if (gameState.currentDay <= gameState.maxDays) {
+                    setTimeout(() => {
+                        alert('Congratulations! You reached RM10,000 and won the game!');
+                    }, 500);
+                }
+            }
+            
+            // Skill achievements
+            if (gameState.skills.financialLiteracy.level >= 3 && !gameState.achievements.includes('financial_literacy_3')) {
+                unlockAchievement('financial_literacy_3');
+            }
+            if (gameState.skills.entrepreneurship.level >= 3 && !gameState.achievements.includes('entrepreneurship_3')) {
+                unlockAchievement('entrepreneurship_3');
+            }
+            if (gameState.skills.education.level >= 3 && !gameState.achievements.includes('education_3')) {
+                unlockAchievement('education_3');
+            }
+            
+            // All skills level 2
+            if (gameState.skills.financialLiteracy.level >= 2 && 
+                gameState.skills.entrepreneurship.level >= 2 && 
+                gameState.skills.education.level >= 2 && 
+                !gameState.achievements.includes('all_skills_2')) {
+                unlockAchievement('all_skills_2');
+            }
+        }
+
+        function updateUI() {
+            // Update money
+            moneyDisplay.textContent = `RM${formatNumber(gameState.money)}`;
+            const moneyPercentage = Math.min(100, (gameState.money / gameState.goalMoney) * 100);
+            moneyProgress.style.width = `${moneyPercentage}%`;
+            
+            // Update day
+            currentDayDisplay.textContent = gameState.currentDay;
+            dayDisplay.textContent = gameState.currentDay;
+            const dayPercentage = (gameState.currentDay / gameState.maxDays) * 100;
+            dayProgress.style.width = `${dayPercentage}%`;
+            
+            // Update skills
+            financialLiteracyLevel.textContent = gameState.skills.financialLiteracy.level;
+            financialLiteracyProgress.style.width = `${gameState.skills.financialLiteracy.progress}%`;
+            
+            entrepreneurshipLevel.textContent = gameState.skills.entrepreneurship.level;
+            entrepreneurshipProgress.style.width = `${gameState.skills.entrepreneurship.progress}%`;
+            
+            educationLevel.textContent = gameState.skills.education.level;
+            educationProgress.style.width = `${gameState.skills.education.progress}%`;
+            
+            // Update transactions
+            transactionsContainer.innerHTML = '';
+            gameState.transactions.forEach(transaction => {
+                const transactionEl = document.createElement('div');
+                transactionEl.className = `transaction ${transaction.type}`;
+                
+                const content = document.createElement('div');
+                content.className = 'flex justify-between';
+                
+                const description = document.createElement('span');
+                description.textContent = transaction.description;
+                
+                const amount = document.createElement('span');
+                amount.className = transaction.type === 'positive' 
+                    ? 'font-semibold text-green-600 dark:text-green-400' 
+                    : 'font-semibold text-red-600 dark:text-red-400';
+                amount.textContent = transaction.type === 'positive' 
+                    ? `+RM${formatNumber(transaction.amount)}` 
+                    : `-RM${formatNumber(Math.abs(transaction.amount))}`;
+                
+                content.appendChild(description);
+                content.appendChild(amount);
+                transactionEl.appendChild(content);
+                
+                transactionsContainer.appendChild(transactionEl);
             });
-        });
-        
-        // Initialize game
-        createBoard();
-        updateAchievementsDisplay();
-        updateTransactionHistory();
-        updateSkillDisplay();
-        updateBoard();
+            
+            // Update achievements
+            achievementsContainer.innerHTML = '';
+            achievementsData.forEach(achievement => {
+                const achieved = gameState.achievements.includes(achievement.id);
+                
+                const achievementEl = document.createElement('div');
+                achievementEl.className = `card p-3 text-center ${achieved ? 'bg-primary bg-opacity-10' : 'opacity-50'}`;
+                
+                const icon = document.createElement('div');
+                icon.className = 'text-2xl mb-1';
+                icon.textContent = achievement.icon;
+                
+                const title = document.createElement('div');
+                title.className = 'font-semibold text-sm';
+                title.textContent = achievement.title;
+                
+                const description = document.createElement('div');
+                description.className = 'text-xs text-gray-600 dark:text-gray-400';
+                description.textContent = achievement.description;
+                
+                achievementEl.appendChild(icon);
+                achievementEl.appendChild(title);
+                achievementEl.appendChild(description);
+                
+                achievementsContainer.appendChild(achievementEl);
+            });
+        }
+
+        function endGame() {
+            // Determine if player won
+            const won = gameState.money >= gameState.goalMoney;
+            
+            // Create modal for game end
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay active';
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            
+            const title = document.createElement('h2');
+            title.className = 'text-2xl font-bold mb-4';
+            title.textContent = won ? 'Congratulations!' : 'Game Over';
+            
+            const message = document.createElement('p');
+            message.className = 'mb-6';
+            message.textContent = won 
+                ? `You reached your goal of RM${formatNumber(gameState.goalMoney)}! Well done!` 
+                : `You reached day ${gameState.maxDays} with RM${formatNumber(gameState.money)}. Your goal was RM${formatNumber(gameState.goalMoney)}.`;
+            
+            const stats = document.createElement('div');
+            stats.className = 'mb-6';
+            stats.innerHTML = `
+                <h3 class="font-semibold mb-2">Final Stats:</h3>
+                <ul class="space-y-1">
+                    <li>Money: RM${formatNumber(gameState.money)}</li>
+                    <li>Financial Literacy: Level ${gameState.skills.financialLiteracy.level}</li>
+                    <li>Entrepreneurship: Level ${gameState.skills.entrepreneurship.level}</li>
+                    <li>Education: Level ${gameState.skills.education.level}</li>
+                    <li>Achievements: ${gameState.achievements.length}/${achievementsData.length}</li>
+                </ul>
+            `;
+            
+            const button = document.createElement('button');
+            button.className = 'bg-primary hover:bg-opacity-90 text-white rounded-lg px-6 py-3 font-bold transition-all w-full';
+            button.textContent = 'Play Again';
+            button.addEventListener('click', () => {
+                window.location.reload();
+            });
+            
+            modal.appendChild(title);
+            modal.appendChild(message);
+            modal.appendChild(stats);
+            modal.appendChild(button);
+            modalOverlay.appendChild(modal);
+            
+            document.body.appendChild(modalOverlay);
+        }
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            if (type === 'success') {
+                toast.innerHTML = `<div class="flex items-center"><span class="mr-2 text-green-500">✓</span>${message}</div>`;
+            } else if (type === 'error') {
+                toast.innerHTML = `<div class="flex items-center"><span class="mr-2 text-red-500">✕</span>${message}</div>`;
+            } else if (type === 'achievement') {
+                toast.innerHTML = `<div class="flex items-center"><span class="mr-2 text-yellow-400">🏆</span>${message}</div>`;
+            } else {
+                toast.textContent = message;
+            }
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 3000);
+        }
+
+        function shareOnFacebook() {
+            const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnWhatsApp() {
+            const message = `I'm playing DADUit Game! I have RM${formatNumber(gameState.money)} on day ${gameState.currentDay}. Try it yourself!`;
+            const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            window.open(shareUrl, '_blank');
+        }
+
+        function showShareOptions() {
+            const fakeToastContainer = document.querySelector('.toast-container');
+            
+            const shareToast = document.createElement('div');
+            shareToast.className = 'toast';
+            shareToast.innerHTML = `
+                <div class="flex flex-col space-y-2">
+                    <div class="font-semibold mb-1">Share your progress:</div>
+                    <button id="toast-share-fb" class="text-blue-600 dark:text-blue-400 hover:underline text-left">Share on Facebook</button>
+                    <button id="toast-share-wa" class="text-green-600 dark:text-green-400 hover:underline text-left">Share on WhatsApp</button>
+                </div>
+            `;
+            
+            fakeToastContainer.appendChild(shareToast);
+            
+            // Add event listeners
+            document.getElementById('toast-share-fb').addEventListener('click', () => {
+                shareOnFacebook();
+                shareToast.classList.remove('show');
+                setTimeout(() => shareToast.remove(), 500);
+            });
+            
+            document.getElementById('toast-share-wa').addEventListener('click', () => {
+                shareOnWhatsApp();
+                shareToast.classList.remove('show');
+                setTimeout(() => shareToast.remove(), 500);
+            });
+            
+            // Show toast
+            setTimeout(() => {
+                shareToast.classList.add('show');
+            }, 10);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                shareToast.classList.remove('show');
+                setTimeout(() => {
+                    shareToast.remove();
+                }, 500);
+            }, 5000);
+        }
+
+        // Helper Functions
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat().format(num);
+        }
     </script>
 </body>
 </html>
