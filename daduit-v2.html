@@ -1,1 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#5D5CDE">
+    <title>DADUit Game</title>
+    <!-- Add FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #5D5CDE;
+            --primary-hover: #4949c4;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+            --neutral-color: #6B7280;
+            --bg-light: #FFFFFF;
+            --text-light: #333333;
+            --border-light: #E2E8F0;
+            --bg-dark: #181818;
+            --text-dark: #F3F4F6;
+            --border-dark: #374151;
+        }
+
+        .dark {
+            --bg-color: var(--bg-dark);
+            --text-color: var(--text-dark);
+            --border-color: var(--border-dark);
+            --card-bg: #242424;
+            --input-bg: #333333;
+        }
+
+        :root:not(.dark) {
+            --bg-color: var(--bg-light);
+            --text-color: var(--text-light);
+            --border-color: var(--border-light);
+            --card-bg: #FFFFFF;
+            --input-bg: #F3F4F6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* New Header Styles */
+        .game-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            padding: 30px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: -1px;
+            margin: 0;
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .header-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        .header-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        /* 3D Dice Styles */
+        .dice-container {
+            display: flex;
+            gap: 20px;
+            perspective: 1000px;
+        }
+
+        .dice {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.5s ease-out;
+            cursor: pointer;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            background: white;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0;
+        }
+
+        .dice-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #333;
+            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .dice-face:nth-child(1) {
+            transform: translateZ(30px);
+        }
+        .dice-face:nth-child(2) {
+            transform: rotateY(180deg) translateZ(30px);
+        }
+        .dice-face:nth-child(3) {
+            transform: rotateY(90deg) translateZ(30px);
+        }
+        .dice-face:nth-child(4) {
+            transform: rotateY(-90deg) translateZ(30px);
+        }
+        .dice-face:nth-child(5) {
+            transform: rotateX(90deg) translateZ(30px);
+        }
+        .dice-face:nth-child(6) {
+            transform: rotateX(-90deg) translateZ(30px);
+        }
+
+        /* Dice dots positioning */
+        .dice-face[data-value="1"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: "center";
+        }
+        
+        .dice-face[data-value="2"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: 
+                "top-left ."
+                ". bottom-right";
+        }
+        
+        .dice-face[data-value="3"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: 
+                "top-left ."
+                "center ."
+                ". bottom-right";
+        }
+        
+        .dice-face[data-value="4"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: 
+                "top-left . top-right"
+                ". . ."
+                "bottom-left . bottom-right";
+        }
+        
+        .dice-face[data-value="5"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: 
+                "top-left . top-right"
+                ". center ."
+                "bottom-left . bottom-right";
+        }
+        
+        .dice-face[data-value="6"] .dice-dot-container {
+            display: grid;
+            grid-template-areas: 
+                "top-left . top-right"
+                "middle-left . middle-right"
+                "bottom-left . bottom-right";
+        }
+
+        .dice-dot-container {
+            width: 80%;
+            height: 80%;
+        }
+
+        /* 3D Player Pin */
+        .player-pin-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            perspective: 1000px;
+        }
+
+        .player-pin {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: pinFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes pinFloat {
+            0%, 100% { transform: translateY(0) rotateY(0); }
+            25% { transform: translateY(-5px) rotateY(90deg); }
+            50% { transform: translateY(-10px) rotateY(180deg); }
+            75% { transform: translateY(-5px) rotateY(270deg); }
+        }
+
+        .pin-base {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4b1f, #ff9068);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.4);
+        }
+
+        .pin-body {
+            position: absolute;
+            width: 20px;
+            height: 60px;
+            background: linear-gradient(to bottom, #ff4b1f, #ff9068);
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.2);
+        }
+
+        .pin-head {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4b1f, #ff9068);
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.4);
+        }
+
+        .pin-shadow {
+            position: absolute;
+            width: 40px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(4px);
+        }
+
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .game-board {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            background: var(--card-bg);
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .day.current {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(93, 92, 222, 0.4);
+        }
+
+        .day.payday {
+            border-color: var(--success-color);
+            border-width: 2px;
+        }
+
+        .day.completed {
+            background-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .day.missed {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+        }
+
+        .day-icon {
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        .stats-panel {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 5px 0;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--neutral-color);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #0ea271;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-neutral {
+            background-color: var(--neutral-color);
+            color: white;
+        }
+
+        .btn-neutral:hover {
+            background-color: #4b5563;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--neutral-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .streak-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .streak-flame {
+            color: var(--warning-color);
+            font-size: 1.2rem;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--neutral-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger-color);
+        }
+
+        .month-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .month-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .month-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .month-nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .task-list {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .task-checkbox {
+            margin-right: 10px;
+        }
+
+        .task-text {
+            flex-grow: 1;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: var(--neutral-color);
+        }
+
+        /* Game board path for player pin */
+        .game-path {
+            position: relative;
+            height: 60px;
+            margin: 20px 0;
+            background: linear-gradient(90deg, rgba(93, 92, 222, 0.2), rgba(93, 92, 222, 0.4));
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .path-step {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .player-game-pin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            top: 15px;
+            left: 5px;
+            transition: left 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 10;
+        }
+
+        .player-game-pin svg {
+            filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.3));
+        }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toast-close {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            width: 100%;
+        }
+
+        .toast-progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 100%;
+            animation: progress 5s linear forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Event and challenge modal styles - ENHANCED */
+        .event-modal {
+            max-width: 600px;
+        }
+
+        .event-header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .event-title-container {
+            flex-grow: 1;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .event-subtitle {
+            font-size: 0.9rem;
+            color: var(--neutral-color);
+        }
+
+        .event-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+
+        .event-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .event-option {
+            padding: 16px;
+            border-radius: 8px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .event-option:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(93, 92, 222, 0.1);
+            color: var(--primary-color);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .event-option:hover .option-icon {
+            background: white;
+        }
+
+        .option-content {
+            flex-grow: 1;
+        }
+
+        .option-text {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .option-effect {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .special-day {
+            position: relative;
+        }
+
+        .special-day::after {
+            content: "!";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: var(--warning-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .dice-container {
+                justify-content: center;
+            }
+
+            .event-options {
+                flex-direction: column;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- New Beautiful Header with 3D Dice and Player Pin -->
+    <header class="game-header">
+        <div class="header-bg-pattern"></div>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">DADUit Game</h1>
+                    <p class="header-subtitle">Track your habits with a fun Malaysian financial journey</p>
+                </div>
+                <div class="dice-container">
+                    <div class="dice" id="dice1">
+                        <div class="dice-face" data-value="1">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="2">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="3">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="4">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="5">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="6">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: middle-left;"></span>
+                                <span class="dice-dot" style="grid-area: middle-right;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dice" id="dice2">
+                        <div class="dice-face" data-value="1">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="2">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="3">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="4">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="5">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: center;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                        <div class="dice-face" data-value="6">
+                            <div class="dice-dot-container">
+                                <span class="dice-dot" style="grid-area: top-left;"></span>
+                                <span class="dice-dot" style="grid-area: top-right;"></span>
+                                <span class="dice-dot" style="grid-area: middle-left;"></span>
+                                <span class="dice-dot" style="grid-area: middle-right;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
+                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="player-pin-container">
+                        <div class="player-pin">
+                            <div class="pin-head"></div>
+                            <div class="pin-body"></div>
+                            <div class="pin-base"></div>
+                            <div class="pin-shadow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Game Path for Player Pin Movement -->
+        <div class="game-path" id="gamePath">
+            <div class="player-game-pin" id="playerGamePin">
+                <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="40" fill="url(#pinGradient)" />
+                    <path d="M50 20 L70 80 L50 65 L30 80 Z" fill="#ff4b1f" />
+                    <defs>
+                        <linearGradient id="pinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff4b1f" />
+                            <stop offset="100%" stop-color="#ff9068" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <!-- Path steps will be generated dynamically -->
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" id="rollDiceBtn">
+                <i class="fas fa-dice"></i> Roll Dice
+            </button>
+            <button class="btn btn-success" id="completeTaskBtn">
+                <i class="fas fa-check"></i> Complete Today
+            </button>
+            <button class="btn btn-danger" id="missTaskBtn">
+                <i class="fas fa-times"></i> Miss Today
+            </button>
+            <button class="btn btn-neutral" id="resetBtn">
+                <i class="fas fa-redo"></i> Reset Game
+            </button>
+        </div>
+        
+        <div class="game-container">
+            <div class="game-board">
+                <div class="month-selector">
+                    <button class="month-nav-btn" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="month-title" id="currentMonth">Month 1</div>
+                    <button class="month-nav-btn" id="nextMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="calendar" id="calendar">
+                    <!-- Calendar days will be generated here -->
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 45%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>0%</span>
+                        <span>Monthly Progress</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                
+                <div class="streak-indicator">
+                    <i class="fas fa-fire streak-flame"></i>
+                    <span id="currentStreak">Current streak: 5 days</span>
+                </div>
+            </div>
+            
+            <div class="stats-panel">
+                <h2>Your Stats</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="balance">RM1000</div>
+                        <div class="stat-label">Balance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="currentPosition">1</div>
+                        <div class="stat-label">Current Position</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalCompleted">0</div>
+                        <div class="stat-label">Tasks Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="daysRemaining">30</div>
+                        <div class="stat-label">Days Remaining</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 20px;">Achievements</h3>
+                <div class="task-list" id="achievementsList">
+                    <!-- Achievements will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Event Modal with Enhanced UI -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content event-modal">
+            <span class="modal-close" id="closeEventModal">&times;</span>
+            <div class="event-header">
+                <div class="event-icon" id="eventIcon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="event-title-container">
+                    <h2 class="event-title" id="eventTitle">Event Title</h2>
+                    <div class="event-subtitle" id="eventSubtitle">Financial Decision</div>
+                </div>
+            </div>
+            <div class="event-description" id="eventDescription">
+                Event description goes here.
+            </div>
+            <div class="event-options" id="eventOptions">
+                <!-- Options will be generated dynamically with icons -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeConfirmModal">&times;</span>
+            <h2 id="confirmTitle">Confirm Action</h2>
+            <p id="confirmMessage">Are you sure you want to proceed with this action?</p>
+            <div class="form-actions">
+                <button type="button" class="btn btn-neutral" id="cancelConfirmBtn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        const gameState = {
+            currentPosition: 1,
+            currentMonth: 1,
+            balance: 1000,
+            salary: 3800,  // Malaysian average salary
+            expenses: 2500, // Malaysian average expenses
+            achievements: [],
+            completedChallenges: 0,
+            lastRoll: 0,
+            challengeChance: 0.3, // 30% chance of random challenge
+            isRolling: false,
+            specialDays: {
+                events: [5, 10, 15, 20, 25], // Days with special events in each month
+                paydays: [15, 30]           // Paydays in each month
+            }
+        };
+
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const calendar = document.getElementById('calendar');
+        const currentMonthEl = document.getElementById('currentMonth');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const progressFill = document.getElementById('progressFill');
+        const currentStreakEl = document.getElementById('currentStreak');
+        const balanceEl = document.getElementById('balance');
+        const currentPositionEl = document.getElementById('currentPosition');
+        const totalCompletedEl = document.getElementById('totalCompleted');
+        const daysRemainingEl = document.getElementById('daysRemaining');
+        const achievementsList = document.getElementById('achievementsList');
+        const dice1 = document.getElementById('dice1');
+        const dice2 = document.getElementById('dice2');
+        const gamePath = document.getElementById('gamePath');
+        const playerGamePin = document.getElementById('playerGamePin');
+        const rollDiceBtn = document.getElementById('rollDiceBtn');
+        
+        // Modal elements
+        const eventModal = document.getElementById('eventModal');
+        const closeEventModal = document.getElementById('closeEventModal');
+        const eventIcon = document.getElementById('eventIcon');
+        const eventTitle = document.getElementById('eventTitle');
+        const eventSubtitle = document.getElementById('eventSubtitle');
+        const eventDescription = document.getElementById('eventDescription');
+        const eventOptions = document.getElementById('eventOptions');
+        
+        const confirmModal = document.getElementById('confirmModal');
+        const closeConfirmModal = document.getElementById('closeConfirmModal');
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+        const confirmBtn = document.getElementById('confirmBtn');
+        
+        const completeTaskBtn = document.getElementById('completeTaskBtn');
+        const missTaskBtn = document.getElementById('missTaskBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Malaysian Special events for Month 1
+        const month1SpecialEvents = [
+            {
+                title: "Unexpected Car Maintenance",
+                subtitle: "Vehicle Expenses",
+                icon: "car",
+                description: "Your car requires urgent servicing at a workshop in Subang Jaya. What will you do?",
+                options: [
+                    {
+                        text: "Service at authorized center",
+                        icon: "tools",
+                        effect: () => { gameState.balance -= 650; },
+                        description: "-RM650"
+                    },
+                    {
+                        text: "Go to local mechanic in SS15",
+                        icon: "wrench",
+                        effect: () => { 
+                            gameState.balance -= 350;
+                            addAchievement("Support Local", "Used a local mechanic");
+                        },
+                        description: "-RM350"
+                    },
+                    {
+                        text: "Use Grab for a month",
+                        icon: "taxi",
+                        effect: () => { 
+                            gameState.balance -= 500;
+                            addAchievement("Car-Free Living", "Opted for ride-sharing");
+                        },
+                        description: "-RM500"
+                    }
+                ]
+            },
+            {
+                title: "Hari Raya Preparation",
+                subtitle: "Festive Season",
+                icon: "moon",
+                description: "Hari Raya is coming soon and you need to prepare. How will you handle the expenses?",
+                options: [
+                    {
+                        text: "Buy new baju raya & decorations",
+                        icon: "tshirt",
+                        effect: () => { 
+                            gameState.balance -= 700;
+                            addAchievement("Festive Spirit", "Went all out for Hari Raya");
+                        },
+                        description: "-RM700"
+                    },
+                    {
+                        text: "Use last year's clothes",
+                        icon: "recycle",
+                        effect: () => { 
+                            gameState.balance -= 300; 
+                            addAchievement("Practical Celebrator", "Reused last year's festive items");
+                        },
+                        description: "-RM300"
+                    },
+                    {
+                        text: "Make homemade decorations",
+                        icon: "paint-brush",
+                        effect: () => { 
+                            gameState.balance -= 200;
+                            addAchievement("Creative Decorator", "Made DIY festive decorations");
+                        },
+                        description: "-RM200"
+                    }
+                ]
+            },
+            {
+                title: "Ramadhan Bazaar Visit",
+                subtitle: "Food & Community",
+                icon: "utensils",
+                description: "You're passing by a popular Ramadhan bazaar in Shah Alam. Will you stop by?",
+                options: [
+                    {
+                        text: "Enjoy a full bazaar food experience",
+                        icon: "shopping-basket",
+                        effect: () => { 
+                            gameState.balance -= 120;
+                            addAchievement("Bazaar Enthusiast", "Enjoyed the full Ramadhan bazaar experience");
+                        },
+                        description: "-RM120"
+                    },
+                    {
+                        text: "Buy just one or two special items",
+                        icon: "cookie",
+                        effect: () => { gameState.balance -= 50; },
+                        description: "-RM50"
+                    },
+                    {
+                        text: "Skip it and cook at home",
+                        icon: "home",
+                        effect: () => { 
+                            gameState.balance -= 25;
+                            addAchievement("Home Chef", "Prepared meal at home instead");
+                        },
+                        description: "-RM25"
+                    }
+                ]
+            },
+            {
+                title: "Shopping Mall Promotion",
+                subtitle: "Retail Therapy",
+                icon: "shopping-cart",
+                description: "Sunway Pyramid is having a major sale with discounts up to 70%. What's your plan?",
+                options: [
+                    {
+                        text: "Go on a shopping spree",
+                        icon: "credit-card",
+                        effect: () => { 
+                            gameState.balance -= 500;
+                            addAchievement("Bargain Hunter", "Took full advantage of a major sale");
+                        },
+                        description: "-RM500"
+                    },
+                    {
+                        text: "Buy only what you need",
+                        icon: "list-check",
+                        effect: () => { gameState.balance -= 200; },
+                        description: "-RM200"
+                    },
+                    {
+                        text: "Window shop only",
+                        icon: "eye",
+                        effect: () => { 
+                            addAchievement("Strong Willpower", "Resisted shopping temptation");
+                        },
+                        description: "RM0"
+                    }
+                ]
+            },
+            {
+                title: "Family Gathering",
+                subtitle: "Social Obligations",
+                icon: "users",
+                description: "Your family is organizing a gathering in Melaka and you're expected to contribute.",
+                options: [
+                    {
+                        text: "Bring expensive gifts & food",
+                        icon: "gifts",
+                        effect: () => { 
+                            gameState.balance -= 400;
+                            addAchievement("Family First", "Contributed generously to family gathering");
+                        },
+                        description: "-RM400"
+                    },
+                    {
+                        text: "Contribute homemade dishes",
+                        icon: "utensils",
+                        effect: () => { gameState.balance -= 150; },
+                        description: "-RM150"
+                    },
+                    {
+                        text: "Make an excuse to skip",
+                        icon: "calendar-xmark",
+                        effect: () => { 
+                            addAchievement("Work-Life Imbalance", "Skipped family function");
+                        },
+                        description: "RM0 (but might affect relationships)"
+                    }
+                ]
+            }
+        ];
+
+        // Malaysian Special events for Month 2
+        const month2SpecialEvents = [
+            {
+                title: "EPF Withdrawal Decision",
+                subtitle: "Retirement Planning",
+                icon: "piggy-bank",
+                description: "EPF announces a special withdrawal scheme. Will you withdraw some of your retirement savings?",
+                options: [
+                    {
+                        text: "Withdraw maximum amount",
+                        icon: "money-bill-transfer",
+                        effect: () => { 
+                            gameState.balance += 1000;
+                            addAchievement("Short-term Planner", "Withdrew from retirement savings");
+                        },
+                        description: "+RM1000 now (but less for retirement)"
+                    },
+                    {
+                        text: "Withdraw minimal amount",
+                        icon: "hand-holding-dollar",
+                        effect: () => { gameState.balance += 500; },
+                        description: "+RM500"
+                    },
+                    {
+                        text: "Keep savings intact",
+                        icon: "shield",
+                        effect: () => { 
+                            addAchievement("Future Focused", "Protected retirement savings");
+                        },
+                        description: "RM0 (better long-term security)"
+                    }
+                ]
+            },
+            {
+                title: "Home Appliance Breakdown",
+                subtitle: "Household Emergency",
+                icon: "house-crack",
+                description: "Your air conditioner stopped working during the hottest month. What will you do?",
+                options: [
+                    {
+                        text: "Buy a new Daikin 1.5HP inverter AC",
+                        icon: "snowflake",
+                        effect: () => { gameState.balance -= 2800; },
+                        description: "-RM2800"
+                    },
+                    {
+                        text: "Repair with local technician",
+                        icon: "screwdriver-wrench",
+                        effect: () => { gameState.balance -= 800; },
+                        description: "-RM800"
+                    },
+                    {
+                        text: "Use fans and cope with the heat",
+                        icon: "fan",
+                        effect: () => { 
+                            gameState.balance -= 100;
+                            addAchievement("Heat Tolerant", "Survived without air conditioning");
+                        },
+                        description: "-RM100 (for extra fans)"
+                    }
+                ]
+            },
+            {
+                title: "Medical Appointment",
+                subtitle: "Healthcare",
+                icon: "hospital",
+                description: "It's time for your medical check-up. Where will you go?",
+                options: [
+                    {
+                        text: "Private hospital in KL",
+                        icon: "stethoscope",
+                        effect: () => { 
+                            gameState.balance -= 600;
+                            addAchievement("Health Conscious", "Invested in premium healthcare");
+                        },
+                        description: "-RM600"
+                    },
+                    {
+                        text: "Government clinic with MySejahtera appointment",
+                        icon: "user-doctor",
+                        effect: () => { gameState.balance -= 100; },
+                        description: "-RM100"
+                    },
+                    {
+                        text: "Skip this year",
+                        icon: "hourglass",
+                        effect: () => { 
+                            addAchievement("Risk Taker", "Postponed medical check-up");
+                            // 30% chance of later medical issue
+                            if (Math.random() < 0.3) {
+                                setTimeout(() => {
+                                    gameState.balance -= 1500;
+                                    showToast("Health Issue", "You've developed a health problem that requires treatment. -RM1500", "error");
+                                    updateBoard();
+                                }, 5000);
+                            }
+                        },
+                        description: "RM0 (risk of future issues)"
+                    }
+                ]
+            },
+            {
+                title: "ASB Investment Opportunity",
+                subtitle: "Investment",
+                icon: "chart-line",
+                description: "You have the opportunity to invest in Amanah Saham Bumiputera (ASB). What will you do?",
+                options: [
+                    {
+                        text: "Invest significant amount",
+                        icon: "coins",
+                        effect: () => { 
+                            gameState.balance -= 1000;
+                            // Dividend payout in future
+                            setTimeout(() => {
+                                gameState.balance += 1050;
+                                showToast("ASB Dividend", "You received your ASB dividend! +RM50", "success");
+                                updateBoard();
+                            }, 5000);
+                            addAchievement("Smart Investor", "Made a significant ASB investment");
+                        },
+                        description: "-RM1000 now (+dividends later)"
+                    },
+                    {
+                        text: "Invest small amount",
+                        icon: "wallet",
+                        effect: () => { 
+                            gameState.balance -= 300;
+                            // Smaller dividend payout
+                            setTimeout(() => {
+                                gameState.balance += 315;
+                                showToast("ASB Dividend", "You received your ASB dividend! +RM15", "success");
+                                updateBoard();
+                            }, 5000);
+                        },
+                        description: "-RM300 now (+dividends later)"
+                    },
+                    {
+                        text: "Hold cash for now",
+                        icon: "hand-holding-dollar",
+                        effect: () => { /* No effect */ },
+                        description: "RM0 (miss potential returns)"
+                    }
+                ]
+            },
+            {
+                title: "PTPTN Loan Decision",
+                subtitle: "Student Loan",
+                icon: "graduation-cap",
+                description: "PTPTN is offering a discount for full settlement of your student loan. How will you respond?",
+                options: [
+                    {
+                        text: "Make full settlement for 15% discount",
+                        icon: "receipt",
+                        effect: () => { 
+                            gameState.balance -= 2000;
+                            addAchievement("Debt Free", "Fully settled PTPTN loan");
+                        },
+                        description: "-RM2000 (saves RM353 overall)"
+                    },
+                    {
+                        text: "Pay 50% for 10% discount on that portion",
+                        icon: "percentage",
+                        effect: () => { gameState.balance -= 1000; },
+                        description: "-RM1000 (saves RM111)"
+                    },
+                    {
+                        text: "Continue monthly payments",
+                        icon: "calendar-days",
+                        effect: () => { gameState.balance -= 150; },
+                        description: "-RM150 this month (continues)"
+                    }
+                ]
+            }
+        ];
+
+        // Random challenges for Month 1 (Malaysian context)
+        const month1Challenges = [
+            {
+                title: "Toll System Upgrade",
+                subtitle: "Transportation Costs",
+                icon: "road",
+                description: "SmartTAG and Touch 'n Go lanes are being upgraded, causing long jams. What will you do?",
+                options: [
+                    {
+                        text: "Buy a new RFID tag",
+                        icon: "tag",
+                        effect: () => { gameState.balance -= 150; },
+                        description: "-RM150"
+                    },
+                    {
+                        text: "Use public transport temporarily",
+                        icon: "bus",
+                        effect: () => { 
+                            gameState.balance -= 80;
+                            addAchievement("Public Transport Patron", "Used public transit during highway upgrades");
+                        },
+                        description: "-RM80"
+                    }
+                ]
+            },
+            {
+                title: "Water Disruption",
+                subtitle: "Utilities Emergency",
+                icon: "droplet-slash",
+                description: "There's an unscheduled water disruption in your area that might last for 3 days.",
+                options: [
+                    {
+                        text: "Stock up on mineral water",
+                        icon: "bottle-water",
+                        effect: () => { gameState.balance -= 120; },
+                        description: "-RM120"
+                    },
+                    {
+                        text: "Collect water from tanker trucks",
+                        icon: "truck",
+                        effect: () => { 
+                            gameState.balance -= 30;
+                            addAchievement("Resource Conscious", "Managed during a water disruption");
+                        },
+                        description: "-RM30"
+                    },
+                    {
+                        text: "Stay with relatives temporarily",
+                        icon: "house-user",
+                        effect: () => { gameState.balance -= 80; },
+                        description: "-RM80 (for gifts and fuel)"
+                    }
+                ]
+            },
+            {
+                title: "E-wallet Cashback Promo",
+                subtitle: "Digital Finance",
+                icon: "wallet",
+                description: "Touch 'n Go eWallet is offering 15% cashback for utility bill payments. What's your move?",
+                options: [
+                    {
+                        text: "Top up and pay all bills via e-wallet",
+                        icon: "mobile-screen",
+                        effect: () => { 
+                            gameState.balance -= 300;
+                            // Cashback comes later
+                            setTimeout(() => {
+                                gameState.balance += 45;
+                                showToast("Cashback Received", "Your e-wallet cashback has been credited! +RM45", "success");
+                                updateBoard();
+                            }, 3000);
+                            addAchievement("Digital Saver", "Maximized e-wallet promotions");
+                        },
+                        description: "-RM300 now (+RM45 cashback later)"
+                    },
+                    {
+                        text: "Use regular payment methods",
+                        icon: "credit-card",
+                        effect: () => { gameState.balance -= 300; },
+                        description: "-RM300 (miss cashback opportunity)"
+                    }
+                ]
+            },
+            {
+                title: "Grab Food Promo Code",
+                subtitle: "Food & Delivery",
+                icon: "motorcycle",
+                description: "You received a 50% off promo code for Grab Food (max RM15 discount).",
+                options: [
+                    {
+                        text: "Order a special meal",
+                        icon: "utensils",
+                        effect: () => { 
+                            gameState.balance -= 25; // After discount
+                            addAchievement("Promo Hunter", "Used delivery app discounts effectively");
+                        },
+                        description: "-RM25 (after discount)"
+                    },
+                    {
+                        text: "Cook at home instead",
+                        icon: "kitchen-set",
+                        effect: () => { gameState.balance -= 15; },
+                        description: "-RM15 for groceries"
+                    }
+                ]
+            },
+            {
+                title: "Flash Flood Warning",
+                subtitle: "Weather Emergency",
+                icon: "cloud-showers-heavy",
+                description: "Heavy rain is forecasted and your area might experience flash floods. How will you prepare?",
+                options: [
+                    {
+                        text: "Buy emergency supplies",
+                        icon: "box",
+                        effect: () => { 
+                            gameState.balance -= 200;
+                            addAchievement("Well Prepared", "Stocked up for potential floods");
+                        },
+                        description: "-RM200"
+                    },
+                    {
+                        text: "Relocate valuables only",
+                        icon: "arrow-up",
+                        effect: () => { gameState.balance -= 50; },
+                        description: "-RM50"
+                    },
+                    {
+                        text: "Hope for the best",
+                        icon: "hand-holding-medical",
+                        effect: () => { 
+                            // 40% chance of flood damage
+                            if (Math.random() < 0.4) {
+                                setTimeout(() => {
+                                    gameState.balance -= 500;
+                                    showToast("Flood Damage", "Your home was affected by floods! -RM500 for repairs", "error");
+                                    updateBoard();
+                                }, 3000);
+                            }
+                        },
+                        description: "RM0 (risk of damage costs)"
+                    }
+                ]
+            }
+        ];
+
+        // Random challenges for Month 2 (Malaysian context)
+        const month2Challenges = [
+            {
+                title: "Traffic Summons",
+                subtitle: "Law Enforcement",
+                icon: "car-burst",
+                description: "You received a JPJ traffic summons for parking in a prohibited area in Bukit Bintang.",
+                options: [
+                    {
+                        text: "Pay immediately (early bird discount)",
+                        icon: "money-bill-wave",
+                        effect: () => { gameState.balance -= 150; },
+                        description: "-RM150"
+                    },
+                    {
+                        text: "Contest the summons",
+                        icon: "gavel",
+                        effect: () => { 
+                            // 30% chance of success
+                            if (Math.random() > 0.7) {
+                                addAchievement("Traffic Law Expert", "Successfully contested a traffic summons");
+                            } else {
+                                gameState.balance -= 300;
+                                showToast("Summons Appeal Failed", "Your appeal was rejected. Full payment required: -RM300", "error");
+                            }
+                        },
+                        description: "RM0 if successful, -RM300 if not"
+                    }
+                ]
+            },
+            {
+                title: "Phone Data Overuse",
+                subtitle: "Telecommunications",
+                icon: "mobile-screen",
+                description: "You've used up your monthly data plan with Maxis, and there's still 10 days left in the month.",
+                options: [
+                    {
+                        text: "Purchase additional data package",
+                        icon: "wifi",
+                        effect: () => { gameState.balance -= 80; },
+                        description: "-RM80 for 10GB"
+                    },
+                    {
+                        text: "Rely on WiFi only",
+                        icon: "house-signal",
+                        effect: () => { 
+                            addAchievement("Data Saver", "Managed without mobile data");
+                        },
+                        description: "RM0"
+                    },
+                    {
+                        text: "Switch to cheaper prepaid for a week",
+                        icon: "sim-card",
+                        effect: () => { gameState.balance -= 30; },
+                        description: "-RM30"
+                    }
+                ]
+            },
+            {
+                title: "Sudden Laptop Issues",
+                subtitle: "Technology",
+                icon: "laptop-code",
+                description: "Your laptop is showing the infamous 'blue screen of death' while you have an important deadline.",
+                options: [
+                    {
+                        text: "Send to professional repair shop in Low Yat Plaza",
+                        icon: "screwdriver-wrench",
+                        effect: () => { gameState.balance -= 350; },
+                        description: "-RM350"
+                    },
+                    {
+                        text: "Try fixing it yourself with online tutorials",
+                        icon: "youtube",
+                        effect: () => { 
+                            // 50% chance of success
+                            if (Math.random() > 0.5) {
+                                gameState.balance -= 0;
+                                addAchievement("Tech Wizard", "Fixed your own laptop");
+                            } else {
+                                gameState.balance -= 500;
+                                showToast("DIY Repair Failed", "Your repair attempt made things worse! -RM500", "error");
+                            }
+                        },
+                        description: "RM0 if successful, -RM500 if not"
+                    },
+                    {
+                        text: "Use cybercafe or friend's laptop temporarily",
+                        icon: "people-group",
+                        effect: () => { gameState.balance -= 120; },
+                        description: "-RM120"
+                    }
+                ]
+            },
+            {
+                title: "GSC Movie Promotion",
+                subtitle: "Entertainment",
+                icon: "film",
+                description: "GSC is having a special 'Buy 1 Free 1' promotion for movie tickets on Wednesday.",
+                options: [
+                    {
+                        text: "Go watch the latest blockbuster",
+                        icon: "ticket",
+                        effect: () => { 
+                            gameState.balance -= 40;
+                            addAchieurement("Movie Buff", "Took advantage of cinema promotions");
+                        },
+                        description: "-RM40 (for 2 people)"
+                    },
+                    {
+                        text: "Stay home and watch Netflix",
+                        icon: "tv",
+                        effect: () => { gameState.balance -= 0; },
+                        description: "RM0 (already subscribed)"
+                    }
+                ]
+            },
+            {
+                title: "TNB Bill Shock",
+                subtitle: "Utilities",
+                icon: "bolt",
+                description: "Your electricity bill is much higher than usual due to the heatwave and extra air conditioning usage.",
+                options: [
+                    {
+                        text: "Pay in full",
+                        icon: "credit-card",
+                        effect: () => { gameState.balance -= 280; },
+                        description: "-RM280"
+                    },
+                    {
+                        text: "Request bill installment plan",
+                        icon: "money-bill-1-wave",
+                        effect: () => { 
+                            gameState.balance -= 100;
+                            // Remaining amount later
+                            setTimeout(() => {
+                                gameState.balance -= 190;
+                                showToast("Bill Installment", "Paid second installment of TNB bill: -RM190", "info");
+                                updateBoard();
+                            }, 4000);
+                        },
+                        description: "-RM100 now + RM190 later (includes RM10 processing fee)"
+                    },
+                    {
+                        text: "Check for billing errors & appeal",
+                        icon: "magnifying-glass-chart",
+                        effect: () => { 
+                            // 20% chance of successful appeal
+                            if (Math.random() > 0.8) {
+                                gameState.balance -= 150;
+                                showToast("Bill Appeal Partial Success", "TNB reduced your bill after inspection: -RM150", "success");
+                                addAchievement("Bill Detective", "Successfully appealed a high utility bill");
+                            } else {
+                                gameState.balance -= 280;
+                                showToast("Bill Appeal Failed", "TNB confirmed the bill is correct: -RM280", "error");
+                            }
+                        },
+                        description: "-RM150 if appeal successful, -RM280 if not"
+                    }
+                ]
+            }
+        ];
+
+        // Initialize the game
+        function initGame() {
+            loadGameState();
+            renderCalendar();
+            updateStats();
+            renderAchievements();
+            setupGamePath();
+            updatePlayerPosition();
+            
+            // Check if dark mode is enabled
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        // Load game state from localStorage
+        function loadGameState() {
+            const savedState = localStorage.getItem('daduitGameState');
+            if (savedState) {
+                Object.assign(gameState, JSON.parse(savedState));
+            }
+            
+            saveGameState();
+        }
+
+        // Save game state to localStorage
+        function saveGameState() {
+            localStorage.setItem('daduitGameState', JSON.stringify(gameState));
+        }
+
+        // Render the calendar for the current month
+        function renderCalendar() {
+            calendar.innerHTML = '';
+            
+            // Update month title
+            currentMonthEl.textContent = `Month ${gameState.currentMonth}`;
+            
+            // Create 30 days for each month
+            for (let day = 1; day <= 30; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('day');
+                
+                // Check if this is the current position
+                if (day === gameState.currentPosition) {
+                    dayEl.classList.add('current');
+                }
+                
+                // Check if this is a payday
+                if (gameState.specialDays.paydays.includes(day)) {
+                    dayEl.classList.add('payday');
+                }
+                
+                // Check if this is a special event day
+                if (gameState.specialDays.events.includes(day)) {
+                    dayEl.classList.add('special-day');
+                }
+                
+                // Add day number
+                const dayNumber = document.createElement('div');
+                dayNumber.classList.add('day-number');
+                dayNumber.textContent = day;
+                dayEl.appendChild(dayNumber);
+                
+                // Add icon based on status
+                const dayIcon = document.createElement('div');
+                dayIcon.classList.add('day-icon');
+                
+                if (gameState.specialDays.paydays.includes(day)) {
+                    dayIcon.innerHTML = '<i class="fas fa-money-bill-wave" style="color: var(--success-color);"></i>';
+                } else if (gameState.specialDays.events.includes(day)) {
+                    dayIcon.innerHTML = '<i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i>';
+                }
+                
+                dayEl.appendChild(dayIcon);
+                
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        // Update game statistics
+        function updateStats() {
+            // Update UI
+            balanceEl.textContent = `RM${gameState.balance}`;
+            currentPositionEl.textContent = gameState.currentPosition;
+            totalCompletedEl.textContent = gameState.completedChallenges;
+            
+            // Calculate days remaining in month
+            const daysRemaining = 30 - gameState.currentPosition + 1;
+            daysRemainingEl.textContent = daysRemaining;
+            
+            // Update progress bar
+            const progress = Math.round((gameState.currentPosition / 30) * 100);
+            progressFill.style.width = `${progress}%`;
+            
+            // Update streak (placeholder)
+            currentStreakEl.textContent = `Current streak: ${gameState.completedChallenges} challenges`;
+        }
+
+        // Render achievements
+        function renderAchievements() {
+            achievementsList.innerHTML = '';
+            
+            if (gameState.achievements.length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.textContent = 'No achievements yet. Keep playing to earn some!';
+                emptyMessage.style.padding = '10px';
+                emptyMessage.style.color = 'var(--neutral-color)';
+                achievementsList.appendChild(emptyMessage);
+                return;
+            }
+            
+            gameState.achievements.forEach(achievement => {
+                const achievementItem = document.createElement('div');
+                achievementItem.classList.add('task-item');
+                
+                const achievementIcon = document.createElement('i');
+                achievementIcon.classList.add('fas', 'fa-trophy');
+                achievementIcon.style.color = 'var(--warning-color)';
+                achievementIcon.style.marginRight = '10px';
+                
+                const achievementText = document.createElement('div');
+                achievementText.classList.add('task-text');
+                achievementText.innerHTML = `<strong>${achievement.title}</strong><br><small>${achievement.description}</small>`;
+                
+                achievementItem.appendChild(achievementIcon);
+                achievementItem.appendChild(achievementText);
+                
+                achievementsList.appendChild(achievementItem);
+            });
+        }
+
+        // Add an achievement
+        function addAchievement(title, description) {
+            // Check if achievement already exists
+            const exists = gameState.achievements.some(a => a.title === title);
+            if (exists) return;
+            
+            gameState.achievements.push({ title, description });
+            saveGameState();
+            renderAchievements();
+            
+            showToast("Achievement Unlocked", title, "success");
+        }
+
+        // Fixed typo function for GSC Movie achievement
+        function addAchieurement(title, description) {
+            addAchievement(title, description);
+        }
+
+        // Setup game path with steps
+        function setupGamePath() {
+            gamePath.innerHTML = '';
+            
+            // Add player pin
+            gamePath.appendChild(playerGamePin);
+            
+            // Create 10 steps on the path
+            for (let i = 0; i < 10; i++) {
+                const step = document.createElement('div');
+                step.classList.add('path-step');
+                step.style.left = `${i * 10}%`;
+                step.textContent = i * 3 + 1;
+                gamePath.appendChild(step);
+            }
+        }
+
+        // Update player pin position on the board
+        function updatePlayerPosition() {
+            // Calculate position percentage (1-30 days)
+            const positionPercentage = ((gameState.currentPosition - 1) / 29) * 100;
+            
+            // Update player pin position with animation
+            playerGamePin.style.left = `${positionPercentage}%`;
+        }
+
+        // Roll the dice with realistic 3D animation
+        function rollDice() {
+            if (gameState.isRolling) return;
+            
+            gameState.isRolling = true;
+            rollDiceBtn.disabled = true;
+            
+            // Generate random values for both dice
+            const value1 = Math.floor(Math.random() * 6) + 1;
+            const value2 = Math.floor(Math.random() * 6) + 1;
+            const total = value1 + value2;
+            
+            // Store the roll
+            gameState.lastRoll = total;
+            
+            // Define rotations for each dice face
+            const rotations = {
+                1: "rotateX(0deg) rotateY(0deg)",
+                2: "rotateX(0deg) rotateY(180deg)",
+                3: "rotateX(0deg) rotateY(90deg)",
+                4: "rotateX(0deg) rotateY(-90deg)",
+                5: "rotateX(90deg) rotateY(0deg)",
+                6: "rotateX(-90deg) rotateY(0deg)"
+            };
+            
+            // Add spinning animation
+            dice1.style.transition = "transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            dice2.style.transition = "transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            
+            // Random spins before landing on the final value
+            dice1.style.transform = `rotateX(${Math.random() * 1080}deg) rotateY(${Math.random() * 1080}deg) rotateZ(${Math.random() * 1080}deg)`;
+            dice2.style.transform = `rotateX(${Math.random() * 1080}deg) rotateY(${Math.random() * 1080}deg) rotateZ(${Math.random() * 1080}deg)`;
+            
+            // After a delay, show the actual values
+            setTimeout(() => {
+                dice1.style.transform = rotations[value1];
+                dice2.style.transform = rotations[value2];
+                
+                // Move player after dice roll
+                setTimeout(() => {
+                    movePlayer(total);
+                }, 500);
+            }, 1000);
+        }
+
+        // Move player based on dice roll
+        function movePlayer(steps) {
+            // Calculate new position
+            let newPosition = gameState.currentPosition + steps;
+            
+            // Check if player completed the month
+            if (newPosition > 30) {
+                // Move to next month
+                gameState.currentMonth++;
+                newPosition = newPosition - 30;
+                
+                if (gameState.currentMonth > 2) {
+                    // Game completed
+                    showToast("Game Completed", "Congratulations! You've completed the game!", "success");
+                    gameState.currentMonth = 2;
+                    newPosition = 30;
+                } else {
+                    showToast("New Month", `Welcome to Month ${gameState.currentMonth}!`, "info");
+                }
+            }
+            
+            // Update position
+            gameState.currentPosition = newPosition;
+            
+            // Update board
+            updateBoard();
+            
+            // Check for special events
+            checkForEvents();
+        }
+
+        // Update the game board
+        function updateBoard() {
+            renderCalendar();
+            updateStats();
+            updatePlayerPosition();
+            saveGameState();
+            
+            // Re-enable roll button
+            setTimeout(() => {
+                gameState.isRolling = false;
+                rollDiceBtn.disabled = false;
+            }, 1000);
+        }
+
+        // Check for special events or paydays
+        function checkForEvents() {
+            const currentDay = gameState.currentPosition;
+            
+            // Check for payday
+            if (gameState.specialDays.paydays.includes(currentDay)) {
+                processSalary();
+                return; // Don't process other events on payday
+            }
+            
+            // Check for special events
+            if (gameState.specialDays.events.includes(currentDay)) {
+                // Get the appropriate event based on month and position
+                const eventIndex = gameState.specialDays.events.indexOf(currentDay);
+                const events = gameState.currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
+                
+                if (eventIndex < events.length) {
+                    showSpecialEvent(events[eventIndex]);
+                    return; // Don't process random challenges if there's a special event
+                }
+            }
+            
+            // Check for random challenges
+            if (Math.random() < gameState.challengeChance) {
+                showRandomChallenge();
+            }
+        }
+
+        // Process salary payment
+        function processSalary() {
+            gameState.balance += gameState.salary;
+            gameState.balance -= gameState.expenses;
+            
+            showToast("Payday", `Received salary: +RM${gameState.salary}, Paid expenses: -RM${gameState.expenses}`, "success");
+            updateBoard();
+        }
+
+        // ENHANCED: Event modal opener with icons
+        function openModal(event) {
+            const { title, subtitle, icon, description, options } = event;
+            
+            eventTitle.textContent = title;
+            eventSubtitle.textContent = subtitle || "Financial Decision";
+            eventIcon.innerHTML = `<i class="fas fa-${icon || 'exclamation-circle'}"></i>`;
+            eventDescription.textContent = description;
+            eventOptions.innerHTML = '';
+            
+            options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.classList.add('event-option');
+                optionEl.dataset.optionIndex = index;
+                
+                const optionIcon = document.createElement('div');
+                optionIcon.classList.add('option-icon');
+                optionIcon.innerHTML = `<i class="fas fa-${option.icon || 'circle'}"></i>`;
+                
+                const optionContent = document.createElement('div');
+                optionContent.classList.add('option-content');
+                
+                const optionText = document.createElement('div');
+                optionText.classList.add('option-text');
+                optionText.textContent = option.text;
+                
+                const optionEffect = document.createElement('div');
+                optionEffect.classList.add('option-effect');
+                optionEffect.textContent = option.description;
+                
+                optionContent.appendChild(optionText);
+                optionContent.appendChild(optionEffect);
+                
+                optionEl.appendChild(optionIcon);
+                optionEl.appendChild(optionContent);
+                eventOptions.appendChild(optionEl);
+            });
+            
+            eventModal.style.display = 'flex';
+        }
+
+        // Show special event
+        function showSpecialEvent(event) {
+            openModal(event);
+        }
+
+        // Show random challenge
+        function showRandomChallenge() {
+            const challenges = gameState.currentMonth === 1 ? month1Challenges : month2Challenges;
+            const randomIndex = Math.floor(Math.random() * challenges.length);
+            const challenge = challenges[randomIndex];
+            
+            openModal(challenge);
+        }
+
+        // Show toast notification
+        function showToast(title, message, type = "info") {
+            const toast = document.createElement('div');
+            toast.classList.add('toast', type);
+            
+            let icon;
+            switch (type) {
+                case "success":
+                    icon = '<i class="fas fa-check-circle toast-icon" style="color: var(--success-color);"></i>';
+                    break;
+                case "warning":
+                    icon = '<i class="fas fa-exclamation-triangle toast-icon" style="color: var(--warning-color);"></i>';
+                    break;
+                case "error":
+                    icon = '<i class="fas fa-times-circle toast-icon" style="color: var(--danger-color);"></i>';
+                    break;
+                default:
+                    icon = '<i class="fas fa-info-circle toast-icon" style="color: var(--primary-color);"></i>';
+            }
+            
+            toast.innerHTML = `
+                ${icon}
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <div class="toast-close">&times;</div>
+                <div class="toast-progress">
+                    <div class="toast-progress-bar"></div>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Add close event
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.addEventListener('click', () => {
+                toast.style.animation = 'slideOut 0.3s forwards';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideOut 0.3s forwards';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Reset the game
+        function resetGame() {
+            gameState.currentPosition = 1;
+            gameState.currentMonth = 1;
+            gameState.balance = 1000;
+            gameState.achievements = [];
+            gameState.completedChallenges = 0;
+            
+            saveGameState();
+            renderCalendar();
+            updateStats();
+            renderAchievements();
+            updatePlayerPosition();
+            
+            showToast("Game Reset", "The game has been reset.", "info");
+        }
+
+        // Event Listeners
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        prevMonthBtn.addEventListener('click', () => {
+            if (gameState.currentMonth > 1) {
+                gameState.currentMonth--;
+                renderCalendar();
+            }
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            if (gameState.currentMonth < 2) {
+                gameState.currentMonth++;
+                renderCalendar();
+            }
+        });
+
+        rollDiceBtn.addEventListener('click', rollDice);
+
+        completeTaskBtn.addEventListener('click', () => {
+            gameState.completedChallenges++;
+            updateStats();
+            saveGameState();
+            showToast("Task Completed", "You've completed a task!", "success");
+        });
+
+        missTaskBtn.addEventListener('click', () => {
+            showToast("Task Missed", "You've missed a task.", "error");
+        });
+
+        resetBtn.addEventListener('click', () => {
+            showConfirmModal(
+                'Reset Game',
+                'Are you sure you want to reset the game? All progress will be lost.',
+                resetGame
+            );
+        });
+
+        closeConfirmModal.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+
+        cancelConfirmBtn.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+
+        closeEventModal.addEventListener('click', () => {
+            eventModal.style.display = 'none';
+        });
+
+        // Event delegation: Handle event option clicks
+        eventOptions.addEventListener('click', (e) => {
+            const optionEl = e.target.closest('.event-option');
+            if (!optionEl) return;
+            
+            const optionIndex = parseInt(optionEl.dataset.optionIndex);
+            
+            // Find the correct event/challenge data
+            let currentEvent = null;
+            
+            if (gameState.specialDays.events.includes(gameState.currentPosition)) {
+                // It's a special event day
+                const eventIndex = gameState.specialDays.events.indexOf(gameState.currentPosition);
+                const events = gameState.currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
+                
+                if (eventIndex < events.length) {
+                    currentEvent = events[eventIndex];
+                }
+            } else {
+                // It's a random challenge - find the matching challenge
+                const challenges = gameState.currentMonth === 1 ? month1Challenges : month2Challenges;
+                
+                // Look through all challenges to find the one matching our current UI state
+                const challengeTitle = eventTitle.textContent;
+                currentEvent = challenges.find(c => c.title === challengeTitle);
+            }
+            
+            if (currentEvent && currentEvent.options[optionIndex]) {
+                // Execute the effect
+                currentEvent.options[optionIndex].effect();
+                
+                // Increment completed challenges
+                gameState.completedChallenges++;
+                
+                // Show toast
+                showToast("Decision Made", `You chose: ${currentEvent.options[optionIndex].text}`, "info");
+                
+                // Close modal
+                eventModal.style.display = 'none';
+                
+                // Update board
+                updateBoard();
+            }
+        });
+
+        // Show confirmation modal
+        function showConfirmModal(title, message, confirmAction) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            
+            // Remove previous event listener and add new one
+            confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+            confirmBtn = document.getElementById('confirmBtn');
+            
+            confirmBtn.addEventListener('click', () => {
+                confirmAction();
+                confirmModal.style.display = 'none';
+            });
+            
+            confirmModal.style.display = 'flex';
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+            if (e.target === eventModal) {
+                eventModal.style.display = 'none';
+            }
+        });
+
+        // Initialize the game when the page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
 
