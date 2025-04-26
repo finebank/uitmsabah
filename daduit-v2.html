@@ -921,6 +921,143 @@
             font-weight: bold;
         }
 
+        /* Info Button & Modal Styles */
+        .info-button {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .info-button:hover {
+            transform: scale(1.1);
+            background: var(--primary-hover);
+        }
+
+        .info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .info-modal.active {
+            opacity: 1;
+        }
+
+        .info-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            z-index: 10;
+        }
+
+        .info-modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .info-modal-close {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--neutral-color);
+            transition: color 0.2s;
+        }
+
+        .info-modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .info-modal-content {
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .info-section {
+            margin-bottom: 40px;
+        }
+
+        .info-section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .info-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h4 i {
+            color: var(--primary-color);
+        }
+
+        .info-card ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .info-card ul li {
+            margin-bottom: 8px;
+        }
+
+        /* New footer styles */
+        .footer {
+            background: var(--card-bg);
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+            color: var(--neutral-color);
+        }
+
         @media (max-width: 768px) {
             .game-container {
                 flex-direction: column;
@@ -947,6 +1084,10 @@
             .event-options {
                 flex-direction: column;
             }
+
+            .info-modal-content {
+                padding: 20px;
+            }
         }
 
         .confetti {
@@ -962,6 +1103,11 @@
 <body>
     <div class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Info Button -->
+    <div class="info-button" id="infoButton">
+        <i class="fas fa-info"></i>
     </div>
 
     <!-- New Beautiful Header with 3D Dice and Player Pin -->
@@ -1176,8 +1322,112 @@
         </div>
     </div>
     
+    <!-- Footer -->
+    <footer class="footer">
+        <p>2025 © All rights reserved. The coding of this game is assisted by Generative-AI while the whole ideations and iterations process are orchestrated by the authors and developers; Fauze, Sarmila, Azrina, Ninalyn of UiTM Sabah Branch.</p>
+    </footer>
+    
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Game Info Modal -->
+    <div class="info-modal" id="infoModal">
+        <div class="info-modal-header">
+            <h2 class="info-modal-title">DADUit Game Guide</h2>
+            <div class="info-modal-close" id="closeInfoModal">&times;</div>
+        </div>
+        <div class="info-modal-content">
+            <div class="info-section">
+                <h3 class="info-section-title">Game Overview</h3>
+                <p>DADUit is a financial literacy board game designed to simulate real-life financial decisions in a Malaysian context. Navigate through two months of financial challenges, complete tasks, and make smart decisions to maintain a healthy financial standing.</p>
+                <p>The game combines elements of chance (dice rolls) with strategic decision-making to teach important financial literacy concepts while being entertaining.</p>
+            </div>
+
+            <div class="info-section">
+                <h3 class="info-section-title">Game Mechanics</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-dice"></i> Rolling the Dice</h4>
+                    <p>Click the "Roll Dice" button to move your player pin along the calendar board. The number of steps you move is determined by the sum of the two dice. This simulates the unpredictable nature of life events affecting your financial journey.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-calendar-day"></i> Special Days</h4>
+                    <p>The calendar contains several types of special days:</p>
+                    <ul>
+                        <li><strong>Payday (Days 15 and 30):</strong> You'll receive your salary (RM3,800) and pay your regular expenses (RM2,500).</li>
+                        <li><strong>Event Days (Days 5, 10, 15, 20, 25):</strong> These days trigger special financial events that require your decision.</li>
+                        <li><strong>Random Challenge Days:</strong> There's a 30% chance that landing on a regular day will trigger a random financial challenge.</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-tasks"></i> Completing Tasks</h4>
+                    <p>Use the "Complete Today" button to mark a financial task as completed for the current day. Completing tasks increases your streak and earns achievements, demonstrating consistency in financial management.</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="info-section-title">Winning & Losing Conditions</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-trophy"></i> How to Win</h4>
+                    <p>To win the DADUit game, you need to:</p>
+                    <ul>
+                        <li>Complete both months (60 days) with a positive bank balance</li>
+                        <li>Complete at least 15 financial tasks</li>
+                        <li>Maintain your financial health throughout the journey</li>
+                    </ul>
+                    <p>The player who accumulates the highest balance while collecting the most achievements is considered the most financially savvy.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Bankruptcy Rules</h4>
+                    <p>You will be declared bankrupt if:</p>
+                    <ul>
+                        <li>Your balance drops below -RM1,000 at any point in the game</li>
+                        <li>You miss three consecutive paydays without having sufficient funds to cover your expenses</li>
+                        <li>You accumulate more than RM5,000 in debt without a clear repayment plan (tracked through negative balance)</li>
+                    </ul>
+                    <p>If bankruptcy occurs, you'll receive a notification and be given the option to restart the game with a better understanding of financial planning.</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="info-section-title">Financial Events & Decisions</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-money-bill-wave"></i> Types of Financial Events</h4>
+                    <p>The game includes various Malaysian-specific financial scenarios:</p>
+                    <ul>
+                        <li><strong>Unexpected Expenses:</strong> Car repairs, medical bills, home appliance breakdowns</li>
+                        <li><strong>Investment Opportunities:</strong> ASB investments, property options, business ventures</li>
+                        <li><strong>Cultural Events:</strong> Hari Raya preparations, family gatherings, festive celebrations</li>
+                        <li><strong>Government Programs:</strong> EPF withdrawals, PTPTN loan repayments, tax incentives</li>
+                        <li><strong>Emergencies:</strong> Flash floods, water disruptions, health issues</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-chart-line"></i> Financial Strategy Tips</h4>
+                    <ul>
+                        <li>Always maintain an emergency fund of at least RM1,000</li>
+                        <li>Consider long-term benefits over short-term gains</li>
+                        <li>Take advantage of government incentives and programs</li>
+                        <li>Balance essential spending with occasional treats</li>
+                        <li>Make use of e-wallet promotions and cashback opportunities</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="info-section-title">About The Game</h3>
+                <p>DADUit was developed as an educational tool to promote financial literacy in Malaysia. The game incorporates real-world financial scenarios and decisions faced by Malaysians, providing a safe environment to learn about the consequences of different financial choices.</p>
+                <p>The game is designed by Fauze, Sarmila, Azrina, and Ninalyn of UiTM Sabah Branch, with technical assistance from Generative AI tools to bring the concept to life.</p>
+                <p>For feedback, suggestions, or to report issues, please contact the development team at your-email@uitm.edu.my.</p>
+            </div>
+        </div>
+    </div>
     
     <!-- Event Modal with Enhanced UI -->
     <div class="modal" id="eventModal">
@@ -1230,7 +1480,11 @@
             specialDays: {
                 events: [5, 10, 15, 20, 25], // Days with special events in each month
                 paydays: [15, 30]           // Paydays in each month
-            }
+            },
+            // Add bankruptcy tracking
+            bankruptcyThreshold: -1000,
+            missedPaydays: 0,
+            isBankrupt: false
         };
 
         // DOM Elements
@@ -1251,6 +1505,11 @@
         const gamePath = document.getElementById('gamePath');
         const playerGamePin = document.getElementById('playerGamePin');
         const rollDiceBtn = document.getElementById('rollDiceBtn');
+        
+        // Info button and modal
+        const infoButton = document.getElementById('infoButton');
+        const infoModal = document.getElementById('infoModal');
+        const closeInfoModal = document.getElementById('closeInfoModal');
         
         // Modal elements
         const eventModal = document.getElementById('eventModal');
@@ -2018,6 +2277,39 @@
             
             // Update streak (placeholder)
             currentStreakEl.textContent = `Current streak: ${gameState.completedChallenges} challenges`;
+            
+            // Check for bankruptcy
+            checkBankruptcy();
+        }
+
+        // Check for bankruptcy conditions
+        function checkBankruptcy() {
+            if (gameState.isBankrupt) return; // Already bankrupt
+            
+            if (gameState.balance < gameState.bankruptcyThreshold) {
+                declareBankruptcy("Your balance has fallen below RM-1,000");
+            }
+            
+            if (gameState.missedPaydays >= 3) {
+                declareBankruptcy("You've missed 3 consecutive paydays");
+            }
+        }
+
+        // Declare bankruptcy
+        function declareBankruptcy(reason) {
+            gameState.isBankrupt = true;
+            saveGameState();
+            
+            showConfirmModal(
+                'BANKRUPTCY DECLARED',
+                `${reason}. You have been declared bankrupt. Your financial journey has ended. Would you like to start over?`,
+                resetGame
+            );
+            
+            // Disable game buttons
+            rollDiceBtn.disabled = true;
+            completeTaskBtn.disabled = true;
+            missTaskBtn.disabled = true;
         }
 
         // Render achievements
@@ -2099,7 +2391,7 @@
 
         // Roll the dice with realistic 3D animation
         function rollDice() {
-            if (gameState.isRolling) return;
+            if (gameState.isRolling || gameState.isBankrupt) return;
             
             gameState.isRolling = true;
             rollDiceBtn.disabled = true;
@@ -2217,10 +2509,21 @@
 
         // Process salary payment
         function processSalary() {
-            gameState.balance += gameState.salary;
-            gameState.balance -= gameState.expenses;
+            // Check if player has enough to cover expenses
+            if (gameState.balance < gameState.expenses) {
+                // Record missed payday
+                gameState.missedPaydays++;
+                showToast("Missed Expenses", `You don't have enough to cover your expenses! Missed payday count: ${gameState.missedPaydays}/3`, "error");
+                gameState.balance += gameState.salary;
+                // Don't subtract expenses - they'll remain in debt
+            } else {
+                // Reset missed paydays counter if payment is successful
+                gameState.missedPaydays = 0;
+                gameState.balance += gameState.salary;
+                gameState.balance -= gameState.expenses;
+                showToast("Payday", `Received salary: +RM${gameState.salary}, Paid expenses: -RM${gameState.expenses}`, "success");
+            }
             
-            showToast("Payday", `Received salary: +RM${gameState.salary}, Paid expenses: -RM${gameState.expenses}`, "success");
             updateBoard();
         }
 
@@ -2342,6 +2645,13 @@
             gameState.balance = 1000;
             gameState.achievements = [];
             gameState.completedChallenges = 0;
+            gameState.missedPaydays = 0;
+            gameState.isBankrupt = false;
+            
+            // Re-enable buttons
+            rollDiceBtn.disabled = false;
+            completeTaskBtn.disabled = false;
+            missTaskBtn.disabled = false;
             
             saveGameState();
             renderCalendar();
@@ -2358,6 +2668,21 @@
             const isDark = document.documentElement.classList.contains('dark');
             localStorage.setItem('darkMode', isDark);
             themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // Info button event listeners
+        infoButton.addEventListener('click', () => {
+            infoModal.style.display = 'block';
+            setTimeout(() => {
+                infoModal.classList.add('active');
+            }, 10);
+        });
+
+        closeInfoModal.addEventListener('click', () => {
+            infoModal.classList.remove('active');
+            setTimeout(() => {
+                infoModal.style.display = 'none';
+            }, 300);
         });
 
         prevMonthBtn.addEventListener('click', () => {
@@ -2377,6 +2702,8 @@
         rollDiceBtn.addEventListener('click', rollDice);
 
         completeTaskBtn.addEventListener('click', () => {
+            if (gameState.isBankrupt) return;
+            
             gameState.completedChallenges++;
             updateStats();
             saveGameState();
@@ -2384,6 +2711,8 @@
         });
 
         missTaskBtn.addEventListener('click', () => {
+            if (gameState.isBankrupt) return;
+            
             showToast("Task Missed", "You've missed a task.", "error");
         });
 
@@ -2477,6 +2806,12 @@
             if (e.target === eventModal) {
                 eventModal.style.display = 'none';
             }
+            if (e.target === infoModal) {
+                infoModal.classList.remove('active');
+                setTimeout(() => {
+                    infoModal.style.display = 'none';
+                }, 300);
+            }
         });
 
         // Initialize the game when the page loads
@@ -2484,4 +2819,3 @@
     </script>
 </body>
 </html>
-
