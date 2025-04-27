@@ -1,0 +1,653 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        secondary: '#4B4A9E',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        .dark .scenario-card {
+            background-color: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+        
+        .dark {
+            color-scheme: dark;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- Game Screens -->
+        <div id="start-screen" class="text-center py-8 fade-in">
+            <h1 class="text-4xl font-bold text-primary mb-4">Risk Management Challenge</h1>
+            <p class="mb-6 text-lg">Test your knowledge about Risk Management concepts and processes!</p>
+            <div class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-semibold mb-3">How to Play:</h2>
+                <ol class="text-left space-y-2 list-decimal list-inside">
+                    <li>You'll face different business scenarios with potential risks</li>
+                    <li>Identify the type of risk and its characteristics</li>
+                    <li>Choose appropriate risk management techniques</li>
+                    <li>Get scored based on your understanding</li>
+                </ol>
+            </div>
+            <button id="start-btn" class="bg-primary hover:bg-secondary text-white font-bold py-3 px-8 rounded-full transition-colors duration-200 text-lg">Start Challenge</button>
+        </div>
+
+        <div id="game-screen" class="py-4 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-primary">Risk Challenge</h2>
+                    <p id="progress" class="text-sm mt-1">Scenario 1 of 5</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold">Score: <span id="score">0</span></p>
+                    <p class="text-sm mt-1">Max: <span id="max-score">500</span></p>
+                </div>
+            </div>
+
+            <div id="scenario-container" class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6 fade-in">
+                <!-- Scenario content will be inserted here -->
+            </div>
+
+            <div id="question-container" class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6 fade-in">
+                <!-- Question content will be inserted here -->
+            </div>
+
+            <div id="feedback-container" class="hidden scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6 border-l-4 fade-in">
+                <!-- Feedback content will be inserted here -->
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="back-btn" class="bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold py-2 px-6 rounded-full transition-colors duration-200 hidden">Back</button>
+                <button id="next-btn" class="bg-primary hover:bg-secondary text-white font-bold py-2 px-6 rounded-full transition-colors duration-200 ml-auto">Next</button>
+            </div>
+        </div>
+
+        <div id="end-screen" class="text-center py-8 hidden fade-in">
+            <h1 class="text-4xl font-bold text-primary mb-4">Challenge Complete!</h1>
+            <div class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-2xl font-semibold mb-3">Your Results</h2>
+                <p class="text-5xl font-bold mb-3"><span id="final-score">0</span>/<span id="final-max-score">500</span></p>
+                <div id="result-message" class="mt-4 text-lg"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-3">What You Did Well</h3>
+                    <ul id="strengths" class="text-left list-disc list-inside">
+                        <!-- Strengths will be inserted here -->
+                    </ul>
+                </div>
+                <div class="scenario-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-3">Areas to Improve</h3>
+                    <ul id="improvements" class="text-left list-disc list-inside">
+                        <!-- Improvements will be inserted here -->
+                    </ul>
+                </div>
+            </div>
+            <button id="restart-btn" class="bg-primary hover:bg-secondary text-white font-bold py-3 px-8 rounded-full transition-colors duration-200 text-lg">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Check for dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const backBtn = document.getElementById('back-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const scoreElement = document.getElementById('score');
+        const maxScoreElement = document.getElementById('max-score');
+        const progressElement = document.getElementById('progress');
+        const scenarioContainer = document.getElementById('scenario-container');
+        const questionContainer = document.getElementById('question-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const finalScoreElement = document.getElementById('final-score');
+        const finalMaxScoreElement = document.getElementById('final-max-score');
+        const resultMessageElement = document.getElementById('result-message');
+        const strengthsList = document.getElementById('strengths');
+        const improvementsList = document.getElementById('improvements');
+
+        // Game Data
+        const scenarios = [
+            {
+                id: 1,
+                title: "H&N Shopping Mall - Shoplifting Issue",
+                description: "You are the manager of H&N Shopping Mall. Recently, there has been an increase in shoplifting incidents, causing inventory losses. How would you manage this risk?",
+                image: "https://1borneohypermall.com/wp-content/uploads/2022/01/1borneo-front-2048x766.jpg",
+                questions: [
+                    {
+                        id: 'q1-1',
+                        text: "What type of risk exposure is shoplifting classified as?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Property exposure", correct: true },
+                            { id: 'b', text: "Liability exposure", correct: false },
+                            { id: 'c', text: "Human exposure", correct: false },
+                            { id: 'd', text: "Financial exposure", correct: false }
+                        ],
+                        explanation: "Shoplifting is classified as a property exposure as it involves the theft of physical assets (merchandise) owned by the business."
+                    },
+                    {
+                        id: 'q1-2',
+                        text: "How would you evaluate this risk in terms of frequency and severity?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "High frequency, high severity", correct: false },
+                            { id: 'b', text: "High frequency, low severity", correct: true },
+                            { id: 'c', text: "Low frequency, high severity", correct: false },
+                            { id: 'd', text: "Low frequency, low severity", correct: false }
+                        ],
+                        explanation: "Shoplifting typically occurs frequently but each individual incident usually results in relatively small losses, making it a high frequency, low severity risk."
+                    },
+                    {
+                        id: 'q1-3',
+                        text: "Based on the risk matrix, what would be the most appropriate risk management technique for shoplifting?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Risk transfer through insurance", correct: false },
+                            { id: 'c', text: "Risk retention and reduction", correct: true },
+                            { id: 'd', text: "Contractual transfer", correct: false }
+                        ],
+                        explanation: "For high frequency, low severity risks like shoplifting, the risk matrix suggests risk retention and reduction as the most appropriate technique. This might involve implementing security measures (like CCTV and security tags) while accepting that some losses will still occur."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Factory Fire Hazard",
+                description: "You're the risk manager for a manufacturing company. The factory has various chemicals and materials that could potentially cause a fire. How would you approach this risk?",
+                image: "https://pfst.cf2.poecdn.net/d/N4PxJHkJkzHFKpQzNktGn/1719901311/4599c9a87bf47f9aa6ae17b257bd6e29.svg",
+                questions: [
+                    {
+                        id: 'q2-1',
+                        text: "How would you classify a potential factory fire in terms of frequency and severity?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "High frequency, high severity", correct: false },
+                            { id: 'b', text: "High frequency, low severity", correct: false },
+                            { id: 'c', text: "Low frequency, high severity", correct: true },
+                            { id: 'd', text: "Low frequency, low severity", correct: false }
+                        ],
+                        explanation: "Factory fires typically don't occur frequently, but when they do, they can cause massive damage to property, disrupt operations, and potentially cause injuries or deaths. This makes it a low frequency, high severity risk."
+                    },
+                    {
+                        id: 'q2-2',
+                        text: "Which of these would be considered an indirect damage from a factory fire?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Damage to the building structure", correct: false },
+                            { id: 'b', text: "Destruction of manufacturing equipment", correct: false },
+                            { id: 'c', text: "Loss of profit due to business interruption", correct: true },
+                            { id: 'd', text: "Injuries to workers", correct: false }
+                        ],
+                        explanation: "Loss of profit due to business interruption is considered an indirect damage as it's a consequence of the direct damage (physical destruction) caused by the fire."
+                    },
+                    {
+                        id: 'q2-3',
+                        text: "Based on the risk matrix, what would be the most appropriate risk management technique for a factory fire risk?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Risk transfer (e.g. insurance)", correct: true },
+                            { id: 'c', text: "Risk retention", correct: false },
+                            { id: 'd', text: "Risk acceptance without mitigation", correct: false }
+                        ],
+                        explanation: "For low frequency, high severity risks like factory fires, the risk matrix suggests risk transfer (such as insurance) as the most appropriate technique. This allows the company to transfer the financial consequences of the potentially devastating loss to an insurer."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Employee Health and Safety",
+                description: "You're the HR director for a construction company with projects across the country. Employee injuries are a concern in this industry. How would you manage this risk?",
+                image: "https://pfst.cf2.poecdn.net/d/zJFJSw5Qh28MqPeW7z1YW/1719901329/9fa64e72d877733da8dbcd6ec2a33a6d.svg",
+                questions: [
+                    {
+                        id: 'q3-1',
+                        text: "Which risk management objective is primarily addressed when implementing safety training and protocols?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Reducing fear and worry", correct: false },
+                            { id: 'b', text: "Reducing impact of loss", correct: true },
+                            { id: 'c', text: "Ensuring stability of earnings", correct: false },
+                            { id: 'd', text: "Social responsibility", correct: false }
+                        ],
+                        explanation: "Safety training and protocols are primarily implemented to reduce the impact of loss by preventing accidents and injuries, which is a pre-loss objective of risk management."
+                    },
+                    {
+                        id: 'q3-2',
+                        text: "Installing safety guardrails and requiring hard hats on construction sites are examples of which risk control technique?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Loss prevention", correct: true },
+                            { id: 'c', text: "Loss reduction", correct: false },
+                            { id: 'd', text: "Contractual transfer", correct: false }
+                        ],
+                        explanation: "Installing safety guardrails and requiring hard hats are examples of loss prevention measures, as they aim to reduce the probability or frequency of injuries occurring."
+                    },
+                    {
+                        id: 'q3-3',
+                        text: "Having a first aid station and medical staff on-site is an example of which risk management technique?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Loss prevention", correct: false },
+                            { id: 'c', text: "Loss reduction", correct: true },
+                            { id: 'd', text: "Risk retention", correct: false }
+                        ],
+                        explanation: "Having first aid stations and medical staff on-site is an example of loss reduction, as these measures aim to reduce the severity of injuries that do occur by providing immediate medical attention."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "New Product Launch Risks",
+                description: "Your company is planning to launch a new pharmaceutical product. There are concerns about potential side effects that could lead to lawsuits. How would you manage this risk?",
+                image: "https://pfst.cf2.poecdn.net/d/fLtbBDfLmY4a86qeEkU6x/1719901345/31e64f62ee6ba8b5e4a73ec8ea39b0ea.svg",
+                questions: [
+                    {
+                        id: 'q4-1',
+                        text: "Which risk management technique is being applied if the company decides not to launch the product due to concerns about potential side effects?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: true },
+                            { id: 'b', text: "Risk retention", correct: false },
+                            { id: 'c', text: "Risk transfer", correct: false },
+                            { id: 'd', text: "Loss reduction", correct: false }
+                        ],
+                        explanation: "Deciding not to launch the product is an example of risk avoidance - not exposing the organization to events that create the risk after rational consideration."
+                    },
+                    {
+                        id: 'q4-2',
+                        text: "What type of risk exposure would lawsuits from product side effects be classified as?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Property exposure", correct: false },
+                            { id: 'b', text: "Liability exposure", correct: true },
+                            { id: 'c', text: "Human exposure", correct: false },
+                            { id: 'd', text: "Financial exposure", correct: false }
+                        ],
+                        explanation: "Lawsuits from product side effects would be classified as liability exposure, as they involve the company's legal responsibility for harm caused to others."
+                    },
+                    {
+                        id: 'q4-3',
+                        text: "If the company decides to proceed with the launch, which risk management objective is addressed by including clear warning labels about potential side effects?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Required by law", correct: true },
+                            { id: 'b', text: "Survival of organization", correct: false },
+                            { id: 'c', text: "Stability of earnings", correct: false },
+                            { id: 'd', text: "Reduce fear and worry", correct: false }
+                        ],
+                        explanation: "Including warning labels about side effects is typically required by pharmaceutical regulations, making it an example of the 'required by law' pre-loss objective of risk management."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Natural Disaster Preparedness",
+                description: "Your company headquarters is located in an area prone to earthquakes. How would you prepare for this risk?",
+                image: "https://pfst.cf2.poecdn.net/d/Tf2zyHrYrLX22YZBS2XGE/1719901361/13fda5bed8d9d94ef02dc2db0d7a8b71.svg",
+                questions: [
+                    {
+                        id: 'q5-1',
+                        text: "Having backup servers in a different geographical location is an example of which risk control technique?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Separation", correct: true },
+                            { id: 'c', text: "Loss reduction", correct: false },
+                            { id: 'd', text: "Contractual transfer", correct: false }
+                        ],
+                        explanation: "Having backup servers in a different geographical location is an example of separation - dispersing assets across multiple locations to reduce the impact of a loss in any single location."
+                    },
+                    {
+                        id: 'q5-2',
+                        text: "Which post-loss objective of risk management is addressed by having a disaster recovery plan?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Reduce impact of loss", correct: false },
+                            { id: 'b', text: "Reduce fear and worry", correct: false },
+                            { id: 'c', text: "Survival of the organization", correct: true },
+                            { id: 'd', text: "Social responsibility", correct: false }
+                        ],
+                        explanation: "Having a disaster recovery plan addresses the 'survival of the organization' post-loss objective, as it ensures the company can continue operations after a significant event like an earthquake."
+                    },
+                    {
+                        id: 'q5-3',
+                        text: "In the context of earthquake risk, what would purchasing earthquake insurance be classified as?",
+                        type: "single",
+                        options: [
+                            { id: 'a', text: "Risk avoidance", correct: false },
+                            { id: 'b', text: "Risk retention", correct: false },
+                            { id: 'c', text: "Risk transfer", correct: true },
+                            { id: 'd', text: "Loss prevention", correct: false }
+                        ],
+                        explanation: "Purchasing earthquake insurance is a form of risk transfer, as it transfers the financial consequences of potential earthquake damage to the insurance company in exchange for premium payments."
+                    }
+                ]
+            }
+        ];
+
+        // Game State
+        let currentScenario = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let maxScore = 0;
+        let userAnswers = [];
+        let strengths = [];
+        let improvements = [];
+
+        // Calculate max score
+        for (const scenario of scenarios) {
+            maxScore += scenario.questions.length * 100;
+        }
+        maxScoreElement.textContent = maxScore;
+        finalMaxScoreElement.textContent = maxScore;
+
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        nextBtn.addEventListener('click', handleNext);
+        backBtn.addEventListener('click', handleBack);
+        restartBtn.addEventListener('click', restartGame);
+
+        // Game Functions
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // Reset game state
+            currentScenario = 0;
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            strengths = [];
+            improvements = [];
+            
+            scoreElement.textContent = score;
+            loadScenario();
+        }
+
+        function loadScenario() {
+            const scenario = scenarios[currentScenario];
+            progressElement.textContent = `Scenario ${currentScenario + 1} of ${scenarios.length}`;
+            
+            // Clear previous content
+            scenarioContainer.innerHTML = '';
+            questionContainer.innerHTML = '';
+            feedbackContainer.classList.add('hidden');
+            
+            // Create scenario content
+            const scenarioContent = `
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2">${scenario.title}</h3>
+                        <p>${scenario.description}</p>
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <img src="${scenario.image}" alt="${scenario.title}" class="rounded-lg shadow">
+                    </div>
+                </div>
+            `;
+            scenarioContainer.innerHTML = scenarioContent;
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const scenario = scenarios[currentScenario];
+            const question = scenario.questions[currentQuestion];
+            
+            // Clear previous question
+            questionContainer.innerHTML = '';
+            feedbackContainer.classList.add('hidden');
+            
+            // Create question content
+            const questionContent = `
+                <h3 class="text-lg font-bold mb-4">Question ${currentQuestion + 1}: ${question.text}</h3>
+                <div class="space-y-3 options-container">
+                    ${question.options.map(option => `
+                        <div class="option-item cursor-pointer p-3 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-option="${option.id}">
+                            <div class="flex items-start">
+                                <div class="option-marker h-6 w-6 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 mr-3 flex items-center justify-center">
+                                    ${option.id.toUpperCase()}
+                                </div>
+                                <div class="flex-1">
+                                    <p>${option.text}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            questionContainer.innerHTML = questionContent;
+            
+            // Add event listeners to options
+            const options = questionContainer.querySelectorAll('.option-item');
+            options.forEach(option => {
+                option.addEventListener('click', () => selectOption(option.dataset.option));
+            });
+            
+            // Update navigation buttons
+            updateNavButtons();
+        }
+
+        function selectOption(optionId) {
+            const scenario = scenarios[currentScenario];
+            const question = scenario.questions[currentQuestion];
+            const selectedOption = question.options.find(opt => opt.id === optionId);
+            
+            // Store user answer
+            userAnswers[`${currentScenario}-${currentQuestion}`] = {
+                questionId: question.id,
+                selectedOptionId: optionId,
+                correct: selectedOption.correct
+            };
+            
+            // Update UI to show selected option
+            const options = questionContainer.querySelectorAll('.option-item');
+            options.forEach(opt => {
+                opt.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'border-primary');
+                if (opt.dataset.option === optionId) {
+                    opt.classList.add('bg-gray-100', 'dark:bg-gray-700', 'border-primary');
+                }
+            });
+            
+            // Show feedback
+            showFeedback(selectedOption.correct, question.explanation);
+            
+            // Update score if correct
+            if (selectedOption.correct) {
+                score += 100;
+                scoreElement.textContent = score;
+            }
+            
+            // Track strengths and improvements
+            if (selectedOption.correct) {
+                if (!strengths.includes(question.text)) {
+                    strengths.push(question.text);
+                }
+            } else {
+                if (!improvements.includes(question.text)) {
+                    improvements.push(question.text);
+                }
+            }
+        }
+
+        function showFeedback(isCorrect, explanation) {
+            feedbackContainer.innerHTML = `
+                <div class="flex items-start">
+                    <div class="h-6 w-6 rounded-full flex-shrink-0 mr-3 flex items-center justify-center ${isCorrect ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'}">
+                        <span class="material-icons text-lg">
+                            ${isCorrect ? '✓' : '✗'}
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold ${isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}">${isCorrect ? 'Correct!' : 'Incorrect!'}</p>
+                        <p class="mt-2">${explanation}</p>
+                    </div>
+                </div>
+            `;
+            feedbackContainer.classList.remove('hidden');
+            
+            feedbackContainer.classList.remove('border-green-500', 'border-red-500');
+            if (isCorrect) {
+                feedbackContainer.classList.add('border-green-500');
+            } else {
+                feedbackContainer.classList.add('border-red-500');
+            }
+        }
+
+        function handleNext() {
+            // If user hasn't answered current question, show an alert
+            const currentAnswer = userAnswers[`${currentScenario}-${currentQuestion}`];
+            if (!currentAnswer && feedbackContainer.classList.contains('hidden')) {
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-lg fade-in';
+                notification.innerHTML = `
+                    <p>Please select an answer before continuing.</p>
+                `;
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 500);
+                }, 2000);
+                return;
+            }
+            
+            // Move to next question or scenario
+            if (currentQuestion < scenarios[currentScenario].questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else if (currentScenario < scenarios.length - 1) {
+                currentScenario++;
+                currentQuestion = 0;
+                loadScenario();
+            } else {
+                // End game
+                endGame();
+            }
+        }
+
+        function handleBack() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            } else if (currentScenario > 0) {
+                currentScenario--;
+                currentQuestion = scenarios[currentScenario].questions.length - 1;
+                loadScenario();
+            }
+        }
+
+        function updateNavButtons() {
+            // Show/hide back button
+            if (currentScenario === 0 && currentQuestion === 0) {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+            
+            // Update next button text for final question
+            if (currentScenario === scenarios.length - 1 && currentQuestion === scenarios[currentScenario].questions.length - 1) {
+                nextBtn.textContent = 'Finish';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+
+        function endGame() {
+            gameScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            
+            finalScoreElement.textContent = score;
+            
+            // Generate result message
+            const percentage = (score / maxScore) * 100;
+            let resultMessage = '';
+            
+            if (percentage >= 90) {
+                resultMessage = 'Outstanding! You have excellent knowledge of risk management concepts and processes.';
+            } else if (percentage >= 75) {
+                resultMessage = 'Great job! You have a strong understanding of risk management principles.';
+            } else if (percentage >= 60) {
+                resultMessage = 'Good effort! You have a solid foundation in risk management concepts.';
+            } else if (percentage >= 40) {
+                resultMessage = 'Nice try! You have some understanding of risk management, but there\'s room for improvement.';
+            } else {
+                resultMessage = 'Keep learning! Review the risk management concepts and try again.';
+            }
+            
+            resultMessageElement.textContent = resultMessage;
+            
+            // Display strengths (limit to top 3)
+            strengthsList.innerHTML = '';
+            strengths.slice(0, 3).forEach(strength => {
+                const li = document.createElement('li');
+                li.textContent = strength;
+                strengthsList.appendChild(li);
+            });
+            
+            if (strengths.length === 0) {
+                strengthsList.innerHTML = '<li>Keep practicing to identify your strengths!</li>';
+            }
+            
+            // Display areas to improve (limit to top 3)
+            improvementsList.innerHTML = '';
+            improvements.slice(0, 3).forEach(improvement => {
+                const li = document.createElement('li');
+                li.textContent = improvement;
+                improvementsList.appendChild(li);
+            });
+            
+            if (improvements.length === 0) {
+                improvementsList.innerHTML = '<li>Great job! You answered all questions correctly!</li>';
+            }
+        }
+
+        function restartGame() {
+            endScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+
+
+</body></html>
