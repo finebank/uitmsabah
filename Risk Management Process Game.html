@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Management Process Game</title>
@@ -82,15 +84,38 @@
         @media print {
             body * {
                 visibility: hidden;
+                background-color: white !important;
+                color: black !important;
             }
             .print-section, .print-section * {
                 visibility: visible;
+                background-color: white !important;
+                color: black !important;
             }
             .print-section {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
+                padding: 15px;
+            }
+            .print-section .text-primary {
+                color: #5D5CDE !important;
+            }
+            .print-section .text-success {
+                color: #10B981 !important;
+            }
+            .print-section .text-warning {
+                color: #F59E0B !important;
+            }
+            .print-section .text-danger {
+                color: #EF4444 !important;
+            }
+            .print-section .bg-gray-50, 
+            .print-section .bg-gray-100,
+            .print-section .bg-white {
+                background-color: white !important;
+                border: 1px solid #eaeaea !important;
             }
             .no-print {
                 display: none !important;
@@ -132,7 +157,7 @@
                     4. Select Techniques
                 </button>
                 <button data-step="5" class="step-btn whitespace-nowrap px-4 py-2 text-sm font-medium text-gray-500 border-b-2 border-transparent">
-                    5. Monitor &amp; Review
+                    5. Monitor & Review
                 </button>
             </div>
             
@@ -310,7 +335,8 @@
                             <div class="space-y-4">
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Avoidance" data-description="Eliminating activities or processes that could lead to a risk, completely avoiding exposure to the risk.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Avoidance" 
+                                               data-description="Eliminating activities or processes that could lead to a risk, completely avoiding exposure to the risk.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Risk Avoidance</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Eliminate exposure to risk by avoiding activities that could cause it</p>
@@ -320,7 +346,8 @@
                                 
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Reduction/Loss Prevention" data-description="Taking measures to reduce the likelihood or impact of a risk, making it less probable or severe.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Reduction/Loss Prevention" 
+                                               data-description="Taking measures to reduce the likelihood or impact of a risk, making it less probable or severe.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Risk Reduction/Loss Prevention</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Implement controls to reduce the frequency or severity of a risk</p>
@@ -330,7 +357,8 @@
                                 
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Transfer/Insurance" data-description="Transferring the financial impact of a risk to a third party, typically through insurance or contractual agreements.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Transfer/Insurance" 
+                                               data-description="Transferring the financial impact of a risk to a third party, typically through insurance or contractual agreements.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Risk Transfer/Insurance</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Transfer financial consequences to another party (typically insurance)</p>
@@ -342,7 +370,8 @@
                             <div class="space-y-4">
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Retention/Acceptance" data-description="Accepting and bearing the potential consequences of a risk, often for low-impact or low-probability risks.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Retention/Acceptance" 
+                                               data-description="Accepting and bearing the potential consequences of a risk, often for low-impact or low-probability risks.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Risk Retention/Acceptance</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Accept and plan for the consequences of certain risks</p>
@@ -352,7 +381,8 @@
                                 
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Sharing" data-description="Distributing risk among multiple parties, such as through partnerships or joint ventures.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Risk Sharing" 
+                                               data-description="Distributing risk among multiple parties, such as through partnerships or joint ventures.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Risk Sharing</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Distribute portions of risk among multiple parties</p>
@@ -362,7 +392,8 @@
                                 
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600 transition-colors duration-300">
                                     <label class="flex items-start">
-                                        <input type="checkbox" class="risk-technique mt-1" value="Diversification" data-description="Spreading risk across different areas to minimize the impact of any single negative event.">
+                                        <input type="checkbox" class="risk-technique mt-1" value="Diversification" 
+                                               data-description="Spreading risk across different areas to minimize the impact of any single negative event.">
                                         <div class="ml-2">
                                             <span class="font-medium text-gray-700 dark:text-gray-300">Diversification</span>
                                             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Spread resources or activities to minimize concentrated risk</p>
@@ -437,7 +468,7 @@
                             ← Back
                         </button>
                         <button id="next-4" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
-                            Next: Monitor &amp; Review →
+                            Next: Monitor & Review →
                         </button>
                     </div>
                 </div>
@@ -454,7 +485,7 @@
                                 <h4 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Review Frequency</h4>
                                 <select id="review-frequency" class="w-full px-3 py-2 text-base border rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white transition-colors duration-300">
                                     <option value="Monthly">Monthly</option>
-                                    <option value="Quarterly" selected="">Quarterly</option>
+                                    <option value="Quarterly" selected>Quarterly</option>
                                     <option value="Semi-annually">Semi-annually</option>
                                     <option value="Annually">Annually</option>
                                 </select>
@@ -484,7 +515,7 @@
                         </div>
                         
                         <div class="mb-6">
-                            <h4 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Monitoring &amp; Control Approach</h4>
+                            <h4 class="font-medium mb-2 text-gray-700 dark:text-gray-300">Monitoring & Control Approach</h4>
                             <textarea id="monitoring-approach" class="w-full px-3 py-2 text-base border rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white transition-colors duration-300" rows="4" placeholder="Describe how you will monitor and control your risk management programme..."></textarea>
                         </div>
                     </div>
@@ -521,9 +552,15 @@
                         <div>
                             <button id="print-report" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition mr-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                 </svg>
                                 Print Report
+                            </button>
+                            <button id="download-report" class="px-4 py-2 bg-success text-white rounded-md hover:bg-opacity-90 transition mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download Report
                             </button>
                             <button id="restart-game" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300">
                                 Start New Assessment
@@ -636,12 +673,131 @@
             navigateToStep(6);
         });
         
-        document.getElementById('print-report').addEventListener('click', () => {
-            window.print();
+        document.getElementById('print-report').addEventListener('click', function() {
+            // Show a message to inform the user that printing is happening
+            const reportContainer = document.getElementById('report-container');
+            const originalHTML = reportContainer.innerHTML;
+            
+            try {
+                // Try using window.print with a timeout to ensure rendering
+                setTimeout(() => {
+                    window.print();
+                    
+                    // Add a message if printing doesn't trigger automatically
+                    setTimeout(() => {
+                        const printButton = document.getElementById('print-report');
+                        if (printButton) {
+                            printButton.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                </svg>
+                                Print Report
+                            `;
+                        }
+                    }, 500);
+                }, 100);
+            } catch (e) {
+                // Fallback method - offer the user to manually save the report
+                alert("The print dialog may not have opened automatically. You can manually save the report by right-clicking on it and selecting 'Save As' or by taking a screenshot.");
+            }
         });
         
         document.getElementById('restart-game').addEventListener('click', () => {
             location.reload();
+        });
+        
+        // Download report button functionality
+        document.getElementById('download-report').addEventListener('click', function() {
+            try {
+                // Get the report content
+                const reportContainer = document.getElementById('report-container');
+                const reportContent = reportContainer.innerHTML;
+                
+                // Create a full HTML document
+                const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: white;
+            color: black;
+        }
+        .text-primary { color: #5D5CDE; }
+        .text-success { color: #10B981; }
+        .text-warning { color: #F59E0B; }
+        .text-danger { color: #EF4444; }
+        .bg-gray-50, .bg-gray-100 { 
+            background-color: #F9FAFB; 
+            border: 1px solid #eaeaea; 
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+        th {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    ${reportContent}
+</body>
+</html>
+                `;
+                
+                // Create a Blob containing the HTML content
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                
+                // Create a download link
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'risk_management_report.html';
+                
+                // Append link to the body (required for Firefox)
+                document.body.appendChild(link);
+                
+                // Trigger download
+                link.click();
+                
+                // Clean up
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                
+                const downloadButton = document.getElementById('download-report');
+                downloadButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Downloaded
+                `;
+                setTimeout(() => {
+                    downloadButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download Report
+                    `;
+                }, 2000);
+            } catch (e) {
+                console.error("Error downloading report:", e);
+                alert("There was an error downloading the report. Please try again or take a screenshot instead.");
+            }
         });
         
         // Risk method selection
@@ -1520,6 +1676,5 @@
         // Set initial step
         navigateToStep(1);
     </script>
-
-
-</body></html>
+</body>
+</html>
