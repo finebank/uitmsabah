@@ -84,38 +84,15 @@
         @media print {
             body * {
                 visibility: hidden;
-                background-color: white !important;
-                color: black !important;
             }
             .print-section, .print-section * {
                 visibility: visible;
-                background-color: white !important;
-                color: black !important;
             }
             .print-section {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
-                padding: 15px;
-            }
-            .print-section .text-primary {
-                color: #5D5CDE !important;
-            }
-            .print-section .text-success {
-                color: #10B981 !important;
-            }
-            .print-section .text-warning {
-                color: #F59E0B !important;
-            }
-            .print-section .text-danger {
-                color: #EF4444 !important;
-            }
-            .print-section .bg-gray-50, 
-            .print-section .bg-gray-100,
-            .print-section .bg-white {
-                background-color: white !important;
-                border: 1px solid #eaeaea !important;
             }
             .no-print {
                 display: none !important;
@@ -556,12 +533,6 @@
                                 </svg>
                                 Print Report
                             </button>
-                            <button id="download-report" class="px-4 py-2 bg-success text-white rounded-md hover:bg-opacity-90 transition mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                Download Report
-                            </button>
                             <button id="restart-game" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300">
                                 Start New Assessment
                             </button>
@@ -673,131 +644,12 @@
             navigateToStep(6);
         });
         
-        document.getElementById('print-report').addEventListener('click', function() {
-            // Show a message to inform the user that printing is happening
-            const reportContainer = document.getElementById('report-container');
-            const originalHTML = reportContainer.innerHTML;
-            
-            try {
-                // Try using window.print with a timeout to ensure rendering
-                setTimeout(() => {
-                    window.print();
-                    
-                    // Add a message if printing doesn't trigger automatically
-                    setTimeout(() => {
-                        const printButton = document.getElementById('print-report');
-                        if (printButton) {
-                            printButton.innerHTML = `
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                </svg>
-                                Print Report
-                            `;
-                        }
-                    }, 500);
-                }, 100);
-            } catch (e) {
-                // Fallback method - offer the user to manually save the report
-                alert("The print dialog may not have opened automatically. You can manually save the report by right-clicking on it and selecting 'Save As' or by taking a screenshot.");
-            }
+        document.getElementById('print-report').addEventListener('click', () => {
+            window.print();
         });
         
         document.getElementById('restart-game').addEventListener('click', () => {
             location.reload();
-        });
-        
-        // Download report button functionality
-        document.getElementById('download-report').addEventListener('click', function() {
-            try {
-                // Get the report content
-                const reportContainer = document.getElementById('report-container');
-                const reportContent = reportContainer.innerHTML;
-                
-                // Create a full HTML document
-                const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Management Report</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: white;
-            color: black;
-        }
-        .text-primary { color: #5D5CDE; }
-        .text-success { color: #10B981; }
-        .text-warning { color: #F59E0B; }
-        .text-danger { color: #EF4444; }
-        .bg-gray-50, .bg-gray-100 { 
-            background-color: #F9FAFB; 
-            border: 1px solid #eaeaea; 
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #eaeaea;
-        }
-        th {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    ${reportContent}
-</body>
-</html>
-                `;
-                
-                // Create a Blob containing the HTML content
-                const blob = new Blob([htmlContent], { type: 'text/html' });
-                
-                // Create a download link
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'risk_management_report.html';
-                
-                // Append link to the body (required for Firefox)
-                document.body.appendChild(link);
-                
-                // Trigger download
-                link.click();
-                
-                // Clean up
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
-                
-                const downloadButton = document.getElementById('download-report');
-                downloadButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Downloaded
-                `;
-                setTimeout(() => {
-                    downloadButton.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Download Report
-                    `;
-                }, 2000);
-            } catch (e) {
-                console.error("Error downloading report:", e);
-                alert("There was an error downloading the report. Please try again or take a screenshot instead.");
-            }
         });
         
         // Risk method selection
