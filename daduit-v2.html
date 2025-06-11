@@ -3,2834 +3,544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#5D5CDE">
-    <title>DADUit Game</title>
-        <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="DADUit Game">
-    <meta property="og:description" content="Daduit v2 is envisioned as a digital learning tool that delivers financial literacy education through gamified modules, enhancing user engagement and knowledge retention.">
-    <meta property="og:image" content="https://github.com/finebank/uitmsabah/raw/main/Daduit_20250426_131658_0000.png">
-    <meta property="og:url" content="https://finebank.github.io/uitmsabah/daduit-v2.html">
-    <meta property="og:type" content="website">
+    <title>DADUit Game - Malaysia Edition</title>
     
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DADUit Game">
-    <meta name="twitter:description" content="Daduit v2 is envisioned as a digital learning tool that delivers financial literacy education through gamified modules, enhancing user engagement and knowledge retention.">
-    <meta name="twitter:image" content="https://github.com/finebank/uitmsabah/raw/main/Daduit_20250426_131658_0000.png">
+    <!-- SEO and Social Media Share Information -->
+    <meta name="description" content="DaDuit game is envisioned as a digital learning tool that delivers financial literacy education through gamified modules, enhancing user engagement and knowledge retention">
+    <meta property="og:title" content="DADUit Game - Malaysia Edition">
+    <meta property="og:description" content="DaDuit game is envisioned as a digital learning tool that delivers financial literacy education through gamified modules, enhancing user engagement and knowledge retention">
+    <meta property="og:image" content="https://finebank.github.io/uitmsabah/Daduit_20250426_131658_0000.png">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#6366F1">
 
-    <!-- Add FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Add FontAwesome CDN -->
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #5D5CDE;
-            --primary-hover: #4949c4;
+            --primary-color: #6366F1;
+            --primary-hover: #4F46E5;
             --success-color: #10B981;
             --warning-color: #F59E0B;
             --danger-color: #EF4444;
-            --neutral-color: #6B7280;
-            --bg-light: #FFFFFF;
-            --text-light: #333333;
-            --border-light: #E2E8F0;
-            --bg-dark: #181818;
+            --info-color: #3B82F6;
+            
+            --bg-light: #F9FAFB;
+            --text-light: #1F2937;
+            --border-light: #E5E7EB;
+            --card-bg-light: #FFFFFF;
+
+            --bg-dark: #111827;
             --text-dark: #F3F4F6;
             --border-dark: #374151;
+            --card-bg-dark: #1F2937;
         }
 
         .dark {
             --bg-color: var(--bg-dark);
             --text-color: var(--text-dark);
             --border-color: var(--border-dark);
-            --card-bg: #242424;
-            --input-bg: #333333;
+            --card-bg: var(--card-bg-dark);
         }
 
         :root:not(.dark) {
             --bg-color: var(--bg-light);
             --text-color: var(--text-light);
             --border-color: var(--border-light);
-            --card-bg: #FFFFFF;
-            --input-bg: #F3F4F6;
+            --card-bg: var(--card-bg-light);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
             color: var(--text-color);
             background-color: var(--bg-color);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
             overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 100%;
-        }
-
-        /* New Header Styles */
-        .game-header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-            padding: 30px 0;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-title {
-            color: white;
-            font-size: 3rem;
-            font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            letter-spacing: -1px;
-            margin: 0;
-            background: linear-gradient(to right, #ffffff, #f0f0f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .header-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-            margin-top: 5px;
-            font-weight: 300;
-        }
-
-        .header-bg-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        /* 3D Dice Styles */
-        .dice-container {
-            display: flex;
-            gap: 20px;
-            perspective: 1000px;
-        }
-
-        .dice {
-            width: 60px;
-            height: 60px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1.5s ease-out;
-            cursor: pointer;
-        }
-
-        .dice-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            background: white;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0;
-        }
-
-        .dice-dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #333;
-            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .dice-face:nth-child(1) {
-            transform: translateZ(30px);
-        }
-        .dice-face:nth-child(2) {
-            transform: rotateY(180deg) translateZ(30px);
-        }
-        .dice-face:nth-child(3) {
-            transform: rotateY(90deg) translateZ(30px);
-        }
-        .dice-face:nth-child(4) {
-            transform: rotateY(-90deg) translateZ(30px);
-        }
-        .dice-face:nth-child(5) {
-            transform: rotateX(90deg) translateZ(30px);
-        }
-        .dice-face:nth-child(6) {
-            transform: rotateX(-90deg) translateZ(30px);
-        }
-
-        /* Dice dots positioning */
-        .dice-face[data-value="1"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: "center";
-        }
-        
-        .dice-face[data-value="2"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: 
-                "top-left ."
-                ". bottom-right";
-        }
-        
-        .dice-face[data-value="3"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: 
-                "top-left ."
-                "center ."
-                ". bottom-right";
-        }
-        
-        .dice-face[data-value="4"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: 
-                "top-left . top-right"
-                ". . ."
-                "bottom-left . bottom-right";
-        }
-        
-        .dice-face[data-value="5"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: 
-                "top-left . top-right"
-                ". center ."
-                "bottom-left . bottom-right";
-        }
-        
-        .dice-face[data-value="6"] .dice-dot-container {
-            display: grid;
-            grid-template-areas: 
-                "top-left . top-right"
-                "middle-left . middle-right"
-                "bottom-left . bottom-right";
-        }
-
-        .dice-dot-container {
-            width: 80%;
-            height: 80%;
-        }
-
-        /* 3D Player Pin */
-        .player-pin-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            perspective: 1000px;
-        }
-
-        .player-pin {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: pinFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes pinFloat {
-            0%, 100% { transform: translateY(0) rotateY(0); }
-            25% { transform: translateY(-5px) rotateY(90deg); }
-            50% { transform: translateY(-10px) rotateY(180deg); }
-            75% { transform: translateY(-5px) rotateY(270deg); }
-        }
-
-        .pin-base {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff4b1f, #ff9068);
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.4);
-        }
-
-        .pin-body {
-            position: absolute;
-            width: 20px;
-            height: 60px;
-            background: linear-gradient(to bottom, #ff4b1f, #ff9068);
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 10px 10px 0 0;
-            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.2);
-        }
-
-        .pin-head {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff4b1f, #ff9068);
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 5px 15px rgba(255, 75, 31, 0.4);
-        }
-
-        .pin-shadow {
-            position: absolute;
-            width: 40px;
-            height: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            filter: blur(4px);
-        }
-
-        .game-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .game-board {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .day {
-            aspect-ratio: 1;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px;
-            position: relative;
-            cursor: pointer;
-            background: var(--card-bg);
-            transition: all 0.3s;
-            text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
         }
 
-        .day.current {
-            background: var(--primary-color);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(93, 92, 222, 0.4);
-        }
-
-        .day.payday {
-            border-color: var(--success-color);
-            border-width: 2px;
-        }
-
-        .day.completed {
-            background-color: rgba(16, 185, 129, 0.2);
-        }
-
-        .day.missed {
-            background-color: rgba(239, 68, 68, 0.2);
-        }
-
-        .day-number {
-            font-size: 1.2rem;
-        }
-
-        .day-icon {
-            font-size: 1.5rem;
-            margin-top: 5px;
-        }
-
-        .stats-panel {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-card {
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 5px 0;
-            color: var(--primary-color);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--neutral-color);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #0ea271;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-neutral {
-            background-color: var(--neutral-color);
-            color: white;
-        }
-
-        .btn-neutral:hover {
-            background-color: #4b5563;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--neutral-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--input-bg);
-            color: var(--text-color);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .streak-indicator {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        .streak-flame {
-            color: var(--warning-color);
-            font-size: 1.2rem;
-        }
-
-        .progress-container {
-            margin: 20px 0;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background-color: var(--border-color);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 5px;
-            transition: width 0.5s;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-            font-size: 0.8rem;
-            color: var(--neutral-color);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .badge-success {
-            background-color: rgba(16, 185, 129, 0.2);
-            color: var(--success-color);
-        }
-
-        .badge-warning {
-            background-color: rgba(245, 158, 11, 0.2);
-            color: var(--warning-color);
-        }
-
-        .badge-danger {
-            background-color: rgba(239, 68, 68, 0.2);
-            color: var(--danger-color);
-        }
-
-        .month-selector {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .month-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .month-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .month-nav-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        .task-list {
-            margin-top: 20px;
-        }
-
-        .task-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .task-checkbox {
-            margin-right: 10px;
-        }
-
-        .task-text {
-            flex-grow: 1;
-        }
-
-        .task-item.completed .task-text {
-            text-decoration: line-through;
-            color: var(--neutral-color);
-        }
-
-        /* Game board path for player pin */
-        .game-path {
-            position: relative;
-            height: 60px;
-            margin: 20px 0;
-            background: linear-gradient(90deg, rgba(93, 92, 222, 0.2), rgba(93, 92, 222, 0.4));
-            border-radius: 30px;
-            overflow: hidden;
-        }
-
-        .path-step {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
-            top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .player-game-pin {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            top: 15px;
-            left: 5px;
-            transition: left 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 10;
-        }
-
-        .player-game-pin svg {
-            filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.3));
-        }
-
-        /* Toast notification */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            background: var(--card-bg);
-            color: var(--text-color);
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 300px;
-            max-width: 400px;
-            animation: slideIn 0.3s ease-out forwards;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--success-color);
-        }
-
-        .toast.warning {
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger-color);
-        }
-
-        .toast.info {
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .toast-icon {
-            font-size: 1.5rem;
-        }
-
-        .toast-content {
-            flex-grow: 1;
-        }
-
-        .toast-title {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .toast-message {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .toast-close {
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .toast-close:hover {
-            opacity: 1;
-        }
-
-        .toast-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.3);
-            width: 100%;
-        }
-
-        .toast-progress-bar {
-            height: 100%;
-            background: var(--primary-color);
-            width: 100%;
-            animation: progress 5s linear forwards;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-
-        @keyframes progress {
-            from {
-                width: 100%;
-            }
-            to {
-                width: 0%;
-            }
-        }
-
-        /* Event and challenge modal styles - ENHANCED */
-        .event-modal {
-            max-width: 600px;
-        }
-
-        .event-header {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .event-icon {
-            font-size: 2.5rem;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .event-title-container {
-            flex-grow: 1;
-        }
-
-        .event-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .event-subtitle {
-            font-size: 0.9rem;
-            color: var(--neutral-color);
-        }
-
-        .event-description {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            padding: 0 10px;
-        }
-
-        .event-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .event-option {
-            padding: 16px;
-            border-radius: 8px;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .event-option:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .option-icon {
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(93, 92, 222, 0.1);
-            color: var(--primary-color);
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-
-        .event-option:hover .option-icon {
-            background: white;
-        }
-
-        .option-content {
-            flex-grow: 1;
-        }
-
-        .option-text {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .option-effect {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .special-day {
-            position: relative;
-        }
-
-        .special-day::after {
-            content: "!";
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 18px;
-            height: 18px;
-            background: var(--warning-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* Info Button & Modal Styles */
-        .info-button {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            color: white;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .info-button:hover {
-            transform: scale(1.1);
-            background: var(--primary-hover);
-        }
-
-        .info-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            z-index: 2000;
-            overflow-y: auto;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .info-modal.active {
-            opacity: 1;
-        }
-
-        .info-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            background: var(--bg-color);
-            z-index: 10;
-        }
-
-        .info-modal-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .info-modal-close {
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--neutral-color);
-            transition: color 0.2s;
-        }
-
-        .info-modal-close:hover {
-            color: var(--danger-color);
-        }
-
-        .info-modal-content {
-            padding: 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .info-section {
-            margin-bottom: 40px;
-        }
-
-        .info-section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .info-section p {
-            margin-bottom: 15px;
-            line-height: 1.7;
-        }
-
-        .info-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .info-card h4 {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-card h4 i {
-            color: var(--primary-color);
-        }
-
-        .info-card ul {
-            margin-left: 30px;
-            margin-bottom: 15px;
-        }
-
-        .info-card ul li {
-            margin-bottom: 8px;
-        }
-
-        /* New footer styles */
-        .footer {
-            background: var(--card-bg);
-            padding: 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .footer p {
-            font-size: 0.9rem;
-            color: var(--neutral-color);
-        }
-
-        @media (max-width: 768px) {
-            .game-container {
-                flex-direction: column;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .dice-container {
-                justify-content: center;
-            }
-
-            .event-options {
-                flex-direction: column;
-            }
-
-            .info-modal-content {
-                padding: 20px;
-            }
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: #f00;
-            pointer-events: none;
-            z-index: 1000;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; width: 100%; }
+        main.container { flex-grow: 1; }
+
+        /* Header & Dice Styles */
+        .game-header{background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%);padding:30px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.2);margin-bottom:30px}.header-content{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}.header-title{color:white;font-size:2.8rem;font-weight:800;text-shadow:2px 2px 8px rgba(0,0,0,0.3);letter-spacing:-1px;margin:0}.header-subtitle{color:rgba(255,255,255,0.9);font-size:1.1rem;margin-top:5px;font-weight:300}.header-bg-pattern{position:absolute;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:0.5}.dice-container{display:flex;gap:20px;perspective:1000px}.dice{width:60px;height:60px;position:relative;transform-style:preserve-3d;transition:transform 1.5s ease-out;cursor:pointer}.dice-face{position:absolute;width:100%;height:100%;border-radius:10px;background:white;box-shadow:inset 0 0 10px rgba(0,0,0,0.1);display:flex;justify-content:center;align-items:center;font-size:0}.dice-face:nth-child(1){transform:translateZ(30px)}.dice-face:nth-child(2){transform:rotateY(180deg) translateZ(30px)}.dice-face:nth-child(3){transform:rotateY(90deg) translateZ(30px)}.dice-face:nth-child(4){transform:rotateY(-90deg) translateZ(30px)}.dice-face:nth-child(5){transform:rotateX(90deg) translateZ(30px)}.dice-face:nth-child(6){transform:rotateX(-90deg) translateZ(30px)}
+        
+        /* CORRECTED Dice Dot CSS */
+        .dice-dot-container { width: 48px; height: 48px; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(3, 1fr); gap: 4px; }
+        .dice-dot { width: 100%; height: 100%; border-radius: 50%; background-color: #333; box-shadow: inset 0 0 2px rgba(0,0,0,0.5); }
+        .face-1 .dice-dot:nth-child(1) { grid-area: 2 / 2; }
+        .face-2 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-2 .dice-dot:nth-child(2) { grid-area: 3 / 3; }
+        .face-3 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-3 .dice-dot:nth-child(2) { grid-area: 2 / 2; } .face-3 .dice-dot:nth-child(3) { grid-area: 3 / 3; }
+        .face-4 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-4 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-4 .dice-dot:nth-child(3) { grid-area: 3 / 1; } .face-4 .dice-dot:nth-child(4) { grid-area: 3 / 3; }
+        .face-5 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-5 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-5 .dice-dot:nth-child(3) { grid-area: 2 / 2; } .face-5 .dice-dot:nth-child(4) { grid-area: 3 / 1; } .face-5 .dice-dot:nth-child(5) { grid-area: 3 / 3; }
+        .face-6 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-6 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-6 .dice-dot:nth-child(3) { grid-area: 2 / 1; } .face-6 .dice-dot:nth-child(4) { grid-area: 2 / 3; } .face-6 .dice-dot:nth-child(5) { grid-area: 3 / 1; } .face-6 .dice-dot:nth-child(6) { grid-area: 3 / 3; }
+
+        .game-container { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        .game-board, .stats-panel { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .game-path { position: relative; height: 60px; margin-bottom: 25px; background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)); border-radius: 30px; }
+        .player-game-pin { position: absolute; width: 40px; height: 50px; top: 5px; left: 5px; transition: left 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 10; transform-origin: bottom center; }
+        .player-game-pin.is-moving { animation: bounce 0.5s ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.1); } }
+        .controls { margin-bottom: 25px; background-color: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .daily-task-section { text-align: center; }
+        .daily-task-section h3 { font-weight: 600; margin-bottom: 15px; }
+        .daily-task-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; font-size: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:disabled { background-color: var(--neutral-color); color: white; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .btn-success:hover:not(:disabled) { background-color: #0ea271; }
+        .btn-danger { background-color: var(--danger-color); color: white; }
+        .btn-danger:hover:not(:disabled) { background-color: #dc2626; }
+        .btn-neutral { background-color: #f3f4f6; color: #1f2937; border: 1px solid #d1d5db; }
+        .btn-neutral:hover:not(:disabled) { background-color: #e5e7eb; }
+        .dark .btn-neutral { background-color: #374151; color: #f3f4f6; border-color: #4b5563; }
+        .dark .btn-neutral:hover:not(:disabled) { background-color: #4b5563; }
+        .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+        .day { aspect-ratio: 1; border: 1px solid var(--border-color); border-radius: 8px; padding: 5px; position: relative; background: var(--bg-color); transition: all 0.3s; text-align: center; display: flex; justify-content: flex-start; align-items: center; font-weight: 600; flex-direction: column; }
+        .day.current { background: var(--primary-color); color: white; transform: scale(1.1); box-shadow: 0 0 15px var(--primary-color); z-index: 5; }
+        .day.payday::after { content: "💰"; position: absolute; bottom: 5px; right: 5px; font-size: 1.5rem; opacity: 0.8; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
+        .stat-card { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary-color); }
+        .stat-label { font-size: 0.9rem; color: var(--neutral-color); }
+        .streak-indicator { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 15px; font-size: 1.1rem; }
+        .streak-flame { color: var(--warning-color); font-size: 1.5rem; }
+        .achievements-list { margin-top: 20px; max-height: 250px; overflow-y: auto; padding-right: 10px; }
+        .achievement-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .achievement-icon { font-size: 1.5rem; color: var(--warning-color); margin-right: 15px; }
+        .settings-button { text-align: right; margin-top: 20px; }
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:1000;justify-content:center;align-items:center;animation:fadeIn .3s}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.modal-content{background:var(--card-bg);padding:30px;border-radius:16px;max-width:550px;width:90%;box-shadow:0 10px 25px rgba(0,0,0,0.2);position:relative;animation:slideUp .4s cubic-bezier(0.165,0.84,0.44,1)}@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}.modal-close{position:absolute;top:15px;right:20px;font-size:1.8rem;cursor:pointer;color:var(--neutral-color)}.modal-header{margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--border-color)}.modal-title{font-size:1.6rem;font-weight:700}.modal-description{margin-bottom:20px;line-height:1.7}.modal-options{display:flex;flex-direction:column;gap:10px}.modal-option{padding:12px 15px;border-radius:8px;background:var(--bg-color);border:1px solid var(--border-color);cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center}.modal-option:hover{background:var(--primary-color);color:white;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.option-text{flex-grow:1;font-weight:600}.option-effect{font-size:.9rem;opacity:.8}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+        .toast-container{position:fixed;bottom:20px;right:20px;z-index:1001;display:flex;flex-direction:column;gap:10px}.toast{background:var(--card-bg);color:var(--text-color);padding:12px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:15px;min-width:320px;animation:slideIn .3s ease-out forwards;position:relative;overflow:hidden;border-left:4px solid var(--primary-color)}.toast.success{border-left-color:var(--success-color)}.toast.warning{border-left-color:var(--warning-color)}.toast.error{border-left-color:var(--danger-color)}.toast-icon{font-size:1.5rem}.toast.success .toast-icon{color:var(--success-color)}.toast.warning .toast-icon{color:var(--warning-color)}.toast.error .toast-icon{color:var(--danger-color)}.toast-title{font-weight:600}@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{to{transform:translateX(120%);opacity:0}}
+        .confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; pointer-events: none; z-index: 2000; }
+        .theme-toggle { position: fixed; top: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 100; }
+        footer { text-align: center; padding: 25px; margin-top: 40px; font-size: 0.85rem; color: var(--neutral-color); border-top: 1px solid var(--border-color); background-color: var(--card-bg); }
+        @media (max-width: 992px) { .game-container { grid-template-columns: 1fr; } .header-content { flex-direction: column; text-align: center; gap: 20px; } }
+        @media (max-width: 768px) { .calendar { grid-template-columns: repeat(5, 1fr); } }
     </style>
 </head>
 <body>
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
+    <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></div>
 
-    <!-- Info Button -->
-    <div class="info-button" id="infoButton">
-        <i class="fas fa-info"></i>
-    </div>
-
-    <!-- New Beautiful Header with 3D Dice and Player Pin -->
     <header class="game-header">
         <div class="header-bg-pattern"></div>
-        <div class="container">
-            <div class="header-content">
-                <div>
-                    <h1 class="header-title">DADUit Game</h1>
-                    <p class="header-subtitle">Track your habits with a fun Malaysian financial journey</p>
-                </div>
-                <div class="dice-container">
-                    <div class="dice" id="dice1">
-                        <div class="dice-face" data-value="1">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="2">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="3">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="4">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="5">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="6">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: middle-left;"></span>
-                                <span class="dice-dot" style="grid-area: middle-right;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dice" id="dice2">
-                        <div class="dice-face" data-value="1">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="2">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="3">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="4">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="5">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: center;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                        <div class="dice-face" data-value="6">
-                            <div class="dice-dot-container">
-                                <span class="dice-dot" style="grid-area: top-left;"></span>
-                                <span class="dice-dot" style="grid-area: top-right;"></span>
-                                <span class="dice-dot" style="grid-area: middle-left;"></span>
-                                <span class="dice-dot" style="grid-area: middle-right;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-left;"></span>
-                                <span class="dice-dot" style="grid-area: bottom-right;"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="player-pin-container">
-                        <div class="player-pin">
-                            <div class="pin-head"></div>
-                            <div class="pin-body"></div>
-                            <div class="pin-base"></div>
-                            <div class="pin-shadow"></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="container header-content">
+            <div>
+                <h1 class="header-title">DADUit Game</h1>
+                <p class="header-subtitle">Your Malaysian financial adventure!</p>
+            </div>
+            <div class="dice-container">
+                <div class="dice" id="dice1"></div>
+                <div class="dice" id="dice2"></div>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Game Path for Player Pin Movement -->
-        <div class="game-path" id="gamePath">
-            <div class="player-game-pin" id="playerGamePin">
-                <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="40" fill="url(#pinGradient)" />
-                    <path d="M50 20 L70 80 L50 65 L30 80 Z" fill="#ff4b1f" />
-                    <defs>
-                        <linearGradient id="pinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ff4b1f" />
-                            <stop offset="100%" stop-color="#ff9068" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            <!-- Path steps will be generated dynamically -->
-        </div>
-        
+    <main class="container">
         <div class="controls">
-            <button class="btn btn-primary" id="rollDiceBtn">
-                <i class="fas fa-dice"></i> Roll Dice
-            </button>
-            <button class="btn btn-success" id="completeTaskBtn">
-                <i class="fas fa-check"></i> Complete Today
-            </button>
-            <button class="btn btn-danger" id="missTaskBtn">
-                <i class="fas fa-times"></i> Miss Today
-            </button>
-            <button class="btn btn-neutral" id="resetBtn">
-                <i class="fas fa-redo"></i> Reset Game
-            </button>
+             <div class="daily-task-section" id="dailyTaskSection">
+                <h3>Day <span id="dayCounter">1</span>: Did you complete your main habit today?</h3>
+                <div class="daily-task-buttons">
+                     <button class="btn btn-success" id="completeHabitBtn"><i class="fas fa-check"></i> Yes, I did! (+RM 20)</button>
+                    <button class="btn btn-danger" id="missHabitBtn"><i class="fas fa-times"></i> Not today... (-RM 20)</button>
+                </div>
+            </div>
+            <div class="daily-task-section" id="rollDiceSection" style="display: none;">
+                 <h3>Well done. Now, roll the dice to see what the day brings!</h3>
+                 <button class="btn btn-primary" id="rollDiceBtn"><i class="fas fa-dice"></i> Roll Dice</button>
+            </div>
         </div>
-        
+
         <div class="game-container">
             <div class="game-board">
-                <div class="month-selector">
-                    <button class="month-nav-btn" id="prevMonth">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <div class="month-title" id="currentMonth">Month 1</div>
-                    <button class="month-nav-btn" id="nextMonth">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                
-                <div class="calendar" id="calendar">
-                    <!-- Calendar days will be generated here -->
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 45%"></div>
-                    </div>
-                    <div class="progress-labels">
-                        <span>0%</span>
-                        <span>Monthly Progress</span>
-                        <span>100%</span>
+                <div class="game-path" id="gamePath">
+                    <div class="player-game-pin" id="playerGamePin">
+                        <svg viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16C0 24.837 16 42 16 42C16 42 32 24.837 32 16C32 7.163 24.837 0 16 0Z" fill="url(#pinGradient)"/><circle cx="16" cy="16" r="6" fill="white"/><defs><linearGradient id="pinGradient" x1="16" y1="0" x2="16" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#EC4899"/></linearGradient></defs></svg>
                     </div>
                 </div>
-                
-                <div class="streak-indicator">
-                    <i class="fas fa-fire streak-flame"></i>
-                    <span id="currentStreak">Current streak: 5 days</span>
-                </div>
+                <div id="monthHeader" style="text-align: center; font-size: 1.5rem; font-weight: 600; margin-bottom: 15px;">Month 1</div>
+                <div class="calendar" id="calendar"></div>
             </div>
             
             <div class="stats-panel">
                 <h2>Your Stats</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value" id="balance">RM1000</div>
+                        <div class="stat-value" id="balance">RM 2000</div>
                         <div class="stat-label">Balance</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="currentPosition">1</div>
-                        <div class="stat-label">Current Position</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalCompleted">0</div>
-                        <div class="stat-label">Tasks Completed</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="daysRemaining">30</div>
-                        <div class="stat-label">Days Remaining</div>
+                        <div class="stat-label">Current Day</div>
                     </div>
                 </div>
-                
-                <h3 style="margin-top: 20px;">Achievements</h3>
-                <div class="task-list" id="achievementsList">
-                    <!-- Achievements will be generated here -->
-                </div>
+                 <div class="streak-indicator"><i class="fas fa-fire streak-flame"></i> <span id="currentStreak">Streak: 0 days</span></div>
+                <h3 style="margin-top: 25px; margin-bottom: 10px;">Achievements</h3>
+                <div class="achievements-list" id="achievementsList"></div>
+                 <div class="settings-button"><button class="btn btn-danger" id="resetBtn" style="padding: 8px 16px;"><i class="fas fa-redo"></i> Reset</button></div>
             </div>
         </div>
-    </div>
+    </main>
     
-    <!-- Footer -->
-    <footer class="footer">
-        <p>2025 © All rights reserved. The coding of this game is assisted by Generative-AI while the whole ideations and iterations process are orchestrated by the authors and developers; Fauze, Sarmila, Azrina, Ninalyn of UiTM Sabah Branch.</p>
-    </footer>
-    
-    <!-- Toast Container -->
+    <!-- Modals -->
+    <div class="modal" id="eventModal"><div class="modal-content"><span class="modal-close">&times;</span><div class="modal-header"><h2 class="modal-title" id="eventTitle"></h2></div><p class="modal-description" id="eventDescription"></p><div class="modal-options" id="eventOptions"></div></div></div>
+    <div class="modal" id="confirmModal"><div class="modal-content"><span class="modal-close">&times;</span><h2 id="confirmTitle"></h2><p id="confirmMessage"></p><div class="modal-actions"><button type="button" class="btn btn-neutral" id="cancelConfirmBtn">Cancel</button><button type="button" class="btn btn-danger" id="confirmBtn">Confirm</button></div></div></div>
+    <div class="modal" id="welcomeModal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Welcome to the DADUit Game!</h2></div><p class="modal-description">Your Malaysian financial adventure begins! Navigate 60 days of daily life, making smart choices to build good habits and grow your wealth. Can you survive without going bankrupt? *Jom, kita mula!*</p><div class="modal-actions"><button class="btn btn-primary" id="startGameBtn">Let's Go!</button></div></div></div>
     <div class="toast-container" id="toastContainer"></div>
-    
-    <!-- Game Info Modal -->
-    <div class="info-modal" id="infoModal">
-        <div class="info-modal-header">
-            <h2 class="info-modal-title">DADUit Game Guide</h2>
-            <div class="info-modal-close" id="closeInfoModal">&times;</div>
-        </div>
-        <div class="info-modal-content">
-            <div class="info-section">
-                <h3 class="info-section-title">Game Overview</h3>
-                <p>DADUit is a financial literacy board game designed to simulate real-life financial decisions in a Malaysian context. Navigate through two months of financial challenges, complete tasks, and make smart decisions to maintain a healthy financial standing.</p>
-                <p>The game combines elements of chance (dice rolls) with strategic decision-making to teach important financial literacy concepts while being entertaining.</p>
-            </div>
 
-            <div class="info-section">
-                <h3 class="info-section-title">Game Mechanics</h3>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-dice"></i> Rolling the Dice</h4>
-                    <p>Click the "Roll Dice" button to move your player pin along the calendar board. The number of steps you move is determined by the sum of the two dice. This simulates the unpredictable nature of life events affecting your financial journey.</p>
-                </div>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-calendar-day"></i> Special Days</h4>
-                    <p>The calendar contains several types of special days:</p>
-                    <ul>
-                        <li><strong>Payday (Days 15 and 30):</strong> You'll receive your salary (RM3,800) and pay your regular expenses (RM2,500).</li>
-                        <li><strong>Event Days (Days 5, 10, 15, 20, 25):</strong> These days trigger special financial events that require your decision.</li>
-                        <li><strong>Random Challenge Days:</strong> There's a 30% chance that landing on a regular day will trigger a random financial challenge.</li>
-                    </ul>
-                </div>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-tasks"></i> Completing Tasks</h4>
-                    <p>Use the "Complete Today" button to mark a financial task as completed for the current day. Completing tasks increases your streak and earns achievements, demonstrating consistency in financial management.</p>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3 class="info-section-title">Winning & Losing Conditions</h3>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-trophy"></i> How to Win</h4>
-                    <p>To win the DADUit game, you need to:</p>
-                    <ul>
-                        <li>Complete both months (60 days) with a positive bank balance</li>
-                        <li>Complete at least 15 financial tasks</li>
-                        <li>Maintain your financial health throughout the journey</li>
-                    </ul>
-                    <p>The player who accumulates the highest balance while collecting the most achievements is considered the most financially savvy.</p>
-                </div>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-exclamation-triangle"></i> Bankruptcy Rules</h4>
-                    <p>You will be declared bankrupt if:</p>
-                    <ul>
-                        <li>Your balance drops below -RM1,000 at any point in the game</li>
-                        <li>You miss three consecutive paydays without having sufficient funds to cover your expenses</li>
-                        <li>You accumulate more than RM5,000 in debt without a clear repayment plan (tracked through negative balance)</li>
-                    </ul>
-                    <p>If bankruptcy occurs, you'll receive a notification and be given the option to restart the game with a better understanding of financial planning.</p>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3 class="info-section-title">Financial Events & Decisions</h3>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-money-bill-wave"></i> Types of Financial Events</h4>
-                    <p>The game includes various Malaysian-specific financial scenarios:</p>
-                    <ul>
-                        <li><strong>Unexpected Expenses:</strong> Car repairs, medical bills, home appliance breakdowns</li>
-                        <li><strong>Investment Opportunities:</strong> ASB investments, property options, business ventures</li>
-                        <li><strong>Cultural Events:</strong> Hari Raya preparations, family gatherings, festive celebrations</li>
-                        <li><strong>Government Programs:</strong> EPF withdrawals, PTPTN loan repayments, tax incentives</li>
-                        <li><strong>Emergencies:</strong> Flash floods, water disruptions, health issues</li>
-                    </ul>
-                </div>
-                
-                <div class="info-card">
-                    <h4><i class="fas fa-chart-line"></i> Financial Strategy Tips</h4>
-                    <ul>
-                        <li>Always maintain an emergency fund of at least RM1,000</li>
-                        <li>Consider long-term benefits over short-term gains</li>
-                        <li>Take advantage of government incentives and programs</li>
-                        <li>Balance essential spending with occasional treats</li>
-                        <li>Make use of e-wallet promotions and cashback opportunities</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h3 class="info-section-title">About The Game</h3>
-                <p>DADUit was developed as an educational tool to promote financial literacy in Malaysia. The game incorporates real-world financial scenarios and decisions faced by Malaysians, providing a safe environment to learn about the consequences of different financial choices.</p>
-                <p>The game is designed by Fauze, Sarmila, Azrina, and Ninalyn of UiTM Sabah Branch, with technical assistance from Generative AI tools to bring the concept to life.</p>
-                <p>For feedback, suggestions, or to report issues, please contact the development team at your-email@uitm.edu.my.</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Event Modal with Enhanced UI -->
-    <div class="modal" id="eventModal">
-        <div class="modal-content event-modal">
-            <span class="modal-close" id="closeEventModal">&times;</span>
-            <div class="event-header">
-                <div class="event-icon" id="eventIcon">
-                    <i class="fas fa-exclamation-circle"></i>
-                </div>
-                <div class="event-title-container">
-                    <h2 class="event-title" id="eventTitle">Event Title</h2>
-                    <div class="event-subtitle" id="eventSubtitle">Financial Decision</div>
-                </div>
-            </div>
-            <div class="event-description" id="eventDescription">
-                Event description goes here.
-            </div>
-            <div class="event-options" id="eventOptions">
-                <!-- Options will be generated dynamically with icons -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- Confirmation Modal -->
-    <div class="modal" id="confirmModal">
-        <div class="modal-content">
-            <span class="modal-close" id="closeConfirmModal">&times;</span>
-            <h2 id="confirmTitle">Confirm Action</h2>
-            <p id="confirmMessage">Are you sure you want to proceed with this action?</p>
-            <div class="form-actions">
-                <button type="button" class="btn btn-neutral" id="cancelConfirmBtn">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmBtn">Confirm</button>
-            </div>
-        </div>
-    </div>
+    <footer>
+        <p>2025 © All rights reserved.</p>
+        <p>The coding of this game is assisted by Generative-AI while the whole ideations and iterations process are orchestrated by the authors and developers; Fauze, Sarmila, Azrina, Ninalyn of UiTM Sabah Branch.</p>
+    </footer>
 
     <script>
-        // Game state
-        const gameState = {
-            currentPosition: 1,
-            currentMonth: 1,
-            balance: 1000,
-            salary: 3800,  // Malaysian average salary
-            expenses: 2500, // Malaysian average expenses
-            achievements: [],
-            completedChallenges: 0,
-            lastRoll: 0,
-            challengeChance: 0.3, // 30% chance of random challenge
-            isRolling: false,
-            specialDays: {
-                events: [5, 10, 15, 20, 25], // Days with special events in each month
-                paydays: [15, 30]           // Paydays in each month
-            },
-            // Add bankruptcy tracking
-            bankruptcyThreshold: -1000,
-            missedPaydays: 0,
-            isBankrupt: false
+    document.addEventListener('DOMContentLoaded', () => {
+    
+        const eventPool = [
+            { title: 'Lunch Time!', description: 'Your colleagues are going out for lunch. What do you do?', options: [
+                { text: 'Join them at a cafe (-RM 30)', effect: () => gameState.balance -= 30 },
+                { text: 'Suggest the nearby mamak stall (-RM 15)', effect: () => { gameState.balance -= 15; addAchievement('Frugal Foodie', 'Chose the mamak over a cafe.'); } },
+                { text: 'Eat the meal you packed from home (-RM 0)', effect: () => addAchievement('Meal Prep Master', 'Saved money by bringing food from home.') },
+            ]},
+            { title: 'Feeling Lazy...', description: 'You don\'t feel like cooking dinner tonight.', options: [
+                { text: 'Order from GrabFood (-RM 40)', effect: () => gameState.balance -= 40 },
+                { text: 'Tapau from the local warung (-RM 12)', effect: () => gameState.balance -= 12 },
+                { text: 'Cook instant noodles (-RM 3)', effect: () => {gameState.balance -= 3; addAchievement('Instant Gratification', 'Survived on instant noodles.');} },
+            ]},
+            { title: 'TNB Bill Arrived', description: 'Your monthly electricity bill is here. The hot weather meant more air-con!', options: [
+                { text: 'Pay on time (-RM 95)', effect: () => gameState.balance -= 95},
+                { text: 'Pay next week (-RM 95)', effect: () => gameState.balance -= 95}
+            ]},
+            { title: 'Internet Bill Due', description: 'Your Unifi/TIME bill needs to be paid.', options: [
+                { text: 'Pay now (-RM 130)', effect: () => gameState.balance -= 130 },
+                { text: 'Pay just before due date (-RM 130)', effect: () => gameState.balance -= 130 },
+            ]},
+            { title: 'Commuting to Work', description: 'How are you getting to the office today?', options: [
+                { text: 'Take a Grab (-RM 18)', effect: () => gameState.balance -= 18 },
+                { text: 'Take the LRT/MRT (-RM 5)', effect: () => gameState.balance -= 5 },
+                { text: 'Drive (Petrol & Toll) (-RM 25)', effect: () => gameState.balance -= 25 },
+            ]},
+            { title: 'Touch \'n Go Top-up', description: 'Your TNG balance is low, time for a top-up.', options: [
+                { text: 'Top up RM50', effect: () => gameState.balance -= 50},
+                { text: 'Top up RM100', effect: () => gameState.balance -= 100},
+            ]},
+            { title: '11.11 Sale!', description: 'The big online sale on Shopee/Lazada is happening!', options: [
+                { text: 'Buy that thing you wanted (-RM 150)', effect: () => gameState.balance -= 150},
+                { text: 'Just browse, no buying', effect: () => {addAchievement('Window Shopper', 'Resisted the temptation of a major sale.');}},
+                { text: 'Buy a few small things (-RM 50)', effect: () => gameState.balance -= 50},
+            ]},
+            { title: 'Weekend Plans', description: 'A friend invites you to hang out this weekend.', options: [
+                { text: 'Go watch the latest movie (-RM 45)', effect: () => gameState.balance -= 45 },
+                { text: 'Go hiking at a nearby forest reserve (-RM 10)', effect: () => {gameState.balance -= 10; addAchievement('Nature Lover', 'Chose the great outdoors.');} },
+                { text: 'Decline and stay home', effect: () => {} },
+            ]},
+             { title: 'Wedding Season!', description: 'You received a wedding invitation from a close friend.', options: [
+                { text: 'Give a generous ang pow/gift (-RM 200)', effect: () => gameState.balance -= 200 },
+                { text: 'Give a standard amount (-RM 100)', effect: () => gameState.balance -= 100 },
+            ]},
+            { title: 'Found Money!', description: 'You found RM20 in the pocket of your old jeans!', options: [
+                { text: 'Nice! (+RM 20)', effect: () => gameState.balance += 20 },
+            ]},
+            { title: 'Car Trouble', description: 'Your car battery died and needed replacement.', options: [
+                { text: 'Replace it (-RM 250)', effect: () => gameState.balance -= 250 },
+            ]},
+            { title: 'Mysterious SMS', description: 'You get an SMS: "CONGRATS! U have won RM5000! Pls click here and fill in ur details to claim."', options: [
+                { text: 'Click the link (Risky!)', effect: () => { gameState.balance -= 500; showToast('SCAMMED!', 'It was a scam! You lost RM 500!', 'error'); addAchievement('Learned the Hard Way', 'Fell for a phishing scam.'); } },
+                { text: 'Ignore and delete it (Smart!)', effect: () => { showToast('Wise Choice!', 'You correctly identified a scam.', 'success'); addAchievement('Scam Spotter', 'Avoided a phishing attempt.'); } },
+            ]},
+             { title: 'Investment Opportunity', description: 'You have some extra cash. What do you do with it?', options: [
+                { text: 'Invest in an ASB/Unit Trust (-RM 500)', effect: () => { gameState.balance -= 500; addAchievement('Investor', 'Made your first investment.'); } },
+                { text: 'Just keep it in savings', effect: () => {} },
+                { text: 'Splurge on a new gadget (-RM 500)', effect: () => { gameState.balance -= 500; addAchievement('Gadget Guru', 'Bought the latest tech.'); } },
+            ]},
+            { title: 'PTPTN Reminder', description: 'Your PTPTN education loan repayment is due.', options: [
+                { text: 'Pay now (-RM 150)', effect: () => gameState.balance -= 150 },
+                { text: 'Pay minimum (-RM 50)', effect: () => {gameState.balance -= 50; showToast('Interest Accumulates', 'Paying the minimum will cost more in the long run.', 'warning');} },
+                { text: 'Ignore for now (Risky!)', effect: () => {showToast('Payment Missed!', 'Missing PTPTN payments can affect your credit score.', 'error'); addAchievement('Bad Credit', 'Ignored a PTPTN payment.');} },
+            ]},
+            { title: 'Time for a Service!', description: 'Your car is due for its regular maintenance.', options: [
+                 { text: 'Go to official service center (-RM 400)', effect: () => gameState.balance -= 400 },
+                 { text: 'Go to trusted local workshop (-RM 250)', effect: () => gameState.balance -= 250 },
+                 { text: 'Skip it, seems fine... (Risky!)', effect: () => {showToast('Risky Move', 'Skipping car service can lead to bigger problems later!', 'warning');} },
+            ]},
+            { title: 'Durian Season!', description: 'It\'s durian season! Your friends invite you to a Musang King feast.', options: [
+                 { text: 'Jom! I love durian! (-RM 100)', effect: () => gameState.balance -= 100 },
+                 { text: 'I\'ll just have one or two pieces (-RM 30)', effect: () => gameState.balance -= 30 },
+                 { text: 'No thanks, I\'m saving money', effect: () => {} },
+            ]},
+            { title: 'Eh, Ada Surat Cinta!', description: 'You got a parking ticket for an expired coupon.', options: [
+                 { text: 'Pay immediately (-RM 80)', effect: () => gameState.balance -= 80 },
+                 { text: 'Pay within 2 weeks (-RM 100)', effect: () => gameState.balance -= 100 },
+                 { text: 'Try to appeal it', effect: () => { if(Math.random() > 0.5) { showToast('Appeal Successful!', 'Your fine was waived!', 'success');} else { gameState.balance -= 100; showToast('Appeal Rejected', 'You still have to pay the fine.', 'error'); } } },
+            ]},
+            { title: 'Side Income Opportunity!', description: 'A client offers you a small freelance project that will take up your weekend.', options: [
+                 { text: 'Accept the job (+RM 400)', effect: () => {gameState.balance += 400; addAchievement('Side Hustler', 'Earned extra income from a freelance gig.');} },
+                 { text: 'Decline, I need my rest', effect: () => {} },
+            ]},
+            { title: 'Feeling Unwell', description: 'You\'ve caught a cold. Where do you go?', options: [
+                 { text: 'Klinik Kesihatan (-RM 5)', effect: () => gameState.balance -= 5 },
+                 { text: 'Private GP Clinic (-RM 80)', effect: () => gameState.balance -= 80 },
+                 { text: 'Just buy Panadol at the pharmacy (-RM 10)', effect: () => gameState.balance -= 10 },
+            ]},
+        ];
+
+        // --- DOM Elements ---
+        const ui = {
+            themeToggle: document.getElementById('themeToggle'), calendar: document.getElementById('calendar'),
+            balanceEl: document.getElementById('balance'), currentPositionEl: document.getElementById('currentPosition'),
+            achievementsList: document.getElementById('achievementsList'), dice1: document.getElementById('dice1'),
+            dice2: document.getElementById('dice2'), playerGamePin: document.getElementById('playerGamePin'),
+            rollDiceBtn: document.getElementById('rollDiceBtn'), completeHabitBtn: document.getElementById('completeHabitBtn'),
+            missHabitBtn: document.getElementById('missHabitBtn'), resetBtn: document.getElementById('resetBtn'),
+            toastContainer: document.getElementById('toastContainer'), dayCounter: document.getElementById('dayCounter'),
+            currentStreakEl: document.getElementById('currentStreak'), monthHeader: document.getElementById('monthHeader'),
+            dailyTaskSection: document.getElementById('dailyTaskSection'), rollDiceSection: document.getElementById('rollDiceSection'),
         };
 
-        // DOM Elements
-        const themeToggle = document.getElementById('themeToggle');
-        const calendar = document.getElementById('calendar');
-        const currentMonthEl = document.getElementById('currentMonth');
-        const prevMonthBtn = document.getElementById('prevMonth');
-        const nextMonthBtn = document.getElementById('nextMonth');
-        const progressFill = document.getElementById('progressFill');
-        const currentStreakEl = document.getElementById('currentStreak');
-        const balanceEl = document.getElementById('balance');
-        const currentPositionEl = document.getElementById('currentPosition');
-        const totalCompletedEl = document.getElementById('totalCompleted');
-        const daysRemainingEl = document.getElementById('daysRemaining');
-        const achievementsList = document.getElementById('achievementsList');
-        const dice1 = document.getElementById('dice1');
-        const dice2 = document.getElementById('dice2');
-        const gamePath = document.getElementById('gamePath');
-        const playerGamePin = document.getElementById('playerGamePin');
-        const rollDiceBtn = document.getElementById('rollDiceBtn');
-        
-        // Info button and modal
-        const infoButton = document.getElementById('infoButton');
-        const infoModal = document.getElementById('infoModal');
-        const closeInfoModal = document.getElementById('closeInfoModal');
-        
-        // Modal elements
-        const eventModal = document.getElementById('eventModal');
-        const closeEventModal = document.getElementById('closeEventModal');
-        const eventIcon = document.getElementById('eventIcon');
-        const eventTitle = document.getElementById('eventTitle');
-        const eventSubtitle = document.getElementById('eventSubtitle');
-        const eventDescription = document.getElementById('eventDescription');
-        const eventOptions = document.getElementById('eventOptions');
-        
-        const confirmModal = document.getElementById('confirmModal');
-        const closeConfirmModal = document.getElementById('closeConfirmModal');
-        const confirmTitle = document.getElementById('confirmTitle');
-        const confirmMessage = document.getElementById('confirmMessage');
-        const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
-        const confirmBtn = document.getElementById('confirmBtn');
-        
-        const completeTaskBtn = document.getElementById('completeTaskBtn');
-        const missTaskBtn = document.getElementById('missTaskBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const toastContainer = document.getElementById('toastContainer');
+        const modals = {
+            event: document.getElementById('eventModal'), confirm: document.getElementById('confirmModal'),
+            welcome: document.getElementById('welcomeModal'),
+        };
+        const modalElements = {
+            eventTitle: document.getElementById('eventTitle'), eventDescription: document.getElementById('eventDescription'),
+            eventOptions: document.getElementById('eventOptions'), confirmTitle: document.getElementById('confirmTitle'),
+            confirmMessage: document.getElementById('confirmMessage'), confirmBtn: document.getElementById('confirmBtn'),
+        };
 
-        // Malaysian Special events for Month 1
-        const month1SpecialEvents = [
-            {
-                title: "Unexpected Car Maintenance",
-                subtitle: "Vehicle Expenses",
-                icon: "car",
-                description: "Your car requires urgent servicing at a workshop in Subang Jaya. What will you do?",
-                options: [
-                    {
-                        text: "Service at authorized center",
-                        icon: "tools",
-                        effect: () => { gameState.balance -= 650; },
-                        description: "-RM650"
-                    },
-                    {
-                        text: "Go to local mechanic in SS15",
-                        icon: "wrench",
-                        effect: () => { 
-                            gameState.balance -= 350;
-                            addAchievement("Support Local", "Used a local mechanic");
-                        },
-                        description: "-RM350"
-                    },
-                    {
-                        text: "Use Grab for a month",
-                        icon: "taxi",
-                        effect: () => { 
-                            gameState.balance -= 500;
-                            addAchievement("Car-Free Living", "Opted for ride-sharing");
-                        },
-                        description: "-RM500"
-                    }
-                ]
-            },
-            {
-                title: "Hari Raya Preparation",
-                subtitle: "Festive Season",
-                icon: "moon",
-                description: "Hari Raya is coming soon and you need to prepare. How will you handle the expenses?",
-                options: [
-                    {
-                        text: "Buy new baju raya & decorations",
-                        icon: "tshirt",
-                        effect: () => { 
-                            gameState.balance -= 700;
-                            addAchievement("Festive Spirit", "Went all out for Hari Raya");
-                        },
-                        description: "-RM700"
-                    },
-                    {
-                        text: "Use last year's clothes",
-                        icon: "recycle",
-                        effect: () => { 
-                            gameState.balance -= 300; 
-                            addAchievement("Practical Celebrator", "Reused last year's festive items");
-                        },
-                        description: "-RM300"
-                    },
-                    {
-                        text: "Make homemade decorations",
-                        icon: "paint-brush",
-                        effect: () => { 
-                            gameState.balance -= 200;
-                            addAchievement("Creative Decorator", "Made DIY festive decorations");
-                        },
-                        description: "-RM200"
-                    }
-                ]
-            },
-            {
-                title: "Ramadhan Bazaar Visit",
-                subtitle: "Food & Community",
-                icon: "utensils",
-                description: "You're passing by a popular Ramadhan bazaar in Shah Alam. Will you stop by?",
-                options: [
-                    {
-                        text: "Enjoy a full bazaar food experience",
-                        icon: "shopping-basket",
-                        effect: () => { 
-                            gameState.balance -= 120;
-                            addAchievement("Bazaar Enthusiast", "Enjoyed the full Ramadhan bazaar experience");
-                        },
-                        description: "-RM120"
-                    },
-                    {
-                        text: "Buy just one or two special items",
-                        icon: "cookie",
-                        effect: () => { gameState.balance -= 50; },
-                        description: "-RM50"
-                    },
-                    {
-                        text: "Skip it and cook at home",
-                        icon: "home",
-                        effect: () => { 
-                            gameState.balance -= 25;
-                            addAchievement("Home Chef", "Prepared meal at home instead");
-                        },
-                        description: "-RM25"
-                    }
-                ]
-            },
-            {
-                title: "Shopping Mall Promotion",
-                subtitle: "Retail Therapy",
-                icon: "shopping-cart",
-                description: "Sunway Pyramid is having a major sale with discounts up to 70%. What's your plan?",
-                options: [
-                    {
-                        text: "Go on a shopping spree",
-                        icon: "credit-card",
-                        effect: () => { 
-                            gameState.balance -= 500;
-                            addAchievement("Bargain Hunter", "Took full advantage of a major sale");
-                        },
-                        description: "-RM500"
-                    },
-                    {
-                        text: "Buy only what you need",
-                        icon: "list-check",
-                        effect: () => { gameState.balance -= 200; },
-                        description: "-RM200"
-                    },
-                    {
-                        text: "Window shop only",
-                        icon: "eye",
-                        effect: () => { 
-                            addAchievement("Strong Willpower", "Resisted shopping temptation");
-                        },
-                        description: "RM0"
-                    }
-                ]
-            },
-            {
-                title: "Family Gathering",
-                subtitle: "Social Obligations",
-                icon: "users",
-                description: "Your family is organizing a gathering in Melaka and you're expected to contribute.",
-                options: [
-                    {
-                        text: "Bring expensive gifts & food",
-                        icon: "gifts",
-                        effect: () => { 
-                            gameState.balance -= 400;
-                            addAchievement("Family First", "Contributed generously to family gathering");
-                        },
-                        description: "-RM400"
-                    },
-                    {
-                        text: "Contribute homemade dishes",
-                        icon: "utensils",
-                        effect: () => { gameState.balance -= 150; },
-                        description: "-RM150"
-                    },
-                    {
-                        text: "Make an excuse to skip",
-                        icon: "calendar-xmark",
-                        effect: () => { 
-                            addAchievement("Work-Life Imbalance", "Skipped family function");
-                        },
-                        description: "RM0 (but might affect relationships)"
-                    }
-                ]
-            }
-        ];
+        let gameState = {};
+        const initialGameState = {
+            currentDay: 1, balance: 2000, streak: 0, achievements: [], dailyTaskDone: false,
+            gameInProgress: true, salary: 2500, gameWon: false,
+            paydays: [15, 30, 45, 60]
+        };
+        let currentEvent = null;
 
-        // Malaysian Special events for Month 2
-        const month2SpecialEvents = [
-            {
-                title: "EPF Withdrawal Decision",
-                subtitle: "Retirement Planning",
-                icon: "piggy-bank",
-                description: "EPF announces a special withdrawal scheme. Will you withdraw some of your retirement savings?",
-                options: [
-                    {
-                        text: "Withdraw maximum amount",
-                        icon: "money-bill-transfer",
-                        effect: () => { 
-                            gameState.balance += 1000;
-                            addAchievement("Short-term Planner", "Withdrew from retirement savings");
-                        },
-                        description: "+RM1000 now (but less for retirement)"
-                    },
-                    {
-                        text: "Withdraw minimal amount",
-                        icon: "hand-holding-dollar",
-                        effect: () => { gameState.balance += 500; },
-                        description: "+RM500"
-                    },
-                    {
-                        text: "Keep savings intact",
-                        icon: "shield",
-                        effect: () => { 
-                            addAchievement("Future Focused", "Protected retirement savings");
-                        },
-                        description: "RM0 (better long-term security)"
-                    }
-                ]
-            },
-            {
-                title: "Home Appliance Breakdown",
-                subtitle: "Household Emergency",
-                icon: "house-crack",
-                description: "Your air conditioner stopped working during the hottest month. What will you do?",
-                options: [
-                    {
-                        text: "Buy a new Daikin 1.5HP inverter AC",
-                        icon: "snowflake",
-                        effect: () => { gameState.balance -= 2800; },
-                        description: "-RM2800"
-                    },
-                    {
-                        text: "Repair with local technician",
-                        icon: "screwdriver-wrench",
-                        effect: () => { gameState.balance -= 800; },
-                        description: "-RM800"
-                    },
-                    {
-                        text: "Use fans and cope with the heat",
-                        icon: "fan",
-                        effect: () => { 
-                            gameState.balance -= 100;
-                            addAchievement("Heat Tolerant", "Survived without air conditioning");
-                        },
-                        description: "-RM100 (for extra fans)"
-                    }
-                ]
-            },
-            {
-                title: "Medical Appointment",
-                subtitle: "Healthcare",
-                icon: "hospital",
-                description: "It's time for your medical check-up. Where will you go?",
-                options: [
-                    {
-                        text: "Private hospital in KL",
-                        icon: "stethoscope",
-                        effect: () => { 
-                            gameState.balance -= 600;
-                            addAchievement("Health Conscious", "Invested in premium healthcare");
-                        },
-                        description: "-RM600"
-                    },
-                    {
-                        text: "Government clinic with MySejahtera appointment",
-                        icon: "user-doctor",
-                        effect: () => { gameState.balance -= 100; },
-                        description: "-RM100"
-                    },
-                    {
-                        text: "Skip this year",
-                        icon: "hourglass",
-                        effect: () => { 
-                            addAchievement("Risk Taker", "Postponed medical check-up");
-                            // 30% chance of later medical issue
-                            if (Math.random() < 0.3) {
-                                setTimeout(() => {
-                                    gameState.balance -= 1500;
-                                    showToast("Health Issue", "You've developed a health problem that requires treatment. -RM1500", "error");
-                                    updateBoard();
-                                }, 5000);
-                            }
-                        },
-                        description: "RM0 (risk of future issues)"
-                    }
-                ]
-            },
-            {
-                title: "ASB Investment Opportunity",
-                subtitle: "Investment",
-                icon: "chart-line",
-                description: "You have the opportunity to invest in Amanah Saham Bumiputera (ASB). What will you do?",
-                options: [
-                    {
-                        text: "Invest significant amount",
-                        icon: "coins",
-                        effect: () => { 
-                            gameState.balance -= 1000;
-                            // Dividend payout in future
-                            setTimeout(() => {
-                                gameState.balance += 1050;
-                                showToast("ASB Dividend", "You received your ASB dividend! +RM50", "success");
-                                updateBoard();
-                            }, 5000);
-                            addAchievement("Smart Investor", "Made a significant ASB investment");
-                        },
-                        description: "-RM1000 now (+dividends later)"
-                    },
-                    {
-                        text: "Invest small amount",
-                        icon: "wallet",
-                        effect: () => { 
-                            gameState.balance -= 300;
-                            // Smaller dividend payout
-                            setTimeout(() => {
-                                gameState.balance += 315;
-                                showToast("ASB Dividend", "You received your ASB dividend! +RM15", "success");
-                                updateBoard();
-                            }, 5000);
-                        },
-                        description: "-RM300 now (+dividends later)"
-                    },
-                    {
-                        text: "Hold cash for now",
-                        icon: "hand-holding-dollar",
-                        effect: () => { /* No effect */ },
-                        description: "RM0 (miss potential returns)"
-                    }
-                ]
-            },
-            {
-                title: "PTPTN Loan Decision",
-                subtitle: "Student Loan",
-                icon: "graduation-cap",
-                description: "PTPTN is offering a discount for full settlement of your student loan. How will you respond?",
-                options: [
-                    {
-                        text: "Make full settlement for 15% discount",
-                        icon: "receipt",
-                        effect: () => { 
-                            gameState.balance -= 2000;
-                            addAchievement("Debt Free", "Fully settled PTPTN loan");
-                        },
-                        description: "-RM2000 (saves RM353 overall)"
-                    },
-                    {
-                        text: "Pay 50% for 10% discount on that portion",
-                        icon: "percentage",
-                        effect: () => { gameState.balance -= 1000; },
-                        description: "-RM1000 (saves RM111)"
-                    },
-                    {
-                        text: "Continue monthly payments",
-                        icon: "calendar-days",
-                        effect: () => { gameState.balance -= 150; },
-                        description: "-RM150 this month (continues)"
-                    }
-                ]
-            }
-        ];
-
-        // Random challenges for Month 1 (Malaysian context)
-        const month1Challenges = [
-            {
-                title: "Toll System Upgrade",
-                subtitle: "Transportation Costs",
-                icon: "road",
-                description: "SmartTAG and Touch 'n Go lanes are being upgraded, causing long jams. What will you do?",
-                options: [
-                    {
-                        text: "Buy a new RFID tag",
-                        icon: "tag",
-                        effect: () => { gameState.balance -= 150; },
-                        description: "-RM150"
-                    },
-                    {
-                        text: "Use public transport temporarily",
-                        icon: "bus",
-                        effect: () => { 
-                            gameState.balance -= 80;
-                            addAchievement("Public Transport Patron", "Used public transit during highway upgrades");
-                        },
-                        description: "-RM80"
-                    }
-                ]
-            },
-            {
-                title: "Water Disruption",
-                subtitle: "Utilities Emergency",
-                icon: "droplet-slash",
-                description: "There's an unscheduled water disruption in your area that might last for 3 days.",
-                options: [
-                    {
-                        text: "Stock up on mineral water",
-                        icon: "bottle-water",
-                        effect: () => { gameState.balance -= 120; },
-                        description: "-RM120"
-                    },
-                    {
-                        text: "Collect water from tanker trucks",
-                        icon: "truck",
-                        effect: () => { 
-                            gameState.balance -= 30;
-                            addAchievement("Resource Conscious", "Managed during a water disruption");
-                        },
-                        description: "-RM30"
-                    },
-                    {
-                        text: "Stay with relatives temporarily",
-                        icon: "house-user",
-                        effect: () => { gameState.balance -= 80; },
-                        description: "-RM80 (for gifts and fuel)"
-                    }
-                ]
-            },
-            {
-                title: "E-wallet Cashback Promo",
-                subtitle: "Digital Finance",
-                icon: "wallet",
-                description: "Touch 'n Go eWallet is offering 15% cashback for utility bill payments. What's your move?",
-                options: [
-                    {
-                        text: "Top up and pay all bills via e-wallet",
-                        icon: "mobile-screen",
-                        effect: () => { 
-                            gameState.balance -= 300;
-                            // Cashback comes later
-                            setTimeout(() => {
-                                gameState.balance += 45;
-                                showToast("Cashback Received", "Your e-wallet cashback has been credited! +RM45", "success");
-                                updateBoard();
-                            }, 3000);
-                            addAchievement("Digital Saver", "Maximized e-wallet promotions");
-                        },
-                        description: "-RM300 now (+RM45 cashback later)"
-                    },
-                    {
-                        text: "Use regular payment methods",
-                        icon: "credit-card",
-                        effect: () => { gameState.balance -= 300; },
-                        description: "-RM300 (miss cashback opportunity)"
-                    }
-                ]
-            },
-            {
-                title: "Grab Food Promo Code",
-                subtitle: "Food & Delivery",
-                icon: "motorcycle",
-                description: "You received a 50% off promo code for Grab Food (max RM15 discount).",
-                options: [
-                    {
-                        text: "Order a special meal",
-                        icon: "utensils",
-                        effect: () => { 
-                            gameState.balance -= 25; // After discount
-                            addAchievement("Promo Hunter", "Used delivery app discounts effectively");
-                        },
-                        description: "-RM25 (after discount)"
-                    },
-                    {
-                        text: "Cook at home instead",
-                        icon: "kitchen-set",
-                        effect: () => { gameState.balance -= 15; },
-                        description: "-RM15 for groceries"
-                    }
-                ]
-            },
-            {
-                title: "Flash Flood Warning",
-                subtitle: "Weather Emergency",
-                icon: "cloud-showers-heavy",
-                description: "Heavy rain is forecasted and your area might experience flash floods. How will you prepare?",
-                options: [
-                    {
-                        text: "Buy emergency supplies",
-                        icon: "box",
-                        effect: () => { 
-                            gameState.balance -= 200;
-                            addAchievement("Well Prepared", "Stocked up for potential floods");
-                        },
-                        description: "-RM200"
-                    },
-                    {
-                        text: "Relocate valuables only",
-                        icon: "arrow-up",
-                        effect: () => { gameState.balance -= 50; },
-                        description: "-RM50"
-                    },
-                    {
-                        text: "Hope for the best",
-                        icon: "hand-holding-medical",
-                        effect: () => { 
-                            // 40% chance of flood damage
-                            if (Math.random() < 0.4) {
-                                setTimeout(() => {
-                                    gameState.balance -= 500;
-                                    showToast("Flood Damage", "Your home was affected by floods! -RM500 for repairs", "error");
-                                    updateBoard();
-                                }, 3000);
-                            }
-                        },
-                        description: "RM0 (risk of damage costs)"
-                    }
-                ]
-            }
-        ];
-
-        // Random challenges for Month 2 (Malaysian context)
-        const month2Challenges = [
-            {
-                title: "Traffic Summons",
-                subtitle: "Law Enforcement",
-                icon: "car-burst",
-                description: "You received a JPJ traffic summons for parking in a prohibited area in Bukit Bintang.",
-                options: [
-                    {
-                        text: "Pay immediately (early bird discount)",
-                        icon: "money-bill-wave",
-                        effect: () => { gameState.balance -= 150; },
-                        description: "-RM150"
-                    },
-                    {
-                        text: "Contest the summons",
-                        icon: "gavel",
-                        effect: () => { 
-                            // 30% chance of success
-                            if (Math.random() > 0.7) {
-                                addAchievement("Traffic Law Expert", "Successfully contested a traffic summons");
-                            } else {
-                                gameState.balance -= 300;
-                                showToast("Summons Appeal Failed", "Your appeal was rejected. Full payment required: -RM300", "error");
-                            }
-                        },
-                        description: "RM0 if successful, -RM300 if not"
-                    }
-                ]
-            },
-            {
-                title: "Phone Data Overuse",
-                subtitle: "Telecommunications",
-                icon: "mobile-screen",
-                description: "You've used up your monthly data plan with Maxis, and there's still 10 days left in the month.",
-                options: [
-                    {
-                        text: "Purchase additional data package",
-                        icon: "wifi",
-                        effect: () => { gameState.balance -= 80; },
-                        description: "-RM80 for 10GB"
-                    },
-                    {
-                        text: "Rely on WiFi only",
-                        icon: "house-signal",
-                        effect: () => { 
-                            addAchievement("Data Saver", "Managed without mobile data");
-                        },
-                        description: "RM0"
-                    },
-                    {
-                        text: "Switch to cheaper prepaid for a week",
-                        icon: "sim-card",
-                        effect: () => { gameState.balance -= 30; },
-                        description: "-RM30"
-                    }
-                ]
-            },
-            {
-                title: "Sudden Laptop Issues",
-                subtitle: "Technology",
-                icon: "laptop-code",
-                description: "Your laptop is showing the infamous 'blue screen of death' while you have an important deadline.",
-                options: [
-                    {
-                        text: "Send to professional repair shop in Low Yat Plaza",
-                        icon: "screwdriver-wrench",
-                        effect: () => { gameState.balance -= 350; },
-                        description: "-RM350"
-                    },
-                    {
-                        text: "Try fixing it yourself with online tutorials",
-                        icon: "youtube",
-                        effect: () => { 
-                            // 50% chance of success
-                            if (Math.random() > 0.5) {
-                                gameState.balance -= 0;
-                                addAchievement("Tech Wizard", "Fixed your own laptop");
-                            } else {
-                                gameState.balance -= 500;
-                                showToast("DIY Repair Failed", "Your repair attempt made things worse! -RM500", "error");
-                            }
-                        },
-                        description: "RM0 if successful, -RM500 if not"
-                    },
-                    {
-                        text: "Use cybercafe or friend's laptop temporarily",
-                        icon: "people-group",
-                        effect: () => { gameState.balance -= 120; },
-                        description: "-RM120"
-                    }
-                ]
-            },
-            {
-                title: "GSC Movie Promotion",
-                subtitle: "Entertainment",
-                icon: "film",
-                description: "GSC is having a special 'Buy 1 Free 1' promotion for movie tickets on Wednesday.",
-                options: [
-                    {
-                        text: "Go watch the latest blockbuster",
-                        icon: "ticket",
-                        effect: () => { 
-                            gameState.balance -= 40;
-                            addAchieurement("Movie Buff", "Took advantage of cinema promotions");
-                        },
-                        description: "-RM40 (for 2 people)"
-                    },
-                    {
-                        text: "Stay home and watch Netflix",
-                        icon: "tv",
-                        effect: () => { gameState.balance -= 0; },
-                        description: "RM0 (already subscribed)"
-                    }
-                ]
-            },
-            {
-                title: "TNB Bill Shock",
-                subtitle: "Utilities",
-                icon: "bolt",
-                description: "Your electricity bill is much higher than usual due to the heatwave and extra air conditioning usage.",
-                options: [
-                    {
-                        text: "Pay in full",
-                        icon: "credit-card",
-                        effect: () => { gameState.balance -= 280; },
-                        description: "-RM280"
-                    },
-                    {
-                        text: "Request bill installment plan",
-                        icon: "money-bill-1-wave",
-                        effect: () => { 
-                            gameState.balance -= 100;
-                            // Remaining amount later
-                            setTimeout(() => {
-                                gameState.balance -= 190;
-                                showToast("Bill Installment", "Paid second installment of TNB bill: -RM190", "info");
-                                updateBoard();
-                            }, 4000);
-                        },
-                        description: "-RM100 now + RM190 later (includes RM10 processing fee)"
-                    },
-                    {
-                        text: "Check for billing errors & appeal",
-                        icon: "magnifying-glass-chart",
-                        effect: () => { 
-                            // 20% chance of successful appeal
-                            if (Math.random() > 0.8) {
-                                gameState.balance -= 150;
-                                showToast("Bill Appeal Partial Success", "TNB reduced your bill after inspection: -RM150", "success");
-                                addAchievement("Bill Detective", "Successfully appealed a high utility bill");
-                            } else {
-                                gameState.balance -= 280;
-                                showToast("Bill Appeal Failed", "TNB confirmed the bill is correct: -RM280", "error");
-                            }
-                        },
-                        description: "-RM150 if appeal successful, -RM280 if not"
-                    }
-                ]
-            }
-        ];
-
-        // Initialize the game
         function initGame() {
-            loadGameState();
-            renderCalendar();
-            updateStats();
-            renderAchievements();
-            setupGamePath();
-            updatePlayerPosition();
-            
-            // Check if dark mode is enabled
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.documentElement.classList.add('dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            loadGameState(); setupDice(); updateAllUI(); setupEventListeners();
+            if (localStorage.getItem('daduitGamePlayed_MY') !== 'true') {
+                openModal('welcome');
             }
         }
 
-        // Load game state from localStorage
         function loadGameState() {
-            const savedState = localStorage.getItem('daduitGameState');
-            if (savedState) {
-                Object.assign(gameState, JSON.parse(savedState));
-            }
-            
+            const savedState = localStorage.getItem('daduitGameState_MY');
+            gameState = savedState ? { ...initialGameState, ...JSON.parse(savedState) } : { ...initialGameState };
             saveGameState();
         }
+        
+        function saveGameState() { localStorage.setItem('daduitGameState_MY', JSON.stringify(gameState)); }
+        function resetGame() { localStorage.removeItem('daduitGameState_MY'); location.reload(); }
 
-        // Save game state to localStorage
-        function saveGameState() {
-            localStorage.setItem('daduitGameState', JSON.stringify(gameState));
+        function updateAllUI() {
+            ui.balanceEl.textContent = `RM ${gameState.balance}`;
+            ui.currentPositionEl.textContent = gameState.currentDay;
+            ui.dayCounter.textContent = gameState.currentDay;
+            ui.currentStreakEl.textContent = `Streak: ${gameState.streak} days`;
+            ui.monthHeader.textContent = `Month ${Math.ceil(gameState.currentDay / 30)}`;
+
+            renderCalendar(); renderAchievements(); updatePlayerPosition(); updateControls();
+
+            if (gameState.balance < 0 && gameState.gameInProgress) gameOver();
+            if (gameState.gameWon) gameWon();
         }
-
-        // Render the calendar for the current month
+        
         function renderCalendar() {
-            calendar.innerHTML = '';
-            
-            // Update month title
-            currentMonthEl.textContent = `Month ${gameState.currentMonth}`;
-            
-            // Create 30 days for each month
-            for (let day = 1; day <= 30; day++) {
+            ui.calendar.innerHTML = '';
+            for (let day = 1; day <= 60; day++) {
                 const dayEl = document.createElement('div');
-                dayEl.classList.add('day');
-                
-                // Check if this is the current position
-                if (day === gameState.currentPosition) {
-                    dayEl.classList.add('current');
-                }
-                
-                // Check if this is a payday
-                if (gameState.specialDays.paydays.includes(day)) {
-                    dayEl.classList.add('payday');
-                }
-                
-                // Check if this is a special event day
-                if (gameState.specialDays.events.includes(day)) {
-                    dayEl.classList.add('special-day');
-                }
-                
-                // Add day number
-                const dayNumber = document.createElement('div');
-                dayNumber.classList.add('day-number');
-                dayNumber.textContent = day;
-                dayEl.appendChild(dayNumber);
-                
-                // Add icon based on status
-                const dayIcon = document.createElement('div');
-                dayIcon.classList.add('day-icon');
-                
-                if (gameState.specialDays.paydays.includes(day)) {
-                    dayIcon.innerHTML = '<i class="fas fa-money-bill-wave" style="color: var(--success-color);"></i>';
-                } else if (gameState.specialDays.events.includes(day)) {
-                    dayIcon.innerHTML = '<i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i>';
-                }
-                
-                dayEl.appendChild(dayIcon);
-                
-                calendar.appendChild(dayEl);
+                dayEl.className = 'day';
+                dayEl.textContent = day;
+                if (day === gameState.currentDay) dayEl.classList.add('current');
+                if (gameState.paydays.includes(day)) dayEl.classList.add('payday');
+                ui.calendar.appendChild(dayEl);
             }
         }
 
-        // Update game statistics
-        function updateStats() {
-            // Update UI
-            balanceEl.textContent = `RM${gameState.balance}`;
-            currentPositionEl.textContent = gameState.currentPosition;
-            totalCompletedEl.textContent = gameState.completedChallenges;
-            
-            // Calculate days remaining in month
-            const daysRemaining = 30 - gameState.currentPosition + 1;
-            daysRemainingEl.textContent = daysRemaining;
-            
-            // Update progress bar
-            const progress = Math.round((gameState.currentPosition / 30) * 100);
-            progressFill.style.width = `${progress}%`;
-            
-            // Update streak (placeholder)
-            currentStreakEl.textContent = `Current streak: ${gameState.completedChallenges} challenges`;
-            
-            // Check for bankruptcy
-            checkBankruptcy();
-        }
-
-        // Check for bankruptcy conditions
-        function checkBankruptcy() {
-            if (gameState.isBankrupt) return; // Already bankrupt
-            
-            if (gameState.balance < gameState.bankruptcyThreshold) {
-                declareBankruptcy("Your balance has fallen below RM-1,000");
-            }
-            
-            if (gameState.missedPaydays >= 3) {
-                declareBankruptcy("You've missed 3 consecutive paydays");
-            }
-        }
-
-        // Declare bankruptcy
-        function declareBankruptcy(reason) {
-            gameState.isBankrupt = true;
-            saveGameState();
-            
-            showConfirmModal(
-                'BANKRUPTCY DECLARED',
-                `${reason}. You have been declared bankrupt. Your financial journey has ended. Would you like to start over?`,
-                resetGame
-            );
-            
-            // Disable game buttons
-            rollDiceBtn.disabled = true;
-            completeTaskBtn.disabled = true;
-            missTaskBtn.disabled = true;
-        }
-
-        // Render achievements
-        function renderAchievements() {
-            achievementsList.innerHTML = '';
-            
-            if (gameState.achievements.length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.textContent = 'No achievements yet. Keep playing to earn some!';
-                emptyMessage.style.padding = '10px';
-                emptyMessage.style.color = 'var(--neutral-color)';
-                achievementsList.appendChild(emptyMessage);
+        function updateControls() {
+            if (!gameState.gameInProgress) {
+                ui.dailyTaskSection.style.display = 'none';
+                ui.rollDiceSection.style.display = 'none';
                 return;
             }
-            
-            gameState.achievements.forEach(achievement => {
-                const achievementItem = document.createElement('div');
-                achievementItem.classList.add('task-item');
-                
-                const achievementIcon = document.createElement('i');
-                achievementIcon.classList.add('fas', 'fa-trophy');
-                achievementIcon.style.color = 'var(--warning-color)';
-                achievementIcon.style.marginRight = '10px';
-                
-                const achievementText = document.createElement('div');
-                achievementText.classList.add('task-text');
-                achievementText.innerHTML = `<strong>${achievement.title}</strong><br><small>${achievement.description}</small>`;
-                
-                achievementItem.appendChild(achievementIcon);
-                achievementItem.appendChild(achievementText);
-                
-                achievementsList.appendChild(achievementItem);
-            });
+            ui.dailyTaskSection.style.display = gameState.dailyTaskDone ? 'none' : 'block';
+            ui.rollDiceSection.style.display = gameState.dailyTaskDone ? 'block' : 'none';
         }
 
-        // Add an achievement
-        function addAchievement(title, description) {
-            // Check if achievement already exists
-            const exists = gameState.achievements.some(a => a.title === title);
-            if (exists) return;
-            
-            gameState.achievements.push({ title, description });
-            saveGameState();
-            renderAchievements();
-            
-            showToast("Achievement Unlocked", title, "success");
-        }
-
-        // Fixed typo function for GSC Movie achievement
-        function addAchieurement(title, description) {
-            addAchievement(title, description);
-        }
-
-        // Setup game path with steps
-        function setupGamePath() {
-            gamePath.innerHTML = '';
-            
-            // Add player pin
-            gamePath.appendChild(playerGamePin);
-            
-            // Create 10 steps on the path
-            for (let i = 0; i < 10; i++) {
-                const step = document.createElement('div');
-                step.classList.add('path-step');
-                step.style.left = `${i * 10}%`;
-                step.textContent = i * 3 + 1;
-                gamePath.appendChild(step);
-            }
-        }
-
-        // Update player pin position on the board
         function updatePlayerPosition() {
-            // Calculate position percentage (1-30 days)
-            const positionPercentage = ((gameState.currentPosition - 1) / 29) * 100;
-            
-            // Update player pin position with animation
-            playerGamePin.style.left = `${positionPercentage}%`;
+            const gamePath = document.getElementById('gamePath');
+            const targetLeft = ((gameState.currentDay - 1) / 59) * (gamePath.offsetWidth - ui.playerGamePin.offsetWidth);
+            ui.playerGamePin.style.left = `${targetLeft}px`;
+            ui.playerGamePin.classList.add('is-moving');
+            setTimeout(() => ui.playerGamePin.classList.remove('is-moving'), 500);
         }
 
-        // Roll the dice with realistic 3D animation
+        function handleHabit(completed) {
+            if (gameState.dailyTaskDone) return;
+            if (completed) {
+                gameState.balance += 20; gameState.streak++;
+                showToast("Habit Done!", "Syabas! You earned RM 20.", "success");
+                if (gameState.streak > 0 && gameState.streak % 7 === 0) {
+                    addAchievement(`On Fire!`, `Reached a ${gameState.streak}-day streak.`);
+                    launchConfetti();
+                }
+            } else {
+                gameState.balance -= 20; gameState.streak = 0;
+                showToast("Habit Skipped", "Alamak, maybe tomorrow lah. -RM 20", "warning");
+            }
+            gameState.dailyTaskDone = true;
+            updateAllUI(); saveGameState();
+        }
+
         function rollDice() {
-            if (gameState.isRolling || gameState.isBankrupt) return;
-            
+            if (gameState.isRolling) return;
             gameState.isRolling = true;
-            rollDiceBtn.disabled = true;
-            
-            // Generate random values for both dice
+            ui.rollDiceBtn.disabled = true;
+
             const value1 = Math.floor(Math.random() * 6) + 1;
             const value2 = Math.floor(Math.random() * 6) + 1;
             const total = value1 + value2;
             
-            // Store the roll
-            gameState.lastRoll = total;
+            const rotations = { 1: "rotateX(0deg) rotateY(0deg)", 2: "rotateX(0deg) rotateY(180deg)", 3: "rotateX(0deg) rotateY(90deg)", 4: "rotateX(0deg) rotateY(-90deg)", 5: "rotateX(90deg) rotateY(0deg)", 6: "rotateX(-90deg) rotateY(0deg)" };
             
-            // Define rotations for each dice face
-            const rotations = {
-                1: "rotateX(0deg) rotateY(0deg)",
-                2: "rotateX(0deg) rotateY(180deg)",
-                3: "rotateX(0deg) rotateY(90deg)",
-                4: "rotateX(0deg) rotateY(-90deg)",
-                5: "rotateX(90deg) rotateY(0deg)",
-                6: "rotateX(-90deg) rotateY(0deg)"
-            };
-            
-            // Add spinning animation
-            dice1.style.transition = "transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-            dice2.style.transition = "transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-            
-            // Random spins before landing on the final value
-            dice1.style.transform = `rotateX(${Math.random() * 1080}deg) rotateY(${Math.random() * 1080}deg) rotateZ(${Math.random() * 1080}deg)`;
-            dice2.style.transform = `rotateX(${Math.random() * 1080}deg) rotateY(${Math.random() * 1080}deg) rotateZ(${Math.random() * 1080}deg)`;
-            
-            // After a delay, show the actual values
+            ui.dice1.style.transform = `rotateX(${Math.random()*1440}deg) rotateY(${Math.random()*1440}deg)`;
+            ui.dice2.style.transform = `rotateX(${Math.random()*1440}deg) rotateY(${Math.random()*1440}deg)`;
+
             setTimeout(() => {
-                dice1.style.transform = rotations[value1];
-                dice2.style.transform = rotations[value2];
-                
-                // Move player after dice roll
-                setTimeout(() => {
-                    movePlayer(total);
-                }, 500);
-            }, 1000);
+                ui.dice1.style.transform = rotations[value1];
+                ui.dice2.style.transform = rotations[value2];
+                setTimeout(() => movePlayer(total), 1000);
+            }, 1500);
         }
 
-        // Move player based on dice roll
-        function movePlayer(steps) {
-            // Calculate new position
-            let newPosition = gameState.currentPosition + steps;
-            
-            // Check if player completed the month
-            if (newPosition > 30) {
-                // Move to next month
-                gameState.currentMonth++;
-                newPosition = newPosition - 30;
-                
-                if (gameState.currentMonth > 2) {
-                    // Game completed
-                    showToast("Game Completed", "Congratulations! You've completed the game!", "success");
-                    gameState.currentMonth = 2;
-                    newPosition = 30;
-                } else {
-                    showToast("New Month", `Welcome to Month ${gameState.currentMonth}!`, "info");
-                }
+        async function movePlayer(steps) {
+            showToast("You rolled a " + steps, `Moving ${steps} spaces...`, "info");
+            for (let i = 0; i < steps; i++) {
+                if (gameState.currentDay >= 60) break;
+                gameState.currentDay++;
+                await new Promise(resolve => setTimeout(resolve, 150));
+                updatePlayerPosition(); updateAllUI();
             }
-            
-            // Update position
-            gameState.currentPosition = newPosition;
-            
-            // Update board
-            updateBoard();
-            
-            // Check for special events
-            checkForEvents();
-        }
 
-        // Update the game board
-        function updateBoard() {
-            renderCalendar();
-            updateStats();
-            updatePlayerPosition();
-            saveGameState();
-            
-            // Re-enable roll button
-            setTimeout(() => {
-                gameState.isRolling = false;
-                rollDiceBtn.disabled = false;
-            }, 1000);
-        }
-
-        // Check for special events or paydays
-        function checkForEvents() {
-            const currentDay = gameState.currentPosition;
-            
-            // Check for payday
-            if (gameState.specialDays.paydays.includes(currentDay)) {
-                processSalary();
-                return; // Don't process other events on payday
-            }
-            
-            // Check for special events
-            if (gameState.specialDays.events.includes(currentDay)) {
-                // Get the appropriate event based on month and position
-                const eventIndex = gameState.specialDays.events.indexOf(currentDay);
-                const events = gameState.currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
-                
-                if (eventIndex < events.length) {
-                    showSpecialEvent(events[eventIndex]);
-                    return; // Don't process random challenges if there's a special event
-                }
-            }
-            
-            // Check for random challenges
-            if (Math.random() < gameState.challengeChance) {
-                showRandomChallenge();
-            }
-        }
-
-        // Process salary payment
-        function processSalary() {
-            // Check if player has enough to cover expenses
-            if (gameState.balance < gameState.expenses) {
-                // Record missed payday
-                gameState.missedPaydays++;
-                showToast("Missed Expenses", `You don't have enough to cover your expenses! Missed payday count: ${gameState.missedPaydays}/3`, "error");
-                gameState.balance += gameState.salary;
-                // Don't subtract expenses - they'll remain in debt
+            if (gameState.currentDay >= 60 && gameState.gameInProgress) {
+                gameState.currentDay = 60; gameState.gameWon = true;
+                gameWon();
             } else {
-                // Reset missed paydays counter if payment is successful
-                gameState.missedPaydays = 0;
+                setTimeout(triggerDayEvent, 500);
+            }
+            
+            gameState.dailyTaskDone = false;
+            ui.rollDiceBtn.disabled = false;
+            gameState.isRolling = false;
+            saveGameState();
+        }
+
+        function triggerDayEvent() {
+            if (gameState.paydays.includes(gameState.currentDay)) {
                 gameState.balance += gameState.salary;
-                gameState.balance -= gameState.expenses;
-                showToast("Payday", `Received salary: +RM${gameState.salary}, Paid expenses: -RM${gameState.expenses}`, "success");
-            }
-            
-            updateBoard();
-        }
-
-        // ENHANCED: Event modal opener with icons
-        function openModal(event) {
-            const { title, subtitle, icon, description, options } = event;
-            
-            eventTitle.textContent = title;
-            eventSubtitle.textContent = subtitle || "Financial Decision";
-            eventIcon.innerHTML = `<i class="fas fa-${icon || 'exclamation-circle'}"></i>`;
-            eventDescription.textContent = description;
-            eventOptions.innerHTML = '';
-            
-            options.forEach((option, index) => {
-                const optionEl = document.createElement('div');
-                optionEl.classList.add('event-option');
-                optionEl.dataset.optionIndex = index;
-                
-                const optionIcon = document.createElement('div');
-                optionIcon.classList.add('option-icon');
-                optionIcon.innerHTML = `<i class="fas fa-${option.icon || 'circle'}"></i>`;
-                
-                const optionContent = document.createElement('div');
-                optionContent.classList.add('option-content');
-                
-                const optionText = document.createElement('div');
-                optionText.classList.add('option-text');
-                optionText.textContent = option.text;
-                
-                const optionEffect = document.createElement('div');
-                optionEffect.classList.add('option-effect');
-                optionEffect.textContent = option.description;
-                
-                optionContent.appendChild(optionText);
-                optionContent.appendChild(optionEffect);
-                
-                optionEl.appendChild(optionIcon);
-                optionEl.appendChild(optionContent);
-                eventOptions.appendChild(optionEl);
-            });
-            
-            eventModal.style.display = 'flex';
-        }
-
-        // Show special event
-        function showSpecialEvent(event) {
-            openModal(event);
-        }
-
-        // Show random challenge
-        function showRandomChallenge() {
-            const challenges = gameState.currentMonth === 1 ? month1Challenges : month2Challenges;
-            const randomIndex = Math.floor(Math.random() * challenges.length);
-            const challenge = challenges[randomIndex];
-            
-            openModal(challenge);
-        }
-
-        // Show toast notification
-        function showToast(title, message, type = "info") {
-            const toast = document.createElement('div');
-            toast.classList.add('toast', type);
-            
-            let icon;
-            switch (type) {
-                case "success":
-                    icon = '<i class="fas fa-check-circle toast-icon" style="color: var(--success-color);"></i>';
-                    break;
-                case "warning":
-                    icon = '<i class="fas fa-exclamation-triangle toast-icon" style="color: var(--warning-color);"></i>';
-                    break;
-                case "error":
-                    icon = '<i class="fas fa-times-circle toast-icon" style="color: var(--danger-color);"></i>';
-                    break;
-                default:
-                    icon = '<i class="fas fa-info-circle toast-icon" style="color: var(--primary-color);"></i>';
-            }
-            
-            toast.innerHTML = `
-                ${icon}
-                <div class="toast-content">
-                    <div class="toast-title">${title}</div>
-                    <div class="toast-message">${message}</div>
-                </div>
-                <div class="toast-close">&times;</div>
-                <div class="toast-progress">
-                    <div class="toast-progress-bar"></div>
-                </div>
-            `;
-            
-            toastContainer.appendChild(toast);
-            
-            // Add close event
-            const closeBtn = toast.querySelector('.toast-close');
-            closeBtn.addEventListener('click', () => {
-                toast.style.animation = 'slideOut 0.3s forwards';
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            });
-            
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.style.animation = 'slideOut 0.3s forwards';
-                    setTimeout(() => {
-                        if (toast.parentNode) {
-                            toast.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
-        }
-
-        // Reset the game
-        function resetGame() {
-            gameState.currentPosition = 1;
-            gameState.currentMonth = 1;
-            gameState.balance = 1000;
-            gameState.achievements = [];
-            gameState.completedChallenges = 0;
-            gameState.missedPaydays = 0;
-            gameState.isBankrupt = false;
-            
-            // Re-enable buttons
-            rollDiceBtn.disabled = false;
-            completeTaskBtn.disabled = false;
-            missTaskBtn.disabled = false;
-            
-            saveGameState();
-            renderCalendar();
-            updateStats();
-            renderAchievements();
-            updatePlayerPosition();
-            
-            showToast("Game Reset", "The game has been reset.", "info");
-        }
-
-        // Event Listeners
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('darkMode', isDark);
-            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        });
-
-        // Info button event listeners
-        infoButton.addEventListener('click', () => {
-            infoModal.style.display = 'block';
-            setTimeout(() => {
-                infoModal.classList.add('active');
-            }, 10);
-        });
-
-        closeInfoModal.addEventListener('click', () => {
-            infoModal.classList.remove('active');
-            setTimeout(() => {
-                infoModal.style.display = 'none';
-            }, 300);
-        });
-
-        prevMonthBtn.addEventListener('click', () => {
-            if (gameState.currentMonth > 1) {
-                gameState.currentMonth--;
-                renderCalendar();
-            }
-        });
-
-        nextMonthBtn.addEventListener('click', () => {
-            if (gameState.currentMonth < 2) {
-                gameState.currentMonth++;
-                renderCalendar();
-            }
-        });
-
-        rollDiceBtn.addEventListener('click', rollDice);
-
-        completeTaskBtn.addEventListener('click', () => {
-            if (gameState.isBankrupt) return;
-            
-            gameState.completedChallenges++;
-            updateStats();
-            saveGameState();
-            showToast("Task Completed", "You've completed a task!", "success");
-        });
-
-        missTaskBtn.addEventListener('click', () => {
-            if (gameState.isBankrupt) return;
-            
-            showToast("Task Missed", "You've missed a task.", "error");
-        });
-
-        resetBtn.addEventListener('click', () => {
-            showConfirmModal(
-                'Reset Game',
-                'Are you sure you want to reset the game? All progress will be lost.',
-                resetGame
-            );
-        });
-
-        closeConfirmModal.addEventListener('click', () => {
-            confirmModal.style.display = 'none';
-        });
-
-        cancelConfirmBtn.addEventListener('click', () => {
-            confirmModal.style.display = 'none';
-        });
-
-        closeEventModal.addEventListener('click', () => {
-            eventModal.style.display = 'none';
-        });
-
-        // Event delegation: Handle event option clicks
-        eventOptions.addEventListener('click', (e) => {
-            const optionEl = e.target.closest('.event-option');
-            if (!optionEl) return;
-            
-            const optionIndex = parseInt(optionEl.dataset.optionIndex);
-            
-            // Find the correct event/challenge data
-            let currentEvent = null;
-            
-            if (gameState.specialDays.events.includes(gameState.currentPosition)) {
-                // It's a special event day
-                const eventIndex = gameState.specialDays.events.indexOf(gameState.currentPosition);
-                const events = gameState.currentMonth === 1 ? month1SpecialEvents : month2SpecialEvents;
-                
-                if (eventIndex < events.length) {
-                    currentEvent = events[eventIndex];
-                }
+                showToast("Gaji Dah Masuk!", `You received your salary of RM ${gameState.salary}.`, "success");
+                launchConfetti();
+                 updateAllUI();
+                 saveGameState();
             } else {
-                // It's a random challenge - find the matching challenge
-                const challenges = gameState.currentMonth === 1 ? month1Challenges : month2Challenges;
-                
-                // Look through all challenges to find the one matching our current UI state
-                const challengeTitle = eventTitle.textContent;
-                currentEvent = challenges.find(c => c.title === challengeTitle);
+                currentEvent = eventPool[Math.floor(Math.random() * eventPool.length)];
+                openModal('event', currentEvent);
             }
-            
-            if (currentEvent && currentEvent.options[optionIndex]) {
-                // Execute the effect
-                currentEvent.options[optionIndex].effect();
-                
-                // Increment completed challenges
-                gameState.completedChallenges++;
-                
-                // Show toast
-                showToast("Decision Made", `You chose: ${currentEvent.options[optionIndex].text}`, "info");
-                
-                // Close modal
-                eventModal.style.display = 'none';
-                
-                // Update board
-                updateBoard();
-            }
-        });
-
-        // Show confirmation modal
-        function showConfirmModal(title, message, confirmAction) {
-            confirmTitle.textContent = title;
-            confirmMessage.textContent = message;
-            
-            // Remove previous event listener and add new one
-            confirmBtn.replaceWith(confirmBtn.cloneNode(true));
-            confirmBtn = document.getElementById('confirmBtn');
-            
-            confirmBtn.addEventListener('click', () => {
-                confirmAction();
-                confirmModal.style.display = 'none';
-            });
-            
-            confirmModal.style.display = 'flex';
+        }
+        
+        function gameOver() {
+            gameState.gameInProgress = false; saveGameState();
+            openModal('confirm', { title: "Game Over!", message: "Aiyoo, your balance is negative! Kena try again next time.", onConfirm: resetGame, confirmText: 'Restart' });
+        }
+        
+        function gameWon() {
+            gameState.gameInProgress = false; saveGameState(); launchConfetti(200);
+            openModal('confirm', { title: "You Won!", message: "Fuyoh! You survived 2 months and managed your finances like a boss! You're a true DADUit champion.", onConfirm: resetGame, confirmText: 'Play Again' });
         }
 
-        // Close modals when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === confirmModal) {
-                confirmModal.style.display = 'none';
-            }
-            if (e.target === eventModal) {
-                eventModal.style.display = 'none';
-            }
-            if (e.target === infoModal) {
-                infoModal.classList.remove('active');
-                setTimeout(() => {
-                    infoModal.style.display = 'none';
-                }, 300);
-            }
-        });
+        function setupEventListeners() {
+            ui.themeToggle.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode_MY', document.documentElement.classList.contains('dark')); });
+            ui.completeHabitBtn.addEventListener('click', () => handleHabit(true));
+            ui.missHabitBtn.addEventListener('click', () => handleHabit(false));
+            ui.rollDiceBtn.addEventListener('click', rollDice);
+            ui.resetBtn.addEventListener('click', () => openModal('confirm', { title: 'Reset Game', message: 'Are you sure? All progress will be lost.', onConfirm: resetGame }));
+            document.querySelectorAll('.modal-close').forEach(el => el.addEventListener('click', () => closeModal(el.closest('.modal'))));
+            document.querySelectorAll('.modal').forEach(el => el.addEventListener('click', e => { if (e.target === el) closeModal(el); }));
+            document.getElementById('startGameBtn').addEventListener('click', () => { localStorage.setItem('daduitGamePlayed_MY', 'true'); closeModal(modals.welcome); });
+            document.getElementById('cancelConfirmBtn').addEventListener('click', () => closeModal(modals.confirm));
+            
+            modalElements.eventOptions.addEventListener('click', e => {
+                const optionEl = e.target.closest('.modal-option[data-index]');
+                if (!optionEl || !currentEvent) return;
+                const index = parseInt(optionEl.dataset.index, 10);
+                if (currentEvent.options && currentEvent.options[index]) {
+                    currentEvent.options[index].effect();
+                    closeModal(modals.event);
+                    updateAllUI(); saveGameState();
+                }
+            });
+        }
 
-        // Initialize the game when the page loads
-        document.addEventListener('DOMContentLoaded', initGame);
+        function openModal(type, data = {}) {
+            const modal = modals[type];
+            if (!modal) return;
+            if (type === 'confirm') {
+                modalElements.confirmTitle.textContent = data.title;
+                modalElements.confirmMessage.textContent = data.message;
+                if (data.confirmText) modalElements.confirmBtn.textContent = data.confirmText;
+                const newConfirmBtn = modalElements.confirmBtn.cloneNode(true);
+                modalElements.confirmBtn.parentNode.replaceChild(newConfirmBtn, modalElements.confirmBtn);
+                newConfirmBtn.addEventListener('click', data.onConfirm);
+                modalElements.confirmBtn = newConfirmBtn;
+            } else if (type === 'event') {
+                modalElements.eventTitle.textContent = data.title;
+                modalElements.eventDescription.textContent = data.description;
+                modalElements.eventOptions.innerHTML = '';
+                data.options.forEach((opt, i) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'modal-option';
+                    btn.dataset.index = i;
+                    btn.innerHTML = `<span class="option-text">${opt.text}</span>`;
+                    modalElements.eventOptions.appendChild(btn);
+                });
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal(modal) { modal.style.display = 'none'; }
+        
+        function setupDice() {
+            [ui.dice1, ui.dice2].forEach(diceEl => {
+                diceEl.innerHTML = ''; // Clear it out
+                for (let i = 1; i <= 6; i++) {
+                    let dotsHTML = '';
+                    for (let j = 0; j < i; j++) {
+                        dotsHTML += '<span class="dice-dot"></span>';
+                    }
+                    const face = document.createElement('div');
+                    face.className = 'dice-face';
+                    face.innerHTML = `<div class="dice-dot-container face-${i}">${dotsHTML}</div>`;
+                    diceEl.appendChild(face);
+                }
+            });
+        }
+
+        function addAchievement(title,description){if(gameState.achievements.some(a=>a.title===title))return;gameState.achievements.push({title,description});showToast("Achievement Unlocked!",title,"success");renderAchievements()}
+        function renderAchievements(){ui.achievementsList.innerHTML='';if(gameState.achievements.length===0){ui.achievementsList.innerHTML='<p style="padding:10px;color:var(--neutral-color)">No achievements yet.</p>';return}
+        gameState.achievements.forEach(ach=>{const item=document.createElement('div');item.className='achievement-item';item.innerHTML=`<i class="fas fa-trophy achievement-icon"></i><div><strong>${ach.title}</strong><br><small>${ach.description}</small></div>`;ui.achievementsList.appendChild(item)})}
+        function showToast(title,message,type="info"){const toast=document.createElement('div');toast.classList.add('toast',type);const icons={success:'fa-check-circle',warning:'fa-exclamation-triangle',error:'fa-times-circle',info:'fa-info-circle'};toast.innerHTML=`<i class="fas ${icons[type]} toast-icon"></i><div><div class=toast-title>${title}</div><div>${message}</div></div>`;ui.toastContainer.appendChild(toast);setTimeout(()=>{toast.style.animation='slideOut .5s forwards';setTimeout(()=>toast.remove(),500)},4000)}
+        function launchConfetti(count=100){const colors=['#6366F1','#8B5CF6','#EC4899','#F59E0B','#10B981'];for(let i=0;i<count;i++){const confetti=document.createElement('div');confetti.classList.add('confetti');confetti.style.left=Math.random()*window.innerWidth+'px';confetti.style.top=-20+'px';confetti.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];confetti.style.transform=`rotate(${Math.random()*360}deg)`;document.body.appendChild(confetti);const anim=confetti.animate([{top:-20+'px',opacity:1},{top:window.innerHeight+20+'px',opacity:0}],{duration:Math.random()*3000+3000,easing:'linear'});anim.onfinish=()=>confetti.remove()}}
+
+        initGame();
+    });
     </script>
 </body>
 </html>
