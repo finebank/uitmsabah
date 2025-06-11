@@ -69,42 +69,26 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; width: 100%; }
         main.container { flex-grow: 1; }
 
-        /* Header & Dice Styles */
-        .game-header{background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%);padding:30px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.2);margin-bottom:30px}.header-content{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}.header-title{color:white;font-size:2.8rem;font-weight:800;text-shadow:2px 2px 8px rgba(0,0,0,0.3);letter-spacing:-1px;margin:0}.header-subtitle{color:rgba(255,255,255,0.9);font-size:1.1rem;margin-top:5px;font-weight:300}.header-bg-pattern{position:absolute;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:0.5}.dice-container{display:flex;gap:20px;perspective:1000px}.dice{width:60px;height:60px;position:relative;transform-style:preserve-3d;transition:transform 1.5s ease-out;cursor:pointer}.dice-face{position:absolute;width:100%;height:100%;border-radius:10px;background:white;box-shadow:inset 0 0 10px rgba(0,0,0,0.1);display:flex;justify-content:center;align-items:center;font-size:0}.dice-face:nth-child(1){transform:translateZ(30px)}.dice-face:nth-child(2){transform:rotateY(180deg) translateZ(30px)}.dice-face:nth-child(3){transform:rotateY(90deg) translateZ(30px)}.dice-face:nth-child(4){transform:rotateY(-90deg) translateZ(30px)}.dice-face:nth-child(5){transform:rotateX(90deg) translateZ(30px)}.dice-face:nth-child(6){transform:rotateX(-90deg) translateZ(30px)}
-        
-        /* CORRECTED Dice Dot CSS */
-        .dice-dot-container { width: 48px; height: 48px; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(3, 1fr); gap: 4px; }
-        .dice-dot { width: 100%; height: 100%; border-radius: 50%; background-color: #333; box-shadow: inset 0 0 2px rgba(0,0,0,0.5); }
-        .face-1 .dice-dot:nth-child(1) { grid-area: 2 / 2; }
-        .face-2 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-2 .dice-dot:nth-child(2) { grid-area: 3 / 3; }
-        .face-3 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-3 .dice-dot:nth-child(2) { grid-area: 2 / 2; } .face-3 .dice-dot:nth-child(3) { grid-area: 3 / 3; }
-        .face-4 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-4 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-4 .dice-dot:nth-child(3) { grid-area: 3 / 1; } .face-4 .dice-dot:nth-child(4) { grid-area: 3 / 3; }
-        .face-5 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-5 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-5 .dice-dot:nth-child(3) { grid-area: 2 / 2; } .face-5 .dice-dot:nth-child(4) { grid-area: 3 / 1; } .face-5 .dice-dot:nth-child(5) { grid-area: 3 / 3; }
-        .face-6 .dice-dot:nth-child(1) { grid-area: 1 / 1; } .face-6 .dice-dot:nth-child(2) { grid-area: 1 / 3; } .face-6 .dice-dot:nth-child(3) { grid-area: 2 / 1; } .face-6 .dice-dot:nth-child(4) { grid-area: 2 / 3; } .face-6 .dice-dot:nth-child(5) { grid-area: 3 / 1; } .face-6 .dice-dot:nth-child(6) { grid-area: 3 / 3; }
+        /* --- Header & Dice --- */
+        .game-header{background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%);padding:30px 0;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.2);margin-bottom:30px}.header-content{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}.header-title{color:white;font-size:2.8rem;font-weight:800;text-shadow:2px 2px 8px rgba(0,0,0,0.3);letter-spacing:-1px;margin:0}.header-subtitle{color:rgba(255,255,255,0.9);font-size:1.1rem;margin-top:5px;font-weight:300}.header-bg-pattern{position:absolute;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:0.5}.dice-container{display:flex;gap:20px;perspective:1000px}.dice{width:60px;height:60px;position:relative;transform-style:preserve-3d;transition:transform 1.5s ease-out;cursor:pointer}.dice-face{position:absolute;width:100%;height:100%;border-radius:10px;background:white;box-shadow:inset 0 0 10px rgba(0,0,0,0.1);display:flex;justify-content:center;align-items:center;font-size:0}.dice-face:nth-child(1){transform:translateZ(30px)}.dice-face:nth-child(2){transform:rotateY(180deg) translateZ(30px)}.dice-face:nth-child(3){transform:rotateY(90deg) translateZ(30px)}.dice-face:nth-child(4){transform:rotateY(-90deg) translateZ(30px)}.dice-face:nth-child(5){transform:rotateX(90deg) translateZ(30px)}.dice-face:nth-child(6){transform:rotateX(-90deg) translateZ(30px)}.dice-dot-container{width:48px;height:48px;display:grid;grid-template-rows:repeat(3,1fr);grid-template-columns:repeat(3,1fr);gap:4px}.dice-dot{width:100%;height:100%;border-radius:50%;background-color:#333;box-shadow:inset 0 0 2px rgba(0,0,0,0.5)}.face-1 .dice-dot:nth-child(1){grid-area:2 / 2}.face-2 .dice-dot:nth-child(1){grid-area:1 / 1}.face-2 .dice-dot:nth-child(2){grid-area:3 / 3}.face-3 .dice-dot:nth-child(1){grid-area:1 / 1}.face-3 .dice-dot:nth-child(2){grid-area:2 / 2}.face-3 .dice-dot:nth-child(3){grid-area:3 / 3}.face-4 .dice-dot:nth-child(1){grid-area:1 / 1}.face-4 .dice-dot:nth-child(2){grid-area:1 / 3}.face-4 .dice-dot:nth-child(3){grid-area:3 / 1}.face-4 .dice-dot:nth-child(4){grid-area:3 / 3}.face-5 .dice-dot:nth-child(1){grid-area:1 / 1}.face-5 .dice-dot:nth-child(2){grid-area:1 / 3}.face-5 .dice-dot:nth-child(3){grid-area:2 / 2}.face-5 .dice-dot:nth-child(4){grid-area:3 / 1}.face-5 .dice-dot:nth-child(5){grid-area:3 / 3}.face-6 .dice-dot:nth-child(1){grid-area:1 / 1}.face-6 .dice-dot:nth-child(2){grid-area:1 / 3}.face-6 .dice-dot:nth-child(3){grid-area:2 / 1}.face-6 .dice-dot:nth-child(4){grid-area:2 / 3}.face-6 .dice-dot:nth-child(5){grid-area:3 / 1}.face-6 .dice-dot:nth-child(6){grid-area:3 / 3}
 
+        /* --- Main Layout & Controls --- */
         .game-container { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         .game-board, .stats-panel { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .game-path { position: relative; height: 60px; margin-bottom: 25px; background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)); border-radius: 30px; }
         .player-game-pin { position: absolute; width: 40px; height: 50px; top: 5px; left: 5px; transition: left 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 10; transform-origin: bottom center; }
         .player-game-pin.is-moving { animation: bounce 0.5s ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.1); } }
-        .controls { margin-bottom: 25px; background-color: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .daily-task-section { text-align: center; }
-        .daily-task-section h3 { font-weight: 600; margin-bottom: 15px; }
-        .daily-task-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; font-size: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .controls { text-align: center; margin-bottom: 25px; background-color: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
         .btn:disabled { background-color: var(--neutral-color); color: white; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
         .btn-primary { background-color: var(--primary-color); color: white; }
         .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); }
-        .btn-success { background-color: var(--success-color); color: white; }
-        .btn-success:hover:not(:disabled) { background-color: #0ea271; }
-        .btn-danger { background-color: var(--danger-color); color: white; }
-        .btn-danger:hover:not(:disabled) { background-color: #dc2626; }
         .btn-neutral { background-color: #f3f4f6; color: #1f2937; border: 1px solid #d1d5db; }
-        .btn-neutral:hover:not(:disabled) { background-color: #e5e7eb; }
         .dark .btn-neutral { background-color: #374151; color: #f3f4f6; border-color: #4b5563; }
-        .dark .btn-neutral:hover:not(:disabled) { background-color: #4b5563; }
+        
+        /* --- Calendar & Stats --- */
         .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
         .day { aspect-ratio: 1; border: 1px solid var(--border-color); border-radius: 8px; padding: 5px; position: relative; background: var(--bg-color); transition: all 0.3s; text-align: center; display: flex; justify-content: flex-start; align-items: center; font-weight: 600; flex-direction: column; }
         .day.current { background: var(--primary-color); color: white; transform: scale(1.1); box-shadow: 0 0 15px var(--primary-color); z-index: 5; }
@@ -113,17 +97,25 @@
         .stat-card { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; }
         .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary-color); }
         .stat-label { font-size: 0.9rem; color: var(--neutral-color); }
-        .streak-indicator { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 15px; font-size: 1.1rem; }
-        .streak-flame { color: var(--warning-color); font-size: 1.5rem; }
-        .achievements-list { margin-top: 20px; max-height: 250px; overflow-y: auto; padding-right: 10px; }
+        .achievements-list { margin-top: 20px; max-height: 300px; overflow-y: auto; padding-right: 10px; }
         .achievement-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color); }
         .achievement-icon { font-size: 1.5rem; color: var(--warning-color); margin-right: 15px; }
         .settings-button { text-align: right; margin-top: 20px; }
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:1000;justify-content:center;align-items:center;animation:fadeIn .3s}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.modal-content{background:var(--card-bg);padding:30px;border-radius:16px;max-width:550px;width:90%;box-shadow:0 10px 25px rgba(0,0,0,0.2);position:relative;animation:slideUp .4s cubic-bezier(0.165,0.84,0.44,1)}@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}.modal-close{position:absolute;top:15px;right:20px;font-size:1.8rem;cursor:pointer;color:var(--neutral-color)}.modal-header{margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--border-color)}.modal-title{font-size:1.6rem;font-weight:700}.modal-description{margin-bottom:20px;line-height:1.7}.modal-options{display:flex;flex-direction:column;gap:10px}.modal-option{padding:12px 15px;border-radius:8px;background:var(--bg-color);border:1px solid var(--border-color);cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center}.modal-option:hover{background:var(--primary-color);color:white;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.option-text{flex-grow:1;font-weight:600}.option-effect{font-size:.9rem;opacity:.8}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+        
+        /* --- Enhanced Modal & Toast --- */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);z-index:1000;justify-content:center;align-items:center;animation:fadeIn .3s}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .modal-content{background:var(--card-bg);padding:30px;border-radius:16px;max-width:550px;width:90%;box-shadow:0 10px 25px rgba(0,0,0,0.2);position:relative;animation:zoomInBounce .4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+        @keyframes zoomInBounce {0%{opacity:0;transform:scale(.7)}60%{opacity:1;transform:scale(1.05)}100%{transform:scale(1)}}
+        .modal-close{position:absolute;top:15px;right:20px;font-size:1.8rem;cursor:pointer;color:var(--neutral-color)}.modal-header{margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--border-color)}.modal-title{font-size:1.6rem;font-weight:700}.modal-description{margin-bottom:20px;line-height:1.7}.modal-options{display:flex;flex-direction:column;gap:10px}.modal-option{padding:12px 15px;border-radius:8px;background:var(--bg-color);border:1px solid var(--border-color);cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center}.modal-option:hover{background:var(--primary-color);color:white;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.option-text{flex-grow:1;font-weight:600}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
         .toast-container{position:fixed;bottom:20px;right:20px;z-index:1001;display:flex;flex-direction:column;gap:10px}.toast{background:var(--card-bg);color:var(--text-color);padding:12px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:15px;min-width:320px;animation:slideIn .3s ease-out forwards;position:relative;overflow:hidden;border-left:4px solid var(--primary-color)}.toast.success{border-left-color:var(--success-color)}.toast.warning{border-left-color:var(--warning-color)}.toast.error{border-left-color:var(--danger-color)}.toast-icon{font-size:1.5rem}.toast.success .toast-icon{color:var(--success-color)}.toast.warning .toast-icon{color:var(--warning-color)}.toast.error .toast-icon{color:var(--danger-color)}.toast-title{font-weight:600}@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{to{transform:translateX(120%);opacity:0}}
+        
+        /* --- Helpers --- */
         .confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; pointer-events: none; z-index: 2000; }
         .theme-toggle { position: fixed; top: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 100; }
         footer { text-align: center; padding: 25px; margin-top: 40px; font-size: 0.85rem; color: var(--neutral-color); border-top: 1px solid var(--border-color); background-color: var(--card-bg); }
+        
+        /* --- Responsive --- */
         @media (max-width: 992px) { .game-container { grid-template-columns: 1fr; } .header-content { flex-direction: column; text-align: center; gap: 20px; } }
         @media (max-width: 768px) { .calendar { grid-template-columns: repeat(5, 1fr); } }
     </style>
@@ -147,17 +139,7 @@
 
     <main class="container">
         <div class="controls">
-             <div class="daily-task-section" id="dailyTaskSection">
-                <h3>Day <span id="dayCounter">1</span>: Did you complete your main habit today?</h3>
-                <div class="daily-task-buttons">
-                     <button class="btn btn-success" id="completeHabitBtn"><i class="fas fa-check"></i> Yes, I did! (+RM 20)</button>
-                    <button class="btn btn-danger" id="missHabitBtn"><i class="fas fa-times"></i> Not today... (-RM 20)</button>
-                </div>
-            </div>
-            <div class="daily-task-section" id="rollDiceSection" style="display: none;">
-                 <h3>Well done. Now, roll the dice to see what the day brings!</h3>
-                 <button class="btn btn-primary" id="rollDiceBtn"><i class="fas fa-dice"></i> Roll Dice</button>
-            </div>
+            <button class="btn btn-primary" id="rollDiceBtn"><i class="fas fa-dice-d6"></i> Roll Dice & See What Happens!</button>
         </div>
 
         <div class="game-container">
@@ -183,7 +165,6 @@
                         <div class="stat-label">Current Day</div>
                     </div>
                 </div>
-                 <div class="streak-indicator"><i class="fas fa-fire streak-flame"></i> <span id="currentStreak">Streak: 0 days</span></div>
                 <h3 style="margin-top: 25px; margin-bottom: 10px;">Achievements</h3>
                 <div class="achievements-list" id="achievementsList"></div>
                  <div class="settings-button"><button class="btn btn-danger" id="resetBtn" style="padding: 8px 16px;"><i class="fas fa-redo"></i> Reset</button></div>
@@ -193,7 +174,7 @@
     
     <!-- Modals -->
     <div class="modal" id="eventModal"><div class="modal-content"><span class="modal-close">&times;</span><div class="modal-header"><h2 class="modal-title" id="eventTitle"></h2></div><p class="modal-description" id="eventDescription"></p><div class="modal-options" id="eventOptions"></div></div></div>
-    <div class="modal" id="confirmModal"><div class="modal-content"><span class="modal-close">&times;</span><h2 id="confirmTitle"></h2><p id="confirmMessage"></p><div class="modal-actions"><button type="button" class="btn btn-neutral" id="cancelConfirmBtn">Cancel</button><button type="button" class="btn btn-danger" id="confirmBtn">Confirm</button></div></div></div>
+    <div class="modal" id="confirmModal"><div class="modal-content"><span class="modal-close">&times;</span><h2 id="confirmTitle"></h2><p id="confirmMessage"></p><div class="modal-actions"><button type="button" class="btn btn-neutral" id="cancelConfirmBtn">Cancel</button><button type="button" class="btn btn-primary" id="confirmBtn">Confirm</button></div></div></div>
     <div class="modal" id="welcomeModal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Welcome to the DADUit Game!</h2></div><p class="modal-description">Your Malaysian financial adventure begins! Navigate 60 days of daily life, making smart choices to build good habits and grow your wealth. Can you survive without going bankrupt? *Jom, kita mula!*</p><div class="modal-actions"><button class="btn btn-primary" id="startGameBtn">Let's Go!</button></div></div></div>
     <div class="toast-container" id="toastContainer"></div>
 
@@ -209,30 +190,21 @@
             { title: 'Lunch Time!', description: 'Your colleagues are going out for lunch. What do you do?', options: [
                 { text: 'Join them at a cafe (-RM 30)', effect: () => gameState.balance -= 30 },
                 { text: 'Suggest the nearby mamak stall (-RM 15)', effect: () => { gameState.balance -= 15; addAchievement('Frugal Foodie', 'Chose the mamak over a cafe.'); } },
-                { text: 'Eat the meal you packed from home (-RM 0)', effect: () => addAchievement('Meal Prep Master', 'Saved money by bringing food from home.') },
+                { text: 'Eat the meal you packed from home', effect: () => addAchievement('Meal Prep Master', 'Saved money by bringing food from home.') },
             ]},
             { title: 'Feeling Lazy...', description: 'You don\'t feel like cooking dinner tonight.', options: [
                 { text: 'Order from GrabFood (-RM 40)', effect: () => gameState.balance -= 40 },
                 { text: 'Tapau from the local warung (-RM 12)', effect: () => gameState.balance -= 12 },
                 { text: 'Cook instant noodles (-RM 3)', effect: () => {gameState.balance -= 3; addAchievement('Instant Gratification', 'Survived on instant noodles.');} },
             ]},
-            { title: 'TNB Bill Arrived', description: 'Your monthly electricity bill is here. The hot weather meant more air-con!', options: [
-                { text: 'Pay on time (-RM 95)', effect: () => gameState.balance -= 95},
-                { text: 'Pay next week (-RM 95)', effect: () => gameState.balance -= 95}
-            ]},
-            { title: 'Internet Bill Due', description: 'Your Unifi/TIME bill needs to be paid.', options: [
-                { text: 'Pay now (-RM 130)', effect: () => gameState.balance -= 130 },
-                { text: 'Pay just before due date (-RM 130)', effect: () => gameState.balance -= 130 },
-            ]},
+            { title: 'TNB Bill Arrived', description: 'Your monthly electricity bill is here. The hot weather meant more air-con!', options: [{ text: 'Pay now (-RM 95)', effect: () => gameState.balance -= 95}] },
+            { title: 'Internet Bill Due', description: 'Your Unifi/TIME bill needs to be paid.', options: [{ text: 'Pay now (-RM 130)', effect: () => gameState.balance -= 130 }] },
             { title: 'Commuting to Work', description: 'How are you getting to the office today?', options: [
                 { text: 'Take a Grab (-RM 18)', effect: () => gameState.balance -= 18 },
                 { text: 'Take the LRT/MRT (-RM 5)', effect: () => gameState.balance -= 5 },
                 { text: 'Drive (Petrol & Toll) (-RM 25)', effect: () => gameState.balance -= 25 },
             ]},
-            { title: 'Touch \'n Go Top-up', description: 'Your TNG balance is low, time for a top-up.', options: [
-                { text: 'Top up RM50', effect: () => gameState.balance -= 50},
-                { text: 'Top up RM100', effect: () => gameState.balance -= 100},
-            ]},
+            { title: 'Touch \'n Go Top-up', description: 'Your TNG balance is low, time for a top-up.', options: [ { text: 'Top up RM50', effect: () => gameState.balance -= 50}, { text: 'Top up RM100', effect: () => gameState.balance -= 100} ]},
             { title: '11.11 Sale!', description: 'The big online sale on Shopee/Lazada is happening!', options: [
                 { text: 'Buy that thing you wanted (-RM 150)', effect: () => gameState.balance -= 150},
                 { text: 'Just browse, no buying', effect: () => {addAchievement('Window Shopper', 'Resisted the temptation of a major sale.');}},
@@ -247,12 +219,8 @@
                 { text: 'Give a generous ang pow/gift (-RM 200)', effect: () => gameState.balance -= 200 },
                 { text: 'Give a standard amount (-RM 100)', effect: () => gameState.balance -= 100 },
             ]},
-            { title: 'Found Money!', description: 'You found RM20 in the pocket of your old jeans!', options: [
-                { text: 'Nice! (+RM 20)', effect: () => gameState.balance += 20 },
-            ]},
-            { title: 'Car Trouble', description: 'Your car battery died and needed replacement.', options: [
-                { text: 'Replace it (-RM 250)', effect: () => gameState.balance -= 250 },
-            ]},
+            { title: 'Found Money!', description: 'You found RM20 in the pocket of your old jeans!', options: [{ text: 'Nice! (+RM 20)', effect: () => gameState.balance += 20 }] },
+            { title: 'Car Trouble', description: 'Your car battery died and needed replacement.', options: [{ text: 'Replace it (-RM 250)', effect: () => gameState.balance -= 250 }] },
             { title: 'Mysterious SMS', description: 'You get an SMS: "CONGRATS! U have won RM5000! Pls click here and fill in ur details to claim."', options: [
                 { text: 'Click the link (Risky!)', effect: () => { gameState.balance -= 500; showToast('SCAMMED!', 'It was a scam! You lost RM 500!', 'error'); addAchievement('Learned the Hard Way', 'Fell for a phishing scam.'); } },
                 { text: 'Ignore and delete it (Smart!)', effect: () => { showToast('Wise Choice!', 'You correctly identified a scam.', 'success'); addAchievement('Scam Spotter', 'Avoided a phishing attempt.'); } },
@@ -280,7 +248,7 @@
             { title: 'Eh, Ada Surat Cinta!', description: 'You got a parking ticket for an expired coupon.', options: [
                  { text: 'Pay immediately (-RM 80)', effect: () => gameState.balance -= 80 },
                  { text: 'Pay within 2 weeks (-RM 100)', effect: () => gameState.balance -= 100 },
-                 { text: 'Try to appeal it', effect: () => { if(Math.random() > 0.5) { showToast('Appeal Successful!', 'Your fine was waived!', 'success');} else { gameState.balance -= 100; showToast('Appeal Rejected', 'You still have to pay the fine.', 'error'); } } },
+                 { text: 'Try to appeal it', effect: () => { if(Math.random() > 0.8) { showToast('Appeal Successful!', 'Your fine was waived!', 'success');} else { gameState.balance -= 100; showToast('Appeal Rejected', 'You still have to pay the fine.', 'error'); } } },
             ]},
             { title: 'Side Income Opportunity!', description: 'A client offers you a small freelance project that will take up your weekend.', options: [
                  { text: 'Accept the job (+RM 400)', effect: () => {gameState.balance += 400; addAchievement('Side Hustler', 'Earned extra income from a freelance gig.');} },
@@ -291,19 +259,25 @@
                  { text: 'Private GP Clinic (-RM 80)', effect: () => gameState.balance -= 80 },
                  { text: 'Just buy Panadol at the pharmacy (-RM 10)', effect: () => gameState.balance -= 10 },
             ]},
+            { title: 'ASB Financing', description: 'A bank agent explains ASB financing to you. You can take a loan to maximise your ASB investment, but you have to pay it back monthly.', options: [
+                 { text: 'Start a RM50k financing (-RM250/mth)', effect: () => {gameState.monthlyCommitments += 250; addAchievement('Leveraged Investor', 'Started an ASB Financing plan.'); showToast('New Commitment!', 'You now have a monthly loan repayment of RM250.', 'info');} },
+                 { text: 'No, thank you. I prefer cash.', effect: () => {} },
+            ]},
+            { title: 'Balik Kampung', description: 'It\'s a long weekend! Time to visit your family in your hometown.', options: [
+                 { text: 'Drive back (Petrol & Tolls) (-RM 150)', effect: () => gameState.balance -= 150 },
+                 { text: 'Take an express bus (-RM 80)', effect: () => gameState.balance -= 80 },
+                 { text: 'Sorry, can\'t make it this time', effect: () => {} },
+            ]},
         ];
 
-        // --- DOM Elements ---
+        // --- DOM Elements & State ---
         const ui = {
             themeToggle: document.getElementById('themeToggle'), calendar: document.getElementById('calendar'),
             balanceEl: document.getElementById('balance'), currentPositionEl: document.getElementById('currentPosition'),
             achievementsList: document.getElementById('achievementsList'), dice1: document.getElementById('dice1'),
             dice2: document.getElementById('dice2'), playerGamePin: document.getElementById('playerGamePin'),
-            rollDiceBtn: document.getElementById('rollDiceBtn'), completeHabitBtn: document.getElementById('completeHabitBtn'),
-            missHabitBtn: document.getElementById('missHabitBtn'), resetBtn: document.getElementById('resetBtn'),
-            toastContainer: document.getElementById('toastContainer'), dayCounter: document.getElementById('dayCounter'),
-            currentStreakEl: document.getElementById('currentStreak'), monthHeader: document.getElementById('monthHeader'),
-            dailyTaskSection: document.getElementById('dailyTaskSection'), rollDiceSection: document.getElementById('rollDiceSection'),
+            rollDiceBtn: document.getElementById('rollDiceBtn'), resetBtn: document.getElementById('resetBtn'),
+            toastContainer: document.getElementById('toastContainer'), monthHeader: document.getElementById('monthHeader'),
         };
 
         const modals = {
@@ -318,12 +292,13 @@
 
         let gameState = {};
         const initialGameState = {
-            currentDay: 1, balance: 2000, streak: 0, achievements: [], dailyTaskDone: false,
-            gameInProgress: true, salary: 2500, gameWon: false,
+            currentDay: 1, balance: 2000, achievements: [], gameInProgress: true, 
+            salary: 2500, gameWon: false, monthlyCommitments: 0,
             paydays: [15, 30, 45, 60]
         };
         let currentEvent = null;
 
+        // --- Core Functions ---
         function initGame() {
             loadGameState(); setupDice(); updateAllUI(); setupEventListeners();
             if (localStorage.getItem('daduitGamePlayed_MY') !== 'true') {
@@ -340,15 +315,12 @@
         function saveGameState() { localStorage.setItem('daduitGameState_MY', JSON.stringify(gameState)); }
         function resetGame() { localStorage.removeItem('daduitGameState_MY'); location.reload(); }
 
+        // --- UI Rendering ---
         function updateAllUI() {
             ui.balanceEl.textContent = `RM ${gameState.balance}`;
             ui.currentPositionEl.textContent = gameState.currentDay;
-            ui.dayCounter.textContent = gameState.currentDay;
-            ui.currentStreakEl.textContent = `Streak: ${gameState.streak} days`;
             ui.monthHeader.textContent = `Month ${Math.ceil(gameState.currentDay / 30)}`;
-
-            renderCalendar(); renderAchievements(); updatePlayerPosition(); updateControls();
-
+            renderCalendar(); renderAchievements(); updatePlayerPosition();
             if (gameState.balance < 0 && gameState.gameInProgress) gameOver();
             if (gameState.gameWon) gameWon();
         }
@@ -365,16 +337,6 @@
             }
         }
 
-        function updateControls() {
-            if (!gameState.gameInProgress) {
-                ui.dailyTaskSection.style.display = 'none';
-                ui.rollDiceSection.style.display = 'none';
-                return;
-            }
-            ui.dailyTaskSection.style.display = gameState.dailyTaskDone ? 'none' : 'block';
-            ui.rollDiceSection.style.display = gameState.dailyTaskDone ? 'block' : 'none';
-        }
-
         function updatePlayerPosition() {
             const gamePath = document.getElementById('gamePath');
             const targetLeft = ((gameState.currentDay - 1) / 59) * (gamePath.offsetWidth - ui.playerGamePin.offsetWidth);
@@ -383,23 +345,7 @@
             setTimeout(() => ui.playerGamePin.classList.remove('is-moving'), 500);
         }
 
-        function handleHabit(completed) {
-            if (gameState.dailyTaskDone) return;
-            if (completed) {
-                gameState.balance += 20; gameState.streak++;
-                showToast("Habit Done!", "Syabas! You earned RM 20.", "success");
-                if (gameState.streak > 0 && gameState.streak % 7 === 0) {
-                    addAchievement(`On Fire!`, `Reached a ${gameState.streak}-day streak.`);
-                    launchConfetti();
-                }
-            } else {
-                gameState.balance -= 20; gameState.streak = 0;
-                showToast("Habit Skipped", "Alamak, maybe tomorrow lah. -RM 20", "warning");
-            }
-            gameState.dailyTaskDone = true;
-            updateAllUI(); saveGameState();
-        }
-
+        // --- Game Logic ---
         function rollDice() {
             if (gameState.isRolling) return;
             gameState.isRolling = true;
@@ -436,24 +382,27 @@
             } else {
                 setTimeout(triggerDayEvent, 500);
             }
-            
-            gameState.dailyTaskDone = false;
-            ui.rollDiceBtn.disabled = false;
-            gameState.isRolling = false;
             saveGameState();
         }
 
         function triggerDayEvent() {
             if (gameState.paydays.includes(gameState.currentDay)) {
-                gameState.balance += gameState.salary;
-                showToast("Gaji Dah Masuk!", `You received your salary of RM ${gameState.salary}.`, "success");
+                let netSalary = gameState.salary - gameState.monthlyCommitments;
+                gameState.balance += netSalary;
+                let salaryMessage = `You received your salary of RM ${gameState.salary}.`;
+                if(gameState.monthlyCommitments > 0) {
+                    salaryMessage += ` After RM${gameState.monthlyCommitments} in commitments, you get RM${netSalary}.`;
+                }
+                showToast("Gaji Dah Masuk!", salaryMessage, "success");
                 launchConfetti();
-                 updateAllUI();
-                 saveGameState();
+                ui.rollDiceBtn.disabled = false;
+                gameState.isRolling = false;
             } else {
                 currentEvent = eventPool[Math.floor(Math.random() * eventPool.length)];
                 openModal('event', currentEvent);
             }
+            updateAllUI();
+            saveGameState();
         }
         
         function gameOver() {
@@ -466,12 +415,11 @@
             openModal('confirm', { title: "You Won!", message: "Fuyoh! You survived 2 months and managed your finances like a boss! You're a true DADUit champion.", onConfirm: resetGame, confirmText: 'Play Again' });
         }
 
+        // --- Event Handlers & Setup ---
         function setupEventListeners() {
             ui.themeToggle.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode_MY', document.documentElement.classList.contains('dark')); });
-            ui.completeHabitBtn.addEventListener('click', () => handleHabit(true));
-            ui.missHabitBtn.addEventListener('click', () => handleHabit(false));
             ui.rollDiceBtn.addEventListener('click', rollDice);
-            ui.resetBtn.addEventListener('click', () => openModal('confirm', { title: 'Reset Game', message: 'Are you sure? All progress will be lost.', onConfirm: resetGame }));
+            ui.resetBtn.addEventListener('click', () => openModal('confirm', { title: 'Reset Game', message: 'Are you sure? All progress will be lost.', onConfirm: resetGame, confirmText: 'Yes, Reset' }));
             document.querySelectorAll('.modal-close').forEach(el => el.addEventListener('click', () => closeModal(el.closest('.modal'))));
             document.querySelectorAll('.modal').forEach(el => el.addEventListener('click', e => { if (e.target === el) closeModal(el); }));
             document.getElementById('startGameBtn').addEventListener('click', () => { localStorage.setItem('daduitGamePlayed_MY', 'true'); closeModal(modals.welcome); });
@@ -484,6 +432,8 @@
                 if (currentEvent.options && currentEvent.options[index]) {
                     currentEvent.options[index].effect();
                     closeModal(modals.event);
+                    ui.rollDiceBtn.disabled = false;
+                    gameState.isRolling = false;
                     updateAllUI(); saveGameState();
                 }
             });
@@ -495,7 +445,7 @@
             if (type === 'confirm') {
                 modalElements.confirmTitle.textContent = data.title;
                 modalElements.confirmMessage.textContent = data.message;
-                if (data.confirmText) modalElements.confirmBtn.textContent = data.confirmText;
+                modalElements.confirmBtn.textContent = data.confirmText || 'Confirm';
                 const newConfirmBtn = modalElements.confirmBtn.cloneNode(true);
                 modalElements.confirmBtn.parentNode.replaceChild(newConfirmBtn, modalElements.confirmBtn);
                 newConfirmBtn.addEventListener('click', data.onConfirm);
@@ -514,7 +464,6 @@
             }
             modal.style.display = 'flex';
         }
-
         function closeModal(modal) { modal.style.display = 'none'; }
         
         function setupDice() {
@@ -522,9 +471,7 @@
                 diceEl.innerHTML = ''; // Clear it out
                 for (let i = 1; i <= 6; i++) {
                     let dotsHTML = '';
-                    for (let j = 0; j < i; j++) {
-                        dotsHTML += '<span class="dice-dot"></span>';
-                    }
+                    for (let j = 0; j < i; j++) { dotsHTML += '<span class="dice-dot"></span>'; }
                     const face = document.createElement('div');
                     face.className = 'dice-face';
                     face.innerHTML = `<div class="dice-dot-container face-${i}">${dotsHTML}</div>`;
@@ -532,7 +479,6 @@
                 }
             });
         }
-
         function addAchievement(title,description){if(gameState.achievements.some(a=>a.title===title))return;gameState.achievements.push({title,description});showToast("Achievement Unlocked!",title,"success");renderAchievements()}
         function renderAchievements(){ui.achievementsList.innerHTML='';if(gameState.achievements.length===0){ui.achievementsList.innerHTML='<p style="padding:10px;color:var(--neutral-color)">No achievements yet.</p>';return}
         gameState.achievements.forEach(ach=>{const item=document.createElement('div');item.className='achievement-item';item.innerHTML=`<i class="fas fa-trophy achievement-icon"></i><div><strong>${ach.title}</strong><br><small>${ach.description}</small></div>`;ui.achievementsList.appendChild(item)})}
