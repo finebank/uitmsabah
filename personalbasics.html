@@ -1,1272 +1,1514 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chapter 1: Personal Finance Basics</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/feather-icons"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <style>
-    /* Dark mode and color variables */
-    .dark {
-      --bg-primary: #181818;
-      --text-primary: #f3f4f6;
-      --card-bg: #262626;
-    }
-    :root {
-      --primary-color: #5D5CDE;
-      --primary-dark: #4b4ab2;
-      --bg-primary: #ffffff;
-      --text-primary: #333333;
-      --card-bg: #f9fafb;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-    }
-    .card {
-      background-color: var(--card-bg);
-      transition: all 0.3s ease;
-      border-radius: 0.75rem;
-    }
-    .btn-primary {
-      background-color: var(--primary-color);
-      color: white;
-      transition: all 0.2s ease;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-dark);
-    }
-    .section-header {
-      border-left: 4px solid var(--primary-color);
-      padding-left: 1rem;
-    }
-    .progress-bar {
-      height: 8px;
-      background-color: #e5e7eb;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .progress-bar-inner {
-      height: 100%;
-      background-color: var(--primary-color);
-      border-radius: 4px;
-      transition: width 0.5s ease;
-    }
-    .timeline-item {
-      position: relative;
-      padding-left: 28px;
-      margin-bottom: 24px;
-    }
-    .timeline-item:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: var(--primary-color);
-      z-index: 1;
-    }
-    .timeline-item:after {
-      content: "";
-      position: absolute;
-      left: 5px;
-      top: 8px;
-      bottom: -24px;
-      width: 2px;
-      background-color: #e5e7eb;
-    }
-    .timeline-item:last-child:after {
-      display: none;
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-    .accordion-content.active {
-      max-height: 500px;
-    }
-    .factor-card {
-      transition: all 0.3s ease;
-    }
-    .factor-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    /* Responsive Embedded Videos */
-    .aspect-w-16 {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%; /* 16:9 ratio */
-    }
-    .aspect-w-16 > * {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Basics - Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --success-color: #22c55e;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--gray-200);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .learning-module {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .learning-module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .concept-card {
+            background: var(--gray-100);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .concept-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .icon-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-color);
+        }
+
+        .icon-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .icon-card h4 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            counter-increment: step;
+            transition: all 0.3s ease;
+        }
+
+        .step-card::before {
+            content: counter(step);
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .step-card:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .interactive-quiz {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: var(--gray-800);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+            background: var(--gray-100);
+        }
+
+        .quiz-option.correct {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .quiz-option.incorrect {
+            background: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .smart-goal-builder {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .goal-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .goal-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .goal-result {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .floating-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        .resource-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .resource-link {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--gray-800);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .resource-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .resource-link i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .decision-matrix {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .matrix-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .matrix-table tr:hover {
+            background: var(--gray-100);
+        }
+
+        .animated-counter {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: inline-block;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--primary-color);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--gray-800);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .learning-module {
+                padding: 25px;
+            }
+            
+            .icon-grid,
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .floating-nav {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="py-4 px-6 md:px-10 flex items-center justify-between shadow-sm">
-      <div class="flex items-center space-x-2">
-        <div class="">
-          <i data-feather="" class="text-white h-4 w-4"></i>
-        </div>
-        <h1 class="text-xl font-bold">Fundamentals of Personal Financial Planning (FIN333)</h1>
-      </div>
-      <div class="flex items-center space-x-4">
-        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-          <i data-feather="moon" id="moon-icon" class="h-5 w-5"></i>
-          <i data-feather="sun" id="sun-icon" class="h-5 w-5 hidden"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1 py-8 px-6 md:px-10 lg:px-16 max-w-7xl mx-auto w-full">
-      <!-- Chapter Intro -->
-      <div class="mb-12">
-        <h2 class="text-3xl font-bold mb-6">Chapter 1: Personal Finance Basics</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div class="card p-5 shadow-sm flex flex-col items-center text-center">
-            <div class="rounded-full bg-indigo-100 p-3 mb-3">
-              <i data-feather="book-open" class="h-6 w-6 text-indigo-600"></i>
-            </div>
-            <h3 class="font-semibold">Learning Objectives</h3>
-            <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">
-              Understand the core concepts of personal financial planning in a Malaysian context
-            </p>
-          </div>
-          <div class="card p-5 shadow-sm flex flex-col items-center text-center">
-            <div class="rounded-full bg-indigo-100 p-3 mb-3">
-              <i data-feather="clock" class="h-6 w-6 text-indigo-600"></i>
-            </div>
-            <h3 class="font-semibold">Estimated Time</h3>
-            <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">
-              30 minutes to complete this microlearning module
-            </p>
-          </div>
-          <div class="card p-5 shadow-sm flex flex-col items-center text-center">
-            <div class="rounded-full bg-indigo-100 p-3 mb-3">
-              <i data-feather="target" class="h-6 w-6 text-indigo-600"></i>
-            </div>
-            <h3 class="font-semibold">Key Topics</h3>
-            <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">
-              Basic concepts, planning process, and setting SMART financial goals
-            </p>
-          </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <h1><i class="fas fa-chart-line"></i> Personal Finance Basics</h1>
+            <p>Master the fundamentals of financial planning in a Malaysian context</p>
         </div>
 
-        <div class="mb-8">
-          <h3 class="font-semibold mb-2">Your Progress</h3>
-          <div class="progress-bar">
-            <div class="progress-bar-inner" style="width: 0%"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section 1.1 -->
-      <section id="section-1-1" class="mb-16">
-        <h3 class="text-2xl font-bold mb-6 section-header">1.1 Understanding Basic Concepts</h3>
-
-        <!-- Embedded Video -->
-        <div class="aspect-w-16 mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-          <iframe class="w-full h-full" src="https://www.youtube.com/embed/CG3fh-5ieoQ?si=BiXIaYK7sda0o841" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Understanding Basic Concepts"></iframe>
+        <!-- Progress Bar -->
+        <div class="progress-container fade-in">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-weight: 600; color: var(--gray-800);">Your Learning Progress</span>
+                <span id="progress-text" style="color: var(--primary-color); font-weight: 600;">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 10px; color: var(--gray-600); font-size: 0.9rem;">Estimated time: <strong>30 minutes</strong></p>
         </div>
 
-        <!-- Introduction Text -->
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">What is Personal Financial Planning?</h4>
-          <p class="mb-4">
-            Personal financial planning is the process of setting and reaching your personal goals by using your money effectively. It involves deciding what you want to achieve in life, how much money you need to reach your goals, how to budget your income and expenses, how to save and invest your money, how to manage your debt, and how to protect your assets from risks.
-          </p>
+        <!-- Learning Objectives -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-target"></i>
+                Learning Objectives
+            </h2>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Understand Core Concepts</h4>
+                    <p>Grasp fundamental personal financial planning principles</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h4>Malaysian Context</h4>
+                    <p>Apply concepts within Malaysia's economic landscape</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h4>Set SMART Goals</h4>
+                    <p>Create specific, measurable financial objectives</p>
+                </div>
+            </div>
+        </div>
 
-          <div class="flex flex-col md:flex-row mt-6 gap-4">
-            <div class="flex-1">
-              <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_vwcugezu.json" background="transparent" speed="1" style="height: 200px;" loop autoplay></lottie-player>
+        <!-- What is Personal Financial Planning -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                What is Personal Financial Planning?
+            </h2>
+            <div class="concept-card">
+                <h3>Definition</h3>
+                <p>Personal financial planning is the process of setting and reaching your personal goals by using your money effectively. It involves:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>Deciding what you want to achieve in life</li>
+                    <li>Determining how much money you need to reach your goals</li>
+                    <li>Creating budgets for income and expenses</li>
+                    <li>Developing savings and investment strategies</li>
+                    <li>Managing debt effectively</li>
+                    <li>Protecting your assets from risks</li>
+                </ul>
             </div>
-            <div class="flex-1">
-              <h5 class="font-semibold mb-2">Why is it important?</h5>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Helps achieve short-term and long-term goals</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Provides protection against unexpected events</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Reduces stress and anxiety about money matters</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Improves quality of life and well-being</span>
-                </li>
-              </ul>
+
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-trophy"></i>
+                    <h4>Achieve Goals</h4>
+                    <p>Helps achieve short-term and long-term goals</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Protection</h4>
+                    <p>Provides protection against unexpected events</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-heart"></i>
+                    <h4>Reduce Stress</h4>
+                    <p>Reduces stress and anxiety about money matters</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-smile"></i>
+                    <h4>Quality of Life</h4>
+                    <p>Improves quality of life and well-being</p>
+                </div>
             </div>
-          </div>
         </div>
 
         <!-- Factors Affecting Financial Planning -->
-        <div class="mb-8">
-          <h4 class="text-xl font-semibold mb-4">Factors Affecting Financial Planning Decisions</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="factor-card card p-5 shadow-sm">
-              <div class="rounded-full bg-blue-100 p-2 inline-flex mb-3">
-                <i data-feather="dollar-sign" class="h-5 w-5 text-blue-600"></i>
-              </div>
-              <h5 class="font-semibold mb-2">Individual's Income Level</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300">The median household income in Malaysia is around RM6,275. Income determines available funds for saving and investing.</p>
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                Factors Affecting Financial Planning Decisions
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h4>Income Level</h4>
+                    <p>Median household income in Malaysia: <span class="animated-counter" data-target="6275">0</span></p>
+                    <small>Income determines available funds for saving and investing</small>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-ring"></i>
+                    <h4>Life Events</h4>
+                    <p>Average wedding cost in Malaysia: <span class="animated-counter" data-target="50000">0</span></p>
+                    <small>Marriage, education, retirement require careful planning</small>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Economic Conditions</h4>
+                    <p>Average inflation rate: <span class="animated-counter" data-target="2.5">0</span>% annually</p>
+                    <small>Market trends and interest rates impact decisions</small>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-heart"></i>
+                    <h4>Personal Values</h4>
+                    <p><span class="animated-counter" data-target="68">0</span>% prioritize long-term security</p>
+                    <small>Values shape financial priorities and decisions</small>
+                </div>
             </div>
-            <div class="factor-card card p-5 shadow-sm">
-              <div class="rounded-full bg-green-100 p-2 inline-flex mb-3">
-                <i data-feather="users" class="h-5 w-5 text-green-600"></i>
-              </div>
-              <h5 class="font-semibold mb-2">Life Events</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300">Events like marriage (avg. cost RM50,000 in Malaysia), children's education, and retirement require careful planning.</p>
-            </div>
-            <div class="factor-card card p-5 shadow-sm">
-              <div class="rounded-full bg-yellow-100 p-2 inline-flex mb-3">
-                <i data-feather="trending-up" class="h-5 w-5 text-yellow-600"></i>
-              </div>
-              <h5 class="font-semibold mb-2">Economic Conditions</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300">Market trends, interest rates, and inflation (avg. 2.5% annually in Malaysia) impact investment decisions.</p>
-            </div>
-            <div class="factor-card card p-5 shadow-sm">
-              <div class="rounded-full bg-purple-100 p-2 inline-flex mb-3">
-                <i data-feather="heart" class="h-5 w-5 text-purple-600"></i>
-              </div>
-              <h5 class="font-semibold mb-2">Personal Values</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300">68% of Malaysians prioritize long-term financial security, while 23% focus on philanthropy.</p>
-            </div>
-          </div>
         </div>
 
         <!-- Life Stages -->
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Life Stages and Financial Planning</h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-            <div class="text-center">
-              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg h-40 w-full object-cover mb-3" alt="College Student" />
-              <h5 class="font-semibold">College Student</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Low income, high expenses from tuition and living costs. Focus on budgeting and managing student loans.</p>
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-user-graduate"></i>
+                Life Stages and Financial Planning
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h4>College Student</h4>
+                    <p><strong>Low income, high expenses</strong></p>
+                    <p>Focus on budgeting and managing student loans</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-briefcase"></i>
+                    <h4>Young Professional</h4>
+                    <p><strong>Higher income, moderate expenses</strong></p>
+                    <p>Focus on debt repayment and emergency savings</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-home"></i>
+                    <h4>Marriage and Family</h4>
+                    <p><strong>Multiple financial priorities</strong></p>
+                    <p>Planning for childcare, education, mortgage, insurance</p>
+                </div>
             </div>
-            <div class="text-center">
-              <img src="https://i.imgur.com/mNnVvVj.jpeg" class="rounded-lg h-40 w-full object-cover mb-3" alt="Young Professional" />
-              <h5 class="font-semibold">Young Professional</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Higher income, moderate expenses. Focus on debt repayment, emergency savings, and beginning investments.</p>
-            </div>
-            <div class="text-center">
-              <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="rounded-lg h-40 w-full object-cover mb-3" alt="Family Stage" />
-              <h5 class="font-semibold">Marriage and Family</h5>
-              <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Planning for childcare expenses, education savings, mortgage, and life insurance become priorities.</p>
-            </div>
-          </div>
         </div>
 
-        <!-- Components of PFP -->
-        <div class="card p-6 shadow-sm">
-          <h4 class="text-xl font-semibold mb-4">Components of Personal Financial Planning</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="target" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Financial Goals</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Specific outcomes you want to achieve with your money within a timeframe.</p>
-              </div>
+        <!-- Components of Financial Planning -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-puzzle-piece"></i>
+                Components of Personal Financial Planning
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h4>Financial Goals</h4>
+                    <p>Specific outcomes you want to achieve with your money within a timeframe</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <h4>Financial Statements</h4>
+                    <p>Documents showing your net worth and cash flow situation</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-calculator"></i>
+                    <h4>Budget</h4>
+                    <p>Plan showing expected income and expenses over a period of time</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-piggy-bank"></i>
+                    <h4>Savings and Investments</h4>
+                    <p>Strategies to accumulate money for future goals or emergencies</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-credit-card"></i>
+                    <h4>Debt Management</h4>
+                    <p>Methods to reduce or eliminate your liabilities and avoid more debt</p>
+                </div>
+                <div class="icon-card">
+                    <i class="fas fa-umbrella"></i>
+                    <h4>Insurance and Estate Planning</h4>
+                    <p>Tools to protect your assets and provide for your dependents</p>
+                </div>
             </div>
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="file-text" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Financial Statements</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Documents showing your net worth and cash flow situation.</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="pie-chart" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Budget</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Plan showing expected income and expenses over a period of time.</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="trending-up" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Savings and Investments</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Strategies to accumulate money for your future goals or emergencies.</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="credit-card" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Debt Management</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Methods to reduce or eliminate your liabilities and avoid more debt.</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1">
-                <i data-feather="shield" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold mb-1">Insurance and Estate Planning</h5>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Tools to protect your assets and provide for your dependents.</p>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- Quiz -->
-        <div class="mt-8">
-          <button class="btn-primary px-6 py-2 rounded-lg check-section-1" data-section="1">
-            Mark Section Complete
-          </button>
-        </div>
-      </section>
-
-      <!-- Section 1.2 -->
-      <section id="section-1-2" class="mb-16">
-        <h3 class="text-2xl font-bold mb-6 section-header">1.2 Financial Planning Process</h3>
-
-        <!-- Embedded Video -->
-        <div class="aspect-w-16 mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-          <iframe class="w-full h-full" src="https://www.youtube.com/embed/hL3oCUoeKEM?si=dF7OuzqqJIJ6xQ7p" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Financial Planning Process"></iframe>
-        </div>
-
-        <!-- Process Overview -->
-        <div class="card p-6 shadow-sm mb-8">
-          <div class="flex flex-col md:flex-row gap-6">
-            <div class="flex-1">
-              <h4 class="text-xl font-semibold mb-4">The Six-Step Process</h4>
-              <p class="mb-4">
-                Financial planning is a systematic approach to managing your money to achieve your personal goals. It involves six main steps that will help you create a sound and effective financial plan.
-              </p>
-              <img src="https://i.imgur.com/wkxRbpj.jpeg" alt="Personal Financial Planning Process"/>
-            <div class="flex-1">
-              <div class="space-y-4">
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 1: Assess Current Financial Foothold</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Gather information about your income, expenses, assets, liabilities, and risk tolerance.
-                  </p>
+        <!-- The Six-Step Process -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-list-ol"></i>
+                The Six-Step Financial Planning Process
+            </h2>
+            
+            <div class="process-steps">
+                <div class="step-card">
+                    <h4>Assess Current Financial Foothold</h4>
+                    <p>Gather information about your income, expenses, assets, liabilities, and risk tolerance.</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Income sources and amounts</li>
+                        <li>Expenses and spending patterns</li>
+                        <li>Assets (what you own)</li>
+                        <li>Liabilities (what you owe)</li>
+                        <li>Risk tolerance and time horizon</li>
+                    </ul>
                 </div>
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 2: Establish Financial Goals</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Set specific and measurable outcomes for the short, medium, and long term.
-                  </p>
+                
+                <div class="step-card">
+                    <h4>Establish Financial Goals</h4>
+                    <p>Set specific and measurable outcomes for the short, medium, and long term.</p>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <strong>SMART Goals:</strong> Specific, Measurable, Achievable, Relevant, Time-bound
+                    </div>
                 </div>
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 3: Identify Alternative Courses of Action</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Brainstorm different strategies to achieve your goals.
-                  </p>
+                
+                <div class="step-card">
+                    <h4>Identify Alternative Courses of Action</h4>
+                    <p>Brainstorm different strategies to achieve your goals, considering:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Your income and expenses</li>
+                        <li>Your assets and liabilities</li>
+                        <li>Your risk tolerance and time horizon</li>
+                        <li>Pros and cons of each option</li>
+                    </ul>
                 </div>
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 4: Evaluate Alternatives</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Choose the best strategy with the highest reward for acceptable risk.
-                  </p>
+                
+                <div class="step-card">
+                    <h4>Evaluate Alternatives</h4>
+                    <p>Choose the best strategy with the highest reward for acceptable risk.</p>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        Use tools like decision matrices or cost-benefit analysis
+                    </div>
                 </div>
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 5: Implement Financial Action Plan</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Take concrete actions to execute your chosen strategy.
-                  </p>
+                
+                <div class="step-card">
+                    <h4>Implement Financial Action Plan</h4>
+                    <p>Take concrete actions to execute your chosen strategy:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Set up savings or investment accounts</li>
+                        <li>Automate savings and investments</li>
+                        <li>Track progress regularly</li>
+                        <li>Celebrate achievements</li>
+                    </ul>
                 </div>
-                <div class="timeline-item">
-                  <h5 class="font-semibold">Step 6: Review and Revise</h5>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    Periodically review your plan and adjust as needed.
-                  </p>
+                
+                <div class="step-card">
+                    <h4>Review and Revise</h4>
+                    <p>Periodically review your plan and adjust as needed, especially when:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Life circumstances change</li>
+                        <li>Financial situation changes</li>
+                        <li>Market conditions change</li>
+                        <li>Professional advice is needed</li>
+                    </ul>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Step Details - Accordion -->
-        <div class="space-y-4 mb-8">
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 1: Assessing Current Financial Foothold</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                The first step is to get a clear picture of where you stand financially right now. This involves gathering information about:
-              </p>
-              <ul class="space-y-2 mb-4">
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your income sources and amounts</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your expenses and spending patterns</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your assets (what you own) and liabilities (what you owe)</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your risk tolerance and time horizon</span>
-                </li>
-              </ul>
-              <p>
-                You can use financial statements like a balance sheet and income statement to organize this information. A balance sheet shows your net worth (assets minus liabilities), while an income statement shows your cash flow (income minus expenses).
-              </p>
-            </div>
-          </div>
-
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 2: Establishing Financial Goals and Objectives</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                Financial goals should be SMART: Specific, Measurable, Achievable, Relevant, and Time-bound.
-              </p>
-              <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mb-4">
-                <h5 class="font-semibold mb-2">Example of a SMART goal:</h5>
-                <p>"I want to save RM 50,000 for a down payment on a house in five years."</p>
-              </div>
-              <p>
-                By establishing clear financial goals, you can focus your efforts and resources on what matters most to you.
-              </p>
-            </div>
-          </div>
-
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 3: Identifying Alternative Courses of Action</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                Brainstorm different strategies or options to achieve your goals, considering factors like:
-              </p>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your income and expenses</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your assets and liabilities</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your risk tolerance and time horizon</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>The advantages and disadvantages of each option</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 4: Evaluating the Right Alternative</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                Choose the best strategy by comparing the pros and cons of each option based on:
-              </p>
-              <ul class="space-y-2 mb-4">
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your risk tolerance</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your time horizon</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Expected return</span>
-                </li>
-              </ul>
-              <p>
-                You can use tools like a decision matrix or a cost-benefit analysis to make an informed decision.
-              </p>
-            </div>
-          </div>
-
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 5: Implementing Financial Action Plan</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                Take concrete actions to execute your chosen strategy, such as:
-              </p>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Setting up a savings account or investment product</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Automating your savings or investments</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Tracking your progress regularly</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Celebrating your achievements</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="accordion-item card p-5 shadow-sm">
-            <div class="accordion-header flex justify-between items-center cursor-pointer">
-              <h4 class="text-lg font-semibold">Step 6: Revisiting Action Plan</h4>
-              <i data-feather="chevron-down" class="accordion-icon h-5 w-5 transition-transform"></i>
-            </div>
-            <div class="accordion-content mt-4">
-              <p class="mb-4">
-                Review your plan periodically to ensure it remains relevant and effective, especially when:
-              </p>
-              <ul class="space-y-2">
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your life circumstances change (marriage, children, career change)</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Your financial situation changes (income increase, inheritance)</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Market conditions change (interest rates, inflation)</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="check" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-                  <span>You need to seek feedback or advice from professionals</span>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
 
-        <!-- Interactive Activity -->
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Decision-Making Tools in Financial Planning</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <div class="p-5 border border-gray-200 dark:border-gray-700 rounded-lg">
-              <h5 class="font-semibold mb-3">Decision Matrix Example</h5>
-              <!-- Responsive Table Wrapper -->
-              <div class="overflow-x-auto">
-                <table class="min-w-full text-sm border-collapse">
-                  <thead>
-                    <tr>
-                      <th class="border border-gray-300 dark:border-gray-700 p-2 text-left">Criteria</th>
-                      <th class="border border-gray-300 dark:border-gray-700 p-2 text-left">Weight</th>
-                      <th class="border border-gray-300 dark:border-gray-700 p-2 text-left">Saving</th>
-                      <th class="border border-gray-300 dark:border-gray-700 p-2 text-left">Investing</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">(+) Return</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">0.4</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">3</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">5</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">(-) Risk</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">0.3</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">5</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">2</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">(-) Cost</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">0.2</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">4</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">3</td>
-                    </tr>
-                    <tr>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">(+) Convenience</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">0.1</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">4</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">3</td>
-                    </tr>
-                    <tr class="font-semibold">
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">Total</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">1.0</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">3.9</td>
-                      <td class="border border-gray-300 dark:border-gray-700 p-2">3.6</td>
-                    </tr>
-                  </tbody>
+        <!-- Decision-Making Tools -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-tools"></i>
+                Decision-Making Tools in Financial Planning
+            </h2>
+            
+            <h3 style="margin-bottom: 20px; color: var(--primary-color);">Decision Matrix Example</h3>
+            <div class="decision-matrix">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Weight</th>
+                            <th>Saving</th>
+                            <th>Investing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>(+) Return</td>
+                            <td>0.4</td>
+                            <td>3</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Risk</td>
+                            <td>0.3</td>
+                            <td>5</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Cost</td>
+                            <td>0.2</td>
+                            <td>4</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>(+) Convenience</td>
+                            <td>0.1</td>
+                            <td>4</td>
+                            <td>3</td>
+                        </tr>
+                        <tr style="font-weight: 600; background: var(--gray-100);">
+                            <td>Total</td>
+                            <td>1.0</td>
+                            <td>3.9</td>
+                            <td>3.6</td>
+                        </tr>
+                    </tbody>
                 </table>
-              </div>
-              <p class="text-sm mt-3">According to this decision matrix, saving RM 833 per month is the better option.</p>
             </div>
-            <div class="p-5 border border-gray-200 dark:border-gray-700 rounded-lg">
-              <h5 class="font-semibold mb-3">Cost-Benefit Analysis Example</h5>
-              <p class="text-sm mb-3">For buying coffee at a cafe vs. making it at home:</p>
-              <div class="space-y-3">
-                <div>
-                  <h6 class="font-medium text-sm">Cafe Coffee</h6>
-                  <p class="text-xs">Benefits: Quality (RM20) + Experience (RM10) = RM30</p>
-                  <p class="text-xs">Costs: Price (RM15) + Time (RM2.50) + Environment (RM0.50) = RM18</p>
-                  <p class="text-xs font-medium">Net Benefit: RM12</p>
+            <p style="margin-top: 15px; padding: 15px; background: var(--gray-100); border-radius: 8px;">
+                <strong>Conclusion:</strong> According to this decision matrix, saving RM 833 per month is the better option with a score of 3.9 vs 3.6.
+            </p>
+
+            <h3 style="margin: 30px 0 20px; color: var(--primary-color);">Cost-Benefit Analysis Example</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-coffee"></i>
+                    <h4>Cafe Coffee</h4>
+                    <p><strong>Benefits:</strong> Quality (RM20) + Experience (RM10) = <span style="color: var(--success-color);">RM30</span></p>
+                    <p><strong>Costs:</strong> Price (RM15) + Time (RM2.50) + Environment (RM0.50) = <span style="color: var(--danger-color);">RM18</span></p>
+                    <p><strong>Net Benefit:</strong> <span style="color: var(--success-color); font-weight: 600;">RM12</span></p>
                 </div>
-                <div>
-                  <h6 class="font-medium text-sm">Home Coffee</h6>
-                  <p class="text-xs">Benefits: Quality (RM15) + Comfort (RM5) = RM20</p>
-                  <p class="text-xs">Costs: Price (RM2.50) + Time (RM1) + Utilities (RM0.50) = RM4</p>
-                  <p class="text-xs font-medium">Net Benefit: RM16</p>
+                <div class="icon-card">
+                    <i class="fas fa-home"></i>
+                    <h4>Home Coffee</h4>
+                    <p><strong>Benefits:</strong> Quality (RM15) + Comfort (RM5) = <span style="color: var(--success-color);">RM20</span></p>
+                    <p><strong>Costs:</strong> Price (RM2.50) + Time (RM1) + Utilities (RM0.50) = <span style="color: var(--danger-color);">RM4</span></p>
+                    <p><strong>Net Benefit:</strong> <span style="color: var(--success-color); font-weight: 600;">RM16</span></p>
                 </div>
-                <p class="text-sm font-medium">Home coffee has a higher net benefit (RM16 vs RM12).</p>
-              </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Quiz -->
-        <div class="mt-8">
-          <button class="btn-primary px-6 py-2 rounded-lg check-section-1" data-section="2">
-            Mark Section Complete
-          </button>
-        </div>
-      </section>
-
-      <!-- Section 1.3 -->
-      <section id="section-1-3" class="mb-16">
-        <h3 class="text-2xl font-bold mb-6 section-header">1.3 Personal Financial Goals and Objectives</h3>
-
-        <!-- Embedded Video -->
-        <div class="aspect-w-16 mb-8 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-          <iframe class="w-full h-full" src="https://www.youtube.com/embed/MzI7Og4X_0c?si=eCcgqjfj5ZSpw89c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Personal Financial Goals and Objectives"></iframe>
+            <p style="padding: 15px; background: var(--secondary-color); color: white; border-radius: 8px; text-align: center; font-weight: 600;">
+                <i class="fas fa-trophy"></i> Home coffee has a higher net benefit (RM16 vs RM12)
+            </p>
         </div>
 
         <!-- Types of Financial Goals -->
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Types of Personal Financial Goals</h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <div class="card p-5 shadow-sm border-t-4 border-blue-500">
-              <h5 class="font-semibold mb-3">Short-Term Goals</h5>
-              <p class="text-sm mb-3">Achievable within a year or less.</p>
-              <ul class="space-y-2 text-sm">
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-blue-500 mr-2 mt-0.5"></i>
-                  <span>Building emergency fund (3-6 months of expenses)</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-blue-500 mr-2 mt-0.5"></i>
-                  <span>Paying off high-interest credit card debt</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-blue-500 mr-2 mt-0.5"></i>
-                  <span>Saving for a vacation or holiday</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-blue-500 mr-2 mt-0.5"></i>
-                  <span>Creating and sticking to a budget</span>
-                </li>
-              </ul>
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-calendar-alt"></i>
+                Types of Personal Financial Goals
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card" style="border-left: 5px solid var(--success-color);">
+                    <i class="fas fa-clock" style="color: var(--success-color);"></i>
+                    <h4>Short-Term Goals</h4>
+                    <p><strong>Achievable within 1 year</strong></p>
+                    <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
+                        <li>Building emergency fund (3-6 months expenses)</li>
+                        <li>Paying off high-interest credit card debt</li>
+                        <li>Saving for vacation</li>
+                        <li>Creating and sticking to budget</li>
+                    </ul>
+                </div>
+                
+                <div class="icon-card" style="border-left: 5px solid var(--accent-color);">
+                    <i class="fas fa-calendar-week" style="color: var(--accent-color);"></i>
+                    <h4>Intermediate-Term Goals</h4>
+                    <p><strong>Achievable within 1-5 years</strong></p>
+                    <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
+                        <li>Saving for house down payment</li>
+                        <li>Paying off student/car loans</li>
+                        <li>Saving for education/skills</li>
+                        <li>Starting a small business</li>
+                    </ul>
+                </div>
+                
+                <div class="icon-card" style="border-left: 5px solid var(--primary-color);">
+                    <i class="fas fa-calendar-alt" style="color: var(--primary-color);"></i>
+                    <h4>Long-Term Goals</h4>
+                    <p><strong>Achievable in 5+ years</strong></p>
+                    <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
+                        <li>Achieving financial independence</li>
+                        <li>Retirement planning (EPF + private)</li>
+                        <li>Paying off mortgage</li>
+                        <li>Building wealth through investments</li>
+                        <li>Estate planning and legacy</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card p-5 shadow-sm border-t-4 border-purple-500">
-              <h5 class="font-semibold mb-3">Intermediate-Term Goals</h5>
-              <p class="text-sm mb-3">Achievable within 1-5 years.</p>
-              <ul class="space-y-2 text-sm">
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-purple-500 mr-2 mt-0.5"></i>
-                  <span>Saving for down payment on a house</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-purple-500 mr-2 mt-0.5"></i>
-                  <span>Paying off student loans or car loans</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-purple-500 mr-2 mt-0.5"></i>
-                  <span>Saving for higher education or skills development</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-purple-500 mr-2 mt-0.5"></i>
-                  <span>Starting a small business</span>
-                </li>
-              </ul>
-            </div>
-            <div class="card p-5 shadow-sm border-t-4 border-green-500">
-              <h5 class="font-semibold mb-3">Long-Term Goals</h5>
-              <p class="text-sm mb-3">Achievable in more than 5 years.</p>
-              <ul class="space-y-2 text-sm">
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Achieving financial independence</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Retirement planning through EPF and private schemes</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Paying off mortgage</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Building wealth through investments</span>
-                </li>
-                <li class="flex items-start">
-                  <i data-feather="circle" class="h-4 w-4 text-green-500 mr-2 mt-0.5"></i>
-                  <span>Estate planning and legacy creation</span>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
 
         <!-- SMART Framework -->
-        <div class="card p-6 shadow-sm mb-8">
-          <div class="flex flex-col md:flex-row gap-6">
-            <div class="flex-1">
-              <h4 class="text-xl font-semibold mb-4">The SMART Framework</h4>
-              <p class="mb-4">SMART is an acronym that stands for:</p>
-              <ul class="space-y-3">
-                <li class="flex items-start">
-                  <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1 flex-shrink-0">
-                    <span class="font-bold text-indigo-600">S</span>
-                  </div>
-                  <div>
-                    <h5 class="font-semibold mb-1">Specific</h5>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Goals should be clear and well-defined, not vague.</p>
-                  </div>
-                </li>
-                <li class="flex items-start">
-                  <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1 flex-shrink-0">
-                    <span class="font-bold text-indigo-600">M</span>
-                  </div>
-                  <div>
-                    <h5 class="font-semibold mb-1">Measurable</h5>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Goals should be quantifiable so progress can be tracked.</p>
-                  </div>
-                </li>
-                <li class="flex items-start">
-                  <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1 flex-shrink-0">
-                    <span class="font-bold text-indigo-600">A</span>
-                  </div>
-                  <div>
-                    <h5 class="font-semibold mb-1">Achievable</h5>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Goals should be realistic and attainable with your resources.</p>
-                  </div>
-                </li>
-                <li class="flex items-start">
-                  <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1 flex-shrink-0">
-                    <span class="font-bold text-indigo-600">R</span>
-                  </div>
-                  <div>
-                    <h5 class="font-semibold mb-1">Relevant</h5>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Goals should align with your values and overall financial plan.</p>
-                  </div>
-                </li>
-                <li class="flex items-start">
-                  <div class="rounded-full bg-indigo-100 p-2 mr-3 mt-1 flex-shrink-0">
-                    <span class="font-bold text-indigo-600">T</span>
-                  </div>
-                  <div>
-                    <h5 class="font-semibold mb-1">Time-bound</h5>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Goals should have a deadline to create urgency and focus.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="flex-1">
-              <h4 class="text-xl font-semibold mb-4">SMART Goal Examples</h4>
-              <div class="space-y-4">
-                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <h5 class="font-semibold mb-2 text-blue-600">Not SMART:</h5>
-                  <p>"I want to save money for a house."</p>
-                  <h5 class="font-semibold mt-3 mb-2 text-green-600">SMART Version:</h5>
-                  <p>"I will save RM50,000 for a house down payment in 5 years by depositing RM833 monthly into a high-yield savings account."</p>
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-bullseye"></i>
+                The SMART Framework
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">S</div>
+                    <h4>Specific</h4>
+                    <p>Goals should be clear and well-defined, not vague</p>
                 </div>
-                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <h5 class="font-semibold mb-2 text-blue-600">Not SMART:</h5>
-                  <p>"I want to reduce my debt."</p>
-                  <h5 class="font-semibold mt-3 mb-2 text-green-600">SMART Version:</h5>
-                  <p>"I will pay off my RM10,000 credit card debt in 18 months by making RM600 monthly payments and not using the card for new purchases."</p>
+                <div class="icon-card">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">M</div>
+                    <h4>Measurable</h4>
+                    <p>Goals should be quantifiable so progress can be tracked</p>
                 </div>
-                <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_FYx0Ph.json" background="transparent" speed="1" style="height: 200px;" loop autoplay></lottie-player>
-              </div>
+                <div class="icon-card">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">A</div>
+                    <h4>Achievable</h4>
+                    <p>Goals should be realistic and attainable with your resources</p>
+                </div>
+                <div class="icon-card">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">R</div>
+                    <h4>Relevant</h4>
+                    <p>Goals should align with your values and overall financial plan</p>
+                </div>
+                <div class="icon-card">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">T</div>
+                    <h4>Time-bound</h4>
+                    <p>Goals should have a deadline to create urgency and focus</p>
+                </div>
             </div>
-          </div>
+
+            <h3 style="margin: 30px 0 20px; color: var(--primary-color);">SMART Goal Examples</h3>
+            
+            <div style="display: grid; gap: 20px;">
+                <div class="concept-card" style="border-left-color: var(--danger-color);">
+                    <h3 style="color: var(--danger-color);">
+                        <i class="fas fa-times-circle"></i> Not SMART
+                    </h3>
+                    <p>"I want to save money for a house."</p>
+                </div>
+                
+                <div class="concept-card" style="border-left-color: var(--success-color);">
+                    <h3 style="color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i> SMART Version
+                    </h3>
+                    <p>"I will save RM50,000 for a house down payment in 5 years by depositing RM833 monthly into a high-yield savings account."</p>
+                </div>
+                
+                <div class="concept-card" style="border-left-color: var(--danger-color);">
+                    <h3 style="color: var(--danger-color);">
+                        <i class="fas fa-times-circle"></i> Not SMART
+                    </h3>
+                    <p>"I want to reduce my debt."</p>
+                </div>
+                
+                <div class="concept-card" style="border-left-color: var(--success-color);">
+                    <h3 style="color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i> SMART Version
+                    </h3>
+                    <p>"I will pay off my RM10,000 credit card debt in 18 months by making RM600 monthly payments and not using the card for new purchases."</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Interactive Goal Setting Exercise -->
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Goal Setting Exercise</h4>
-          <p class="mb-6">Practice creating your own SMART financial goal using the template below:</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">What do you want to achieve?</label>
-                <input type="text" id="goal-what" placeholder="E.g., Save for a house down payment" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-base" />
-              </div>
-              <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">How much money is needed?</label>
-                <input type="text" id="goal-how-much" placeholder="E.g., RM50,000" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-base" />
-              </div>
-              <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">When do you want to achieve this?</label>
-                <input type="text" id="goal-when" placeholder="E.g., 5 years (December 2028)" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-base" />
-              </div>
-              <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">How will you achieve this?</label>
-                <input type="text" id="goal-how" placeholder="E.g., Saving RM833 monthly" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-base" />
-              </div>
-              <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Why is this important to you?</label>
-                <input type="text" id="goal-why" placeholder="E.g., To stop paying rent and build equity" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-base" />
-              </div>
-              <button id="generate-smart-goal" class="btn-primary px-6 py-2 rounded-lg">Generate SMART Goal</button>
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Your SMART Goal:</label>
-              <div id="smart-goal-output" class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg min-h-[200px] border border-gray-200 dark:border-gray-700">
-                <p class="text-gray-400 italic">Your SMART goal will appear here...</p>
-              </div>
-              <div class="mt-4">
-                <h5 class="font-semibold mb-2">SMART Checklist:</h5>
-                <div class="space-y-2">
-                  <div class="flex items-center">
-                    <input type="checkbox" id="check-specific" disabled class="h-4 w-4 text-indigo-600 mr-2" />
-                    <label for="check-specific" class="text-sm">Specific: Clearly defines what you want to accomplish</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="check-measurable" disabled class="h-4 w-4 text-indigo-600 mr-2" />
-                    <label for="check-measurable" class="text-sm">Measurable: Includes a specific amount or quantity</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="check-achievable" disabled class="h-4 w-4 text-indigo-600 mr-2" />
-                    <label for="check-achievable" class="text-sm">Achievable: Realistic based on your resources</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="check-relevant" disabled class="h-4 w-4 text-indigo-600 mr-2" />
-                    <label for="check-relevant" class="text-sm">Relevant: Aligned with your values and priorities</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="check-timebound" disabled class="h-4 w-4 text-indigo-600 mr-2" />
-                    <label for="check-timebound" class="text-sm">Time-bound: Includes a specific deadline or timeframe</label>
-                  </div>
+        <!-- Interactive SMART Goal Builder -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-magic"></i>
+                Interactive SMART Goal Builder
+            </h2>
+            
+            <div class="smart-goal-builder">
+                <p style="margin-bottom: 20px; font-size: 1.1rem;">Practice creating your own SMART financial goal:</p>
+                
+                <div style="display: grid; gap: 15px;">
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">What do you want to achieve?</label>
+                        <input type="text" id="goal-what" class="goal-input" placeholder="e.g., Save for emergency fund">
+                    </div>
+                    
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">How much money is needed?</label>
+                        <input type="number" id="goal-amount" class="goal-input" placeholder="e.g., 15000">
+                    </div>
+                    
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">When do you want to achieve this?</label>
+                        <input type="text" id="goal-when" class="goal-input" placeholder="e.g., 12 months">
+                    </div>
+                    
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">How will you achieve this?</label>
+                        <input type="text" id="goal-how" class="goal-input" placeholder="e.g., Save RM1,250 monthly">
+                    </div>
+                    
+                    <div>
+                        <label style="font-weight: 500; margin-bottom: 5px; display: block;">Why is this important to you?</label>
+                        <input type="text" id="goal-why" class="goal-input" placeholder="e.g., For financial security">
+                    </div>
                 </div>
-              </div>
+                
+                <button onclick="buildSMARTGoal()" style="margin-top: 20px; background: var(--primary-color); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-magic"></i> Build My SMART Goal
+                </button>
+                
+                <div id="goal-result" class="goal-result" style="display: none;">
+                    <h4 style="color: var(--secondary-color); margin-bottom: 10px;">
+                        <i class="fas fa-trophy"></i> Your SMART Goal:
+                    </h4>
+                    <p id="smart-goal-text" style="font-size: 1.1rem; line-height: 1.6;"></p>
+                    
+                    <h4 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-color);">
+                        <i class="fas fa-checklist"></i> SMART Checklist:
+                    </h4>
+                    <ul id="smart-checklist" style="padding-left: 20px;">
+                        <li id="check-specific">✓ Specific: Clearly defines what you want to accomplish</li>
+                        <li id="check-measurable">✓ Measurable: Includes a specific amount or quantity</li>
+                        <li id="check-achievable">✓ Achievable: Realistic based on your resources</li>
+                        <li id="check-relevant">✓ Relevant: Aligned with your values and priorities</li>
+                        <li id="check-time-bound">✓ Time-bound: Includes a specific deadline or timeframe</li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
 
-        <!-- Quiz -->
-        <div class="mt-8">
-          <button class="btn-primary px-6 py-2 rounded-lg check-section-1" data-section="3">
-            Mark Section Complete
-          </button>
-        </div>
-      </section>
-
-      <!-- Summary -->
-      <section id="summary">
-        <h3 class="text-2xl font-bold mb-6 section-header">Chapter Summary</h3>
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Key Takeaways</h4>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-              <span>Personal financial planning is crucial for achieving goals, providing protection, reducing stress, and improving quality of life.</span>
-            </li>
-            <li class="flex items-start">
-              <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-              <span>Financial planning factors include income level, life events, economic conditions, and personal values.</span>
-            </li>
-            <li class="flex items-start">
-              <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-              <span>The financial planning process involves six steps: assessing, establishing goals, identifying alternatives, evaluating, implementing, and revisiting.</span>
-            </li>
-            <li class="flex items-start">
-              <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-              <span>Setting SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) helps create a clear roadmap to financial success.</span>
-            </li>
-            <li class="flex items-start">
-              <i data-feather="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5"></i>
-              <span>Different life stages require different financial strategies and adjustments to your plan.</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="card p-6 shadow-sm mb-8">
-          <h4 class="text-xl font-semibold mb-4">Malaysian Financial Resources</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <a href="https://www.bnm.gov.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-blue-100 p-2 mr-3">
-                <i data-feather="home" class="h-4 w-4 text-blue-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">Bank Negara Malaysia (BNM)</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Central bank resources and financial education</p>
-              </div>
-            </a>
-            <a href="https://www.akpk.org.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-green-100 p-2 mr-3">
-                <i data-feather="life-buoy" class="h-4 w-4 text-green-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">AKPK</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Credit counseling and debt management</p>
-              </div>
-            </a>
-            <a href="https://www.sc.com.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-purple-100 p-2 mr-3">
-                <i data-feather="briefcase" class="h-4 w-4 text-purple-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">Securities Commission Malaysia (SC)</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Investment regulations and education</p>
-              </div>
-            </a>
-            <a href="https://www.kwsp.gov.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-yellow-100 p-2 mr-3">
-                <i data-feather="shield" class="h-4 w-4 text-yellow-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">Employees Provident Fund (EPF)</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Retirement planning and savings</p>
-              </div>
-            </a>
-            <a href="https://www.fpam.org.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-red-100 p-2 mr-3">
-                <i data-feather="users" class="h-4 w-4 text-red-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">Financial Planning Association of Malaysia (FPAM)</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Professional financial planning resources</p>
-              </div>
-            </a>
-            <a href="https://www.mfpc.org.my/" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <div class="rounded-full bg-indigo-100 p-2 mr-3">
-                <i data-feather="book" class="h-4 w-4 text-indigo-600"></i>
-              </div>
-              <div>
-                <h5 class="font-semibold text-sm">Malaysia Financial Planning Council (MFPC)</h5>
-                <p class="text-xs text-gray-600 dark:text-gray-300">Financial planning education and certification</p>
-              </div>
-            </a>
-          </div>
+        <!-- Interactive Quiz -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                Quick Review Quiz
+            </h2>
+            
+            <div class="interactive-quiz">
+                <div id="quiz-container">
+                    <div class="quiz-question" id="question-1">
+                        1. What is the main purpose of personal financial planning?
+                    </div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">
+                            <i class="fas fa-times"></i> To make you rich quickly
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">
+                            <i class="fas fa-check"></i> To help you manage your finances effectively and achieve your goals
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">
+                            <i class="fas fa-times"></i> To avoid paying taxes
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">
+                            <i class="fas fa-times"></i> To impress others with your wealth
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quiz-result" style="display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 10px; text-align: center;">
+                    <h3 id="result-title" style="margin-bottom: 10px;"></h3>
+                    <p id="result-message"></p>
+                    <button onclick="restartQuiz()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- Final Assessment -->
-        <div class="card p-6 shadow-sm">
-          <h4 class="text-xl font-semibold mb-4">Quick Review Quiz</h4>
-          <div id="quiz-container" class="space-y-6">
-            <div class="quiz-question">
-              <p class="font-medium mb-3">1. What is the main purpose of personal financial planning?</p>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="radio" id="q1-a" name="q1" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q1-a" class="text-sm">To make you rich quickly</label>
+        <!-- Key Takeaways -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-key"></i>
+                Key Takeaways
+            </h2>
+            
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                    <h4>Essential for Success</h4>
+                    <p>Personal financial planning is crucial for achieving goals, providing protection, reducing stress, and improving quality of life</p>
                 </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q1-b" name="q1" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q1-b" class="text-sm">To help you manage your finances effectively and achieve your goals</label>
+                <div class="icon-card">
+                    <i class="fas fa-chart-pie" style="color: var(--primary-color);"></i>
+                    <h4>Multiple Factors</h4>
+                    <p>Financial planning factors include income level, life events, economic conditions, and personal values</p>
                 </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q1-c" name="q1" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q1-c" class="text-sm">To avoid paying taxes</label>
+                <div class="icon-card">
+                    <i class="fas fa-route" style="color: var(--accent-color);"></i>
+                    <h4>Systematic Process</h4>
+                    <p>The financial planning process involves six steps: assessing, establishing goals, identifying alternatives, evaluating, implementing, and revisiting</p>
                 </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q1-d" name="q1" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q1-d" class="text-sm">To impress others with your wealth</label>
+                <div class="icon-card">
+                    <i class="fas fa-bullseye" style="color: var(--secondary-color);"></i>
+                    <h4>SMART Goals</h4>
+                    <p>Setting SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) helps create a clear roadmap to financial success</p>
                 </div>
-              </div>
             </div>
-
-            <div class="quiz-question">
-              <p class="font-medium mb-3">2. Which of the following is NOT a step in the financial planning process?</p>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="radio" id="q2-a" name="q2" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q2-a" class="text-sm">Assessing your current financial situation</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q2-b" name="q2" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q2-b" class="text-sm">Establishing financial goals</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q2-c" name="q2" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q2-c" class="text-sm">Comparing yourself to others financially</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q2-d" name="q2" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q2-d" class="text-sm">Implementing your financial action plan</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="quiz-question">
-              <p class="font-medium mb-3">3. What does the "M" in SMART goals stand for?</p>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="radio" id="q3-a" name="q3" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q3-a" class="text-sm">Manageable</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q3-b" name="q3" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q3-b" class="text-sm">Measurable</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q3-c" name="q3" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q3-c" class="text-sm">Meaningful</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q3-d" name="q3" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q3-d" class="text-sm">Monetary</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="quiz-question">
-              <p class="font-medium mb-3">4. According to the text, which of these is a factor affecting financial planning decisions?</p>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="radio" id="q4-a" name="q4" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q4-a" class="text-sm">The opinions of your neighbors</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q4-b" name="q4" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q4-b" class="text-sm">Your favorite color</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q4-c" name="q4" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q4-c" class="text-sm">Economic and market conditions</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q4-d" name="q4" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q4-d" class="text-sm">The weather</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="quiz-question">
-              <p class="font-medium mb-3">5. Which of the following is a component of personal financial planning?</p>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="radio" id="q5-a" name="q5" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q5-a" class="text-sm">Social media management</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q5-b" name="q5" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q5-b" class="text-sm">Daily horoscope reading</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q5-c" name="q5" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q5-c" class="text-sm">Debt management</label>
-                </div>
-                <div class="flex items-center">
-                  <input type="radio" id="q5-d" name="q5" class="h-4 w-4 text-indigo-600 mr-2" />
-                  <label for="q5-d" class="text-sm">Fashion trend analysis</label>
-                </div>
-              </div>
-            </div>
-
-            <button id="check-quiz" class="btn-primary px-6 py-2 rounded-lg">Check Answers</button>
-            <div id="quiz-results" class="p-4 rounded-lg mt-4 hidden"></div>
-          </div>
         </div>
-      </section>
-    </main>
 
-    <!-- Footer -->
-    <footer class="py-6 px-6 md:px-10 border-t border-gray-200 dark:border-gray-800 mt-12">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <p class="text-sm text-gray-600 dark:text-gray-400">SirPoji 2025 © Fundamentals of Personal Financial Planning | FIN333</p>
-        <div class="flex items-center space-x-4 mt-4 md:mt-0">
-          <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
-            <i data-feather="" class="h-5 w-5"></i>
-          </a>
-          <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
-            <i data-feather="" class="h-5 w-5"></i>
-          </a>
-          <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
-            <i data-feather="" class="h-5 w-5"></i>
-          </a>
+        <!-- Malaysian Financial Resources -->
+        <div class="learning-module fade-in">
+            <h2 class="section-title">
+                <i class="fas fa-flag"></i>
+                Malaysian Financial Resources
+            </h2>
+            
+            <div class="resource-links">
+                <a href="https://www.bnm.gov.my" target="_blank" class="resource-link">
+                    <i class="fas fa-university"></i>
+                    <h4>Bank Negara Malaysia</h4>
+                    <p>Central bank providing financial education and regulations</p>
+                </a>
+                <a href="https://www.kwsp.gov.my" target="_blank" class="resource-link">
+                    <i class="fas fa-piggy-bank"></i>
+                    <h4>EPF (KWSP)</h4>
+                    <p>Employee Provident Fund for retirement planning</p>
+                </a>
+                <a href="https://www.akpk.org.my" target="_blank" class="resource-link">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h4>AKPK</h4>
+                    <p>Credit counseling and debt management services</p>
+                </a>
+                <a href="https://www.sc.com.my" target="_blank" class="resource-link">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Securities Commission</h4>
+                    <p>Investment education and market regulations</p>
+                </a>
+                <a href="https://www.fimm.com.my" target="_blank" class="resource-link">
+                    <i class="fas fa-coins"></i>
+                    <h4>FIMM</h4>
+                    <p>Federation of Investment Managers Malaysia</p>
+                </a>
+                <a href="https://www.moneysense.my" target="_blank" class="resource-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h4>MoneySense</h4>
+                    <p>Financial education platform by BNM</p>
+                </a>
+            </div>
         </div>
-      </div>
-    </footer>
-  </div>
+    </div>
 
-  <script>
-    // Initialize Feather Icons
-    document.addEventListener("DOMContentLoaded", function () {
-      feather.replace();
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <button class="nav-btn" onclick="scrollToTop()" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="nav-btn" onclick="toggleProgress()" title="Show Progress">
+            <i class="fas fa-chart-line"></i>
+        </button>
+        <button class="nav-btn" onclick="openResourcesModal()" title="Resources">
+            <i class="fas fa-book"></i>
+        </button>
+    </div>
 
-      // Dark mode toggle
-      const themeToggle = document.getElementById("theme-toggle");
-      const moonIcon = document.getElementById("moon-icon");
-      const sunIcon = document.getElementById("sun-icon");
+    <!-- Resources Modal -->
+    <div id="resourcesModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeResourcesModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="margin-bottom: 20px; color: var(--primary-color);">
+                <i class="fas fa-book-open"></i> Additional Resources
+            </h2>
+            <div class="resource-links">
+                <a href="#" onclick="downloadPDF()" class="resource-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <h4>Download PDF Guide</h4>
+                    <p>Complete guide to personal finance basics</p>
+                </a>
+                <a href="#" onclick="openCalculator()" class="resource-link">
+                    <i class="fas fa-calculator"></i>
+                    <h4>Financial Calculator</h4>
+                    <p>Calculate savings, investments, and loans</p>
+                </a>
+                <a href="#" onclick="openGoalTracker()" class="resource-link">
+                    <i class="fas fa-bullseye"></i>
+                    <h4>Goal Tracker</h4>
+                    <p>Track your financial goals progress</p>
+                </a>
+                <a href="#" onclick="openBudgetPlanner()" class="resource-link">
+                    <i class="fas fa-wallet"></i>
+                    <h4>Budget Planner</h4>
+                    <p>Create and manage your monthly budget</p>
+                </a>
+            </div>
+        </div>
+    </div>
 
-      // Check for dark mode preference
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-        moonIcon.classList.add("hidden");
-        sunIcon.classList.remove("hidden");
-      }
+    <script>
+        // Progress tracking
+        let progress = 0;
+        let quizScore = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 5;
 
-      // Listen for changes in dark mode preference
-      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
-        if (event.matches) {
-          document.documentElement.classList.add("dark");
-          moonIcon.classList.add("hidden");
-          sunIcon.classList.remove("hidden");
-        } else {
-          document.documentElement.classList.remove("dark");
-          moonIcon.classList.remove("hidden");
-          sunIcon.classList.add("hidden");
+        // Animate counters on scroll
+        function animateCounters() {
+            const counters = document.querySelectorAll('.animated-counter');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        if (target % 1 !== 0) {
+                            counter.textContent = current.toFixed(1) + (counter.parentElement.textContent.includes('%') ? '%' : '');
+                        } else {
+                            counter.textContent = Math.ceil(current).toLocaleString() + (counter.parentElement.textContent.includes('RM') ? '' : '');
+                        }
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        if (target % 1 !== 0) {
+                            counter.textContent = target + (counter.parentElement.textContent.includes('%') ? '%' : '');
+                        } else {
+                            counter.textContent = target.toLocaleString() + (counter.parentElement.textContent.includes('RM') ? '' : '');
+                        }
+                    }
+                };
+                
+                // Check if element is in viewport
+                const rect = counter.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0 && counter.textContent === '0') {
+                    updateCounter();
+                }
+            });
         }
-      });
 
-      // Toggle dark mode
-      themeToggle.addEventListener("click", function () {
-        document.documentElement.classList.toggle("dark");
-        moonIcon.classList.toggle("hidden");
-        sunIcon.classList.toggle("hidden");
-      });
-
-      // Accordion functionality
-      const accordionHeaders = document.querySelectorAll(".accordion-header");
-      accordionHeaders.forEach((header) => {
-        header.addEventListener("click", function () {
-          const content = this.nextElementSibling;
-          const icon = this.querySelector(".accordion-icon");
-          content.classList.toggle("active");
-          icon.style.transform = content.classList.contains("active") ? "rotate(180deg)" : "rotate(0)";
-        });
-      });
-
-      // SMART Goal Generator
-      const generateGoalBtn = document.getElementById("generate-smart-goal");
-      const smartGoalOutput = document.getElementById("smart-goal-output");
-
-      generateGoalBtn.addEventListener("click", function () {
-        const what = document.getElementById("goal-what").value;
-        const howMuch = document.getElementById("goal-how-much").value;
-        const when = document.getElementById("goal-when").value;
-        const how = document.getElementById("goal-how").value;
-        const why = document.getElementById("goal-why").value;
-
-        if (what && howMuch && when && how) {
-          const smartGoal = `I will ${what} amounting to ${howMuch} by ${when} by ${how}${why ? ` because ${why}` : ""}.`;
-          smartGoalOutput.innerHTML = `<p class="font-medium">${smartGoal}</p>`;
-
-          // Check the SMART criteria
-          document.getElementById("check-specific").checked = what.trim() !== "";
-          document.getElementById("check-measurable").checked = howMuch.trim() !== "";
-          document.getElementById("check-achievable").checked = how.trim() !== "";
-          document.getElementById("check-relevant").checked = why.trim() !== "";
-          document.getElementById("check-timebound").checked = when.trim() !== "";
-        } else {
-          smartGoalOutput.innerHTML = `<p class="text-red-500">Please fill in all the required fields to generate a SMART goal.</p>`;
+        // Fade in animation
+        function fadeInElements() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    element.classList.add('visible');
+                }
+            });
         }
-      });
 
-      // Section completion tracking
-      const checkButtons = document.querySelectorAll(".check-section-1");
-      const progressBar = document.querySelector(".progress-bar-inner");
-      let completedSections = 0;
+        // Update progress
+        function updateProgress() {
+            const scrolled = window.pageYOffset;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            progress = Math.min(100, Math.round((scrolled / maxScroll) * 100));
+            
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = progress + '%';
+        }
 
-      checkButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          this.classList.add("bg-green-500");
-          this.innerHTML = 'Section Completed <i data-feather="check" class="inline h-4 w-4 ml-1"></i>';
-          feather.replace();
-          this.disabled = true;
-          completedSections++;
-          const progress = (completedSections / checkButtons.length) * 100;
-          progressBar.style.width = `${progress}%`;
-        });
-      });
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-      // Quiz functionality
-      const checkQuizBtn = document.getElementById("check-quiz");
-      const quizResults = document.getElementById("quiz-results");
+        // Toggle progress view
+        function toggleProgress() {
+            const progressContainer = document.querySelector('.progress-container');
+            progressContainer.scrollIntoView({ behavior: 'smooth' });
+        }
 
-      checkQuizBtn.addEventListener("click", function () {
-        const answers = {
-          q1: "b",
-          q2: "c",
-          q3: "b",
-          q4: "c",
-          q5: "c",
-        };
-
-        let score = 0;
-        let feedback = "";
-
-        for (const question in answers) {
-          const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
-
-          if (selectedAnswer) {
-            const answerValue = selectedAnswer.id.split("-")[1];
-            if (answerValue === answers[question]) {
-              score++;
-              feedback += `<p>Question ${question.substring(1)}: <span class="text-green-500">Correct!</span></p>`;
-            } else {
-              feedback += `<p>Question ${question.substring(1)}: <span class="text-red-500">Incorrect.</span></p>`;
+        // Build SMART Goal
+        function buildSMARTGoal() {
+            const what = document.getElementById('goal-what').value;
+            const amount = document.getElementById('goal-amount').value;
+            const when = document.getElementById('goal-when').value;
+            const how = document.getElementById('goal-how').value;
+            const why = document.getElementById('goal-why').value;
+            
+            if (!what || !amount || !when || !how || !why) {
+                alert('Please fill in all fields to create your SMART goal!');
+                return;
             }
-          } else {
-            feedback += `<p>Question ${question.substring(1)}: <span class="text-yellow-500">Not answered.</span></p>`;
-          }
+            
+            const smartGoal = `I will ${what.toLowerCase()} by saving RM${parseFloat(amount).toLocaleString()} in ${when} by ${how.toLowerCase()} because ${why.toLowerCase()}.`;
+            
+            document.getElementById('smart-goal-text').textContent = smartGoal;
+            document.getElementById('goal-result').style.display = 'block';
+            
+            // Check SMART criteria
+            const checks = {
+                specific: what.length > 5,
+                measurable: amount > 0,
+                achievable: true, // Assume achievable if they can specify how
+                relevant: why.length > 5,
+                timeBound: when.length > 0
+            };
+            
+            // Update checklist
+            Object.keys(checks).forEach(key => {
+                const element = document.getElementById(`check-${key}`);
+                if (checks[key]) {
+                    element.style.color = 'var(--success-color)';
+                    element.innerHTML = element.innerHTML.replace('✓', '✅');
+                } else {
+                    element.style.color = 'var(--danger-color)';
+                    element.innerHTML = element.innerHTML.replace('✅', '❌');
+                }
+            });
+            
+            // Scroll to result
+            document.getElementById('goal-result').scrollIntoView({ behavior: 'smooth' });
         }
 
-        const percentage = (score / 5) * 100;
-        let resultClass = "";
-        let resultMessage = "";
-
-        if (percentage >= 80) {
-          resultClass = "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
-          resultMessage = "Excellent! You have a good understanding.";
-        } else if (percentage >= 50) {
-          resultClass = "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
-          resultMessage = "Good effort! A little more review and you'll master the content.";
-        } else {
-          resultClass = "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
-          resultMessage = "Keep trying! Review the materials and try the quiz again.";
+        // Quiz functionality
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === element) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            if (isCorrect) {
+                quizScore++;
+            }
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion <= totalQuestions) {
+                    showNextQuestion();
+                } else {
+                    showQuizResult();
+                }
+            }, 1500);
         }
 
-        quizResults.innerHTML = `<div class="${resultClass} p-4 rounded-lg"><p class="font-semibold mb-2">${resultMessage}</p>${feedback}</div>`;
-        quizResults.classList.remove("hidden");
-      });
-    });
-  </script>
+        function showNextQuestion() {
+            // For demo purposes, we'll show a simple progression
+            // In a real implementation, you'd have different questions
+            const questions = [
+                {
+                    question: "2. Which of the following is NOT a step in the financial planning process?",
+                    options: [
+                        { text: "Assessing your current financial situation", correct: false },
+                        { text: "Establishing financial goals", correct: false },
+                        { text: "Comparing yourself to others financially", correct: true },
+                        { text: "Implementing your financial action plan", correct: false }
+                    ]
+                },
+                {
+                    question: "3. What does the 'M' in SMART goals stand for?",
+                    options: [
+                        { text: "Manageable", correct: false },
+                        { text: "Measurable", correct: true },
+                        { text: "Meaningful", correct: false },
+                        { text: "Monetary", correct: false }
+                    ]
+                },
+                {
+                    question: "4. According to the text, which of these is a factor affecting financial planning decisions?",
+                    options: [
+                        { text: "The opinions of your neighbors", correct: false },
+                        { text: "Your favorite color", correct: false },
+                        { text: "Economic and market conditions", correct: true },
+                        { text: "The weather", correct: false }
+                    ]
+                },
+                {
+                    question: "5. Which of the following is a component of personal financial planning?",
+                    options: [
+                        { text: "Social media management", correct: false },
+                        { text: "Daily horoscope reading", correct: false },
+                        { text: "Debt management", correct: true },
+                        { text: "Fashion trend analysis", correct: false }
+                    ]
+                }
+            ];
+            
+            const currentQ = questions[currentQuestion - 2]; // -2 because we already showed question 1
+            const container = document.getElementById('quiz-container');
+            
+            container.innerHTML = `
+                <div class="quiz-question" id="question-${currentQuestion}">
+                    ${currentQ.question}
+                </div>
+                <div class="quiz-options">
+                    ${currentQ.options.map((option, index) => `
+                        <div class="quiz-option" onclick="checkAnswer(this, ${option.correct})">
+                            <i class="fas fa-${option.correct ? 'check' : 'times'}"></i> ${option.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showQuizResult() {
+            const percentage = Math.round((quizScore / totalQuestions) * 100);
+            const container = document.getElementById('quiz-container');
+            const result = document.getElementById('quiz-result');
+            
+            container.style.display = 'none';
+            result.style.display = 'block';
+            
+            const title = document.getElementById('result-title');
+            const message = document.getElementById('result-message');
+            
+            if (percentage >= 80) {
+                title.innerHTML = '<i class="fas fa-trophy" style="color: var(--accent-color);"></i> Excellent!';
+                message.textContent = `You scored ${percentage}% (${quizScore}/${totalQuestions}). Great understanding of personal finance basics!`;
+                title.style.color = 'var(--accent-color)';
+            } else if (percentage >= 60) {
+                title.innerHTML = '<i class="fas fa-thumbs-up" style="color: var(--primary-color);"></i> Good Job!';
+                message.textContent = `You scored ${percentage}% (${quizScore}/${totalQuestions}). Keep learning and improving!`;
+                title.style.color = 'var(--primary-color)';
+            } else {
+                title.innerHTML = '<i class="fas fa-redo" style="color: var(--danger-color);"></i> Keep Trying!';
+                message.textContent = `You scored ${percentage}% (${quizScore}/${totalQuestions}). Review the material and try again!`;
+                title.style.color = 'var(--danger-color)';
+            }
+        }
+
+        function restartQuiz() {
+            quizScore = 0;
+            currentQuestion = 1;
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('quiz-result').style.display = 'none';
+            
+            // Reset to first question
+            document.getElementById('quiz-container').innerHTML = `
+                <div class="quiz-question" id="question-1">
+                    1. What is the main purpose of personal financial planning?
+                </div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <i class="fas fa-times"></i> To make you rich quickly
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">
+                        <i class="fas fa-check"></i> To help you manage your finances effectively and achieve your goals
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <i class="fas fa-times"></i> To avoid paying taxes
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <i class="fas fa-times"></i> To impress others with your wealth
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function openResourcesModal() {
+            document.getElementById('resourcesModal').style.display = 'flex';
+        }
+
+        function closeResourcesModal() {
+            document.getElementById('resourcesModal').style.display = 'none';
+        }
+
+        // Resource functions
+        function downloadPDF() {
+            alert('PDF download feature would be implemented here. This would generate a comprehensive PDF guide based on the learning content.');
+        }
+
+        function openCalculator() {
+            alert('Financial calculator feature would open here. This would include tools for calculating savings, investments, loans, and retirement planning.');
+        }
+
+        function openGoalTracker() {
+            alert('Goal tracker feature would open here. This would help users track their SMART financial goals over time.');
+        }
+
+        function openBudgetPlanner() {
+            alert('Budget planner feature would open here. This would help users create and manage monthly budgets with visual charts and reports.');
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            updateProgress();
+            fadeInElements();
+            animateCounters();
+        });
+
+        window.addEventListener('load', () => {
+            fadeInElements();
+            animateCounters();
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('resourcesModal');
+            if (event.target === modal) {
+                closeResourcesModal();
+            }
+        });
+
+        // Add pulse animation to important elements
+        setInterval(() => {
+            const importantElements = document.querySelectorAll('.icon-card:hover');
+            importantElements.forEach(el => {
+                el.classList.add('pulse');
+                setTimeout(() => el.classList.remove('pulse'), 2000);
+            });
+        }, 5000);
+    </script>
 </body>
-</html>
+  </html>
