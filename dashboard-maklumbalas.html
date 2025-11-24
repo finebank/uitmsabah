@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Semakan Kurikulum BA119 UiTM 2025</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .uitm-purple { background-color: #3e206d; }
+        .uitm-text { color: #3e206d; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        
+        /* Smooth fade transition for the ticker */
+        #appreciationTicker {
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- 1. FULL WIDTH IMAGE HEADER -->
+    <div class="w-full bg-gray-200">
+        <img src="https://i.imgur.com/7Q2Dznp.png" 
+             alt="Header Semakan Kurikulum BA119" 
+             class="w-full h-auto object-cover max-h-[300px] shadow-md block">
+    </div>
+
+    <!-- 2. ANIMATED APPRECIATION BAR & CTA -->
+    <div class="bg-yellow-50 border-b border-yellow-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row justify-between items-center gap-3">
+            
+            <!-- Animated Text -->
+            <div class="flex items-center space-x-3 text-sm md:text-base text-yellow-800 font-medium flex-1 text-center md:text-left">
+                <i class="ph-fill ph-heart text-red-500 animate-pulse text-xl"></i>
+                <span id="appreciationTicker">Menghargai sumbangan maklum balas...</span>
+            </div>
+
+            <!-- CTA Button for LICs -->
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-gray-500 font-semibold hidden lg:inline uppercase tracking-wide">LIC Belum isi?</span>
+                <a href="https://ebooqoo.my.canva.site/sistem-maklum-balas" target="_blank" 
+                   class="bg-purple-700 hover:bg-purple-800 text-white text-xs sm:text-sm font-bold px-5 py-2 rounded-full transition-colors shadow-lg flex items-center group">
+                    <i class="ph ph-pen-nib mr-2 group-hover:rotate-12 transition-transform"></i>
+                    Borang Maklum Balas
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SUB-HEADER (Title & Date) -->
+    <div class="uitm-purple text-white shadow-md z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/10 p-2 rounded-lg">
+                    <i class="ph ph-chart-bar text-xl text-yellow-400"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide leading-none">Analisis Data</h1>
+                    <p class="text-xs text-purple-200 uppercase tracking-wider mt-1">Semakan Kurikulum 2025</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center text-xs font-medium bg-purple-800/50 px-3 py-1.5 rounded-lg border border-purple-500/30">
+                <i class="ph ph-calendar-blank mr-2"></i>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Feedback -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-600 card-hover transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Jumlah Respon</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-1" id="totalFeedback">0</h3>
+                    </div>
+                    <div class="p-2 bg-purple-50 rounded-lg text-purple-600">
+                        <i class="ph ph-users text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agreement Rate -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500 card-hover transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Persetujuan</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-1" id="approvalRate">0%</h3>
+                    </div>
+                    <div class="p-2 bg-green-50 rounded-lg text-green-600">
+                        <i class="ph ph-thumbs-up text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unique Campuses -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500 card-hover transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kampus</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-1" id="campusCount">0</h3>
+                    </div>
+                    <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                        <i class="ph ph-buildings text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Reviewed -->
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500 card-hover transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Kursus</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-1" id="courseCount">0</h3>
+                    </div>
+                    <div class="p-2 bg-yellow-50 rounded-lg text-yellow-600">
+                        <i class="ph ph-books text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="w-1.5 h-6 bg-purple-600 rounded-full mr-3"></span>
+                    Taburan Kursus (Kod)
+                </h3>
+                <div class="chart-container">
+                    <canvas id="courseChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="w-1.5 h-6 bg-blue-500 rounded-full mr-3"></span>
+                    Respon Mengikut Kampus
+                </h3>
+                <div class="chart-container">
+                    <canvas id="campusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Detail Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+            <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/50">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="ph ph-chat-text mr-2 text-purple-600"></i> Perincian Maklum Balas
+                </h3>
+                
+                <!-- Search Box -->
+                <div class="relative w-full sm:w-72">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="ph ph-magnifying-glass text-gray-400"></i>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="Cari Nama, Kod Kursus, Kampus..." 
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm transition-shadow">
+                </div>
+            </div>
+
+            <!-- Feedback Cards Grid -->
+            <div id="feedbackContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6 bg-gray-50/30">
+                <!-- Cards will be injected here by JS -->
+            </div>
+            
+            <div id="noResults" class="hidden text-center py-16 text-gray-400">
+                <i class="ph ph-magnifying-glass text-5xl mb-3 opacity-50"></i>
+                <p class="font-medium">Tiada rekod dijumpai.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto py-8 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-gray-500">&copy; 2025 UiTM. Dijana untuk Semakan Kurikulum BA119.</p>
+        </div>
+    </footer>
+
+    <!-- Script Section -->
+    <script>
+        // --- 1. DATA SOURCE ---
+        const feedbackData = [
+            { "nama_kursus": "FINANCIAL ANALYSIS", "kod_kursus": "FIN320", "program": "KEDAH", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai", "kandungan_silibus": "Course info lebih detail berbanding sebelum review.", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "Pelajar perlu lulus FIN242 terlebih dahulu sebelum mengambil FIN320", "Setuju_nama_program": "YA", "Justifikasi": "Peluang pekerjaan yang lebih luas bukan terhad kepada sektor perbankan sahaja.", "penyedia_nama": "Hasni Abd Rahim" },
+            { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "MELAKA", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "BERSETUJU SESUAI DENGAN KEADAAN SEMASA PELAJAR", "kandungan_silibus": "SETUJU", "kaedah_penilaian": "SETUJU", "kaedah_pdp": "SETUJU", "cadangan_penambahbaikan": "TIADA", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "WAN RASYIDAH BINTI WAN MUSA " },
+            { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "KELANTAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sangat sesuai.", "kandungan_silibus": "Kandungan silibus dan topik adalah relevan dengan keadaan semasa dan merangkumi semua elemen kewangan peribadi.", "kaedah_penilaian": "Kaedah penilaian adalah sesuai dengan peringkat diploma namun boleh ditambahbaik dengan mengambil kira aspek pengiraan dalam penilaian berterusan dan peperiksaan akhir. Contohnya: topik Persona financial statement & Tax planning.", "kaedah_pdp": "Sangat sesuai.", "cadangan_penambahbaikan": "Tiada.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "ROSELIZA BINTI HAMID" },
+            { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "PAHANG", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai.", "kandungan_silibus": "Penambahbaikan mengikut keperluan semasa dan kehadapan.", "kaedah_penilaian": "Sesuai.", "kaedah_pdp": "Sesuai.", "cadangan_penambahbaikan": "Tiada.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "Muhammad Zainuddin bin Mohamed Azudin " },
+            { "nama_kursus": "FUNDAMENTALS OF FINANCE", "kod_kursus": "FIN242", "program": "TERENGGANU", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sangat sesuai", "kandungan_silibus": "Masih relevan dan mungkin boleh ditambah baik mengikut apa yang telah dibincangkan.", "kaedah_penilaian": "Masih sesuai dengan apa yang dijalankan.", "kaedah_pdp": "Sangat sesuai", "cadangan_penambahbaikan": "Setuju dengan apa yang dicadangkan oleh Prof. Ts Dr Imbarine mengenai menambah atau mungkin diterapkan secara langsung dalam tugasan assignment satu topik berkenaan Account Payable (as industry outlook or perspective) atau mana-mana yang bersesuaian boleh dibincangkan lagi.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "Nasiha binti Hashim" },
+            { "nama_kursus": "INVESTMENT MANAGEMENT", "kod_kursus": "FIN358", "program": "NEGERI SEMBILAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "setuju dengan yg sedia ada", "kandungan_silibus": "setuju dengan beberapa penambahan sub topik yang dicadangkan oleh rp", "kaedah_penilaian": "setuju dengan yang sedia ada", "kaedah_pdp": "perbanyakkan latihan dan menarik fokus pelajar ", "cadangan_penambahbaikan": "memastikan silibus kekal relevan seperti kehendak pasaran. silibus sekarang sudah ok.. ", "Setuju_nama_program": "YA", "Justifikasi": "setuju dengan yang sedia ada ", "penyedia_nama": "NURAIN FARAHANA ZAINAL A ISI" },
+            { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "SARAWAK", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai", "kandungan_silibus": "Sesuai", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "Tiada", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "Shaffaridzuan Yakub " },
+            { "nama_kursus": "FUNDAMENTALS OF FINANCE", "kod_kursus": "FIN242", "program": "MELAKA", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "CLO adalah jelas, sesuai dengan tahap pembelajaran dan dipetakan dengan baik kepada PLO, memastikan keselarasan dan pencapaian objektif program secara menyeluruh.", "kandungan_silibus": "Kandungan dan silibus kursus adalah relevan dan merangkumi topik dengan liputan yang mencukupi bagi memenuhi keperluan pembelajaran pelajar. Walaubagaimanpun mungkin topik-topik yang berkaitan boleh disatukan dalam satu topik (combine chapters) untuk mengurangkan jumlah topik yang sedia ada. ", "kaedah_penilaian": "Penilaian adalah seimbang dan sesuai, dengan pemberatan yang wajar antara penilaian secara berterusan dan peperiksaan akhir serta berkesan dalam menilai pencapaian pelajar secara menyeluruh.", "kaedah_pdp": "Kuliah dan tutorial adalah sangat sesuai dlm PdP ", "cadangan_penambahbaikan": "Menyediakan lebih banyak bahan sokongan untuk memperkukuh pemahaman kursus pada masa hadapan.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "NORZAHIDAH BINTI YACOB " },
+            { "nama_kursus": "FUNDAMENTALS OF FINANCIAL MARKETS AND INSTITUTIONS", "kod_kursus": "FIN250", "program": "JOHOR", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai", "kandungan_silibus": "Sesuai", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "Tiada", "Setuju_nama_program": "YA", "Justifikasi": "Memandangkan sebahagian besar kursus utama dalam program ini terdiri daripada kursus berkaitan kewangan seperti FIN242, FIN320, FIN333, FIN358, FIN388, dan INS200, oleh itu menamakan semula program adalah sesuai untuk mencerminkan fokus akademik dengan lebih tepat. ", "penyedia_nama": "Tay Bee Hoong" },
+            { "nama_kursus": "FUNDAMENTALS OF FINANCE", "kod_kursus": "FIN242", "program": "JOHOR", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Baik", "kandungan_silibus": "Bagus", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "tiada", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "SHAHIRA ABDUL JABAR " }
+        ];
+
+        // --- 2. LOGIC & PROCESSING ---
+        
+        // Setup Date
+        const now = new Date();
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').innerText = now.toLocaleDateString('ms-MY', dateOptions);
+
+        // --- NEW: ANIMATED APPRECIATION POST ---
+        const ticker = document.getElementById('appreciationTicker');
+        let tickerIndex = 0;
+
+        function updateTicker() {
+            if (feedbackData.length === 0) return;
+            
+            // Step 1: Fade Out
+            ticker.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Step 2: Change Content
+                const item = feedbackData[tickerIndex];
+                // Ensure campus name is title case
+                const campus = item.program.charAt(0).toUpperCase() + item.program.slice(1).toLowerCase();
+                
+                ticker.innerHTML = `Terima kasih <span class="font-bold text-yellow-900 mx-1">UiTM Cawangan ${campus}</span> (LIC: ${item.penyedia_nama}) atas maklum balas kursus <span class="bg-yellow-200 px-1 rounded text-yellow-900 font-bold text-xs ml-1">${item.kod_kursus}</span>!`;
+                
+                // Step 3: Fade In
+                ticker.style.opacity = '1';
+
+                // Increment index
+                tickerIndex = (tickerIndex + 1) % feedbackData.length;
+            }, 500); // Wait 500ms for fade out
+        }
+
+        // Start animation loop (every 4 seconds)
+        setInterval(updateTicker, 4000);
+        updateTicker(); // Run immediately
+
+        // --- EXISTING LOGIC ---
+
+        function processKPIs(data) {
+            document.getElementById('totalFeedback').innerText = data.length;
+            const totalAgreed = data.filter(item => item.Setuju_nama_program.toUpperCase() === 'YA').length;
+            const percentage = data.length ? Math.round((totalAgreed / data.length) * 100) : 0;
+            document.getElementById('approvalRate').innerText = `${percentage}%`;
+            const uniqueCampuses = [...new Set(data.map(item => item.program))];
+            document.getElementById('campusCount').innerText = uniqueCampuses.length;
+            const uniqueCourses = [...new Set(data.map(item => item.kod_kursus))];
+            document.getElementById('courseCount').innerText = uniqueCourses.length;
+        }
+
+        function renderCharts(data) {
+            const courseCounts = {};
+            data.forEach(item => { courseCounts[item.kod_kursus] = (courseCounts[item.kod_kursus] || 0) + 1; });
+
+            const campusCounts = {};
+            data.forEach(item => { campusCounts[item.program] = (campusCounts[item.program] || 0) + 1; });
+
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#6b7280';
+
+            const ctxCourse = document.getElementById('courseChart').getContext('2d');
+            new Chart(ctxCourse, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(courseCounts),
+                    datasets: [{
+                        label: 'Bilangan Maklum Balas',
+                        data: Object.values(courseCounts),
+                        backgroundColor: '#7c3aed',
+                        borderRadius: 6,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            const ctxCampus = document.getElementById('campusChart').getContext('2d');
+            const colors = ['#3e206d', '#facc15', '#ef4444', '#3b82f6', '#10b981', '#f97316', '#6366f1', '#ec4899'];
+            
+            new Chart(ctxCampus, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(campusCounts),
+                    datasets: [{
+                        data: Object.values(campusCounts),
+                        backgroundColor: colors.slice(0, Object.keys(campusCounts).length),
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 12, usePointStyle: true } } },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function renderFeedbackCards(data) {
+            const container = document.getElementById('feedbackContainer');
+            const noResults = document.getElementById('noResults');
+            
+            container.innerHTML = ''; 
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full relative overflow-hidden group';
+                
+                // Decorative top bar
+                const bar = document.createElement('div');
+                bar.className = "absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left";
+                card.appendChild(bar);
+
+                const agreeBadge = item.Setuju_nama_program.toUpperCase() === 'YA' 
+                    ? '<span class="flex items-center text-green-600 text-xs font-bold bg-green-50 px-2 py-1 rounded-full"><i class="ph-fill ph-check-circle mr-1"></i> Setuju</span>'
+                    : '<span class="flex items-center text-red-600 text-xs font-bold bg-red-50 px-2 py-1 rounded-full"><i class="ph-fill ph-x-circle mr-1"></i> Tidak Setuju</span>';
+
+                card.innerHTML += `
+                    <div class="flex justify-between items-start mb-3 mt-1">
+                        <div>
+                            <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-0.5 rounded font-mono font-semibold mb-1 border border-gray-200">${item.kod_kursus}</span>
+                            <h4 class="font-bold text-gray-800 leading-tight text-sm md:text-base">${item.nama_kursus}</h4>
+                        </div>
+                        <div class="ml-2 flex-shrink-0">
+                             ${agreeBadge}
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-y-2 items-center text-xs text-gray-500 mb-4 pb-3 border-b border-gray-100">
+                        <span class="flex items-center mr-3"><i class="ph-fill ph-map-pin text-purple-500 mr-1"></i> ${item.program}</span>
+                        <span class="flex items-center"><i class="ph-fill ph-user text-blue-500 mr-1"></i> ${item.penyedia_nama}</span>
+                    </div>
+
+                    <div class="bg-yellow-50/50 p-3 rounded-lg mb-3 flex-grow border border-yellow-100/50">
+                        <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Cadangan Penambahbaikan</p>
+                        <p class="text-xs sm:text-sm text-gray-700 italic leading-relaxed">"${item.cadangan_penambahbaikan}"</p>
+                    </div>
+
+                    <div class="pt-2 mt-auto">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                             <div>
+                                <span class="block text-[10px] uppercase text-gray-400 mb-0.5">Penjajaran CLO</span>
+                                <span class="font-medium text-gray-600 truncate block" title="${item.penjajaran_clo}">${item.penjajaran_clo}</span>
+                             </div>
+                             <div>
+                                <span class="block text-[10px] uppercase text-gray-400 mb-0.5">Silibus</span>
+                                <span class="font-medium text-gray-600 truncate block" title="${item.kandungan_silibus}">${item.kandungan_silibus}</span>
+                             </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filteredData = feedbackData.filter(item => 
+                item.nama_kursus.toLowerCase().includes(term) ||
+                item.kod_kursus.toLowerCase().includes(term) ||
+                item.penyedia_nama.toLowerCase().includes(term) ||
+                item.program.toLowerCase().includes(term)
+            );
+            renderFeedbackCards(filteredData);
+        });
+
+        // --- INITIALIZE ---
+        processKPIs(feedbackData);
+        renderCharts(feedbackData);
+        renderFeedbackCards(feedbackData);
+
+    </script>
+</body>
+</html>
