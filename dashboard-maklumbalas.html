@@ -181,11 +181,12 @@
                     <div class="space-y-4">
                         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                             <h4 class="flex items-center text-sm font-bold text-purple-700 uppercase mb-3 border-b pb-2"><i class="ph-fill ph-target mr-2"></i> Penjajaran CLO</h4>
-                            <p id="m_clo" class="text-sm text-gray-700 leading-relaxed">-</p>
+                            <!-- Added whitespace-pre-line to respect newlines in data -->
+                            <p id="m_clo" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">-</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                             <h4 class="flex items-center text-sm font-bold text-blue-600 uppercase mb-3 border-b pb-2"><i class="ph-fill ph-books mr-2"></i> Kandungan Silibus</h4>
-                            <p id="m_syllabus" class="text-sm text-gray-700 leading-relaxed">-</p>
+                            <p id="m_syllabus" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">-</p>
                         </div>
                     </div>
 
@@ -193,11 +194,11 @@
                     <div class="space-y-4">
                         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                             <h4 class="flex items-center text-sm font-bold text-pink-600 uppercase mb-3 border-b pb-2"><i class="ph-fill ph-exam mr-2"></i> Kaedah Penilaian</h4>
-                            <p id="m_assessment" class="text-sm text-gray-700 leading-relaxed">-</p>
+                            <p id="m_assessment" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">-</p>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                             <h4 class="flex items-center text-sm font-bold text-teal-600 uppercase mb-3 border-b pb-2"><i class="ph-fill ph-chalkboard-teacher mr-2"></i> Kaedah PdP</h4>
-                            <p id="m_pdp" class="text-sm text-gray-700 leading-relaxed">-</p>
+                            <p id="m_pdp" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">-</p>
                         </div>
                     </div>
                 </div>
@@ -206,13 +207,13 @@
                 <div class="mt-6 bg-yellow-50 border border-yellow-200 p-5 rounded-xl shadow-sm relative overflow-hidden">
                     <i class="ph-fill ph-lightbulb absolute top-[-10px] right-[-10px] text-yellow-500/20 text-9xl"></i>
                     <h4 class="flex items-center text-sm font-bold text-yellow-800 uppercase mb-3 relative z-10"><i class="ph-fill ph-sparkle mr-2"></i> Cadangan Penambahbaikan</h4>
-                    <p id="m_suggestion" class="text-base text-gray-800 italic leading-relaxed relative z-10 font-medium">-</p>
+                    <p id="m_suggestion" class="text-base text-gray-800 italic leading-relaxed relative z-10 font-medium whitespace-pre-line">-</p>
                 </div>
 
                 <!-- Additional Notes (Optional) -->
                 <div id="m_notes_container" class="mt-4 hidden">
                     <p class="text-xs text-gray-500 uppercase font-bold mb-1">Nota Tambahan / Relevansi Pasaran:</p>
-                    <p id="m_notes" class="text-sm text-gray-600 border-l-2 border-gray-300 pl-3">-</p>
+                    <p id="m_notes" class="text-sm text-gray-600 border-l-2 border-gray-300 pl-3 whitespace-pre-line">-</p>
                 </div>
 
             </div>
@@ -229,6 +230,7 @@
     <script>
         // --- DATA SOURCE ---
         const feedbackData = [
+            // --- ORIGINAL DATA ---
             { "nama_kursus": "FINANCIAL ANALYSIS", "kod_kursus": "FIN320", "program": "KEDAH", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai", "kandungan_silibus": "Course info lebih detail berbanding sebelum review.", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "Pelajar perlu lulus FIN242 terlebih dahulu sebelum mengambil FIN320", "Setuju_nama_program": "YA", "Justifikasi": "Peluang pekerjaan yang lebih luas bukan terhad kepada sektor perbankan sahaja.", "penyedia_nama": "Hasni Abd Rahim" },
             { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "MELAKA", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "BERSETUJU SESUAI DENGAN KEADAAN SEMASA PELAJAR", "kandungan_silibus": "SETUJU", "kaedah_penilaian": "SETUJU", "kaedah_pdp": "SETUJU", "cadangan_penambahbaikan": "TIADA", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "WAN RASYIDAH BINTI WAN MUSA " },
             { "nama_kursus": "FUNDAMENTALS OF PERSONAL FINANCIAL PLANNING", "kod_kursus": "FIN333", "program": "KELANTAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sangat sesuai.", "kandungan_silibus": "Kandungan silibus dan topik adalah relevan dengan keadaan semasa dan merangkumi semua elemen kewangan peribadi.", "kaedah_penilaian": "Kaedah penilaian adalah sesuai dengan peringkat diploma namun boleh ditambahbaik dengan mengambil kira aspek pengiraan dalam penilaian berterusan dan peperiksaan akhir. Contohnya: topik Persona financial statement & Tax planning.", "kaedah_pdp": "Sangat sesuai.", "cadangan_penambahbaikan": "Tiada.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "ROSELIZA BINTI HAMID" },
@@ -246,7 +248,89 @@
             { "nama_kursus": "FINANCIAL ANALYSIS", "kod_kursus": "FIN320", "program": "SARAWAK", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "SESUAI", "kandungan_silibus": "SESUAI DAN LEBIH TERPERINCI", "kaedah_penilaian": "SESUAI", "kaedah_pdp": "DIKEKALKAN", "cadangan_penambahbaikan": "SEBAHAGIAN DARI TOPIK 6 (DFL/DCL/DTL) DIMANSUHKAN DALAM SILIBUS OLEH KERANA TIDAK DIUJI DALAM SOALAN PEPERIKSAAN AKHIR.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "JOYCELYNE ANAK NYANDANG", "market_relevance": "Tiada", "additional_notes": "SEBAHAGIAN DARI TOPIK 6 (DFL/DCL/DTL) DIMANSUHKAN DALAM SILIBUS OLEH KERANA TIDAK DIUJI DALAM SOALAN PEPERIKSAAN AKHIR." },
             { "nama_kursus": "INVESTMENT MANAGEMENT", "kod_kursus": "FIN358", "program": "NEGERI SEMBILAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Setuju seperti yang dibincangkan", "kandungan_silibus": "RP memaklumkan penambahan dan susun atur subtopik baru. Setuju seperti yang dicadangkan.", "kaedah_penilaian": "Penabahan penilaian elemen VBE. Setuju seperti dicadangkan.", "kaedah_pdp": "Seperti sedia kala.", "cadangan_penambahbaikan": "Adalah baik sekiranya disediakan modul atau panduan langkah demi langkah untuk teknik-teknik asas Technical Analysis sebagai rujukan pengajar dan pelajar. Seperti menambah video tutorial ringkas tentang cara membaca candlestick chart boleh membantu pelajar memahami dengan lebih cepat. Khas bagi pelajar yang bukan dari fakulti perniagaan dan pengurusan.", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "Shaffaridzuan Yakub", "market_relevance": "Tiada", "additional_notes": "Adalah baik sekiranya disediakan modul atau panduan langkah demi langkah..." },
             { "nama_kursus": "BANK LENDING AND ASSESSMENT", "kod_kursus": "FIN367", "program": "SARAWAK", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Sesuai", "kandungan_silibus": "Pada pendapat saya, penambahan topik Cashflow/Ratio agak kurang sesuai kerana telah dipelajari dalam FIN242 dan subjek FIN yang lain. Kepadatan Nota yang terlalu banyak. Jika boleh ambil perkara yang berkaitan dengan proses pinjaman yang relevan dengan konteks perbankan di Malaysia secara spesifik sahaja.", "kaedah_penilaian": "Sesuai", "kaedah_pdp": "Sesuai", "cadangan_penambahbaikan": "Sesuai", "Setuju_nama_program": "YA", "Justifikasi": "Tiada", "penyedia_nama": "NURUL HANIN IZZAT SANIN", "market_relevance": "Tiada", "additional_notes": "Sesuai" },
-            { "nama_kursus": "BANK LENDING AND ASSESSMENT", "kod_kursus": "FIN367", "program": "NEGERI SEMBILAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Baik. Penambahbaikan menepati keperluan.", "kandungan_silibus": "Baik. Sesuai digunakan. Telah mengambil kira pandangan in ndustri", "kaedah_penilaian": "Peperiksaan Akhir - mohon dikurangkan jam Peperiksaan kepada 2 jam. Memandangkan ada kaedah MCQ Dan T/F di dalam soalan Akhir.", "kaedah_pdp": "Ada keperluan untuk meletakkan lawatan industri/bank/sme. Bertepatan dengan keperluan pelajar Semester Akhir.", "cadangan_penambahbaikan": "Teruskan dengan cadangan yang diberikan oleh PU.", "Setuju_nama_program": "YA", "Justifikasi": "Amat sesuai ikut peredaran semasa.", "penyedia_nama": "MUSTAFA KAMAL MAT", "market_relevance": "Amat sesuai ikut peredaran semasa.", "additional_notes": "Teruskan dengan cadangan yang diberikan oleh PU." }
+            { "nama_kursus": "BANK LENDING AND ASSESSMENT", "kod_kursus": "FIN367", "program": "NEGERI SEMBILAN", "tarikh_maklumbalas": "2025-11-24", "penjajaran_clo": "Baik. Penambahbaikan menepati keperluan.", "kandungan_silibus": "Baik. Sesuai digunakan. Telah mengambil kira pandangan in ndustri", "kaedah_penilaian": "Peperiksaan Akhir - mohon dikurangkan jam Peperiksaan kepada 2 jam. Memandangkan ada kaedah MCQ Dan T/F di dalam soalan Akhir.", "kaedah_pdp": "Ada keperluan untuk meletakkan lawatan industri/bank/sme. Bertepatan dengan keperluan pelajar Semester Akhir.", "cadangan_penambahbaikan": "Teruskan dengan cadangan yang diberikan oleh PU.", "Setuju_nama_program": "YA", "Justifikasi": "Amat sesuai ikut peredaran semasa.", "penyedia_nama": "MUSTAFA KAMAL MAT", "market_relevance": "Amat sesuai ikut peredaran semasa.", "additional_notes": "Teruskan dengan cadangan yang diberikan oleh PU." },
+            
+            // --- NEW DATA ADDITIONS ---
+            {
+                "nama_kursus": "BANK LENDING ASSESSMENT AND MANAGEMENT",
+                "kod_kursus": "FIN367",
+                "program": "KEDAH",
+                "tarikh_maklumbalas": "2025-11-24",
+                "penjajaran_clo": "OKAY",
+                "kandungan_silibus": "CADANGAN UNTUK BUANG\nCHAPTER 2 : DOCUMENTATION ON LAND WITH N WITHOUT THE TITLE . UNDER CONSTRUCTION, SUB SALES ,REDEMPTION ETC. (TOO HIGH UNTUK FRESH DIPLOMA STUDENT)\n\nTOPIC CGC BOLEH DILETAKKAN DI BAWAH GUARANTEE. SBB PROCESS ORIGINATION FROM CGC BRANCHES SAMA DGN COMMERCIAL BANK.\n\nCHAPTER 3 : INFO ON SME OUTDATED (BUANG). KEKALKAN DEFINITION OF SME\nCHAPTER 4 : BNM/GP3 (BUANG). MAY BE BOLEH LETAKKAN GENERAL STATEMENT SESUATU ACCOUNT DI CLASSIFIED AS DOUBTFUL OR NPL",
+                "kaedah_penilaian": "2 REPORTS (CREDIT REPORT DAN REFLEKSI) - BOLEH KA DIGABUNGKAN SBB SUBMISSION KEDUA2 NYA DI AKHIR SEMESTER. ATAU BOLEHKAH REFLEKSI REPORT INI DIGANTIKAN DENGAN KUIZ?\n\nPEPERIKSAAN AKHIR FORMAT SEKARANG MCQ DAN ESSAY. BOLEHKAH DIMASUKKAN TRUE FALSE JUGA",
+                "kaedah_pdp": "LECTURE, TUTORIAL UTK CONTENT DAH OKAY\nASSESSMENT DAH CAPTURE UTK PEMBELAJARAN BERASASKAN MASALAH (CREDIT REPORT)",
+                "cadangan_penambahbaikan": "CR YANG DILAKUKAN TELAH MENGAMBIL KIRA MASALAH SEMASA YANG DIHADAPI.",
+                "Setuju_nama_program": "YA",
+                "Justifikasi": "Tiada",
+                "penyedia_nama": "ANITA BINTI ABU HASSAN",
+                "market_relevance": "Tiada",
+                "additional_notes": "CR YANG DILAKUKAN TELAH MENGAMBIL KIRA MASALAH SEMASA YANG DIHADAPI."
+            },
+            {
+                "nama_kursus": "BANK LENDING ASSESSMENT AND MANAGEMENT",
+                "kod_kursus": "FIN367",
+                "program": "PAHANG",
+                "tarikh_maklumbalas": "2025-11-24",
+                "penjajaran_clo": "Tahap pembelajaran dan pemetaan CLO and PLO adalah sesuai",
+                "kandungan_silibus": "Topik adalah releven, cukup dan mutakhir. Penambahan Topik 7 berkaitan isu semasa berkaitan kredit dan AI/teknologi adalah sangat relevan. Namun, mungkin perlukan sedikit penambahbaikan supaya content silibus boleh diringkaskan dan sesuai dengan tahap pelajar diploma. Kerana content sedia ada agak padat, panjang dan sukar difahami oleh sebahagian pelajar. Reduce some of the sub topics.",
+                "kaedah_penilaian": "Jenis penilaian adalah sesuai dengan kod kursus. Penambahbaikan 10% lecture/industrial visit ke FI atau syarikat adalah sangat relevant. Namun dicadangkan agar dilaksanakan secara berkumpulan kerana sebahagian cawangan/kampus kapasiti pelajar bagi satu sesi melebihi 200 orang.",
+                "kaedah_pdp": "Semua PdP yang dicadangkan (kuliah, tutorial) semasa mesyuarat PR dan LIC adalah relevan dan sesuai.",
+                "cadangan_penambahbaikan": "Buku manual yang lebih ringkas, padat dan sesuai untuk pembelajaran pelajar pada masa akan datang. Buku @ module yang dipersetujui oleh RP dan LIC sangat membantu pelajar untuk memahami subjek dan memudahkan ulangkaji sebelum ujian/final exam.",
+                "Setuju_nama_program": "YA",
+                "Justifikasi": "Tiada",
+                "penyedia_nama": "SITI SYAMIRA BINTI MOHD RAMLI",
+                "market_relevance": "Tiada",
+                "additional_notes": "Buku manual yang lebih ringkas, padat dan sesuai untuk pembelajaran pelajar pada masa akan datang..."
+            },
+            {
+                "nama_kursus": "Bank Lending Assessment and Management",
+                "kod_kursus": "FIN367",
+                "program": "KELANTAN",
+                "tarikh_maklumbalas": "2025-11-24",
+                "penjajaran_clo": "Sesuai",
+                "kandungan_silibus": "Okay. Setuju seperti yang telah dibincangkan.",
+                "kaedah_penilaian": "Sesuai",
+                "kaedah_pdp": "Sesuai",
+                "cadangan_penambahbaikan": "-",
+                "Setuju_nama_program": "YA",
+                "Justifikasi": "Tiada",
+                "penyedia_nama": "Wan Asma Hanim Wan Mustapha",
+                "market_relevance": "Tiada",
+                "additional_notes": "-"
+            },
+            {
+                "nama_kursus": "Bank Lending Assessment & Mgmt",
+                "kod_kursus": "FIN367",
+                "program": "JOHOR",
+                "tarikh_maklumbalas": "2025-11-25",
+                "penjajaran_clo": "Sesuai",
+                "kandungan_silibus": "Cukup",
+                "kaedah_penilaian": "Sesuai",
+                "kaedah_pdp": "Sesuai",
+                "cadangan_penambahbaikan": "Mengurangkan jumlah bab yang dimasukkan dalam peperiksaan akhir. Mana-mana bab yang masuk dalam ujian tidak perlu masuk peperiksaan akhir.",
+                "Setuju_nama_program": "YA",
+                "Justifikasi": "Tiada",
+                "penyedia_nama": "Ferri Bin Nasrul",
+                "market_relevance": "Tiada",
+                "additional_notes": "Mengurangkan jumlah bab yang dimasukkan dalam peperiksaan akhir. Mana-mana bab yang masuk dalam ujian tidak perlu masuk peperiksaan akhir."
+            },
+            {
+                "nama_kursus": "Fundamentals of Personal Financial Planning",
+                "kod_kursus": "FIN333",
+                "program": "JOHOR",
+                "tarikh_maklumbalas": "2025-11-25",
+                "penjajaran_clo": "Sesuai",
+                "kandungan_silibus": "Sesuai",
+                "kaedah_penilaian": "Sesuai",
+                "kaedah_pdp": "Sesuai",
+                "cadangan_penambahbaikan": "Mengurangkan jumlah bab dalam peperiksaan akhir",
+                "Setuju_nama_program": "YA",
+                "Justifikasi": "Tiada",
+                "penyedia_nama": "Ferri Bin Nasrul",
+                "market_relevance": "Tiada",
+                "additional_notes": "Mengurangkan jumlah bab dalam peperiksaan akhir"
+            }
         ];
 
         // --- GLOBAL VARIABLES for Modal Navigation ---
@@ -375,7 +459,7 @@
             const notesText = document.getElementById('m_notes');
             let combinedNotes = [];
             if (item.market_relevance && item.market_relevance !== "Tiada") combinedNotes.push(`Relevansi Pasaran: ${item.market_relevance}`);
-            if (item.additional_notes && item.additional_notes !== "Tiada" && item.additional_notes !== "TIADA") combinedNotes.push(`Nota: ${item.additional_notes}`);
+            if (item.additional_notes && item.additional_notes !== "Tiada" && item.additional_notes !== "TIADA" && item.additional_notes !== "-") combinedNotes.push(`Nota: ${item.additional_notes}`);
             
             if (combinedNotes.length > 0) {
                 notesContainer.classList.remove('hidden');
@@ -388,32 +472,27 @@
             const overlay = document.getElementById('modalOverlay');
             const content = document.getElementById('modalContent');
             overlay.classList.remove('hidden');
-            // Small timeout to allow removing 'hidden' to render before applying opacity transition
             setTimeout(() => {
                 content.classList.remove('scale-95', 'opacity-0');
                 content.classList.add('scale-100', 'opacity-100');
             }, 10);
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             const overlay = document.getElementById('modalOverlay');
             const content = document.getElementById('modalContent');
-            
             content.classList.remove('scale-100', 'opacity-100');
             content.classList.add('scale-95', 'opacity-0');
-
             setTimeout(() => {
                 overlay.classList.add('hidden');
-                document.body.style.overflow = 'auto'; // Restore scrolling
-            }, 200); // Wait for transition
+                document.body.style.overflow = 'auto'; 
+            }, 200);
         }
 
         // Close on Escape Key
         document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeModal();
-            }
+            if (event.key === "Escape") closeModal();
         });
 
         // Search Listener
